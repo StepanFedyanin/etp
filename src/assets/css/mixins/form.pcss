@@ -1,0 +1,274 @@
+@define-mixin __input {
+    font-style: normal;
+    font-weight: normal;
+    font-size: 14px;
+    line-height: 24px;
+    display: flex;
+    align-items: center;
+    border: none;
+    width: calc(100% - 7px);
+    outline: none;
+    padding-left: 7px;
+}
+
+@define-mixin input {
+    @mixin __input;
+
+    &::placeholder {
+        color: $color-gray;
+    }
+
+    &.is-valid {
+        border-color: $color-green;
+        background-color: rgba($color-green, 0.03);
+    }
+    &.is-error {
+        border-color: $color-red;
+        background-color: rgba($color-red, 0.03);
+        color: $color-red;
+    }
+
+    &:focus {
+        border-color: $color-blue;
+        background-color: rgba($color-blue, 0.03);
+    }
+
+    &:disabled {
+        background-color: rgba($color-lightblack, 0.05);
+        color: $color-gray;
+        cursor: not-allowed;
+    }
+
+    &[readonly] {
+        /*border-color: $color-gray-T4;*/
+        /*background-color: rgba($color-lightblack, 0.02);*/
+        color: $color-gray-T1;
+        cursor: default;
+        pointer-events: none;
+    }
+}
+
+@define-mixin input--icon $icon {
+    padding-left: 56px;
+    background-image: svg-load('assets/img/icon/$(icon).svg', fill=$color-gray);
+    background-position: 16px 50%;
+    background-repeat: no-repeat;
+
+    &.is-valid {
+        background-image: svg-load('assets/img/icon/$(icon).svg', fill=$color-green);
+    }
+
+    &.is-error {
+        background-image: svg-load('assets/img/icon/$(icon).svg', fill=$color-red);
+    }
+
+    &:focus {
+        background-image: svg-load('assets/img/icon/$(icon).svg', fill=$color-blue);
+    }
+
+    &:disabled {
+        background-image: svg-load('assets/img/icon/$(icon).svg', fill=$color-gray-T4);
+    }
+
+    &[readonly] {
+        background-image: svg-load('assets/img/icon/$(icon).svg', fill=$color-gray-T4);
+    }
+}
+
+@define-mixin select {
+    @mixin input;
+
+    padding-right: 40px;
+    background: svg-load('assets/img/select.svg', fill=$color-gray) calc(100% - 16px) 50% no-repeat;
+    appearance: none;
+
+    &::-ms-expand {
+        display: none;
+    }
+
+    &.is-valid {
+        background-image: svg-load('assets/img/select.svg', fill=$color-green);
+    }
+
+    &.is-error {
+        background-image: svg-load('assets/img/select.svg', fill=$color-red);
+    }
+
+    &:focus {
+        background-image: svg-load('assets/img/select.svg', fill=$color-blue);
+    }
+
+    &:disabled {
+        background-image: svg-load('assets/img/select.svg', fill=$color-gray-T4);
+    }
+
+    &[readonly] {
+        background-image: svg-load('assets/img/select.svg', fill=$color-gray-T4);
+    }
+}
+
+@define-mixin textarea {
+    @mixin input;
+    resize: none;
+
+    min-height: 118px;
+}
+
+@define-mixin __input-box {
+    position: absolute;
+    right: 0;
+    top: 0;
+    width: 0;
+    height: 0;
+    opacity: 0;
+    visibility: hidden;
+
+    & + label {
+        position: relative;
+        display: block;
+        padding-left: 26px;
+        font-size: 18px;
+        line-height: 1.2;
+        font-weight: medium;
+        font-style: normal;
+        color: $color-lightblack;
+        cursor: pointer;
+
+        &::before {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 2px;
+            width: 18px;
+            height: 18px;
+            border: 1px solid $color-lightblack;
+        }
+
+        &::after {
+            content: '';
+            display: none;
+        }
+
+        &:hover::before {
+            box-shadow: 0 0 4px -2px $color-lightblack;
+        }
+    }
+
+    &:checked + label {
+        &::before {
+            border-color: $color-green;
+            background-color: $color-green;
+        }
+
+        &::after {
+            display: block;
+        }
+
+        &:hover::before {
+            box-shadow: 0 0 4px -2px $color-green;
+        }
+    }
+
+    &:disabled + label {
+        color: $color-gray;
+        cursor: not-allowed;
+
+        &:before {
+            opacity: 0.5;
+        }
+
+        &:hover::before {
+            box-shadow: none;
+        }
+    }
+
+    &[readonly] + label {
+        color: $color-gray-T3;
+        cursor: default;
+
+        &:hover::before {
+            box-shadow: none;
+        }
+    }
+}
+
+@define-mixin checkbox {
+    @mixin __input-box;
+
+    & + label {
+        &::before {
+            border-radius: 1px;
+        }
+
+        &::after {
+            position: absolute;
+            left: 7px;
+            top: 10px;
+            width: 10px;
+            height: 5px;
+            border-bottom: 2px solid $color-white;
+            border-left: 2px solid $color-white;
+            transform: rotate(-45deg);
+            transform-origin: 0 100% 0;
+        }
+    }
+}
+
+@define-mixin radiobox {
+    @mixin __input-box;
+
+    & + label {
+        &::before {
+            border-radius: 50%;
+        }
+
+        &::after {
+            position: absolute;
+            left: 5px;
+            top: 7px;
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background-color: $color-white;
+        }
+    }
+}
+
+@define-mixin button {
+    padding: 16px;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    border: 1px solid $color-gray-T3;
+    box-sizing: border-box;
+    border-radius: 10px;
+    height: 48px;
+    vertical-align: middle;
+    text-align: center;
+    text-decoration: none;
+    cursor: pointer;
+    font-weight: 500;
+    font-size: 14px;
+    line-height: 17px;
+    letter-spacing: 0.2px;
+    &:disabled {
+        cursor: not-allowed;
+        opacity: 0.4;
+    }
+
+    &:active:not(:disabled) {
+        padding: 18px 16px 14px;
+    }
+}
+
+@define-mixin button--color $bg-color, $label-color {
+    $shadow-color: color($bg-color shade(24%));
+    $border-color: color($bg-color shade(12%));
+
+    @mixin gradient-darken bottom, $bg-color, 5%;
+    color: $label-color;
+
+    &:hover:not(:disabled) {
+        @mixin gradient-darken top, $bg-color, 5%;
+    }
+}

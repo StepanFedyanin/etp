@@ -1,0 +1,185 @@
+@define-mixin __p {
+    &:first-child {
+        margin-top: 0;
+    }
+
+    &:last-child {
+        margin-bottom: 0;
+    }
+}
+
+@define-mixin h1 {
+    @mixin __p;
+
+    margin-top: 48px;
+    margin-bottom: 32px;
+    font-size: 32px;
+    line-height: 40px;
+    font-weight: 600;
+
+    @mixin responsive-le-s {
+        font-size: 28px;
+        line-height: 34px;
+    }
+
+    @mixin responsive-le-xs {
+        font-size: 24px;
+        line-height: 30px;
+    }
+}
+
+@define-mixin h2 {
+    @mixin __p;
+
+    margin-top: 32px;
+    margin-bottom: 24px;
+    font-size: 24px;
+    line-height: 30px;
+    font-weight: bold;
+
+    @mixin responsive-le-s {
+        font-size: 20px;
+        line-height: 36px;
+    }
+
+    @mixin responsive-le-xs {
+        font-size: 18px;
+        line-height: 24px;
+    }
+}
+
+@define-mixin h3 {
+    @mixin __p;
+
+    margin-top: 24px;
+    margin-bottom: 16px;
+    font-weight: bold;
+    font-size: 16px;
+    line-height: 20px;
+}
+
+@define-mixin h4 {
+    @mixin __p;
+
+    margin-top: 16px;
+    margin-bottom: 8px;
+    font-weight: 500;
+    font-size: 16px;
+    line-height: 20px;
+}
+
+@define-mixin p {
+    @mixin __p;
+
+    margin-top: 8px;
+    margin-bottom: 8px;
+}
+
+@define-mixin ul {
+    @mixin p;
+}
+
+@define-mixin ol {
+    @mixin p;
+}
+
+@define-mixin hr {
+    @mixin p;
+}
+
+@define-mixin a {
+    text-decoration: none;
+/*
+    border-bottom-width: 1px;
+    border-bottom-style: solid;
+    color: $color-red;
+
+
+    &:hover {
+        border-bottom-color: transparent;
+    }
+*/
+}
+
+@define-mixin a--color $color {
+    color: $color;
+    border-color: rgba($color, 0.5);
+}
+
+@define-mixin table {
+    /* dummy */
+}
+
+@define-mixin base {
+    font: $font-size-base/$line-height-base $font-family-base;
+    color: $color-base;
+}
+
+@define-mixin format {
+    h1:not(.nostyle) {
+        @mixin h1;
+    }
+
+    h2:not(.nostyle) {
+        @mixin h2;
+    }
+
+    h3:not(.nostyle) {
+        @mixin h3;
+    }
+
+    h4:not(.nostyle) {
+        @mixin h4;
+    }
+
+    p:not(.nostyle) {
+        @mixin p;
+    }
+
+    ul:not(.nostyle) {
+        @mixin ul;
+    }
+
+    ol:not(.nostyle) {
+        @mixin ol;
+    }
+
+    hr:not(.nostyle) {
+        @mixin hr;
+    }
+
+    a:not(.nostyle) {
+        @mixin a;
+    }
+
+    table:not(.nostyle) {
+        @mixin table;
+    }
+
+    b:not(.nostyle),
+    strong:not(.nostyle) {
+        font-weight: bold;
+    }
+
+    i:not(.nostyle),
+    em:not(.nostyle) {
+        font-style: italic;
+    }
+
+    u:not(.nostyle),
+    ins:not(.nostyle) {
+        text-decoration: underline;
+    }
+
+    strike:not(.nostyle),
+    del:not(.nostyle) {
+        text-decoration: line-through;
+    }
+}
+
+@define-mixin text {
+    @mixin format;
+
+    font: $font-size-text/$line-height-text $font-family-text;
+    color: $color-text;
+}

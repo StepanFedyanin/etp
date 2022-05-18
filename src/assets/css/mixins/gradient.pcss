@@ -1,0 +1,7 @@
+@define-mixin gradient-darken $direction, $color, $percent {
+    background-image: linear-gradient(to $direction, $color 0, color($color shade($percent)) 100%);
+}
+
+@define-mixin gradient-lighten $direction, $color, $percent {
+    background-image: linear-gradient(to $direction, $color 0, color($color tint($percent)) 100%);
+}
