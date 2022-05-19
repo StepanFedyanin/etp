@@ -11,20 +11,18 @@
 @define-mixin h1 {
     @mixin __p;
 
-    margin-top: 48px;
+    margin-top: 32px;
     margin-bottom: 32px;
-    font-size: 32px;
-    line-height: 40px;
-    font-weight: 600;
+    font-size: 34px;
+    line-height: 1.2;
+    font-weight: 700;
 
     @mixin responsive-le-s {
         font-size: 28px;
-        line-height: 34px;
     }
 
     @mixin responsive-le-xs {
         font-size: 24px;
-        line-height: 30px;
     }
 }
 
@@ -34,8 +32,8 @@
     margin-top: 32px;
     margin-bottom: 24px;
     font-size: 24px;
-    line-height: 30px;
-    font-weight: bold;
+    line-height: 1.2;
+    font-weight: 700;
 
     @mixin responsive-le-s {
         font-size: 20px;
@@ -53,9 +51,13 @@
 
     margin-top: 24px;
     margin-bottom: 16px;
-    font-weight: bold;
-    font-size: 16px;
-    line-height: 20px;
+    font-weight: 700;
+    font-size: 20px;
+    line-height: 1.2;
+
+    @mixin responsive-le-xs {
+        font-size: 18px;
+    }
 }
 
 @define-mixin h4 {
@@ -64,8 +66,8 @@
     margin-top: 16px;
     margin-bottom: 8px;
     font-weight: 500;
-    font-size: 16px;
-    line-height: 20px;
+    font-size: 18px;
+    line-height: 1.2;
 }
 
 @define-mixin p {
@@ -77,10 +79,53 @@
 
 @define-mixin ul {
     @mixin p;
+
+    list-style: none;
+    padding: 0;
+
+    li {
+        padding-left: 21px;
+        position: relative;
+        margin-bottom: 16px;
+
+        &:before {
+            content: '';
+            position: absolute;
+            left: 0;
+            width: 15px;
+            height: 14px;
+            top: calc(50% - 7px);
+            background-size: contain;
+            background-position: center;
+            background-image: svg-load('assets/img/icons/vector.svg', fill=$color-red);
+            background-repeat: no-repeat;
+        }
+
+        &:last-child {
+            margin-bottom: 0;
+        }
+    }
 }
 
 @define-mixin ol {
     @mixin p;
+
+    list-style: none;
+    counter-reset: item;
+    li {
+        counter-increment: item;
+        margin-bottom: 16px;
+        vertical-align: center;
+
+        &:before {
+            content: counter(item);
+            padding-left: 12px;
+            font-weight: 700;
+            font-size: 18px;
+            line-height: 24px;
+            color: $color-green;
+        }
+    }
 }
 
 @define-mixin hr {
@@ -88,17 +133,12 @@
 }
 
 @define-mixin a {
-    text-decoration: none;
-/*
-    border-bottom-width: 1px;
-    border-bottom-style: solid;
-    color: $color-red;
-
+    text-decoration: underline;
+    color: $color-green;
 
     &:hover {
-        border-bottom-color: transparent;
+        text-decoration: none;
     }
-*/
 }
 
 @define-mixin a--color $color {

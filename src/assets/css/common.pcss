@@ -1,0 +1,137 @@
+*,
+*::before,
+*::after {
+    box-sizing: border-box;
+}
+
+html {
+    min-width: 100%;
+    height: 100%;
+    height: -webkit-fill-available;
+    overflow-x: auto;
+}
+
+body {
+    @mixin base;
+
+    position: relative;
+    min-width: 320px;
+    height: 100%;
+    min-height: 100vh;
+    min-height: -webkit-fill-available;
+    font-weight: 500;
+}
+
+.container {
+    max-width: 1800px;
+    /*width: calc(100% - 280px);*/
+    margin: auto;
+    position: absolute;
+    left: 240px;
+    right: 40px;
+    @mixin responsive-le-l {
+        left: 190px;
+    }
+    @mixin responsive-le-m {
+        left: 16px;
+        right: 16px;
+    }
+}
+
+.h1 {
+    @mixin h1;
+}
+
+.h2 {
+    @mixin h2;
+}
+
+.h3 {
+    @mixin h3;
+}
+
+.h4 {
+    @mixin h4;
+}
+
+.p {
+    @mixin p;
+}
+
+.ul {
+    @mixin ul;
+}
+
+.ol {
+    @mixin ol;
+}
+
+.hr {
+    @mixin hr;
+}
+
+.a, a {
+    @mixin a;
+    @mixin a--color $color-base;
+}
+
+.table {
+    @mixin table;
+}
+
+.base {
+    @mixin base;
+}
+
+.format {
+    @mixin format;
+}
+
+.text {
+    @mixin text;
+}
+
+.input, input {
+    @mixin input;
+}
+
+.select, select {
+    @mixin select;
+}
+
+.textarea, textarea {
+    @mixin textarea;
+}
+
+.checkbox {
+    @mixin checkbox;
+}
+
+.radiobox {
+    @mixin radiobox;
+}
+
+/* Chrome, Safari, Edge, Opera */
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+}
+
+/* Firefox */
+input[type=number] {
+    -moz-appearance: textfield;
+}
+
+.button {
+    @mixin button;
+    @mixin button--color $color-white, $color-green;
+
+    &-green {
+        @mixin button--color $color-green, $color-white;
+
+        &:hover {
+            @mixin button--color $color-green, $color-white;
+        }
+    }
+}

@@ -1,4 +1,5 @@
 @define-mixin __input {
+    padding: 12px;
     font-style: normal;
     font-weight: normal;
     font-size: 14px;
@@ -8,14 +9,13 @@
     border: none;
     width: calc(100% - 7px);
     outline: none;
-    padding-left: 7px;
 }
 
 @define-mixin input {
     @mixin __input;
 
     &::placeholder {
-        color: $color-gray;
+        color: $color-gray-T4;
     }
 
     &.is-valid {
@@ -29,19 +29,20 @@
     }
 
     &:focus {
-        border-color: $color-blue;
-        background-color: rgba($color-blue, 0.03);
+        border-color: $color-gray;
+        background-color: rgba($color-gray, 0.03);
     }
 
     &:disabled {
-        background-color: rgba($color-lightblack, 0.05);
+        border-color: $color-gray-T4;
+        background-color: rgba($color-gray-T4, 0.005);
         color: $color-gray;
         cursor: not-allowed;
     }
 
     &[readonly] {
-        /*border-color: $color-gray-T4;*/
-        /*background-color: rgba($color-lightblack, 0.02);*/
+        border-color: $color-gray-T4;
+        background-color: rgba($color-gray-T4, 0.02);
         color: $color-gray-T1;
         cursor: default;
         pointer-events: none;
@@ -63,7 +64,7 @@
     }
 
     &:focus {
-        background-image: svg-load('assets/img/icon/$(icon).svg', fill=$color-blue);
+        background-image: svg-load('assets/img/icon/$(icon).svg', fill=$color-gray);
     }
 
     &:disabled {
@@ -95,7 +96,7 @@
     }
 
     &:focus {
-        background-image: svg-load('assets/img/select.svg', fill=$color-blue);
+        background-image: svg-load('assets/img/select.svg', fill=$color-gray);
     }
 
     &:disabled {
@@ -129,9 +130,9 @@
         padding-left: 26px;
         font-size: 18px;
         line-height: 1.2;
-        font-weight: medium;
+        font-weight: 500;
         font-style: normal;
-        color: $color-lightblack;
+        color: $color-gray;
         cursor: pointer;
 
         &::before {
@@ -141,7 +142,7 @@
             top: 2px;
             width: 18px;
             height: 18px;
-            border: 1px solid $color-lightblack;
+            border: 1px solid $color-gray;
         }
 
         &::after {
@@ -150,7 +151,7 @@
         }
 
         &:hover::before {
-            box-shadow: 0 0 4px -2px $color-lightblack;
+            box-shadow: 0 0 4px -2px $color-gray;
         }
     }
 
@@ -239,18 +240,19 @@
     display: flex;
     flex-direction: row;
     align-items: center;
-    border: 1px solid $color-gray-T3;
+    border: 1px solid $color-green;
     box-sizing: border-box;
-    border-radius: 10px;
-    height: 48px;
+    border-radius: 8px;
     vertical-align: middle;
     text-align: center;
     text-decoration: none;
+    text-transform: uppercase;
     cursor: pointer;
-    font-weight: 500;
-    font-size: 14px;
-    line-height: 17px;
-    letter-spacing: 0.2px;
+    font-weight: 700;
+    font-size: 18px;
+    line-height: 22px;
+    /* box-shadow: none; */
+
     &:disabled {
         cursor: not-allowed;
         opacity: 0.4;
