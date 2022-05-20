@@ -2,12 +2,13 @@
     padding: 12px;
     font-style: normal;
     font-weight: normal;
-    font-size: 14px;
+    font-size: 16px;
     line-height: 24px;
     display: flex;
     align-items: center;
-    border: none;
-    width: calc(100% - 7px);
+    border: 1px solid transparent;
+    border-radius: 8px;
+    width: 100%;
     outline: none;
 }
 
@@ -22,6 +23,7 @@
         border-color: $color-green;
         background-color: rgba($color-green, 0.03);
     }
+
     &.is-error {
         border-color: $color-red;
         background-color: rgba($color-red, 0.03);
@@ -49,62 +51,14 @@
     }
 }
 
-@define-mixin input--icon $icon {
-    padding-left: 56px;
-    background-image: svg-load('assets/img/icon/$(icon).svg', fill=$color-gray);
-    background-position: 16px 50%;
-    background-repeat: no-repeat;
-
-    &.is-valid {
-        background-image: svg-load('assets/img/icon/$(icon).svg', fill=$color-green);
-    }
-
-    &.is-error {
-        background-image: svg-load('assets/img/icon/$(icon).svg', fill=$color-red);
-    }
-
-    &:focus {
-        background-image: svg-load('assets/img/icon/$(icon).svg', fill=$color-gray);
-    }
-
-    &:disabled {
-        background-image: svg-load('assets/img/icon/$(icon).svg', fill=$color-gray-T4);
-    }
-
-    &[readonly] {
-        background-image: svg-load('assets/img/icon/$(icon).svg', fill=$color-gray-T4);
-    }
-}
-
 @define-mixin select {
     @mixin input;
 
     padding-right: 40px;
-    background: svg-load('assets/img/select.svg', fill=$color-gray) calc(100% - 16px) 50% no-repeat;
     appearance: none;
 
     &::-ms-expand {
         display: none;
-    }
-
-    &.is-valid {
-        background-image: svg-load('assets/img/select.svg', fill=$color-green);
-    }
-
-    &.is-error {
-        background-image: svg-load('assets/img/select.svg', fill=$color-red);
-    }
-
-    &:focus {
-        background-image: svg-load('assets/img/select.svg', fill=$color-gray);
-    }
-
-    &:disabled {
-        background-image: svg-load('assets/img/select.svg', fill=$color-gray-T4);
-    }
-
-    &[readonly] {
-        background-image: svg-load('assets/img/select.svg', fill=$color-gray-T4);
     }
 }
 
@@ -127,12 +81,12 @@
     & + label {
         position: relative;
         display: block;
-        padding-left: 26px;
+        padding-left: 30px;
         font-size: 18px;
         line-height: 1.2;
         font-weight: 500;
         font-style: normal;
-        color: $color-gray;
+        color: $color-gray-T1;
         cursor: pointer;
 
         &::before {
@@ -142,7 +96,7 @@
             top: 2px;
             width: 18px;
             height: 18px;
-            border: 1px solid $color-gray;
+            border: 1.5px solid $color-gray-T5;
         }
 
         &::after {
@@ -198,7 +152,7 @@
 
     & + label {
         &::before {
-            border-radius: 1px;
+            border-radius: 6px;
         }
 
         &::after {

@@ -9,7 +9,7 @@ const cache = {
 };
 
 const serviceUrl = {
-    url: '//tugan-app.flexidev.ru',
+    url: '//app.tugan.ru',
     localPath: '//localhost',
     protocol: 'http',
     port: '8000',
@@ -18,9 +18,6 @@ const serviceUrl = {
 }
 
 let urlPath = `${serviceUrl.url}${serviceUrl.api}`;
-if (serviceUrl.onLocal || window.location.hostname === 'localhost') {
-    urlPath = `${serviceUrl.localPath}:${serviceUrl.port}${serviceUrl.api}`;
-}
 
 const tender = {
     url: `${urlPath}/tender`,

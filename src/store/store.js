@@ -1,6 +1,6 @@
 import Vue from 'vue';
 import Vuex from 'vuex';
-import VuexPersist from 'vuex-persist'
+import VuexPersist from 'vuex-persist';
 
 const vuexPersist = new VuexPersist({
     key: 'tugan-v-cirk-ne-hodim',

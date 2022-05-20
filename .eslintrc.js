@@ -18,7 +18,9 @@ module.exports = {
         'vue/attribute-hyphenation': 'off',
         'vue/require-v-for-key': 'off',
         'vue/require-default-prop': 'warn',
+        'vue/multi-word-component-names': 'off',
         'vue/no-v-html': 'off',
+        'vue/valid-template-root': 'off',
         'vue/script-indent': [
             'warn',
             4,

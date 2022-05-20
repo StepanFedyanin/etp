@@ -4,6 +4,13 @@
     }
 }
 
+@define-mixin responsive-le-xxl {
+    @media (max-width: $document-width-xxl) {
+        @mixin-content;
+    }
+}
+
+
 @define-mixin responsive-xl {
     @media (min-width: resolve($document-width-l + 1px)) and (max-width: $document-width-xl) {
         @mixin-content;
