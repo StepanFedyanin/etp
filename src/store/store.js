@@ -1,5 +1,4 @@
-import Vue from 'vue';
-import Vuex from 'vuex';
+import { createStore } from 'vuex'
 import VuexPersist from 'vuex-persist';
 
 const vuexPersist = new VuexPersist({
@@ -7,15 +6,17 @@ const vuexPersist = new VuexPersist({
     storage: window.localStorage
 });
 
-Vue.use(Vuex);
+// Vue.use(Vuex);
 
-export default new Vuex.Store({
-    state: {
-        token: null,
-        refreshToken: null,
-        user: null,
-        loader: null,
-        error: null
+export default createStore({
+    state () {
+        return {
+            token: null,
+            refreshToken: null,
+            user: null,
+            loader: null,
+            error: null
+        }
     },
     plugins: [vuexPersist.plugin],
     mutations: {
@@ -33,11 +34,6 @@ export default new Vuex.Store({
         updateError(state, error) {
             state.error = error;
         }
-    },
-    getters: {
-        getUserRole: state => state.role,
-        getUserName: state => state.username,
-        getUserId: state => state.id
     },
     actions: {
         deathUser(context) {

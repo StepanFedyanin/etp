@@ -16,5 +16,19 @@ module.exports = {
         },
         'postcss-conditionals': {},
         'postcss-preset-env': {}
-    }
+    },
+    // plugins: [
+    //     require('postcss-mixins'),
+    //     require('autoprefixer'),
+    //     require('postcss-import'),
+    //     require('postcss-nested'),
+    //     require('postcss-simple-vars'),
+    //     require('postcss-hexrgba'),
+    //     require('postcss-color-function'),
+    //     require('postcss-font-weights'),
+    //     require('postcss-inline-svg')({ paths: ['./src'] }),
+    //     require('postcss-math')({ functionName: 'calculate' }),
+    //     require('postcss-conditionals'),
+    //     require('postcss-preset-env'),
+    // ]
 }

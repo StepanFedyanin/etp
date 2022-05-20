@@ -1,4 +1,7 @@
 <template>
+    <div>
+        ку брачо
+    </div>
 </template>
 
 <script>

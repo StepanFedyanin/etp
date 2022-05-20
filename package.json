@@ -23,9 +23,9 @@
   "devDependencies": {
     "@babel/core": "^7.12.16",
     "@babel/eslint-parser": "^7.12.16",
-    "@vue/cli-plugin-babel": "~5.0.0",
-    "@vue/cli-plugin-eslint": "~5.0.0",
-    "@vue/cli-service": "~5.0.0",
+    "@vue/cli-plugin-babel": "~4.5.0",
+    "@vue/cli-plugin-eslint": "~4.5.0",
+    "@vue/cli-service": "~4.5.0",
     "eslint": "^7.32.0",
     "eslint-plugin-vue": "^8.0.3",
     "postcss": "^8.4.13",
@@ -35,29 +35,15 @@
     "postcss-font-weights": "^5.0.0",
     "postcss-hexrgba": "^2.0.0",
     "postcss-import": "^12.0.1",
-    "postcss-inline-svg": "^5.0.0",
+    "postcss-inline-svg": "^4.1.0",
     "postcss-loader": "^6.1.1",
     "postcss-math": "0.0.10",
-    "postcss-mixins": "^9.0.2",
+    "postcss-mixins": "^6.2.3",
     "postcss-nested": "4.2.1",
     "postcss-preset-env": "^6.7.0",
     "postcss-simple-vars": "^5.0.2",
     "stylelint": "^13.0.0",
     "stylelint-config-recommended": "^3.0.0"
-  },
-  "eslintConfig": {
-    "root": true,
-    "env": {
-      "node": true
-    },
-    "extends": [
-      "plugin:vue/vue3-essential",
-      "eslint:recommended"
-    ],
-    "parserOptions": {
-      "parser": "@babel/eslint-parser"
-    },
-    "rules": {}
   },
   "browserslist": [
     "> 1%",

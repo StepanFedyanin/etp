@@ -2,18 +2,15 @@
     <div class="app">
         <routerView />
         <appError />
-        <appLoader />
     </div>
 </template>
 
 <script>
     import appError from '@/components/app-error.vue';
-    import appLoader from '@/components/app-loader.vue';
 
     export default {
         components: {
-            appError,
-            appLoader
+            appError
         },
         computed: {
             user() {
@@ -41,6 +38,6 @@
         }
     };
 </script>
-<style lang="postcss">
+<style>
     @import "assets/css/main.pcss";
 </style>
