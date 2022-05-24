@@ -1,0 +1,61 @@
+.footer {
+
+    padding: 30px 0;
+
+    &__content {
+        display: flex;
+        gap: 115px;
+        @mixin responsive-le-l {
+            gap: 60px;
+        }
+        
+        @mixin responsive-le-m {
+            gap: 40px;
+        }
+    }
+
+    &__left {
+    }
+    &__right {
+        display: flex;
+        gap: 75px;
+        @mixin responsive-le-l {
+            gap: 40px;
+        }
+        
+        @mixin responsive-le-m {
+            gap: 20px;
+        }
+    }
+    &__logo {
+        margin-bottom: 24px;
+    }
+
+    &__menu {
+    }
+
+    &__title {
+        font-weight: 700;
+        font-size: 20px;
+        text-transform: uppercase;
+        color: #333;
+        margin-bottom: 16px;
+
+        @mixin responsive-le-l {
+            font-size: 16px;
+        }
+    
+        @mixin responsive-le-m {
+            font-size: 14px;
+        }
+    }
+
+    &__link {
+        display: block;
+        font-weight: 400;
+        font-size: 16px;
+        color: #333;
+        margin-bottom: 16px;
+        text-decoration: none;
+    }
+}

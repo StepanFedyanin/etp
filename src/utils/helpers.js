@@ -54,6 +54,14 @@ const helpers = {
             .match(
                 /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
             );
+    },
+    formatTel: (number) => {
+        if (number) {
+            // eslint-disable-next-line
+            return `tel:${number.replace(/[^\d\+]/g, '')}`
+        }
+
+        return false
     }
 }
 
