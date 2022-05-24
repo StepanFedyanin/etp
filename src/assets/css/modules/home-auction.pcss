@@ -1,0 +1,37 @@
+.auction {
+    background-color: $color-bg;
+    padding: 70px 0;
+
+    @mixin responsive-le-xl {
+        padding: 60px 0;
+    }
+
+    @mixin responsive-le-l {
+        padding: 50px 0;
+    }
+
+    @mixin responsive-le-m {
+        padding: 40px 0;
+    }
+
+    &__title {
+        margin-bottom: 16px;
+    }
+    &__subtitle {
+        margin-bottom: 35px;
+    }
+    &__search {
+        margin-bottom: 35px;
+    }
+
+    &__list {
+    }
+
+    &__item {
+        padding: 21px 31px 18px;
+        margin-bottom: 24px;
+        background: $color-white;
+        border-radius: 28px;
+        box-shadow: 0px 16px 24px rgba(0, 0, 0, 0.3);
+    }
+}

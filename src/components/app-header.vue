@@ -4,26 +4,25 @@
             <div class="header__content">
                 <div class="header__left">
                     <div class="header__logo">
-                        <router-link
-                            :to="''"
-                            class="header__logo-link"
-                        >
+                        <router-link :to="''" class="header__logo-link">
                             <img
                                 src="@/assets/img/logo.svg"
                                 alt=""
                                 class="header__logo-img"
-                            >
+                            />
                         </router-link>
                     </div>
                     <div class="header__contacts">
                         <a
-                            :href="phone"
+                            :href="$helpers.formatTel(phone)"
                             class="header__contacts-phone"
-                        >{{ phone }}</a>
+                            >{{ phone }}</a
+                        >
                         <a
                             :href="`mailto:${email}`"
                             class="header__contacts-email"
-                        >{{ email }}</a>
+                            >{{ email }}</a
+                        >
                     </div>
                 </div>
                 <div class="header__right">
@@ -40,10 +39,7 @@
                             />
                         </li>
                     </ul>
-                    <router-link
-                        :to="''"
-                        class="header__login"
-                    >
+                    <router-link :to="''" class="button header__login">
                         Войти
                     </router-link>
                 </div>
@@ -53,35 +49,33 @@
 </template>
 
 <script>
-    export default {
-        name: "Header",
-        data() {
-            return {
-                phone: '8 (800) 123-45-67',
-                email: 'info@tugan.ru',
-                menu: [
-                    {
-                        name: 'торги',
-                        link: ''
-                    },
-                    {
-                        name: 'Товарные группы',
-                        link: ''
-                    },
-                    {
-                        name: 'О площадке',
-                        link: ''
-                    },
-                    {
-                        name: 'Регистрация',
-                        link: ''
-                    },
-                ]
-            }
-        }
-    }
+export default {
+    name: 'Header',
+    data() {
+        return {
+            phone: '8 (800) 123-45-67',
+            email: 'info@tugan.ru',
+            menu: [
+                {
+                    name: 'торги',
+                    link: '',
+                },
+                {
+                    name: 'Товарные группы',
+                    link: '',
+                },
+                {
+                    name: 'О площадке',
+                    link: '',
+                },
+                {
+                    name: 'Регистрация',
+                    link: '',
+                },
+            ],
+        };
+    },
+};
 </script>
 
-<style>
-
-</style>
+<style></style>

@@ -190,21 +190,21 @@
 }
 
 @define-mixin button {
-    padding: 16px;
+    padding: 18px 16px;
     display: flex;
     flex-direction: row;
     align-items: center;
-    border: 1px solid $color-green;
+    justify-content: center;
     box-sizing: border-box;
-    border-radius: 8px;
+    border-radius: 2px;
     vertical-align: middle;
     text-align: center;
     text-decoration: none;
     text-transform: uppercase;
-    cursor: pointer;
     font-weight: 700;
     font-size: 18px;
-    line-height: 22px;
+    cursor: pointer;
+
     /* box-shadow: none; */
 
     &:disabled {
@@ -213,16 +213,17 @@
     }
 
     &:active:not(:disabled) {
-        padding: 18px 16px 14px;
+        padding: 18px 16px;
     }
 }
 
 @define-mixin button--color $bg-color, $label-color {
-    $shadow-color: color($bg-color shade(24%));
-    $border-color: color($bg-color shade(12%));
-
-    @mixin gradient-darken bottom, $bg-color, 5%;
+    /* $shadow-color: color($bg-color shade(24%)); */
+    /* $border-color: color($bg-color shade(12%)); */
+    background-color: $bg-color;
     color: $label-color;
+
+    /* @mixin gradient-darken bottom, $bg-color, 5%; */
 
     &:hover:not(:disabled) {
         @mixin gradient-darken top, $bg-color, 5%;

@@ -86,7 +86,8 @@ body {
     @mixin hr;
 }
 
-.a, a {
+.a,
+a {
     @mixin a;
     @mixin a--color $color-base;
 }
@@ -107,15 +108,18 @@ body {
     @mixin text;
 }
 
-.input, input {
+.input,
+input {
     @mixin input;
 }
 
-.select, select {
+.select,
+select {
     @mixin select;
 }
 
-.textarea, textarea {
+.textarea,
+textarea {
     @mixin textarea;
 }
 
@@ -135,19 +139,27 @@ input::-webkit-inner-spin-button {
 }
 
 /* Firefox */
-input[type=number] {
+input[type='number'] {
     -moz-appearance: textfield;
 }
 
 .button {
     @mixin button;
-    @mixin button--color $color-white, $color-green;
+    @mixin button--color $color-white, $color-gray-T1;
 
     &-green {
         @mixin button--color $color-green, $color-white;
 
         &:hover {
-            @mixin button--color $color-green, $color-white;
+            @mixin button--color $color-green-dark, $color-white;
+        }
+    }
+
+    &-red {
+        @mixin button--color $color-red, $color-white;
+
+        &:hover {
+            @mixin button--color $color-red-dark, $color-white;
         }
     }
 }
