@@ -4,7 +4,7 @@ module.exports = {
     assetsDir: 'assets',
     css: {
         requireModuleExtension: true,
-        sourceMap: true,
+        sourceMap: true
     },
     pluginOptions: {
         lintStyleOnBuild: false,
@@ -23,7 +23,10 @@ module.exports = {
                 new webpack.NormalModuleReplacementPlugin(/settings$/, function(resource) {
                     resource.request = resource.request.replace(/settings$/, `settings/${process.env.NODE_ENV}`);
                 })
-            ]
+            ],
+            output: {
+                libraryExport: 'default'
+            }
         };
     },
     chainWebpack: config => {

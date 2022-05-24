@@ -28,16 +28,16 @@
         created() {
             window.onerror = (message, source, lineno, colno, err) => {
                 console.error('Window error', err.message);
-                this.$store.dispatch('showError', { err });
+                // this.$store.dispatch('showError', { err });
             };
         },
         errorCaptured(err, vm, info) {
             console.error('Local error', err.message, vm, info);
-            this.$store.dispatch('showError', { err });
+            // this.$store.dispatch('showError', { err });
             return false;
         }
     };
 </script>
-<style>
+<style lang="postcss">
     @import "assets/css/main.pcss";
 </style>

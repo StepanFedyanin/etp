@@ -2,24 +2,23 @@ import { createRouter, createWebHistory  } from 'vue-router';
 import store from '@/store/store';
 // import auth from '@/views/auth.vue';
 import home from '@/views/Home.vue';
+import registration from '@/views/Registration';
+import auth from '@/views/Login';
 
 const routes = [
     {
-    //     path: '/auth',
-    //     name: 'auth',
-    //     component: auth,
-    //     meta: { title: 'Авторизация' },
-    //     props: true
-    // }, {
-    //     path: '/registration',
-    //     name: 'registration',
-    //     component: auth,
-    //     meta: { title: 'Регистрация' },
-    //     props: {
-    //         default: true,
-    //         template: 'registration'
-    //     }
-    // }, {
+        path: '/auth',
+        name: 'auth',
+        component: auth,
+        meta: { title: 'Вход на платформу' },
+        props: true
+    }, {
+        path: '/registration',
+        name: 'registration',
+        component: registration,
+        meta: { title: 'Регистрация аккаунта' },
+        props: true,
+    }, {
     //     path: '/recovery',
     //     name: 'recovery',
     //     component: auth,
