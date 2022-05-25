@@ -1,11 +1,14 @@
 <template>
-    <div class="header">
+    <div 
+        class="header"
+        :class="(!$route.meta.requiresAuth && $route.name !== 'home') ? 'm--seconds' : $route.meta.requiresAuth ? 'm--cabinet' : ''"
+    >
         <div class="container">
             <div class="header__content">
                 <div class="header__left">
                     <div class="header__logo">
                         <router-link
-                            :to="''"
+                            :to="{ name: 'home' }"
                             class="header__logo-link"
                         >
                             <img
@@ -34,49 +37,59 @@
                             class="header__menu-item"
                         >
                             <router-link
-                                :to="item.link"
+                                :to="{ name: item.name }"
                                 class="header__menu-link"
-                                v-text="item.name"
+                                v-text="item.title"
                             />
                         </li>
                     </ul>
-                    <router-link
-                        :to="''"
-                        class="button header__login"
+                    <template
+                        v-if="user"
                     >
-                        Войти
-                    </router-link>
+                        <div class="header__user" />
+                    </template>
+                    <template
+                        v-else
+                    >
+                        <router-link
+                            :to="{ name: 'auth' }"
+                            class="button header__login"
+                        >
+                            Войти
+                        </router-link>
+                    </template>
                 </div>
+            </div>
+        </div>
+        <div 
+            v-if="!$route.meta.requiresAuth && $route.name !== 'home'"
+            class="header__sub"
+        >
+            <div class="container">
+                <div class="header__breadcrumbs">
+                    <a href="#" class="header__breadcrumbs-link">Главная страница</a>
+                </div>
+                <div class="header__title h1">{{ $route.meta.title }}</div>
             </div>
         </div>
     </div>
 </template>
 
 <script>
+    import { headerMenu } from '@/settings';
+
     export default {
         name: 'Header',
+        computed: {
+            user() {
+                return this.$store.state.user;
+            }
+        },
         data() {
             return {
                 phone: '8 (800) 123-45-67',
                 email: 'info@tugan.ru',
-                menu: [
-                    {
-                        name: 'торги',
-                        link: '',
-                    },
-                    {
-                        name: 'Товарные группы',
-                        link: '',
-                    },
-                    {
-                        name: 'О площадке',
-                        link: '',
-                    },
-                    {
-                        name: 'Регистрация',
-                        link: '',
-                    },
-                ],
+                menu: headerMenu,
             };
         },
     };

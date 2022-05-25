@@ -38,6 +38,60 @@ const logger = {
     token: 'c7d63a2e58d186ae3760a5f7c690293e973c08c4'
 };
 
+const headerMenu = [
+    {
+        name: 'bidding',
+        role: 'all',
+        title: 'Торги'
+    }, {
+        name: 'groups',
+        role: 'all',
+        title: 'Товарные группы'
+    }, {
+        name: 'about',
+        role: 'all',
+        title: 'О площадке',
+    }, {
+        name: 'registration',
+        role: 'all',
+        title: 'Регистрация',
+    }
+];
+
+const footerMenu = [
+    {
+        name: 'needs',
+        role: 'all',
+        title: 'Наши потребности'
+    }, {
+        name: 'rules',
+        role: 'all',
+        title: 'Правила работы'
+    }, {
+        name: 'auth',
+        role: 'all',
+        title: 'Вход',
+    }, {
+        name: 'registration',
+        role: 'all',
+        title: 'Регистрация',
+    }
+];
+
+const sidebarMenu = [
+    {
+        name: 'tenders',
+        role: 'all',
+        title: 'Тендеры',
+        icon: 'search'
+    }, {
+        name: 'tender-start',
+        role: 'all',
+        title: 'Объявить тендер',
+        icon: 'search'
+    }
+];
+
 export {
     ajax,
     cache,
@@ -48,5 +102,7 @@ export {
 
     // mainMenu,
     // accountMenu,
-    // topMenu,
+    headerMenu,
+    footerMenu,
+    sidebarMenu,
 };

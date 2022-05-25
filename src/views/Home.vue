@@ -1,7 +1,5 @@
 <template>
-    <div>
-        <Header />
-
+    <div class="app__main m--no-padding">
         <div class="home-page">
             <div class="banner">
                 <div class="container">
@@ -90,21 +88,19 @@
                 </div>
             </div>
         </div>
-
-        <Footer />
     </div>
 </template>
 
 <script>
-    import Header from '../components/app-header.vue';
-    import Footer from '../components/app-footer.vue';
+    // import Header from '../components/app-header.vue';
+    //import Footer from '../components/app-footer.vue';
     import Search from '../components/search.vue';
 
     export default {
         name: 'Home',
         components: {
-            Header,
-            Footer,
+            //Header,
+            //Footer,
             Search,
         },
         data() {

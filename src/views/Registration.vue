@@ -1,5 +1,5 @@
 <template>
-    <div class="app__block">
+    <div class="app__main">
         <organization-add-form
             v-if="isStage('search')"
             :item="item"

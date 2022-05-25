@@ -5,7 +5,7 @@
                 <div class="footer__left">
                     <div class="footer__logo">
                         <router-link
-                            :to="''"
+                            :to="{ name: 'home' }"
                             class="footer__logo-link"
                         >
                             <img
@@ -15,12 +15,15 @@
                             >
                         </router-link>
                     </div>
-                    <div class="footer__link">
+                    <router-link
+                        :to="{ name: 'agreement' }"
+                        class="footer__link"
+                    >
                         Политика конфиденциальности
-                    </div>
-                    <div class="footer__link">
+                    </router-link>
+                    <a href="//flexites.org" class="footer__link" target="_blank">
                         Создание сайта - Flexites
-                    </div>
+                    </a>
                 </div>
                 <div class="footer__right">
                     <div class="footer__menu">
@@ -30,9 +33,9 @@
                         <router-link
                             v-for="(item, key) in menu"
                             :key="key"
-                            :to="item.link"
+                            :to="{ name: item.name }"
                             class="footer__link"
-                            v-text="item.name"
+                            v-text="item.title"
                         />
                     </div>
                     <div class="footer__menu">
@@ -70,6 +73,7 @@
 </template>
 
 <script>
+    import { footerMenu } from '@/settings';
     export default {
         name: 'Footer',
         data() {
@@ -78,24 +82,7 @@
                 email: 'info@tugan.ru',
                 phoneSupport: '8 (800) 765-43-21',
                 emailSupport: 'help@tugan.ru',
-                menu: [
-                    {
-                        name: 'Наши потребности',
-                        link: '',
-                    },
-                    {
-                        name: 'Правила работы',
-                        link: '',
-                    },
-                    {
-                        name: 'Вход',
-                        link: '',
-                    },
-                    {
-                        name: 'Регистрация',
-                        link: '',
-                    },
-                ],
+                menu: footerMenu
             };
         },
     };

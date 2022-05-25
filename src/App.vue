@@ -1,16 +1,29 @@
 <template>
     <div class="app">
-        <routerView />
+        <Header />
+        <div class="app__block">
+            <Sidebar
+                v-if="$route.meta.requiresAuth"
+            />
+            <routerView />
+        </div>
+        <Footer />
         <appError />
     </div>
 </template>
 
 <script>
     import appError from '@/components/app-error.vue';
+    import Header from '@/components/app-header.vue';
+    import Footer from '@/components/app-footer.vue';
+    import Sidebar from '@/components/app-sidebar.vue';
 
     export default {
         components: {
-            appError
+            appError,
+            Header,
+            Footer,
+            Sidebar
         },
         computed: {
             user() {

@@ -1,5 +1,7 @@
 .footer {
+    margin-top: auto;
     padding: 30px 0;
+    background: $color-white;
 
     &__content {
         display: flex;
@@ -49,8 +51,12 @@
         display: block;
         font-weight: 400;
         font-size: 16px;
-        color: #333;
+        color: $color-gray-T1;
         margin-bottom: 16px;
         text-decoration: none;
+        &:hover,
+        &.is-active {
+            color: $color-green;
+        }
     }
 }

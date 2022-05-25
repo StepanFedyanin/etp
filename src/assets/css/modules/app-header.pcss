@@ -4,7 +4,7 @@
     text-transform: uppercase;
     font-size: 20px;
     font-weight: 700;
-    color: #fff;
+    color: $color-white;
 
     @mixin responsive-le-l {
         font-size: 16px;
@@ -13,25 +13,54 @@
     @mixin responsive-le-m {
         font-size: 14px;
     }
+
+    &:hover,
+    &.is-active {
+        color: $color-green !important;
+        text-decoration: underline;
+    }
 }
 
 .header {
     position: absolute;
     width: 100%;
-    height: 100px;
+    min-height: 100px;
     left: 0px;
     top: 0px;
-    background-color: rgba(255, 255, 255, 0.4);
-    border: 1.2px solid rgba(255, 255, 255, 0.5);
-    box-shadow: 5px 6px 20px rgba(0, 0, 0, 0.15);
-    backdrop-filter: blur(2px);
     box-sizing: border-box;
     gap: 10px;
-
+    z-index: 1;
+    &:before {
+        content: '';
+        position: absolute;
+        width: 100%;
+        height: 100px;
+        top: 0;
+        left: 0;
+        background: linear-gradient(111.84deg, rgba(255, 255, 255, 1) 0%, rgba(255, 255, 255, 0.2) 90%);
+        border: 1.2px solid rgba(255, 255, 255, 0.5);
+        box-shadow: 5px 6px 20px rgba(0, 0, 0, 0.15);
+        backdrop-filter: blur(2px);
+        opacity: .6;
+        z-index: -1;
+    }
+    &.m--seconds {
+        position: relative;
+        top: auto;
+        left: auto;
+        background-image: url('./assets/img/bg/header_seconds.png');
+    }
+    &.m--cabinet {
+        position: relative;
+        top: auto;
+        left: auto;
+        background: none;
+    }
     &__content {
         display: flex;
         justify-content: space-between;
         padding: 15px 0;
+        height: 100px;
     }
 
     &__left,
@@ -80,6 +109,16 @@
         }
     }
 
+    &.m--cabinet &__contacts {
+        &-phone {
+            color: $color-black;
+        }
+
+        &-email {
+            color: $color-black;
+        }
+    }
+
     &__menu {
         display: flex;
         gap: 24px;
@@ -92,10 +131,17 @@
         }
 
         &-item {
+            margin: 0 12px;
         }
 
         &-link {
             @mixin header-link;
+        }
+    }
+
+    &.m--cabinet &__menu {
+        &-link {
+            color: $color-black;
         }
     }
 
@@ -112,5 +158,40 @@
             width: 90px;
             font-size: 14px;
         }
+    }
+
+    &__user {
+        width: 54px;
+        height: 54px;
+        background: url('./assets/img/icons/icon-user.svg');
+    }
+
+    &__sub {
+        padding: 40px 0;
+    }
+
+    &__breadcrumbs {
+        font-weight: 300;
+        font-size: 12px;
+        line-height: 15px;
+        margin-bottom: 10px;
+
+        &-link {
+            position: relative;
+            display: inline-block;
+            color: $color-white;
+            margin-bottom: 8px;
+            &:after {
+                content: '—';
+                position: relative;
+                display: inline-block;
+                margin: 0 10px;
+            }
+        }
+    }
+
+    &__title {
+        color: $color-white;
+        margin-top: 0;
     }
 }

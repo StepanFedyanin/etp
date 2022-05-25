@@ -36,6 +36,9 @@ export default createStore({
         }
     },
     actions: {
+        setUser(context, user) {
+            context.commit('user', user);
+        },
         deathUser(context) {
             context.commit('user', null);
             context.commit('removeToken');

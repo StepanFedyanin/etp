@@ -1,9 +1,13 @@
 import { createRouter, createWebHistory  } from 'vue-router';
 import store from '@/store/store';
 // import auth from '@/views/auth.vue';
-import home from '@/views/Home.vue';
+import home from '@/views/Home';
 import registration from '@/views/Registration';
 import auth from '@/views/Login';
+
+import cabinet from '@/views/Cabinet';
+import empty from '@/views/Empty';
+import rules from '@/views/Rules';
 
 const routes = [
     {
@@ -17,6 +21,24 @@ const routes = [
         name: 'registration',
         component: registration,
         meta: { title: 'Регистрация аккаунта' },
+        props: true,
+    }, {
+        path: '/bidding',
+        name: 'bidding',
+        component: empty,
+        meta: { title: 'Торги' },
+        props: true,
+    }, {
+        path: '/groups',
+        name: 'groups',
+        component: empty,
+        meta: { title: 'Товарные группы' },
+        props: true,
+    }, {
+        path: '/about',
+        name: 'about',
+        component: empty,
+        meta: { title: 'О площадке' },
         props: true,
     }, {
     //     path: '/recovery',
@@ -33,6 +55,42 @@ const routes = [
         component: home,
         meta: { title: 'Домашнее' },
         props: true
+    }, {
+        path: '/needs',
+        name: 'needs',
+        component: empty,
+        meta: { title: 'Наши потребности' },
+        props: true,
+    }, {
+        path: '/rules',
+        name: 'rules',
+        component: rules,
+        meta: { title: 'Правила работы' },
+        props: true,
+    }, {
+        path: '/agreement',
+        name: 'agreement',
+        component: empty,
+        meta: { title: 'Политика конфиденциальности' },
+        props: true,
+    }, {
+        path: '/cabinet',
+        name: 'cabinet',
+        component: cabinet,
+        meta: { title: 'Кабинет', requiresAuth: true },
+        props: true,
+    }, {
+        path: '/cabinet/tenders',
+        name: 'tenders',
+        component: cabinet,
+        meta: { title: 'Тендеры', requiresAuth: true },
+        props: true,
+    }, {
+        path: '/cabinet/tender-start',
+        name: 'tender-start',
+        component: cabinet,
+        meta: { title: 'Объявить тендер', requiresAuth: true },
+        props: true,
     }
 ];
 

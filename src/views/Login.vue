@@ -1,9 +1,21 @@
 <template>
-    <input
-        ref="input"
-        :value="value"
-        @change="change($event.target.value)"
-    >
+    <div class="app__main">
+        <div class="auth">
+            <div class="container">
+                <input
+                    ref="input"
+                    :value="value"
+                    @change="change($event.target.value)"
+                >
+                <a 
+                    href="#"
+                    @click.prevent="next"
+                >
+                    Войти
+                </a>
+            </div>
+        </div>
+    </div>
 </template>
 
 <script>
@@ -15,6 +27,9 @@
         },
         beforeDestroy() {
             this.unbind();
+        },
+        created() {
+            this.$store.dispatch('deathUser');
         },
         methods: {
             change(value) {
@@ -56,6 +71,10 @@
             },
             unbind() {
                 InputMask.remove([this.$refs.input]);
+            },
+            next() {
+                this.$store.dispatch('setUser', { id: 1 });
+                this.$router.push({ name: 'cabinet' });
             }
         }
     };
