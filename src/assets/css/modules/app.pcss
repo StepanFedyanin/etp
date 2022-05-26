@@ -6,15 +6,23 @@
     background-color: $color-bg;
     &__block {
         display: flex;
+        margin: 0 auto;
+        max-width: 1920px;
+        width: 100%;
     }
     &__sidebar {
         width: 350px;
         margin-right: 30px;
     }
     &__main {
+        width: 100%;
         padding-top: 25px;
+        padding-bottom: 50px;
         &.m--no-padding {
             padding-top: 0;
         }
+    }
+    &.m--with-sidebar &__main {
+        width: calc(100% - 380px);
     }
 }

@@ -46,7 +46,10 @@
                     <template
                         v-if="user"
                     >
-                        <div class="header__user" />
+                        <router-link
+                            :to="{ name: 'cabinet' }"
+                            class="header__user"
+                        />
                     </template>
                     <template
                         v-else

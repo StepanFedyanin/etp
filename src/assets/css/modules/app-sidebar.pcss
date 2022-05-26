@@ -1,19 +1,74 @@
 .sidebar {
     background: $color-white;
     padding: 50px 25px 30px 60px;
-    &__link {
-        position: relative;
-        display: block;
-        font-weight: 700;
-        font-size: 18px;
-        line-height: 22px;
-        text-decoration: none;
-        padding: 10px 10px 10px 42px;
-        margin: 10px 0;
-        &:hover,
-        &.is-active {
-            background: $color-green;
-            color: $color-white;
+
+    &__menu {
+        &-devider {
+            height: 0;
+            margin: 10px 0;
+            border-bottom: 1px solid $color-green;
+        }
+        &-link {
+            position: relative;
+            display: block;
+            font-weight: 700;
+            font-size: 18px;
+            line-height: 22px;
+            text-decoration: none;
+            padding: 13px 10px 13px 45px;
+            margin: 10px 0;
+            color: $color-gray-T3;
+
+            &:before {
+                content: '';
+                position: absolute;
+                top: 50%;
+                margin-top: -12px;
+                left: 12px;
+                width: 24px;
+                height: 24px;
+                -webkit-mask-position: center;
+                mask-position: center;
+                -webkit-mask-repeat: no-repeat;
+                mask-repeat: no-repeat;
+                -webkit-mask-size: contain;
+                mask-size: contain;
+                background-color: $color-gray-T3;
+            }
+
+            &.m--icon-search:before {
+                -webkit-mask-image: url('./assets/img/icons/icon-search.svg');
+                mask-image: url('./assets/img/icons/icon-search.svg');
+            }
+
+            &.m--icon-loudspeaker:before {
+                -webkit-mask-image: url('./assets/img/icons/icon-loudspeaker.svg');
+                mask-image: url('./assets/img/icons/icon-loudspeaker.svg');
+            }
+
+            &.m--icon-peoples:before {
+                -webkit-mask-image: url('./assets/img/icons/icon-peoples.svg');
+                mask-image: url('./assets/img/icons/icon-peoples.svg');
+            }
+
+            &.m--icon-news:before {
+                -webkit-mask-image: url('./assets/img/icons/icon-news.svg');
+                mask-image: url('./assets/img/icons/icon-news.svg');
+            }
+
+            &.m--icon-info:before {
+                -webkit-mask-image: url('./assets/img/icons/icon-info.svg');
+                mask-image: url('./assets/img/icons/icon-info.svg');
+            }
+
+            &:hover,
+            &.is-active {
+                background: $color-green;
+                color: $color-white;
+                &:before {
+                    background-color: $color-white;
+                }
+            }
         }
     }
 }

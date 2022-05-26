@@ -1,9 +1,9 @@
 <template>
     <div class="app__main">
         <Breadcrumbs />
-        <div class="cabinet">
+        <div class="cabinet news">
             <div class="container">
-                <div class="cabinet__content text">
+                <div class="news__content text">
                     В разработке
                 </div>
             </div>

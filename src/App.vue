@@ -1,5 +1,8 @@
 <template>
-    <div class="app">
+    <div 
+        class="app"
+        :class="$route.meta.requiresAuth ? 'm--with-sidebar' : ''"
+    >
         <Header />
         <div class="app__block">
             <Sidebar

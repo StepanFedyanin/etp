@@ -88,7 +88,29 @@ const sidebarMenu = [
         name: 'tender-start',
         role: 'all',
         title: 'Объявить тендер',
-        icon: 'search'
+        icon: 'loudspeaker'
+    }, {
+        name: 'contragents',
+        role: 'all',
+        title: 'Контрагенты',
+        icon: 'peoples'
+    }, {
+        name: 'devider',
+    }, {
+        name: 'chat',
+        role: 'all',
+        title: 'Чат?',
+        icon: 'loudspeaker'
+    }, {
+        name: 'news',
+        role: 'all',
+        title: 'Новости',
+        icon: 'news'
+    }, {
+        name: 'help',
+        role: 'all',
+        title: 'Помощь',
+        icon: 'info'
     }
 ];
 

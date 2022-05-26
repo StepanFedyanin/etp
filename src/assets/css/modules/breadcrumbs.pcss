@@ -1,0 +1,34 @@
+.breadcrumbs {
+    position: relative;
+    display: block;
+    margin-bottom: 24px;
+
+    &__link {
+        position: relative;
+        display: inline-block;
+        text-decoration: underline;
+        font-weight: 300;
+        font-size: 14px;
+        line-height: 24px;
+        font-style: italic;
+        color: $color-gray-T4;
+
+        &:after {
+            content: '';
+            position: relative;
+            display: inline-block;
+            width: 14px;
+            height: 14px;
+            background: url('./assets/img/icons/icon-breadcrumb.svg') 50% 50% no-repeat;
+            vertical-align: middle;
+            margin: 0 12px;
+        }
+
+        &.is-current {
+            color: $color-gray-T1;
+            &:after {
+                display: none;
+            }
+        }
+    }
+}

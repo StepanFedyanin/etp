@@ -1,13 +1,17 @@
 import { createRouter, createWebHistory  } from 'vue-router';
 import store from '@/store/store';
-// import auth from '@/views/auth.vue';
+/* all */
 import home from '@/views/Home';
+import empty from '@/views/Empty';
+import about from '@/views/About';
+import rules from '@/views/Rules';
+import needs from '@/views/Needs';
+/* regs, auth */
 import registration from '@/views/Registration';
 import auth from '@/views/Login';
-
+/* cabinet */
 import cabinet from '@/views/Cabinet';
-import empty from '@/views/Empty';
-import rules from '@/views/Rules';
+import cabinetNews from '@/views/CabinetNews';
 
 const routes = [
     {
@@ -37,28 +41,19 @@ const routes = [
     }, {
         path: '/about',
         name: 'about',
-        component: empty,
+        component: about,
         meta: { title: 'О площадке' },
         props: true,
     }, {
-    //     path: '/recovery',
-    //     name: 'recovery',
-    //     component: auth,
-    //     meta: { title: 'Восстановление пароля' },
-    //     props: {
-    //         default: true,
-    //         template: 'recovery'
-    //     }
-    // }, {
         path: '/',
         name: 'home',
         component: home,
-        meta: { title: 'Домашнее' },
+        meta: { title: 'Главная' },
         props: true
     }, {
         path: '/needs',
         name: 'needs',
-        component: empty,
+        component: needs,
         meta: { title: 'Наши потребности' },
         props: true,
     }, {
@@ -83,13 +78,61 @@ const routes = [
         path: '/cabinet/tenders',
         name: 'tenders',
         component: cabinet,
-        meta: { title: 'Тендеры', requiresAuth: true },
+        meta: { 
+            title: 'Тендеры', 
+            breadcrumbs: ['cabinet'],
+            requiresAuth: true 
+        },
         props: true,
     }, {
         path: '/cabinet/tender-start',
         name: 'tender-start',
         component: cabinet,
-        meta: { title: 'Объявить тендер', requiresAuth: true },
+        meta: { 
+            title: 'Объявить тендер', 
+            breadcrumbs: ['cabinet'],
+            requiresAuth: true 
+        },
+        props: true,
+    }, {
+        path: '/cabinet/contragents',
+        name: 'contragents',
+        component: cabinet,
+        meta: { 
+            title: 'Контрагенты', 
+            breadcrumbs: ['cabinet'],
+            requiresAuth: true 
+        },
+        props: true,
+    }, {
+        path: '/cabinet/chat',
+        name: 'chat',
+        component: cabinet,
+        meta: { 
+            title: 'Чат', 
+            breadcrumbs: ['cabinet'],
+            requiresAuth: true 
+        },
+        props: true,
+    }, {
+        path: '/cabinet/news',
+        name: 'news',
+        component: cabinetNews,
+        meta: { 
+            title: 'Новости',
+            breadcrumbs: ['cabinet'],
+            requiresAuth: true 
+        },
+        props: true,
+    }, {
+        path: '/cabinet/help',
+        name: 'help',
+        component: cabinet,
+        meta: { 
+            title: 'Помощь', 
+            breadcrumbs: ['cabinet'],
+            requiresAuth: true 
+        },
         props: true,
     }
 ];

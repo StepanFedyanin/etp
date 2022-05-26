@@ -1,9 +1,9 @@
 <template>
     <div class="app__main">
-        <div class="empty">
+        <div class="needs">
             <div class="container">
-                <div class="empty__content text">
-                    В разработке
+                <div class="needs__content text">
+                    <h2>Потребности нашей компании</h2>
                 </div>
             </div>
         </div>
@@ -11,8 +11,14 @@
 </template>
 
 <script>
+    // import Header from '../components/app-header.vue';
+
     export default {
+        name: 'About',
         components: {
+            //Header,
+        },
+        created() {
         },
         data() {
             return {
