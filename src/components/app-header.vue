@@ -67,9 +67,14 @@
         >
             <div class="container">
                 <div class="header__breadcrumbs">
-                    <a href="#" class="header__breadcrumbs-link">Главная страница</a>
+                    <a
+                        href="#"
+                        class="header__breadcrumbs-link"
+                    >Главная страница</a>
                 </div>
-                <div class="header__title h1">{{ $route.meta.title }}</div>
+                <div class="header__title h1">
+                    {{ $route.meta.title }}
+                </div>
             </div>
         </div>
     </div>
@@ -80,17 +85,17 @@
 
     export default {
         name: 'Header',
-        computed: {
-            user() {
-                return this.$store.state.user;
-            }
-        },
         data() {
             return {
                 phone: '8 (800) 123-45-67',
                 email: 'info@tugan.ru',
                 menu: headerMenu,
             };
+        },
+        computed: {
+            user() {
+                return this.$store.state.user;
+            }
         },
     };
 </script>

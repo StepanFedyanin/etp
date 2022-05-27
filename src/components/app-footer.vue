@@ -21,7 +21,11 @@
                     >
                         Политика конфиденциальности
                     </router-link>
-                    <a href="//flexites.org" class="footer__link" target="_blank">
+                    <a
+                        href="//flexites.org"
+                        class="footer__link"
+                        target="_blank"
+                    >
                         Создание сайта - Flexites
                     </a>
                 </div>
