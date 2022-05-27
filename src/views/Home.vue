@@ -257,17 +257,6 @@
                             Правила работы
                         </div>
                     </div>
-                    <div class="needs__buttons">
-                        <div class="button button-red needs__button">
-                            консультация
-                        </div>
-                        <div class="button button-red needs__button">
-                            Регистрация
-                        </div>
-                        <div class="button button-green needs__button">
-                            Правила работы
-                        </div>
-                    </div>
                 </div>
             </div>
         </div>
