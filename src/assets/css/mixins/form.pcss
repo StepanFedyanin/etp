@@ -225,7 +225,15 @@
 
     /* @mixin gradient-darken bottom, $bg-color, 5%; */
 
+    /*
     &:hover:not(:disabled) {
         @mixin gradient-darken top, $bg-color, 5%;
     }
+    */
+}
+
+@define-mixin button--outline-color $bg-color, $border-color, $label-color {
+    background-color: $bg-color;
+    border: 1px solid $border-color;
+    color: $label-color;
 }

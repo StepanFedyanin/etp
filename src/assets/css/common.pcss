@@ -162,4 +162,11 @@ input[type='number'] {
             @mixin button--color $color-red-dark, $color-white;
         }
     }
+    &-outline-red {
+        @mixin button--outline-color $color-white, $color-red, $color-red;
+
+        &:hover {
+            @mixin button--outline-color $color-red, $color-red, $color-white;
+        }
+    }
 }

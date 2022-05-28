@@ -85,6 +85,26 @@ const routes = [
         },
         props: true,
     }, {
+        path: '/cabinet/profile',
+        name: 'profile',
+        component: cabinet,
+        meta: { 
+            title: 'Мой профиль', 
+            breadcrumbs: ['cabinet'],
+            requiresAuth: true 
+        },
+        props: true,
+    }, {
+        path: '/cabinet/organization',
+        name: 'organization',
+        component: cabinet,
+        meta: { 
+            title: 'Моя организация', 
+            breadcrumbs: ['cabinet'],
+            requiresAuth: true 
+        },
+        props: true,
+    }, {
         path: '/cabinet/tender-start',
         name: 'tender-start',
         component: cabinet,

@@ -46,10 +46,61 @@
                     <template
                         v-if="user"
                     >
-                        <router-link
-                            :to="{ name: 'cabinet' }"
+                        <a 
+                            href="#"
                             class="header__user"
+                            :class="showPopup ? 'is-active' : ''"
+                            @click="onClickPopup"
                         />
+                        <template
+                            v-if="showPopup"
+                        >
+                            <div class="app__overlay" />
+                            <div class="header__popup">
+                                <div class="header__popup-title">
+                                    Безбородов А.А.
+                                    <a 
+                                        href="#" 
+                                        class="header__popup-close"
+                                        @click="onClickPopup"
+                                    />
+                                </div>
+                                <div class="header__popup-body">
+                                    <div class="header__popup-menu">
+                                        <router-link
+                                            v-for="(item, key) in menuUser"
+                                            :key="key"
+                                            :to="{ name: item.name }"
+                                            custom
+                                            v-slot="{ href, navigate, isActive, isExactActive }"
+                                        >
+                                            <div 
+                                                class="header__popup-menu-item"
+                                                @click="onClickPopupItem"
+                                            >
+                                                <a 
+                                                    :href="href"
+                                                    :class="[isActive && 'is-active', isExactActive && 'is-subactive']"
+                                                    class="header__popup-menu-link"
+                                                    @click="navigate"
+                                                >
+                                                    {{ item.title }}
+                                                </a>
+                                            </div>
+                                        </router-link>
+                                    </div>
+                                </div>
+                                <div class="header__popup-footer">
+                                    <a 
+                                        href="#"
+                                        class="button button-outline-red"
+                                        @click="onClickExit"
+                                    >
+                                        Выйти
+                                    </a>
+                                </div>
+                            </div>                            
+                        </template>
                     </template>
                     <template
                         v-else
@@ -84,7 +135,7 @@
 </template>
 
 <script>
-    import { headerMenu } from '@/settings';
+    import { headerMenu, userMenu } from '@/settings';
 
     export default {
         name: 'Header',
@@ -93,6 +144,8 @@
                 phone: '8 (800) 123-45-67',
                 email: 'info@tugan.ru',
                 menu: headerMenu,
+                menuUser: userMenu,
+                showPopup: false
             };
         },
         computed: {
@@ -100,6 +153,18 @@
                 return this.$store.state.user;
             }
         },
+        methods: {
+            onClickPopup() {
+                this.showPopup = !this.showPopup;
+            },
+            onClickPopupItem() {
+                this.showPopup = false;
+            },
+            onClickExit() {
+                this.showPopup = false;
+                this.$store.dispatch('deathUser');
+            },
+        }
     };
 </script>
 

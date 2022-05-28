@@ -58,6 +58,18 @@ const headerMenu = [
     }
 ];
 
+const userMenu = [
+    {
+        name: 'profile',
+        role: 'all',
+        title: 'Мой профиль'
+    }, {
+        name: 'organization',
+        role: 'all',
+        title: 'моя организация',
+    }
+];
+
 const footerMenu = [
     {
         name: 'needs',
@@ -126,5 +138,6 @@ export {
     // accountMenu,
     headerMenu,
     footerMenu,
+    userMenu,
     sidebarMenu,
 };
