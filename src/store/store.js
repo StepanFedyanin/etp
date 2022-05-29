@@ -31,6 +31,9 @@ export default createStore({
             state.token = null;
             state.refreshToken = null;
         },
+        stepRegistration(state, step) {
+            state.stepRegistration = step;
+        },
         updateError(state, error) {
             state.error = error;
         }
@@ -42,6 +45,9 @@ export default createStore({
         deathUser(context) {
             context.commit('user', null);
             context.commit('removeToken');
+        },
+        setStepRegistration(context, step) {
+            context.commit('stepRegistration', step);
         },
         showError(context, error) {
             context.commit('error', error);

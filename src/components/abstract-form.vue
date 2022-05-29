@@ -1,5 +1,5 @@
 <template>
-    <div class="form">
+    <div class="form__block">
         <fieldset
             v-for="fieldset in struct.fieldsets"
             class="form__fieldset"

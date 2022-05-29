@@ -24,7 +24,7 @@ const routes = [
         path: '/registration',
         name: 'registration',
         component: registration,
-        meta: { title: 'Регистрация аккаунта' },
+        meta: { title: 'Регистрация аккаунта - Шаг ' },
         props: true,
     }, {
         path: '/bidding',

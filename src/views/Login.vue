@@ -2,26 +2,67 @@
     <div class="app__main">
         <div class="auth">
             <div class="container">
-                <input
-                    ref="input"
-                    :value="value"
-                    @change="change($event.target.value)"
+                <div class="auth__title h2">Укажите ваши данные для авторизации</div>
+                <form
+                    class="auth__form form"
+                    @submit.prevent="onSubmit"
                 >
-                <a 
-                    href="#"
-                    @click.prevent="next"
-                >
-                    Войти
-                </a>
+                    <div class="form__block">
+                        <Field
+                            :value="form.login"
+                            type="text"
+                            name="login"
+                            label="Ваша имя"
+                            placeholder="логин"
+                            class="form__field auth__form-field"
+                            inline
+                            required
+                        />
+                        <Field
+                            :value="form.password"
+                            type="password"
+                            name="password"
+                            label="Ваша пароль"
+                            placeholder="пароль"
+                            class="form__field auth__form-field"
+                            inline
+                            required
+                        />
+                    </div>
+                    <!--
+                    <input
+                        ref="input"
+                        :value="value"
+                        @change="change($event.target.value)"
+                    >
+                    -->
+                    <div class="form__submit auth__form-submit">
+                        <button
+                            type="submit"
+                            class="button button-green"
+                        >
+                            Войти
+                        </button>
+                    </div>                    
+                </form>
             </div>
         </div>
     </div>
 </template>
 
 <script>
+    import Field from "@/components/field";
     import InputMask from "inputmask";
 
     export default {
+        components: {
+            Field
+        },
+        data() {
+            return {
+                form: {}
+            }
+        },
         mounted() {
             this.bind();
         },
@@ -71,6 +112,9 @@
             },
             unbind() {
                 InputMask.remove([this.$refs.input]);
+            },
+            onSubmit() {
+                this.next();
             },
             next() {
                 this.$store.dispatch('setUser', { id: 1 });

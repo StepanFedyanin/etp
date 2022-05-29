@@ -5,9 +5,9 @@
         { name: 'inn', type: 'text', label: 'ИНН', required: true }, // mask
         { name: 'kpp', type: 'text', label: 'КПП', required: true }, // mask
         { name: 'orgn', type: 'text', label: 'ОГРН', required: true }, // mask
-        { name: 'name', type: 'text', label: 'Название организации' },
-        { name: 'last_name', type: 'text', label: 'ФИО руководителя организации*', required: true },
-        { name: 'first_name', type: 'text', label: 'Должность  руководителя организации*', required: true },
+        { name: 'name', type: 'text', label: 'Название организации', required: true },
+        { name: 'last_name', type: 'text', label: 'ФИО руководителя организации', required: true },
+        { name: 'first_name', type: 'text', label: 'Должность  руководителя организации', required: true },
         { name: 'patronymic', type: 'text', label: 'ФИО бухгалтера организации' },
         { name: 'birthDate', type: 'text', label: 'Юридический адрес организации', required: true },
         { name: 'birthPlace', type: 'text', label: 'Фактический адрес организации', required: true },
@@ -17,9 +17,9 @@
     ];
 
     const fieldsets = [
-        { names: ['last_name', 'first_name', 'patronymic', 'gender'] },
-        { names: ['birthDate', 'birthPlace', 'nationality', 'inn', 'snils'] },
-        { names: ['phoneNum', 'email'] }
+        //{ names: ['last_name', 'first_name', 'patronymic', 'gender'] },
+        //{ names: ['birthDate', 'birthPlace', 'nationality', 'inn', 'snils'] },
+        //{ names: ['phoneNum', 'email'] }
     ];
 
     const checks = {
@@ -37,6 +37,12 @@
 
     export default {
         extends: abstractForm,
+        props: {
+            verify: {
+                type: [Boolean, Number],
+                default: undefined
+            }
+        },
         data() {
             return {
                 fields,
@@ -44,6 +50,24 @@
                 checks,
                 inline: true
             };
+        },
+        computed: {
+            verified() {
+                if (this.verify !== undefined) {
+                    return this.verify;
+                }
+                return this.values.verified;
+            },
+            control() {
+                if (this.verified === false) {
+                    return {
+                        event: 'verify',
+                        color: 'fianit',
+                        label: 'Подтвердить'                        
+                    };
+                }
+                return {};
+            }
         },
     };
 </script>

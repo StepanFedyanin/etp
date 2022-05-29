@@ -131,7 +131,7 @@
                     >Главная страница</a>
                 </div>
                 <div class="header__title h1">
-                    {{ $route.meta.title }}
+                    {{ $route.meta.title }} {{ $route.name === 'registration' ? this.$store.state.stepRegistration || 1 : '' }}
                 </div>
             </div>
         </div>
@@ -167,6 +167,7 @@
             onClickExit() {
                 this.showPopup = false;
                 this.$store.dispatch('deathUser');
+                this.$store.dispatch('setStepRegistration', 1);
             },
         }
     };

@@ -20,7 +20,7 @@
                                 Присоединяйтесь к нам, продавайте и покупайте.
                             </div>
                             <router-link
-                                :to="''"
+                                :to="{ name: 'registration' }"
                                 class="button banner__register"
                             >
                                 Зарегистрироваться

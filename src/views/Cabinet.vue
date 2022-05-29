@@ -12,7 +12,7 @@
 </template>
 
 <script>
-    import Breadcrumbs from '@/components/app-breadcrumbs.vue';
+    import Breadcrumbs from '@/components/app-breadcrumbs';
 
     export default {
         components: {
