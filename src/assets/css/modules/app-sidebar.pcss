@@ -9,6 +9,38 @@
             margin: 10px 0;
             border-bottom: 1px solid $color-green;
         }
+        &-item {
+            position: relative;
+            &.is-opened &-arrow {
+                transform: rotateZ(180deg);
+            }
+            &-arrow {
+                position: absolute;
+                display: block;
+                top: 12px;
+                right: 12px;
+                width: 24px;
+                height: 24px;
+                -webkit-mask-position: center;
+                mask-position: center;
+                -webkit-mask-repeat: no-repeat;
+                mask-repeat: no-repeat;
+                -webkit-mask-size: contain;
+                mask-size: contain;
+                background-color: $color-gray-T3;
+                -webkit-mask-image: url('./assets/img/icons/icon-arrow.svg');
+                mask-image: url('./assets/img/icons/icon-arrow.svg');
+                z-index: 2;
+            }
+
+            &-block {
+                position: relative;
+                display: block;
+            }
+            &.is-opened &-block {
+                /*display: block;*/
+            }
+        }
         &-link {
             position: relative;
             display: block;
@@ -42,6 +74,16 @@
                 mask-image: url('./assets/img/icons/icon-search.svg');
             }
 
+            &.m--icon-provider:before {
+                -webkit-mask-image: url('./assets/img/icons/icon-provider.svg');
+                mask-image: url('./assets/img/icons/icon-provider.svg');
+            }
+
+            &.m--icon-customer:before {
+                -webkit-mask-image: url('./assets/img/icons/icon-customer.svg');
+                mask-image: url('./assets/img/icons/icon-customer.svg');
+            }
+
             &.m--icon-loudspeaker:before {
                 -webkit-mask-image: url('./assets/img/icons/icon-loudspeaker.svg');
                 mask-image: url('./assets/img/icons/icon-loudspeaker.svg');
@@ -61,15 +103,41 @@
                 -webkit-mask-image: url('./assets/img/icons/icon-info.svg');
                 mask-image: url('./assets/img/icons/icon-info.svg');
             }
+        }
 
-            &:hover,
-            &.is-active {
-                background: $color-green;
-                color: $color-white;
-                &:before {
-                    background-color: $color-white;
-                }
+        &-link:hover,
+        &-link.is-active {
+            background: $color-green;
+            color: $color-white;
+            &:before {
+                background-color: $color-white;
             }
+        }
+
+        &-link:hover &-item-arrow,
+        &-link.is-active &-item-arrow {
+            background-color: $color-white
+        }
+
+        &-subitem {
+            position: relative;
+        }
+
+        &-sublink {
+            position: relative;
+            display: block;
+            font-weight: 700;
+            font-size: 18px;
+            line-height: 22px;
+            text-decoration: none;
+            padding: 13px 10px 13px 45px;
+            margin: 0;
+            color: $color-gray-T3;
+        }
+
+        &-subitem:hover &-sublink,
+        &-sublink.is-active {
+            color: $color-green;
         }
     }
 }

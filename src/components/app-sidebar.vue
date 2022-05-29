@@ -18,10 +18,57 @@
                     <router-link
                         :key="key"
                         :to="{ name: item.name }"
-                        :class="`m--icon-${item.icon}`"
-                        class="sidebar__menu-link"
-                        v-text="item.title"
-                    />
+                        custom
+                        v-slot="{ href, navigate, isActive }"
+                    >
+                        <div 
+                            :class="menuOpenedItems[item.name] ? 'is-opened' : ''"
+                            class="sidebar__menu-item"
+                        >
+                            <a 
+                                :href="href"
+                                :class="[isActive && 'is-active', `m--icon-${item.icon}`]"
+                                class="sidebar__menu-link"
+                                @click="navigate"
+                            >
+                                {{ item.title }}
+                                <div
+                                    v-if="item.items"
+                                    class="sidebar__menu-item-arrow"
+                                    @click.prevent="onClickMenuItem(item.name)"
+                                />
+                            </a>
+                            <template
+                                v-if="item.items"
+                            >
+                                <transition name="fade">
+                                    <div 
+                                        v-if="menuOpenedItems[item.name]"
+                                        class="sidebar__menu-item-block"
+                                    >
+                                        <router-link
+                                            v-for="(sitem, key) in item.items"
+                                            :key="key"
+                                            :to="{ name: sitem.name }"
+                                            custom
+                                            v-slot="{ href, navigate, isActive }"
+                                        >
+                                            <div class="sidebar__menu-subitem">
+                                                <a 
+                                                    :href="href"
+                                                    :class="[isActive && 'is-active']"
+                                                    class="sidebar__menu-sublink"
+                                                    @click="navigate"
+                                                >
+                                                    {{ sitem.title }}
+                                                </a>
+                                            </div>
+                                        </router-link>
+                                    </div>
+                                </transition>
+                            </template>
+                        </div>
+                    </router-link>
                 </template>
             </template>
         </div>
@@ -34,8 +81,18 @@
         name: 'Sidebar',
         data() {
             return {
-                menu: sidebarMenu
+                menu: sidebarMenu,
+                menuOpenedItems: {}
             };
         },
+        methods: {
+            onClickMenuItem(name) {
+                if (!this.menuOpenedItems[name]) {
+                    this.menuOpenedItems[name] = 1;
+                } else {
+                    delete this.menuOpenedItems[name];
+                }
+            }
+        }
     };
 </script>

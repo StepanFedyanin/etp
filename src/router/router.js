@@ -75,16 +75,6 @@ const routes = [
         meta: { title: 'Кабинет', requiresAuth: true },
         props: true,
     }, {
-        path: '/cabinet/tenders',
-        name: 'tenders',
-        component: cabinet,
-        meta: { 
-            title: 'Тендеры', 
-            breadcrumbs: ['cabinet'],
-            requiresAuth: true 
-        },
-        props: true,
-    }, {
         path: '/cabinet/profile',
         name: 'profile',
         component: cabinet,
@@ -104,6 +94,82 @@ const routes = [
             requiresAuth: true 
         },
         props: true,
+    }, {
+        path: '/cabinet/tenders',
+        name: 'tenders',
+        component: cabinet,
+        meta: { 
+            title: 'Тендеры', 
+            breadcrumbs: ['cabinet'],
+            requiresAuth: true 
+        },
+        props: true,
+    }, {
+        path: '/cabinet/customer',
+        name: 'customer',
+        component: cabinet,
+        meta: { 
+            title: 'Заказчик', 
+            breadcrumbs: ['cabinet'],
+            requiresAuth: true 
+        },
+        props: true,
+        children: [
+            {
+                path: '/cabinet/customer/current',
+                name: 'customer-current',
+                component: cabinet,
+                meta: { 
+                    title: 'Текущие торги заказчика', 
+                    breadcrumbs: ['cabinet', 'customer'],
+                    requiresAuth: true 
+                },
+                props: true,
+            }, {
+                path: '/cabinet/customer/closed',
+                name: 'customer-closed',
+                component: cabinet,
+                meta: { 
+                    title: 'Завершенные торги заказчика', 
+                    breadcrumbs: ['cabinet', 'customer'],
+                    requiresAuth: true 
+                },
+                props: true,
+            }
+        ]
+    }, {
+        path: '/cabinet/provider',
+        name: 'provider',
+        component: cabinet,
+        meta: { 
+            title: 'Поставщик', 
+            breadcrumbs: ['cabinet'],
+            requiresAuth: true 
+        },
+        props: true,
+        children: [
+            {
+                path: '/cabinet/provider/current',
+                name: 'provider-current',
+                component: cabinet,
+                meta: { 
+                    title: 'Текущие торги поставщика', 
+                    breadcrumbs: ['cabinet', 'provider'],
+                    requiresAuth: true 
+                },
+                props: true,
+            }, {
+                path: '/cabinet/provider/closed',
+                name: 'provider-closed',
+                component: cabinet,
+                meta: { 
+                    title: 'Завершенные торги поставщика', 
+                    breadcrumbs: ['cabinet', 'provider'],
+                    requiresAuth: true 
+                },
+                props: true,
+            }
+        ]
     }, {
         path: '/cabinet/tender-start',
         name: 'tender-start',

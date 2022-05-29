@@ -97,6 +97,38 @@ const sidebarMenu = [
         title: 'Тендеры',
         icon: 'search'
     }, {
+        name: 'customer',
+        role: 'all',
+        title: 'Я - заказчик',
+        icon: 'customer',
+        items: [
+            {
+                name: 'customer-current',
+                role: 'all',
+                title: 'Текущие торги',
+            }, {
+                name: 'customer-closed',
+                role: 'all',
+                title: 'Завершенные',
+            }
+        ]
+    }, {
+        name: 'provider',
+        role: 'all',
+        title: 'Я - поставщик',
+        icon: 'provider',
+        items: [
+            {
+                name: 'provider-current',
+                role: 'all',
+                title: 'Текущие торги',
+            }, {
+                name: 'provider-closed',
+                role: 'all',
+                title: 'Завершенные',
+            }
+        ]
+    }, {
         name: 'tender-start',
         role: 'all',
         title: 'Объявить тендер',

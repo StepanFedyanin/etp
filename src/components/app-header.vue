@@ -52,11 +52,15 @@
                             :class="showPopup ? 'is-active' : ''"
                             @click="onClickPopup"
                         />
-                        <template
+                        <div 
                             v-if="showPopup"
-                        >
-                            <div class="app__overlay" />
-                            <div class="header__popup">
+                            class="app__overlay" 
+                        />
+                        <transition name="fade">
+                            <div 
+                                v-if="showPopup"
+                                class="header__popup"
+                            >
                                 <div class="header__popup-title">
                                     Безбородов А.А.
                                     <a 
@@ -100,7 +104,7 @@
                                     </a>
                                 </div>
                             </div>                            
-                        </template>
+                        </transition>
                     </template>
                     <template
                         v-else
