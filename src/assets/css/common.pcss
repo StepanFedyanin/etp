@@ -147,6 +147,10 @@ input[type='number'] {
     @mixin button;
     @mixin button--color $color-white, $color-gray-T1;
 
+    &:hover {
+        @mixin button--color $color-white-dark, $color-gray-T1;
+    }
+
     &-green {
         @mixin button--color $color-green, $color-white;
 
@@ -167,6 +171,17 @@ input[type='number'] {
 
         &:hover {
             @mixin button--outline-color $color-red, $color-red, $color-white;
+        }
+    }
+
+    &-filter {
+        &::before {
+            content: '';
+            width: 16px;
+            height: 14px;
+            background-size: 16px 14px;
+            margin-right: 14px;
+            background-image: url('./assets/img/icons/icon-filter.svg');
         }
     }
 }
