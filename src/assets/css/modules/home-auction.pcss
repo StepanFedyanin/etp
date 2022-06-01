@@ -24,24 +24,53 @@
     }
 
     &__list {
-        max-height: 708px;
-        overflow-y: auto;
-        overflow-x: visible;
-        padding: 0 50px 0 20px;
+        position: relative;
+        margin-left: -20px;
 
-        &-wrapper {
-            margin-left: -20px;
+        &-inner {
+            @mixin simple-box-list;
+    
+            max-height: 700px;
+            overflow-y: auto;
+            overflow-x: visible;
+            padding: 0 50px 0 20px;
+            gap: 24px;
         }
 
-        
+        &-up,
+        &-down {
+            position: absolute;
+            width: 42px;
+            height: 42px;
+            background-color: $color-green;
+            -webkit-mask-position: center;
+            mask-position: center;
+            -webkit-mask-repeat: no-repeat;
+            mask-repeat: no-repeat;
+            -webkit-mask-size: contain;
+            mask-size: contain;
+            cursor: pointer;
+        }
+
+        &-up {
+            top: -15px;
+            right: -16px;
+            -webkit-mask-image: url('./assets/img/icons/chevron-up.svg');
+            mask-image: url('./assets/img/icons/chevron-up.svg');
+        }
+
+        &-down {
+            bottom: -15px;
+            right: -17px;
+            -webkit-mask-image: url('./assets/img/icons/chevron-down.svg');
+            mask-image: url('./assets/img/icons/chevron-down.svg');
+        }
     }
     
     &__item {
-        display: flex;
-        padding: 21px 31px 18px;
-        margin-bottom: 24px;
+        @mixin simple-box;
 
-        @mixin box-shadow;
+        padding: 21px 31px 18px;
 
         &:last-child {
             margin-bottom: 34px;
@@ -106,7 +135,9 @@
         }
 
         &-button {
-            width: 250px;
+            & button {
+                width: 250px;
+            }
         }
         
         &-prop {

@@ -1,13 +1,53 @@
-@define-mixin tugan-red-single {
-    &::before {
-        content: '';
-        display: inline-block;
-        width: 14px;
-        height: 14px;
-        margin-right: 8px;
-        background-repeat: no-repeat;
-        background-image: url('./assets/img/icons/tugan-red-single.svg');
-        vertical-align: baseline;
-        background-size: contain;
+@define-mixin simple-box-list {
+    display: flex;
+    flex-direction: column;
+    padding: 35px 30px;
+    gap: 70px;
+
+    @mixin responsive-le-l {
+        gap: 50px;
+    }
+
+    @mixin responsive-le-m {
+        gap: 20px;
+    }
+}
+
+@define-mixin simple-box {
+    display: flex;
+    padding: 35px 30px;
+    @mixin shadow-box;
+
+    @mixin responsive-le-l {
+    }
+
+    @mixin responsive-le-m {
+        flex-direction: column;
+    }
+}
+
+@define-mixin shadow-box {
+    background-color: $color-white;
+    box-shadow: 0px 16px 24px $color-gray;
+    border-radius: 28px;
+}
+
+@mixin scrollbar($background, $color, $width) {
+    & {
+        scrollbar-width: thin;
+        scrollbar-color: $color $background;
+        border-radius: ($width / 2);
+    }
+    &::-webkit-scrollbar {
+        height: $width;
+        width: $width;
+    }
+    &::-webkit-scrollbar-track {
+        background: $background;
+    }
+    &::-webkit-scrollbar-thumb {
+        background-color: $color;
+        border-radius: calc($width / 2);
+        border: 1px solid $background;
     }
 }

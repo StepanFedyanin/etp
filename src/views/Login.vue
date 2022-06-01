@@ -9,24 +9,26 @@
                 >
                     <div class="form__block">
                         <Field
-                            :value="form.login"
+                            id="login"
+                            v-model="form.login"
                             type="text"
                             name="login"
                             label="Ваша имя"
                             placeholder="логин"
                             class="form__field auth__form-field"
-                            inline
-                            required
+                            :inline="true"
+                            :required="true"
                         />
                         <Field
-                            :value="form.password"
+                            id="password"
+                            v-model="form.password"
                             type="password"
                             name="password"
                             label="Ваша пароль"
                             placeholder="пароль"
                             class="form__field auth__form-field"
-                            inline
-                            required
+                            :inline="true"
+                            :required="true"
                         />
                     </div>
                     <!--

@@ -4,11 +4,18 @@
         display: flex;
         flex-wrap: wrap;
         padding: 20px;
-        @mixin box-shadow;
+        margin-bottom: 24px;
+        @mixin shadow-box;
 
         &-left {
             padding-right: 48px;
             border-right: 1px solid $color-gray-T5;
+            width: 70%;
+        }
+
+        &-right {
+            padding-left: 20px;
+            width: 30%;
         }
 
         &-title {
@@ -18,8 +25,11 @@
             text-transform: uppercase;
             margin-bottom: 24px;
         }
+
         &-param {
             margin-bottom: 16px;
+            font-weight: 400;
+
             span,
             a {
                 font-weight: 600;
@@ -28,5 +38,17 @@
                 color: $color-green;
             }
         }
+
+        &-price {
+            color: $color-green;
+            margin-bottom: 24px;
+            font-style: normal;
+            font-weight: 700;
+            font-size: 34px;
+            line-height: 40px;
+        }
+    }
+    &__more {
+        margin: 36px auto 0;
     }
 }
