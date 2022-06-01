@@ -3,7 +3,7 @@
         <div class="registration">
             <div class="container">
                 <div
-                    v-show="stepRegistration === 1"
+                    v-if="stepRegistration === 1"
                 >
                     <div class="registration__title h2">
                         Укажите инн и кпп вашей организации
@@ -31,7 +31,7 @@
                     </div>
                 </div>
                 <div
-                    v-show="stepRegistration === 2"
+                    v-if="stepRegistration === 2"
                 >
                     <div class="registration__title h2">
                         Сведения об организации
@@ -43,6 +43,7 @@
                             ref="organization"
                             :values="item.organization"
                             :header="header"
+                            @change="checkValid"
                             @next="searchOrg"
                             @prev="prevPerson"
                         />
@@ -63,7 +64,7 @@
                     </div>
                 </div>
                 <div
-                    v-show="stepRegistration === 3"
+                    v-if="stepRegistration === 3"
                 >
                     <div class="registration__title h2">
                         Сведения о пользователе
@@ -95,7 +96,7 @@
                     </div>
                 </div>
                 <div
-                    v-show="stepRegistration === 4"
+                    v-if="stepRegistration === 4"
                 >
                     <div class="registration__title h2">
                         Пригласите ваших партнеров
@@ -171,23 +172,26 @@
                 type: String,
                 default() { return ''; }
             },
-            item: {
-                type: Object,
-                default() { return {}; }
-            },
         },        
         data() {
             return {
                 stage: 'search',
-                changeReason: undefined,
                 result: undefined,
                 modalCloseBrowser: false,
                 stepRegistration: this.$store.state.stepRegistration || 1,
                 inviteNumbers: 1,
                 isValid: false,
+                person: {},
+                organization: {}
             };
         },
         computed: {
+            item() {
+                return {
+                    person: this.person,
+                    organization: this.organization,
+                };
+            },
             params() {
                 return {
                     search: this.$refs.search.serialize(),
@@ -197,7 +201,7 @@
         },
         methods: {
             checkValid() {
-                this.isValid = !!(this.$refs.search.validate());
+                // this.isValid = !!(this.$refs.search.validate());
             },
             addInvite() {
                 this.inviteNumbers++;

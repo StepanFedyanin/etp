@@ -11,64 +11,68 @@
             >
                 {{ fieldset.header }}
             </div>
-            <slot
-                v-for="field in fieldset.fields"
-                :name="field.name"
-            >
-                <field
-                    v-model="val[field.name]"
+            <template v-for="field in fieldset.fields">
+                <slot
                     :name="field.name"
-                    :label="field.label"
-                    :type="field.type"
-                    :options="opt[field.name]"
-                    :mask="field.mask"
-                    :classval="field.class"
-                    :precision="field.precision"
-                    :optionull="field.optionull"
-                    :placeholder="field.placeholder"
-                    :required="field.required"
-                    :disabled="field.disabled"
-                    :readonly="field.readonly"
-                    :valid="valid[field.name]"
-                    :invalid="invalid[field.name]"
-                    :error="errors[field.name]"
-                    :inline="inline"
-                    class="form__field"
-                    @control:action="callControl(field.control, val[field.name])"
-                />
-            </slot>
+                >
+                    <field
+                        v-model="val[field.name]"
+                        :value="val[field.name]"
+                        :name="field.name"
+                        :label="field.label"
+                        :type="field.type"
+                        :options="opt[field.name]"
+                        :mask="field.mask"
+                        :classval="field.class"
+                        :precision="field.precision"
+                        :optionull="field.optionull"
+                        :placeholder="field.placeholder"
+                        :required="field.required"
+                        :disabled="field.disabled"
+                        :readonly="field.readonly"
+                        :valid="valid[field.name]"
+                        :invalid="invalid[field.name]"
+                        :error="errors[field.name]"
+                        :inline="inline"
+                        class="form__field"
+                        @control:action="callControl(field.control, val[field.name])"
+                    />
+                </slot>
+            </template>
         </fieldset>
 
         <fieldset
             v-if="struct.fields.length"
             class="form__fields"
         >
-            <slot
-                v-for="field in struct.fields"
-                :name="field.name"
-            >
-                <field
-                    v-model="val[field.name]"
+            <template v-for="field in struct.fields">
+                <slot
                     :name="field.name"
-                    :label="field.label"
-                    :type="field.type"
-                    :mask="field.mask"
-                    :precision="field.precision"
-                    :optionull="field.optionull"
-                    :placeholder="field.placeholder"
-                    :classval="field.class"
-                    :required="field.required"
-                    :disabled="field.disabled"
-                    :readonly="field.readonly"
-                    :options="opt[field.name]"
-                    :valid="valid[field.name]"
-                    :invalid="invalid[field.name]"
-                    :error="errors[field.name]"
-                    :inline="inline"
-                    class="form__field"
-                    @action="callControl(field.control, val[field.name])"
-                />
-            </slot>
+                >
+                    <field
+                        v-model="val[field.name]"
+                        :value="val[field.name]"
+                        :name="field.name"
+                        :label="field.label"
+                        :type="field.type"
+                        :mask="field.mask"
+                        :precision="field.precision"
+                        :optionull="field.optionull"
+                        :placeholder="field.placeholder"
+                        :classval="field.class"
+                        :required="field.required"
+                        :disabled="field.disabled"
+                        :readonly="field.readonly"
+                        :options="opt[field.name]"
+                        :valid="valid[field.name]"
+                        :invalid="invalid[field.name]"
+                        :error="errors[field.name]"
+                        :inline="inline"
+                        class="form__field"
+                        @action="callControl(field.control, val[field.name])"
+                    />
+                </slot>
+            </template>
         </fieldset>
 
         <input
@@ -184,6 +188,7 @@
                 for (let field of this.fields) {
                     rel[field.name] = field;
                 }
+                console.log(rel);
                 return rel;
             },
             opt() {
@@ -272,17 +277,22 @@
                     });
                 }
             }
+            console.log(this.fields, this.values);
             this.val = this.getDefaults(this.fields, this.values);
+            console.log(this.val)
         },
         methods: {
             getDefaults(fields, values) {
                 let data = {}
+                console.log(this.fields, this.values);
                 for (let field of fields) {
                     data[field.name] = this.getDefault(field, values[field.name]);
                 }
+                console.log(data);
                 return data;
             },
             getDefault(field, value) {
+                console.log(field, value);
                 if (value === undefined) {
                     if (field.default !== undefined) {
                         value = field.default;
@@ -296,6 +306,7 @@
                         value = '';
                     }
                 }
+                console.log(value);
                 return value;
             },
             serialize() {

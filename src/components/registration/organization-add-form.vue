@@ -6,14 +6,14 @@
         { name: 'kpp', type: 'text', label: 'КПП', required: true }, // mask
         { name: 'orgn', type: 'text', label: 'ОГРН', required: true }, // mask
         { name: 'name', type: 'text', label: 'Название организации', required: true },
-        { name: 'last_name', type: 'text', label: 'ФИО руководителя организации', required: true },
-        { name: 'first_name', type: 'text', label: 'Должность  руководителя организации', required: true },
-        { name: 'patronymic', type: 'text', label: 'ФИО бухгалтера организации' },
-        { name: 'birthDate', type: 'text', label: 'Юридический адрес организации', required: true },
-        { name: 'birthPlace', type: 'text', label: 'Фактический адрес организации', required: true },
-        { name: 'nationality', type: 'text', label: 'ОКПО', required: true },
-        { name: 'phoneNum', type: 'tel', label: 'Сумма уставного капитала', required: true },
-        { name: 'phoneNum', type: 'tel', label: 'Основной виде деятельности (ОКВЭД)' },
+        { name: 'head_name', type: 'text', label: 'ФИО руководителя организации', required: true },
+        { name: 'head_post', type: 'text', label: 'Должность  руководителя организации', required: true },
+        { name: 'accountant_name', type: 'text', label: 'ФИО бухгалтера организации' },
+        { name: 'legal_address', type: 'text', label: 'Юридический адрес организации', required: true },
+        { name: 'actual_address', type: 'text', label: 'Фактический адрес организации', required: true },
+        { name: 'okpo', type: 'text', label: 'ОКПО', required: true },
+        { name: 'capital', type: 'text', label: 'Сумма уставного капитала', required: true },
+        { name: 'principal_activity', type: 'text', label: 'Основной виде деятельности (ОКВЭД)' },
     ];
 
     const fieldsets = [
@@ -23,26 +23,22 @@
     ];
 
     const checks = {
-        last_name: { required: true, name: true },
-        first_name: { required: true, name: true },
-        patronymic: { name: true },
-        birth_date: { required: true, date: true },
-        birthPlace: { required: true, name: true },
-        nationality: { required: true, name: true },
-        phoneNum: { required: true, tel: true },
-        email: { email: true },
-        inn: { number: true },
-        snils: { number: true },
+        inn: { required: true, number: true },
+        kpp: { required: true, number: true },
+        orgn: { required: true, number: true },
+        okpo: { required: true, number: true },
+        name: { required: true, name: true },
+        head_name: { required: true, name: true },
+        head_post: { required: true, name: true },
+        accountant_name: { required: true, name: true },
+        legal_address: { required: true, name: true },
+        actual_address: { required: true, name: true },
+        capital: { required: true, number: true },
+        principal_activity: { required: true, name: true },
     };
 
     export default {
         extends: abstractForm,
-        props: {
-            verify: {
-                type: [Boolean, Number],
-                default: undefined
-            }
-        },
         data() {
             return {
                 fields,
@@ -51,23 +47,6 @@
                 inline: true
             };
         },
-        computed: {
-            verified() {
-                if (this.verify !== undefined) {
-                    return this.verify;
-                }
-                return this.values.verified;
-            },
-            control() {
-                if (this.verified === false) {
-                    return {
-                        event: 'verify',
-                        color: 'fianit',
-                        label: 'Подтвердить'                        
-                    };
-                }
-                return {};
-            }
-        },
+        computed: {},
     };
 </script>
