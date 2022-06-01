@@ -12,6 +12,7 @@ import auth from '@/views/Login';
 /* cabinet */
 import cabinet from '@/views/Cabinet';
 import cabinetNews from '@/views/CabinetNews';
+import groups from '@/views/Groups';
 
 const routes = [
     {
@@ -35,7 +36,7 @@ const routes = [
     }, {
         path: '/groups',
         name: 'groups',
-        component: empty,
+        component: groups,
         meta: { title: 'Товарные группы' },
         props: true,
     }, {

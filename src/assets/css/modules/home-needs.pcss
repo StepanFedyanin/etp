@@ -3,27 +3,13 @@
     background-color: $color-bg;
 
     &__blocks {
-        display: flex;
-        flex-direction: column;
+        @mixin simple-box-list;
         gap: 45px;
-        padding-bottom: 50px;
     }
 
     &__block {
-        display: flex;
-        padding: 35px 30px;
-        gap: 70px;
-
-        @mixin box-shadow;
-
-        @mixin responsive-le-l {
-            gap: 50px;
-        }
-
-        @mixin responsive-le-m {
-            gap: 20px;
-            flex-direction: column;
-        }
+        @mixin simple-box;
+        gap: 40px;
 
         &-left {
             width: 70%;
@@ -66,17 +52,10 @@
         }
 
         &-list {
-            &-item {
-                display: flex;
-                margin-bottom: 24px;
-                @mixin tugan-red-single;
+            @mixin ul;
 
-                &::before {
-                    flex-basis: 14px;
-                    flex-grow: 0;
-                    flex-shrink: 0;
-                    margin: 3px 8px 0 0;
-                }
+            &-item {
+                margin-bottom: 24px;
             }
         }
     }

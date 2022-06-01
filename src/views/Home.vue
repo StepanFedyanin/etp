@@ -31,6 +31,14 @@
                                 src="../assets/img/banner-logo.png"
                                 class="banner__logo"
                             >
+                            <img
+                                src="../assets/img/banner-logo-2.png"
+                                class="banner__logo"
+                            >
+                            <img
+                                src="../assets/img/banner-logo-3.png"
+                                class="banner__logo"
+                            >
                         </div>
                     </div>
                 </div>
@@ -48,8 +56,8 @@
                     <div class="auction__search">
                         <Search />
                     </div>
-                    <div class="auction__list-wrapper">
-                        <div class="auction__list">
+                    <div class="auction__list">
+                        <div class="auction__list-inner">
                             <div
                                 v-for="(item, key) in auctionList"
                                 :key="key"
@@ -163,17 +171,17 @@
                                 </div>
                             </div>
                             <div class="needs__block-right">
-                                <div class="needs__block-list">
-                                    <div class="needs__block-list-item">
+                                <ul class="needs__block-list">
+                                    <li class="needs__block-list-item">
                                         Выбирайте интересные товарные группы и следите за новыми закупками
-                                    </div>
-                                    <div class="needs__block-list-item">
+                                    </li>
+                                    <li class="needs__block-list-item">
                                         Выбирайте интересные товарные группы и следите за новыми закупками
-                                    </div>
-                                    <div class="needs__block-list-item">
+                                    </li>
+                                    <li class="needs__block-list-item">
                                         Выбирайте интересные товарные группы и следите за новыми закупками
-                                    </div>
-                                </div>
+                                    </li>
+                                </ul>
                             </div>
                         </div>
                         <div class="needs__block">
@@ -186,17 +194,17 @@
                                 </div>
                             </div>
                             <div class="needs__block-right">
-                                <div class="needs__block-list">
-                                    <div class="needs__block-list-item">
+                                <ul class="needs__block-list">
+                                    <li class="needs__block-list-item">
                                         Вложенные тендеры доступны всем добросовестным поставщикам
-                                    </div>
-                                    <div class="needs__block-list-item">
+                                    </li>
+                                    <li class="needs__block-list-item">
                                         Выбирайте интересные товарные группы и следите за новыми закупками
-                                    </div>
-                                    <div class="needs__block-list-item">
+                                    </li>
+                                    <li class="needs__block-list-item">
                                         Система рейтинга добросовестных поставщиков
-                                    </div>
-                                </div>
+                                    </li>
+                                </ul>
                             </div>
                         </div>
                         <div class="needs__block">
@@ -209,17 +217,17 @@
                                 </div>
                             </div>
                             <div class="needs__block-right">
-                                <div class="needs__block-list">
-                                    <div class="needs__block-list-item">
+                                <ul class="needs__block-list">
+                                    <li class="needs__block-list-item">
                                         Бесплатная регистрация и участие в тендерах
-                                    </div>
-                                    <div class="needs__block-list-item">
+                                    </li>
+                                    <li class="needs__block-list-item">
                                         Единые равные условия для всех поставщиков
-                                    </div>
-                                    <div class="needs__block-list-item">
+                                    </li>
+                                    <li class="needs__block-list-item">
                                         Стандартная проверка безопасности - как на всех площадках
-                                    </div>
-                                </div>
+                                    </li>
+                                </ul>
                             </div>
                         </div>
                         <div class="needs__block">
@@ -232,17 +240,17 @@
                                 </div>
                             </div>
                             <div class="needs__block-right">
-                                <div class="needs__block-list">
-                                    <div class="needs__block-list-item">
+                                <ul class="needs__block-list">
+                                    <li class="needs__block-list-item">
                                         Бесплатная регистрация и участие в тендерах
-                                    </div>
-                                    <div class="needs__block-list-item">
+                                    </li>
+                                    <li class="needs__block-list-item">
                                         Единые равные условия для всех поставщиков
-                                    </div>
-                                    <div class="needs__block-list-item">
+                                    </li>
+                                    <li class="needs__block-list-item">
                                         Стандартная проверка безопасности - как на всех площадках
-                                    </div>
-                                </div>
+                                    </li>
+                                </ul>
                             </div>
                         </div>
                     </div>

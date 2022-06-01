@@ -24,24 +24,24 @@
     }
 
     &__list {
-        max-height: 708px;
-        overflow-y: auto;
-        overflow-x: visible;
-        padding: 0 50px 0 20px;
+        margin-left: -20px;
 
-        &-wrapper {
-            margin-left: -20px;
+        &-inner {
+
+            @mixin simple-box-list;
+    
+            max-height: 700px;
+            overflow-y: auto;
+            overflow-x: visible;
+            padding: 0 50px 0 20px;
+            gap: 24px;
         }
-
-        
     }
     
     &__item {
-        display: flex;
-        padding: 21px 31px 18px;
-        margin-bottom: 24px;
+        @mixin simple-box;
 
-        @mixin box-shadow;
+        padding: 21px 31px 18px;
 
         &:last-child {
             margin-bottom: 34px;

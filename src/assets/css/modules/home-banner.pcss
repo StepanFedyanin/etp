@@ -61,9 +61,90 @@
 
     &__right {
         width: 45%;
+        position: relative;
     }
 
     &__logo {
         width: 100%;
+        left: 0;
+        top: 0;
+        
+        animation-duration: 10s;
+        animation-direction: normal;
+        animation-iteration-count: infinite;
+        animation-timing-function: ease-in-out;
+        /* animation-direction: alternate; */
+        
+        &:nth-child(1) {
+            position: relative;
+            animation-name: change-logo;
+            opacity: 1;
+        }
+        
+        &:nth-child(2) {
+            position: absolute;
+            animation-name: change-logo-2;
+            opacity: 0;
+        }
+        
+        &:nth-child(3) {
+            position: absolute;
+            animation-name: change-logo-3;
+            opacity: 0;
+        }
+    }
+}
+
+@keyframes change-logo {
+    from {
+        opacity: 1;
+    }
+
+    to {
+        opacity: 1;
+    }
+
+    33% {
+        opacity: 0;
+    }
+
+    66% {
+        opacity: 0;
+    }
+}
+
+@keyframes change-logo-2 {
+    from {
+        opacity: 0;
+    }
+
+    to {
+        opacity: 0;
+    }
+
+    33% {
+        opacity: 1;
+    }
+
+    66% {
+        opacity: 0;
+    }
+}
+
+@keyframes change-logo-3 {
+    from {
+        opacity: 0;
+    }
+
+    to {
+        opacity: 0;
+    }
+
+    33% {
+        opacity: 0;
+    }
+
+    66% {
+        opacity: 1;
     }
 }

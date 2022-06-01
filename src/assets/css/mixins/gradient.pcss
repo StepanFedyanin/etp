@@ -5,9 +5,3 @@
 @define-mixin gradient-lighten $direction, $color, $percent {
     background-image: linear-gradient(to $direction, $color 0, color($color tint($percent)) 100%);
 }
-
-@define-mixin box-shadow {
-    background-color: $color-white;
-    box-shadow: 0px 16px 24px $color-gray;
-    border-radius: 28px;
-}
