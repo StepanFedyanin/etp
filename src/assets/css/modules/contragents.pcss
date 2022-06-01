@@ -1,0 +1,86 @@
+.contragents {
+    &__block {}
+    &__header,
+    &__item {
+        display: grid;
+        grid-template-columns: 20% auto 140px 140px;
+        grid-template-areas: 'A B C D';
+        gap: 10px;
+    }
+
+    &__header {
+        padding: 0 45px 0 30px;
+
+        &-cell {
+            font-weight: 700;
+            font-size: 20px;
+            line-height: 24px;
+            text-transform: uppercase;
+            color: $color-gray-T3;
+            padding: 0 0 36px;
+            &.m--name {
+                grid-area: A;
+            }
+            &.m--activity {
+                grid-area: B;
+            }
+            &.m--customer {
+                grid-area: C;
+            }
+            &.m--member {
+                grid-area: D;
+            }
+        }
+    }
+    &__list {
+        padding: 12px 0;
+        margin-bottom: 24px;
+        overflow: hidden;
+        @mixin box-shadow;
+    }
+
+    &__item {
+        position: relative;
+        padding: 24px 45px 24px 30px;
+        cursor: pointer;
+
+        &:after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 30px;
+            right: 45px;
+            border-bottom: 1px solid $color-gray-T5;
+        }
+
+        &:last-child:after {
+            display: none;
+        }
+
+        &:hover {
+            border-radius: 8px;
+            background: $color-green-opacity20;
+        }
+
+        &-cell {
+            font-weight: 400;
+            font-size: 16px;
+            line-height: 20px;
+            
+            &.m--customer,
+            &.m--member {
+                font-weight: 700;
+                font-size: 20px;
+                line-height: 24px;
+            }
+
+            .m--name-city {
+                font-weight: 300;
+                font-size: 12px;
+                line-height: 15px;
+                color: $color-gray-T3;
+                padding-top: 4px;
+            }
+        }
+    }
+}

@@ -1,0 +1,22 @@
+.persons {
+    position: relative;
+
+    &__item {
+        padding: 8px 0;
+        font-weight: 400;
+        font-size: 16px;
+        line-height: 20px;
+        display: grid;
+        grid-template-columns: 30px auto 15% 20% 20%;
+        /*grid-template-areas: 'A B C D';*/
+        gap: 10px;
+
+        &.m--header {
+            padding: 0 0 16px;
+            color: $color-gray-T3;
+        }
+
+        &-cell {
+        }
+    }
+}

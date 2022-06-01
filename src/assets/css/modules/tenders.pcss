@@ -1,0 +1,32 @@
+.tenders {
+    &__item {
+        position: relative;
+        display: flex;
+        flex-wrap: wrap;
+        padding: 20px;
+        @mixin box-shadow;
+
+        &-left {
+            padding-right: 48px;
+            border-right: 1px solid $color-gray-T5;
+        }
+
+        &-title {
+            font-weight: 600;
+            font-size: 20px;
+            line-height: 24px;
+            text-transform: uppercase;
+            margin-bottom: 24px;
+        }
+        &-param {
+            margin-bottom: 16px;
+            span,
+            a {
+                font-weight: 600;
+            }
+            a {
+                color: $color-green;
+            }
+        }
+    }
+}

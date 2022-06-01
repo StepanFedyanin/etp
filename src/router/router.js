@@ -11,6 +11,8 @@ import registration from '@/views/Registration';
 import auth from '@/views/Login';
 /* cabinet */
 import cabinet from '@/views/Cabinet';
+import cabinetContragents from '@/views/CabinetContragents';
+import cabinetContragent from '@/views/CabinetContragent';
 import cabinetNews from '@/views/CabinetNews';
 
 const routes = [
@@ -183,10 +185,20 @@ const routes = [
     }, {
         path: '/cabinet/contragents',
         name: 'contragents',
-        component: cabinet,
+        component: cabinetContragents,
         meta: { 
             title: 'Контрагенты', 
             breadcrumbs: ['cabinet'],
+            requiresAuth: true 
+        },
+        props: true,
+    }, {
+        path: '/cabinet/contragents/:id',
+        name: 'contragent',
+        component: cabinetContragent,
+        meta: { 
+            title: 'Контрагент', 
+            breadcrumbs: ['cabinet', 'contragents'],
             requiresAuth: true 
         },
         props: true,
