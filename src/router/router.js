@@ -12,7 +12,8 @@ import auth from '@/views/Login';
 /* cabinet */
 import cabinet from '@/views/Cabinet';
 import cabinetContragents from '@/views/CabinetContragents';
-import cabinetContragent from '@/views/CabinetContragent';
+import cabinetContragentsList from '@/views/CabinetContragentsList';
+import cabinetContragentsItem from '@/views/CabinetContragentsItem';
 import cabinetNews from '@/views/CabinetNews';
 import groups from '@/views/Groups';
 
@@ -185,24 +186,31 @@ const routes = [
         props: true,
     }, {
         path: '/cabinet/contragents',
-        name: 'contragents',
         component: cabinetContragents,
-        meta: { 
-            title: 'Контрагенты', 
-            breadcrumbs: ['cabinet'],
-            requiresAuth: true 
-        },
         props: true,
-    }, {
-        path: '/cabinet/contragents/:id',
-        name: 'contragent',
-        component: cabinetContragent,
-        meta: { 
-            title: 'Контрагент', 
-            breadcrumbs: ['cabinet', 'contragents'],
-            requiresAuth: true 
-        },
-        props: true,
+        children: [
+            {
+                path: '/cabinet/contragents',
+                name: 'contragents',
+                component: cabinetContragentsList,
+                meta: { 
+                    title: 'Контрагент', 
+                    breadcrumbs: ['cabinet'],
+                    requiresAuth: true 
+                },
+                props: true,
+            }, {
+                path: '/cabinet/contragents/:id',
+                name: 'contragent',
+                component: cabinetContragentsItem,
+                meta: { 
+                    title: 'Контрагент', 
+                    breadcrumbs: ['cabinet', 'contragents'],
+                    requiresAuth: true 
+                },
+                props: true,
+            }
+        ]
     }, {
         path: '/cabinet/chat',
         name: 'chat',
