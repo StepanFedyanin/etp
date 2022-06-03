@@ -47,8 +47,130 @@
             font-size: 34px;
             line-height: 40px;
         }
+
+        &-docs {
+            max-width: 700px;
+
+            &__title {
+                font-weight: 700;
+                font-size: 20px;
+                text-transform: uppercase;
+                color: $color-black;
+                margin-bottom: 16px;
+            }
+
+            &__item {
+                display: grid;
+                grid-template-columns: 50% 50%;
+                grid-template-areas: 'A B';
+                gap: 12px;
+
+            }
+
+            &__cell {
+                padding-bottom: 12px;
+                &.m {
+                    &--title {
+                        font-weight: 400;
+                        font-size: 16px;
+                        color: $color-gray-T3;
+                    }
+
+                    &--file {
+                        font-weight: 700;
+                        font-size: 16px;
+                        text-decoration: underline;
+                        color: $color-green;
+
+                        &:hover {
+                            text-decoration: none;
+                        }
+                    }
+
+                    &--desc {
+                        font-weight: 400;
+                        font-size: 16px;
+                        color: $color-black;
+                    }
+                }
+            }
+
+        }
+
+        &-timer {
+            &-date {
+                font-weight: 400;
+                font-size: 14px;
+                color: $color-black;
+            }
+
+            &-left {
+                margin-bottom: 35px;
+                font-size: 20px;
+                color: $color-red;
+                font-weight: 700;
+                text-transform: uppercase;
+            }
+        }
+
+        &-toggle {
+            @mixin toggler;
+            width: 100%;
+        }
     }
+
     &__more {
         margin: 36px auto 0;
     }
+
+    &__search {
+        margin-bottom: 50px;
+
+        &-form {
+            margin-bottom: 24px;
+        }
+    }
+
+    &__pagination {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+
+        &-right {
+            display: flex;
+            align-items: center;
+        }
+
+        &-count {
+            font-weight: 400;
+            font-size: 16px;
+            color: $color-black;
+
+            & span {
+                font-weight: 700;
+            }
+        }
+
+        &-perpage {
+            display: flex;
+            align-items: center;
+            margin-right: 20px;
+
+            & span {
+                white-space: nowrap;
+                padding-right: 20px;
+            }
+        }
+
+        &-select {
+            @mixin select;
+
+            background-repeat: no-repeat;
+            background-position: calc(100% - 16px) center;
+            background-size: 14px 7px;
+            background-color: $color-white;
+            background-image: svg-load('assets/img/icons/icon-arrow-select.svg', fill=$color-green);
+        }
+    }
+
 }

@@ -11,6 +11,9 @@ import registration from '@/views/Registration';
 import auth from '@/views/Login';
 /* cabinet */
 import cabinet from '@/views/Cabinet';
+import cabinetTenders from '@/views/CabinetTenders';
+import cabinetTendersList from '@/views/CabinetTendersList';
+import cabinetTendersItem from '@/views/CabinetTendersItem';
 import cabinetContragents from '@/views/CabinetContragents';
 import cabinetContragentsList from '@/views/CabinetContragentsList';
 import cabinetContragentsItem from '@/views/CabinetContragentsItem';
@@ -100,14 +103,31 @@ const routes = [
         props: true,
     }, {
         path: '/cabinet/tenders',
-        name: 'tenders',
-        component: cabinet,
-        meta: { 
-            title: 'Тендеры', 
-            breadcrumbs: ['cabinet'],
-            requiresAuth: true 
-        },
+        component: cabinetTenders,
         props: true,
+        children: [
+            {
+                path: '/cabinet/tenders',
+                name: 'tenders',
+                component: cabinetTendersList,
+                meta: { 
+                    title: 'Тендеры', 
+                    breadcrumbs: ['cabinet'],
+                    requiresAuth: true 
+                },
+                props: true,
+            }, {
+                path: '/cabinet/tenders/:id',
+                name: 'tender',
+                component: cabinetTendersItem,
+                meta: { 
+                    title: 'Тендер', 
+                    breadcrumbs: ['cabinet', 'cabinetTenders'],
+                    requiresAuth: true 
+                },
+                props: true,
+            }
+        ]
     }, {
         path: '/cabinet/customer',
         name: 'customer',

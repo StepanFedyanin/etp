@@ -32,7 +32,7 @@
     border-radius: 28px;
 }
 
-@define-mixin scrollbar($background, $color, $width) {
+@define-mixin scrollbar $background, $color, $width {
     & {
         scrollbar-width: thin;
         scrollbar-color: $color $background;
@@ -49,5 +49,44 @@
         background-color: $color;
         border-radius: calc($width / 2);
         border: 1px solid $background;
+    }
+}
+
+@define-mixin toggler {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 12px;
+    padding-top: 12px;
+    font-weight: 700;
+    font-size: 18px;
+    text-transform: uppercase;
+    color: $color-green;
+    cursor: pointer;
+    /* text-align: center; */
+    
+    &--active {
+    
+        &::after {
+            transform: scale(1, -1);
+        }
+    }
+    
+    &::after {
+        content: '';
+        display: inline-block;
+        width: 36px;
+        height: 36px;
+        background-size: contain;
+        -webkit-mask-position: center;
+        mask-position: center;
+        -webkit-mask-repeat: no-repeat;
+        mask-repeat: no-repeat;
+        -webkit-mask-size: contain;
+        mask-size: contain;
+        background-color: $color-green;
+        -webkit-mask-image: url('./assets/img/icons/chevron-down.svg');
+        mask-image: url('./assets/img/icons/chevron-down.svg');
+        transition: all ease .2s;
     }
 }
