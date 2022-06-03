@@ -23,9 +23,6 @@
         created() {
         },
         methods: {
-            onClickTender(id) {
-                this.$router.push({ name: 'tender', params: { id: id } });
-            }
         }
     };
 </script>

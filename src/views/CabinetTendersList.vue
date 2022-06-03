@@ -76,9 +76,6 @@
         created() {
         },
         methods: {
-            onClickContragent(id) {
-                this.$router.push({ name: 'contragent', params: { id: id } });
-            }
         }
     };
 </script>

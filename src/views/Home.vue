@@ -358,23 +358,29 @@
         },
         methods: {
             scrollUp() {
-                this.$refs.list.scrollTo(
-                    {
-                        'top': this.$refs.list.scrollTop - 60,
-                        'behavior': 'smooth'
-                    }
-                )
+                if (this.$refs.list) {
+                    this.$refs.list.scrollTo(
+                        {
+                            'top': this.$refs.list.scrollTop - 60,
+                            'behavior': 'smooth'
+                        }
+                    )
+                }
             },
             scrollDown() {
-                this.$refs.list.scrollTo(
-                    {
-                        'top': this.$refs.list.scrollTop + 60,
-                        'behavior': 'smooth'
-                    }
-                )
+                if (this.$refs.list) {
+                    this.$refs.list.scrollTo(
+                        {
+                            'top': this.$refs.list.scrollTop + 60,
+                            'behavior': 'smooth'
+                        }
+                    )
+                }
             },
             onResize () {
-                this.scrollbarVisible = this.$refs.list.scrollHeight > this.$refs.list.clientHeight
+                if (this.$refs.list) {
+                    this.scrollbarVisible = this.$refs.list.scrollHeight > this.$refs.list.clientHeight
+                }
             },
         },
     };
