@@ -1,45 +1,43 @@
 <template>
     <div class="search">
         <div class="search__inner">
-            <div class="search__form">
-                <form
-                    class="search-form"
-                    @submit.prevent=""
-                >
-                    <div class="search-form__group">
-                        <div class="search-form__field">
-                            <input
-                                type="text"
-                                class="search-form__input"
-                                placeholder="Поиск торгово-закупочных процедур"
-                            >
-                        </div>
-                        <div class="search-form__filter">
-                            <button
-                                type="button"
-                                class="button button-red button-filter"
-                            >
-                                Фильтр
-                            </button>
-                        </div>
-                    </div>
-                    <div class="search-form__submit">
-                        <button
-                            type="submit"
-                            class="button button-green"
+            <form
+                class="search__form"
+                @submit.prevent=""
+            >
+                <div class="search__form-group">
+                    <div class="search__form-field">
+                        <input
+                            type="text"
+                            class="search__form-input"
+                            placeholder="Поиск торгово-закупочных процедур"
                         >
-                            Поиск
+                    </div>
+                    <div class="search__form-filter">
+                        <button
+                            type="button"
+                            class="button button-red button-filter"
+                        >
+                            Фильтр
                         </button>
                     </div>
-                </form>
-            </div>
+                </div>
+                <div class="search__form-submit">
+                    <button
+                        type="submit"
+                        class="button button-green"
+                    >
+                        Поиск
+                    </button>
+                </div>
+            </form>
         </div>
     </div>
 </template>
 
 <script>
     export default {
-        name: 'AppSearch',
+        name: 'search',
         components: {
         },
         props: {

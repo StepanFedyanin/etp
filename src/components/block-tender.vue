@@ -16,6 +16,42 @@
             <div class="tenders__item-param">
                 <span>Регион:</span> Свердловская область
             </div>
+            <div
+                v-if="whole"
+                class="tenders__item-docs"
+            >
+                <div class="tenders__item-docs__title">
+                    Документы:
+                </div>
+                <div class="tenders__item-docs__list">
+                    <div class="tenders__item-docs__item">
+                        <div class="tenders__item-docs__cell m--title">
+                            Файл
+                        </div>
+                        <div class="tenders__item-docs__cell m--title">
+                            Описание
+                        </div>
+                    </div>
+                    <div class="tenders__item-docs__item">
+                        <a
+                            href="#"
+                            class="tenders__item-docs__cell m--file"
+                        >Требование к материалам.pdf</a>
+                        <div class="tenders__item-docs__cell m--desc">
+                            Описание объекта закупки
+                        </div>
+                    </div>
+                    <div class="tenders__item-docs__item">
+                        <a
+                            href="#"
+                            class="tenders__item-docs__cell m--file"
+                        >Приложение 1.pdf</a>
+                        <div class="tenders__item-docs__cell m--desc">
+                            Пример приложения с каким-то текстом
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
         <div class="tenders__item-right">
             <div class="tenders__item-price">
@@ -36,7 +72,33 @@
             <div class="tenders__item-param">
                 <span>Предложений от поставщиков:</span> 5
             </div>
+            <div
+                v-if="whole"
+                class="tenders__item-timer"
+            >
+                <div class="tenders__item-timer-date">
+                    Прием заявок: до 21.03.2022 11:59 МСК
+                </div>
+                <div class="tenders__item-timer-left">
+                    Осталось 1 день 23 часа
+                </div>
+            </div>
+            <div class="tenders__item-participate">
+                <button
+                    class="button button-green"
+                    @click="onClickParticipate(tender.id)"
+                >
+                    Участвовать
+                </button>
+            </div>
         </div>
+        <div
+            v-if="whole"
+            class="tenders__item-toggle"
+            :class="{'tenders__item-toggle--active': isShowPositions}"
+            @click="isShowPositions = !isShowPositions"
+            v-text="isShowPositions ? 'Скрыть информацию' : 'Показать информацию'"
+        />
     </div>
 </template>
 
@@ -48,15 +110,23 @@
                 default() { return ''; }
             },
             tender: {
-                type: Object,
-                default() { return {}; }
+                type: Number,
+                default: 1
+            },
+            whole: {
+                type: Boolean,
+                default: false
             },
         },
         data() {
             return {
+                isShowPositions: false
             };
         },
         methods: {
+            onClickParticipate(id) {
+                this.$router.push({ name: 'tender', params: { id: id } });
+            }
         }
     };
 </script>

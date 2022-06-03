@@ -54,7 +54,7 @@
                         грузоперевозок и 12 других
                     </div>
                     <div class="auction__search">
-                        <appSearch />
+                        <search />
                     </div>
                     <div class="auction__list">
                         <div
@@ -297,14 +297,14 @@
 <script>
     // import Header from '../components/app-header.vue';
     //import Footer from '../components/app-footer.vue';
-    import appSearch from '../components/app-search.vue';
+    import search from '../components/app-search.vue';
 
     export default {
         name: 'Home',
         components: {
             //Header,
             //Footer,
-            appSearch,
+            search,
         },
         data() {
             return {
