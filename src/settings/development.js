@@ -13,7 +13,7 @@ const serviceUrl = {
     localPath: '//localhost',
     protocol: 'http',
     port: '8000',
-    api: '/api',
+    api: '',
     onLocal: false
 }
 

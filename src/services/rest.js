@@ -59,7 +59,9 @@ class REST {
         });
     }
     static _getAuthHeaders() {
-        return { 'Authorization': `Bearer ${store.state.token}` };
+        if (store.state.token) {
+            return { 'Authorization': `Bearer ${store.state.token}` };
+        }
     }
     static _cancelToken() {
         return ajax.cancelToken();

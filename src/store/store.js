@@ -24,8 +24,8 @@ export default createStore({
             state.user = user;
         },
         updateToken(state, tokens) {
-            state.token = tokens.token;
-            state.refreshToken = tokens.refreshToken;
+            state.token = tokens.access;
+            state.refreshToken = tokens.refresh;
         },
         removeToken(state) {
             state.token = null;
@@ -39,6 +39,9 @@ export default createStore({
         }
     },
     actions: {
+        setToken(context, tokens) {
+            context.commit('updateToken', tokens);
+        },
         setUser(context, user) {
             context.commit('user', user);
         },

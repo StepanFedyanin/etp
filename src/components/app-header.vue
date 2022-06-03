@@ -62,7 +62,7 @@
                                 class="header__popup"
                             >
                                 <div class="header__popup-title">
-                                    Безбородов А.А.
+                                    ID: {{ user.id }} Безбородов А.А.
                                     <a 
                                         href="#" 
                                         class="header__popup-close"

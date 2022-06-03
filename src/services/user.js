@@ -63,10 +63,34 @@ export default class extends REST {
     }
 
     static addProfile(params) {
-        return this._post(`profile`, {}, params).then((data) => {
+        return this._post(`profiles`, {}, params).then((data) => {
             return data;
         }).catch((error) => {
             throw new RESTError(error, 'Не удалось добавить пользователя');
+        });
+    }
+
+    static searchOrganization(params) {
+        return this._post(`organizations/search`, {}, params).then((data) => {
+            return data;
+        }).catch((error) => {
+            throw new RESTError(error, 'Не удалось осуществить поиск');
+        });
+    }
+
+    static addOrganization(params) {
+        return this._post(`organizations`, {}, params).then((data) => {
+            return data;
+        }).catch((error) => {
+            throw new RESTError(error, 'Не удалось создать организацию');
+        });
+    }
+
+    static getOrganization(params) {
+        return this._get(`organizations`, {}, params).then((data) => {
+            return data;
+        }).catch((error) => {
+            throw new RESTError(error, 'Не удалось получить организацию');
         });
     }
 }

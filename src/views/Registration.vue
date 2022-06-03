@@ -2,33 +2,33 @@
     <div class="app__main">
         <div class="registration">
             <div class="container">
+                {{ formData }}
                 <div
                     v-if="stepRegistration === 1"
                 >
                     <div class="registration__title h2">
                         Укажите инн и кпп вашей организации
                     </div>
-                    <div
-                        class="registration__form form"
+                    <FormKit
+                        name="form-search"
+                        v-model="formData"
+                        type="form"
+                        data-loading="showLoaderSending"
+                        form-class="$reset registration__form form"
+                        submit-label="Далее"
+                        :disabled="showLoaderSending"
+                        :loading="showLoaderSending ? true : undefined"
+                        :submit-attrs="{
+                            inputClass: '$reset button button-green',
+                            wrapperClass: '$reset form__submit',
+                            outerClass: '$reset',
+                        }"
+                        @submit="submitSearchHandler"
                     >
-                        <organization-search-form
-                            ref="search"
-                            :values="item.search"
-                            :header="header"
-                            @change="checkValid"
-                            @next="searchOrg"
-                            @prev="prevPerson"
-                        />
-                        <div class="form__submit auth__form-submit">
-                            <button
-                                type="submit"
-                                class="button button-green"
-                                @click="next"
-                            >
-                                Далее
-                            </button>
-                        </div>                    
-                    </div>
+                        <div class="form__block">
+                            <FormKitSchema :schema="regSearchForm" />
+                        </div>
+                    </FormKit>
                 </div>
                 <div
                     v-if="stepRegistration === 2"
@@ -39,28 +39,44 @@
                     <div
                         class="registration__form form"
                     >
-                        <organization-add-form
-                            ref="organization"
-                            :values="item.organization"
-                            :header="header"
-                            @change="checkValid"
-                            @next="searchOrg"
-                            @prev="prevPerson"
-                        />
-                        <div class="form__submit auth__form-submit">
-                            <button
-                                class="button button-red"
-                                @click="prev"
-                            >
-                                Назад
-                            </button>
-                            <button
-                                class="button button-green"
-                                @click="next"
-                            >
-                                Далее
-                            </button>
-                        </div>                    
+                        <div
+                            v-if="regData.search"
+                            class="registration__organization"
+                        >
+                            {{ regData.organization.name }} {{ regData.organization.inn }}
+                        </div>
+                        <FormKit
+                            name="form-organization"
+                            v-model="formData"
+                            type="form"
+                            data-loading="showLoaderSending"
+                            form-class="$reset registration__form form"
+                            :actions="false"
+                            :disabled="showLoaderSending"
+                            :loading="showLoaderSending ? true : undefined"
+                            @submit="submitOrganizationHandler"
+                        >
+                            <div class="form__block">
+                                <FormKitSchema :schema="regOrganizationForm" />
+                            </div>
+                            <div class="form__submit auth__form-submit" data-type="submit">
+                                <button
+                                    :disabled="showLoaderSending"
+                                    class="button button-red"
+                                    @click="prev"
+                                >
+                                    Назад
+                                </button>
+                                <button
+                                    type="submit"
+                                    :disabled="showLoaderSending"
+                                    class="button button-green"
+                                    @click="submitForm"
+                                >
+                                    Далее
+                                </button>
+                            </div> 
+                        </FormKit>
                     </div>
                 </div>
                 <div
@@ -72,27 +88,38 @@
                     <div
                         class="registration__form form"
                     >
-                        <person-add-form
-                            ref="person"
-                            :values="item.person"
-                            :header="header"
-                            @next="searchOrg"
-                            @prev="prevPerson"
-                        />
-                        <div class="form__submit auth__form-submit">
-                            <button
-                                class="button button-red"
-                                @click="prev"
-                            >
-                                Назад
-                            </button>
-                            <button
-                                class="button button-green"
-                                @click="next"
-                            >
-                                Далее
-                            </button>
-                        </div>                    
+                        <FormKit
+                            name="form-person"
+                            v-model="formData"
+                            type="form"
+                            data-loading="showLoaderSending"
+                            form-class="$reset registration__form form"
+                            :actions="false"
+                            :disabled="showLoaderSending"
+                            :loading="showLoaderSending ? true : undefined"
+                            @submit="submitPersonHandler"
+                        >
+                            <div class="form__block">
+                                <FormKitSchema :schema="regPersonForm" />
+                            </div>
+                            <div class="form__submit auth__form-submit" data-type="submit">
+                                <button
+                                    :disabled="showLoaderSending"
+                                    class="button button-red"
+                                    @click="prev"
+                                >
+                                    Назад
+                                </button>
+                                <button
+                                    type="submit"
+                                    :disabled="showLoaderSending"
+                                    class="button button-green"
+                                    @click="submitForm"
+                                >
+                                    Далее
+                                </button>
+                            </div> 
+                        </FormKit>                  
                     </div>
                 </div>
                 <div
@@ -153,76 +180,203 @@
 </template>
 
 <script>
-    import organizationSearchForm from '@/components/registration/organization-search-form';
-    import organizationAddForm from '@/components/registration/organization-add-form';
-    import personAddForm from '@/components/registration/person-add-form';
-    import inviteAddForm from '@/components/registration/invite-add-form';
+    import { user as api } from "@/services";
+    //import organizationSearchForm from '@/components/registration/organization-search-form';
+    //import organizationAddForm from '@/components/registration/organization-add-form';
+    //import personAddForm from '@/components/registration/person-add-form';
+    //import inviteAddForm from '@/components/registration/invite-add-form';
     //import modal from "@/components/modal";
 
     export default {
         components: {
             //modal,
-            organizationSearchForm,
-            organizationAddForm,
-            personAddForm,
-            inviteAddForm
+            //organizationSearchForm,
+            //organizationAddForm,
+            //personAddForm,
+            //inviteAddForm
         },
         props: {
-            header: {
-                type: String,
-                default() { return ''; }
-            },
         },        
         data() {
             return {
-                stage: 'search',
-                result: undefined,
-                modalCloseBrowser: false,
+                formData: {},
+                regData: {},
+                showLoaderSending: false,
+                regSearchForm: [
+                    {
+                        $formkit: 'text',
+                        name: 'inn',
+                        label: 'ИНН',
+                        placeholder: 'Ваш ИНН',
+                        validation: 'required',
+                        outerClass: 'field--inline field--required'
+                    }, {
+                        $formkit: 'text',
+                        name: 'kpp',
+                        label: 'КПП',
+                        placeholder: 'Ваш КПП',
+                        validation: 'required',
+                        outerClass: 'field--inline field--required'
+                    }
+                ],
+                regOrganizationForm: [
+                    {
+                        $formkit: 'text',
+                        name: 'inn',
+                        //readonly: true,
+                        label: 'ИНН',
+                        placeholder: 'Ваш ИНН',
+                        validation: 'required',
+                        outerClass: 'field--inline field--required'
+                    }, {
+                        $formkit: 'text',
+                        name: 'kpp',
+                        //readonly: true,
+                        label: 'КПП',
+                        placeholder: 'Ваш КПП',
+                        validation: 'required',
+                        outerClass: 'field--inline field--required'
+                    }, {
+                        $formkit: 'text',
+                        name: 'ogrn',
+                        label: 'ОГРН',
+                        placeholder: 'ОГРН организации',
+                        validation: 'required',
+                        outerClass: 'field--inline field--required'
+                    }, {
+                        $formkit: 'text',
+                        name: 'name',
+                        label: 'Название организации',
+                        validation: 'required',
+                        outerClass: 'field--inline field--required'
+                    }, {
+                        $formkit: 'date',
+                        name: 'date_registration',
+                        label: 'Дата регистрации организации',
+                        validation: 'required',
+                        outerClass: 'field--inline field--required'
+                    }, {
+                        $formkit: 'text',
+                        name: 'head_name',
+                        label: 'ФИО руководителя организации',
+                        validation: 'required',
+                        outerClass: 'field--inline field--required'
+                    }, {
+                        $formkit: 'text',
+                        name: 'head_post',
+                        label: 'Должность руководителя организации',
+                        validation: 'required',
+                        outerClass: 'field--inline field--required'
+                    }, {
+                        $formkit: 'text',
+                        name: 'accountant_name',
+                        label: 'ФИО бухгалтера организации',
+                        outerClass: 'field--inline'
+                    }, {
+                        $formkit: 'text',
+                        name: 'legal_address',
+                        label: 'Юридический адрес организации',
+                        validation: 'required',
+                        outerClass: 'field--inline field--required'
+                    }, {
+                        $formkit: 'text',
+                        name: 'actual_address',
+                        label: 'Фактический адрес организации',
+                        validation: 'required',
+                        outerClass: 'field--inline field--required'
+                    }, {
+                        $formkit: 'text',
+                        name: 'okpo',
+                        label: 'ОКПО',
+                        validation: 'required',
+                        outerClass: 'field--inline field--required'
+                    }, {
+                        $formkit: 'text',
+                        name: 'capital',
+                        label: 'Сумма уставного капитала',
+                        validation: 'required',
+                        outerClass: 'field--inline field--required'
+                    }, {
+                        $formkit: 'text',
+                        name: 'principal_activity',
+                        label: 'Основной виде деятельности (ОКВЭД)',
+                        validation: 'required',
+                        outerClass: 'field--inline field--required'
+                    }
+                ],
+                regPersonForm: [
+                    {
+                        $formkit: 'hidden',
+                        name: 'organization',
+                    }, {
+                        $formkit: 'email',
+                        name: 'login',
+                        label: 'Email (Логин)',
+                        validation: 'required',
+                        outerClass: 'field--inline field--required'
+                    }, {
+                        $formkit: 'password',
+                        name: 'password',
+                        label: 'Пароль',
+                        validation: 'required',
+                        outerClass: 'field--inline field--required'
+                    }, {
+                        $formkit: 'password',
+                        name: 'password_confirm',
+                        label: 'Повтор пароля',
+                        validation: 'required',
+                        outerClass: 'field--inline field--required'
+                    }, {
+                        $formkit: 'text',
+                        name: 'last_name',
+                        label: 'Фамилия',
+                        outerClass: 'field--inline'
+                    }, {
+                        $formkit: 'text',
+                        name: 'first_name',
+                        label: 'Имя',
+                        outerClass: 'field--inline'
+                    }, {
+                        $formkit: 'text',
+                        name: 'patronymic',
+                        label: 'Отчество',
+                        outerClass: 'field--inline'
+                    }, {
+                        $formkit: 'text',
+                        name: 'post',
+                        label: 'Должность',
+                        outerClass: 'field--inline'
+                    }, {
+                        $formkit: 'email',
+                        name: 'email',
+                        label: 'Email (контактный)',
+                        validation: 'required',
+                        outerClass: 'field--inline field--required'
+                    }, {
+                        $formkit: 'text',
+                        name: 'phone',
+                        label: 'Телефон (контактный)',
+                        outerClass: 'field--inline'
+                    }
+                ],
                 stepRegistration: this.$store.state.stepRegistration || 1,
                 inviteNumbers: 1,
                 isValid: false,
                 person: {},
-                organization: {}
             };
         },
         computed: {
-            item() {
-                return {
-                    person: this.person,
-                    organization: this.organization,
-                };
-            },
-            params() {
-                return {
-                    search: this.$refs.search.serialize(),
-                    organization: this.$refs.organization.serialize(),
-                };
-            }
         },
         methods: {
-            checkValid() {
-                // this.isValid = !!(this.$refs.search.validate());
-            },
             addInvite() {
                 this.inviteNumbers++;
             },
-            isStage(stage) {
-                return this.stage === stage;
-            },
-            goTo(stage) {
-                this.stage = stage;
-            },
-            serialize() {
-                return this.params;
-            },
             prev() {
-                console.log(this.serialize());
                 this.$store.dispatch('setStepRegistration', this.stepRegistration - 1);
                 this.stepRegistration = this.$store.state.stepRegistration;
                 //this.$emit('prev', this.serialize());
             },
             next() {
-                console.log(this.serialize());
                 if (this.stepRegistration !== 4) {
                     this.$store.dispatch('setStepRegistration', this.stepRegistration + 1);
                     this.stepRegistration = this.$store.state.stepRegistration;
@@ -232,14 +386,73 @@
                     this.$router.push({ name: 'auth' });
                 }
             },
-            prevPerson() {
-                this.prev();
+            submitSearchHandler(data, node) {
+                console.log(this.formData);
+                let params = this.formData;
+                this.regData.search = Object.assign({}, this.formData);
+                this.showLoaderSending = true;
+                api.searchOrganization(params).then(res => {
+                    this.showLoaderSending = false;
+                    console.log(res.length);
+                    if (res.inn) {
+                        this.formData = res;
+                        this.regData.organization = Object.assign({}, this.formData);
+                    } else {
+                        this.formData = this.regData.search;
+                    }
+                    this.next();
+                }).catch(err => {
+                    node.setErrors(
+                        [err.detail],
+                    );
+                    this.showLoaderSending = false;
+                    this.$store.dispatch('showError', err);
+                    console.error(err);
+                });
             },
-            searchOrg() {
-                console.log('ff')
+            submitOrganizationHandler(data, node) {
+                console.log(this.formData);
+                let params = this.formData;
+                this.regData.organization = Object.assign({}, this.formData);
+                this.showLoaderSending = true;
+                api.addOrganization(params).then(res => {
+                    this.showLoaderSending = false;
+                    console.log(res);
+                    this.regData.organization = res;
+                    this.formData = {
+                        organization: res.id
+                    }
+                    this.next();
+                }).catch(err => {
+                    node.setErrors(
+                        [err.detail],
+                    );
+                    this.showLoaderSending = false;
+                    this.$store.dispatch('showError', err);
+                    console.error(err);
+                });
             },
-            prevConfirm() {
-                this.goTo('agents');
+            submitPersonHandler(data, node) {
+                console.log(this.formData);
+                let params = this.formData;
+                this.regData.person = Object.assign({}, this.formData);
+                this.showLoaderSending = true;
+                api.addProfile(params).then(res => {
+                    this.showLoaderSending = false;
+                    console.log(res);
+                    this.regData.person = res;
+                    this.formData = {
+                        person: res.id
+                    }
+                    this.next();
+                }).catch(err => {
+                    node.setErrors(
+                        [err.detail],
+                    );
+                    this.showLoaderSending = false;
+                    this.$store.dispatch('showError', err);
+                    console.error(err);
+                });
             },
         }
     };

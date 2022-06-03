@@ -3,7 +3,7 @@
     padding-bottom: 24px;
     margin-bottom: 8px;
 
-    &--inline {
+    &--inline &__inner {
         /*@mixin main-grid;*/
         display: grid;
         grid-template-columns: repeat(8, 1fr);
@@ -53,13 +53,16 @@
         position: relative;
     }
 
-    &__error &__input {
+    &__error &__input,
+    &[data-invalid=true] &__input,
+    &[data-errors=true] &__input {
         &:after {
             content: '';
+            position: absolute;
             display: block;
             right: 12px;
             top: calc(50% - 12px);
-            background-image: svg-load('assets/img/icons/field-erro.svg', fill=$color-red);
+            background-image: svg-load('assets/img/icons/field-error.svg', fill=$color-red);
             background-repeat: no-repeat;
             background-position: center;
             background-size: contain;
@@ -68,8 +71,17 @@
         }
     }
 
+    &[data-invalid=true] .input,
+    &[data-errors=true] .input {
+        border-color: $color-red;
+        background-color: rgba($color-red, 0.03);
+        color: $color-red;
+    }
+
     &__comment {
         position: relative;
+        font-size: 14px;
+        color: $color-gray-T3;
     }
 
     &--inline &__input {
@@ -81,9 +93,6 @@
     }
 
     &--inline &__comment {
-        margin-left: -8px;
-        max-height: 37px;
-        line-height: 1;
-        grid-column: 9/11;
+
     }
 }
