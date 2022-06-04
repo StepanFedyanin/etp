@@ -39,15 +39,23 @@ export default class extends REST {
     }
 
     static updateMyProfile() {
-        return this._get('profile', {}).then((data) => {
+        return this._put('update_user', {}).then((data) => {
             return data;
         }).catch((error) => {
             throw new RESTError(error, 'Ошибка при обновлении профиля');
         });
     }
 
+    static addProfile(params) {
+        return this._post(`create_user`, {}, params).then((data) => {
+            return data;
+        }).catch((error) => {
+            throw new RESTError(error, 'Не удалось добавить пользователя');
+        });
+    }
+
     static getProfile(id) {
-        return this._get(`users/${id}`, {}).then((data) => {
+        return this._get(`profiles/${id}`, {}).then((data) => {
             return data;
         }).catch((error) => {
             throw new RESTError(error, 'Ошибка при получении профиля пользователя');
@@ -55,18 +63,10 @@ export default class extends REST {
     }
 
     static updateProfile(id, params) {
-        return this._patch(`users/${id}`, {}, params).then((data) => {
+        return this._put(`profiles/${id}`, {}, params).then((data) => {
             return data;
         }).catch((error) => {
             throw new RESTError(error, 'Ошибка при обновлении профиля', { request: { params } });
-        });
-    }
-
-    static addProfile(params) {
-        return this._post(`profiles`, {}, params).then((data) => {
-            return data;
-        }).catch((error) => {
-            throw new RESTError(error, 'Не удалось добавить пользователя');
         });
     }
 

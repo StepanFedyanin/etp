@@ -34,6 +34,9 @@ export default createStore({
         stepRegistration(state, step) {
             state.stepRegistration = step;
         },
+        regData(state, data) {
+            state.regData = data;
+        },
         updateError(state, error) {
             state.error = error;
         }
@@ -51,6 +54,9 @@ export default createStore({
         },
         setStepRegistration(context, step) {
             context.commit('stepRegistration', step);
+        },
+        setRegData(context, data) {
+            context.commit('regData', data);
         },
         showError(context, error) {
             context.commit('error', error);

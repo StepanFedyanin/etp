@@ -2,7 +2,7 @@
     <div class="app__main">
         <div class="registration">
             <div class="container">
-                {{ formData }}
+                {{ regData }}
                 <div
                     v-if="stepRegistration === 1"
                 >
@@ -11,7 +11,8 @@
                     </div>
                     <FormKit
                         name="form-search"
-                        v-model="formData"
+                        v-model="regData.search"
+                        preserve
                         type="form"
                         data-loading="showLoaderSending"
                         form-class="$reset registration__form form"
@@ -40,14 +41,15 @@
                         class="registration__form form"
                     >
                         <div
-                            v-if="regData.search"
+                            v-if="regData.organization"
                             class="registration__organization"
                         >
                             {{ regData.organization.name }} {{ regData.organization.inn }}
                         </div>
                         <FormKit
                             name="form-organization"
-                            v-model="formData"
+                            v-model="regData.organization"
+                            preserve
                             type="form"
                             data-loading="showLoaderSending"
                             form-class="$reset registration__form form"
@@ -90,7 +92,8 @@
                     >
                         <FormKit
                             name="form-person"
-                            v-model="formData"
+                            v-model="regData.person"
+                            preserve
                             type="form"
                             data-loading="showLoaderSending"
                             form-class="$reset registration__form form"
@@ -199,8 +202,7 @@
         },        
         data() {
             return {
-                formData: {},
-                regData: {},
+                regData: this.$store.state.regData || { search: {}, organization: {}, person: {} },
                 showLoaderSending: false,
                 regSearchForm: [
                     {
@@ -247,6 +249,12 @@
                         $formkit: 'text',
                         name: 'name',
                         label: 'Название организации',
+                        validation: 'required',
+                        outerClass: 'field--inline field--required'
+                    }, {
+                        $formkit: 'text',
+                        name: 'full_name',
+                        label: 'Полное название организации',
                         validation: 'required',
                         outerClass: 'field--inline field--required'
                     }, {
@@ -367,6 +375,11 @@
         },
         computed: {
         },
+        created() {
+            console.log('BLA BLA', this.regData);
+        },
+        mounted() {
+        },
         methods: {
             addInvite() {
                 this.inviteNumbers++;
@@ -374,6 +387,7 @@
             prev() {
                 this.$store.dispatch('setStepRegistration', this.stepRegistration - 1);
                 this.stepRegistration = this.$store.state.stepRegistration;
+                //this.regData = this.$store.state.regData;
                 //this.$emit('prev', this.serialize());
             },
             next() {
@@ -387,19 +401,18 @@
                 }
             },
             submitSearchHandler(data, node) {
-                console.log(this.formData);
-                let params = this.formData;
-                this.regData.search = Object.assign({}, this.formData);
+                //this.regData.search = Object.assign({}, this.formData);
+                //this.$store.dispatch('setRegData', this.regData);
                 this.showLoaderSending = true;
+                let params = Object.assign({}, this.regData.search);
                 api.searchOrganization(params).then(res => {
                     this.showLoaderSending = false;
-                    console.log(res.length);
                     if (res.inn) {
-                        this.formData = res;
-                        this.regData.organization = Object.assign({}, this.formData);
+                        this.regData.organization = Object.assign({}, res);
                     } else {
-                        this.formData = this.regData.search;
+                        this.regData.organization = Object.assign({}, params);
                     }
+                    this.$store.dispatch('setRegData', this.regData);
                     this.next();
                 }).catch(err => {
                     node.setErrors(
@@ -411,17 +424,16 @@
                 });
             },
             submitOrganizationHandler(data, node) {
-                console.log(this.formData);
-                let params = this.formData;
-                this.regData.organization = Object.assign({}, this.formData);
                 this.showLoaderSending = true;
+                let params = Object.assign({}, this.regData.organization);
                 api.addOrganization(params).then(res => {
                     this.showLoaderSending = false;
                     console.log(res);
-                    this.regData.organization = res;
-                    this.formData = {
+                    this.regData.organization = Object.assign({}, res);
+                    this.regData.person = {
                         organization: res.id
                     }
+                    this.$store.dispatch('setRegData', this.regData);
                     this.next();
                 }).catch(err => {
                     node.setErrors(
@@ -433,24 +445,25 @@
                 });
             },
             submitPersonHandler(data, node) {
-                console.log(this.formData);
-                let params = this.formData;
-                this.regData.person = Object.assign({}, this.formData);
                 this.showLoaderSending = true;
+                let params = Object.assign({}, this.regData.person);
                 api.addProfile(params).then(res => {
                     this.showLoaderSending = false;
                     console.log(res);
-                    this.regData.person = res;
-                    this.formData = {
-                        person: res.id
-                    }
+                    this.regData.person = Object.assign({}, res);
+                    this.$store.dispatch('setRegData', this.regData);
                     this.next();
                 }).catch(err => {
+                    console.log(err)
                     node.setErrors(
-                        [err.detail],
+                        [err.detail || ''],
+                        {
+                            email: '',
+                            login: ''
+                        }
                     );
                     this.showLoaderSending = false;
-                    this.$store.dispatch('showError', err);
+                    //this.$store.dispatch('showError', err);
                     console.error(err);
                 });
             },
