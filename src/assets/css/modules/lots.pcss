@@ -1,6 +1,9 @@
 .lots {
     padding: 20px 0;
-    @mixin shadow-box;
+    
+    &:not(.m--tenders){
+        @mixin shadow-box;
+    }
 
     &__header,
     &__item {
@@ -8,12 +11,38 @@
         grid-template-columns: 30px auto 70px 70px 100px 140px 20% 100px;
         grid-template-areas: 'A B C D E F G H';
         gap: 10px;
-    }
 
+    }
+    
     &.m--with-button &__header,
     &.m--with-button &__item {
         grid-template-columns: 30px auto 70px 70px 100px 140px 300px;
         grid-template-areas: 'A B C D E F G';
+    }
+
+    &.m--tenders &__header,
+    &.m--tenders &__item {
+        grid-template-columns: 100px 60% 20% 60px;
+        grid-template-areas: 'A B C D';
+    }
+
+    &.m--tenders &__header{
+        color: $color-gray-T3;
+        font-weight: 400;
+        font-size: 16px;
+        border-bottom: 1px solid $color-shadow;
+    }
+
+    &.m--tenders &__item {
+        &:nth-child(n+6) {
+            display: none;
+        }
+    }
+
+    &.m--tenders.m--active &__item {
+        &:nth-child(n+6) {
+            display: grid;
+        }
     }
 
     &__header {

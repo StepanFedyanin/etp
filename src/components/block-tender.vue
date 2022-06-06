@@ -94,10 +94,117 @@
         </div>
         <div
             v-if="whole"
+            class="tenders__item-lots lots m--tenders"
+            :class="{'m--active': isShowPositions}"
+        >
+            <div class="lots__header">
+                <div class="lots__header-cell m--position">
+                    №
+                </div>
+                <div class="lots__header-cell m--name">
+                    Описание
+                </div>
+                <div class="lots__header-cell m--nums">
+                    Кол/во
+                </div>
+                <div class="lots__header-cell m--unit">
+                    ед.изм
+                </div>
+            </div>
+            <div class="lots__list">
+                <div class="lots__item">
+                    <div class="lots__item-cell m--position">
+                        1
+                    </div>
+                    <div class="lots__item-cell">
+                        Цемент М 500, 50 кг. (штука)
+                    </div>
+                    <div class="lots__item-cell">
+                        20
+                    </div>
+                    <div class="lots__item-cell">
+                        кг.
+                    </div>
+                </div>
+                <div class="lots__item">
+                    <div class="lots__item-cell m--position">
+                        2
+                    </div>
+                    <div class="lots__item-cell">
+                        Цемент строительный
+                    </div>
+                    <div class="lots__item-cell">
+                        200
+                    </div>
+                    <div class="lots__item-cell">
+                        шт.
+                    </div>
+                </div>
+                <div class="lots__item">
+                    <div class="lots__item-cell m--position">
+                        3
+                    </div>
+                    <div class="lots__item-cell">
+                        Цемент строительный
+                    </div>
+                    <div class="lots__item-cell">
+                        200
+                    </div>
+                    <div class="lots__item-cell">
+                        шт.
+                    </div>
+                </div>
+                <div class="lots__item">
+                    <div class="lots__item-cell m--position">
+                        4
+                    </div>
+                    <div class="lots__item-cell">
+                        Цемент строительный
+                    </div>
+                    <div class="lots__item-cell">
+                        200
+                    </div>
+                    <div class="lots__item-cell">
+                        шт.
+                    </div>
+                </div>
+
+                <div class="lots__item">
+                    <div class="lots__item-cell m--position">
+                        5
+                    </div>
+                    <div class="lots__item-cell">
+                        Цемент строительный
+                    </div>
+                    <div class="lots__item-cell">
+                        200
+                    </div>
+                    <div class="lots__item-cell">
+                        шт.
+                    </div>
+                </div>
+                <div class="lots__item">
+                    <div class="lots__item-cell m--position">
+                        6
+                    </div>
+                    <div class="lots__item-cell">
+                        Цемент строительный
+                    </div>
+                    <div class="lots__item-cell">
+                        200
+                    </div>
+                    <div class="lots__item-cell">
+                        шт.
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div
+            v-if="whole"
             class="tenders__item-toggle"
             :class="{'tenders__item-toggle--active': isShowPositions}"
             @click="isShowPositions = !isShowPositions"
-            v-text="isShowPositions ? 'Скрыть информацию' : 'Показать информацию'"
+            v-text="isShowPositions ? 'Скрыть 1 позицию' : 'Показать 1 позицию'"
         />
     </div>
 </template>
