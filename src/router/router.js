@@ -122,7 +122,7 @@ const routes = [
                 component: cabinetTendersItem,
                 meta: { 
                     title: 'Тендер', 
-                    breadcrumbs: ['cabinet', 'cabinetTenders'],
+                    breadcrumbs: ['cabinet', 'tenders'],
                     requiresAuth: true 
                 },
                 props: true,

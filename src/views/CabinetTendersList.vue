@@ -41,7 +41,7 @@
             </div>
             <div class="tenders">
                 <blockTender
-                    v-for="(tender, index) in 5"
+                    v-for="(tender, index) in tenders"
                     :key="`tender-${index}`"
                     :tender="tender"
                     :whole="true"
@@ -66,7 +66,19 @@
             return {
                 current: 1,
                 pageCount: 4,
-                tenders: [],
+                tenders: [
+                    {
+                        id: 1
+                    }, {
+                        id: 2
+                    }, {
+                        id: 3
+                    }, {
+                        id: 4
+                    }, {
+                        id: 5
+                    }
+                ],
             }
         },
         mounted() {

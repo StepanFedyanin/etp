@@ -1,0 +1,227 @@
+.tender {
+    &__block {
+        position: relative;
+        display: flex;
+        justify-content: space-between;
+        flex-wrap: wrap;
+        margin: 0 -1% 24px;
+    }
+
+    &__info {
+        position: relative;
+        display: flex;
+        flex-wrap: wrap;
+        padding: 20px;
+        margin-bottom: 48px;
+        @mixin shadow-box;
+
+        &-left {
+            padding-right: 48px;
+            border-right: 1px solid $color-gray-T5;
+            width: 70%;
+        }
+
+        &-right {
+            padding-left: 20px;
+            width: 30%;
+        }
+
+        &-title {
+            font-weight: 600;
+            font-size: 20px;
+            line-height: 24px;
+            text-transform: uppercase;
+            margin-bottom: 24px;
+        }
+
+        &-param {
+            margin-bottom: 16px;
+            font-weight: 400;
+
+            span,
+            a {
+                font-weight: 600;
+            }
+            a {
+                color: $color-green;
+            }
+        }
+
+        &-price {
+            color: $color-green;
+            margin-bottom: 24px;
+            font-style: normal;
+            font-weight: 700;
+            font-size: 34px;
+            line-height: 40px;
+        }
+    }       
+
+    &__docs {
+        width: 60%;
+        padding: 20px;
+        margin: 0 1% 24px;
+        @mixin shadow-box;
+
+        &-title {
+            font-weight: 700;
+            font-size: 20px;
+            text-transform: uppercase;
+            color: $color-black;
+            margin-bottom: 16px;
+        }
+
+        &-item {
+            display: grid;
+            grid-template-columns: 50% 50%;
+            grid-template-areas: 'A B';
+            gap: 12px;
+
+        }
+
+        &-cell {
+            padding-bottom: 12px;
+            &.m {
+                &--title {
+                    font-weight: 400;
+                    font-size: 16px;
+                    color: $color-gray-T3;
+                }
+
+                &--file {
+                    font-weight: 700;
+                    font-size: 16px;
+                    text-decoration: underline;
+                    color: $color-green;
+
+                    &:hover {
+                        text-decoration: none;
+                    }
+                }
+
+                &--desc {
+                    font-weight: 400;
+                    font-size: 16px;
+                    color: $color-black;
+                }
+            }
+        }
+    }
+
+    &__contact {
+        width: 36%;
+        padding: 20px;
+        margin: 0 1% 24px;
+        @mixin shadow-box;
+
+        &-title {
+            font-weight: 700;
+            font-size: 20px;
+            text-transform: uppercase;
+            color: $color-black;
+            margin-bottom: 16px;
+        }
+        &-param {
+            margin-bottom: 16px;
+            font-weight: 400;
+
+            span,
+            a {
+                font-weight: 600;
+            }
+            a {
+                color: $color-green;
+            }
+        }
+    }
+
+    &__data {
+        position: relative;
+        display: flex;
+        width: 31.33%;
+        padding: 36px 24px;
+        margin: 0 1% 24px;
+        min-width: 360px;
+        @mixin shadow-box;
+
+        &-icon {
+            position: relative;
+            display: block;
+            width: 64px;
+            min-width: 64px;
+            height: 64px;
+            border-radius: 10px;
+            background: $color-green;
+            margin-right: 16px;
+
+            &.m--red {
+                background: $color-red;
+            }
+
+            &:after {
+                content: '';
+                position: absolute;
+                top: 50%;
+                left: 50%;
+                width: 54px;
+                height: 54px;
+                margin-top: -27px;
+                margin-left: -27px;
+            }
+
+            &.m--timer:after {
+                background: url('./assets/img/icons/icon-timer.svg') 50% 50% no-repeat;
+            }
+
+            &.m--status:after {
+                background: url('./assets/img/icons/icon-status.svg') 50% 50% no-repeat;
+            }
+
+            &.m--clock:after {
+                background: url('./assets/img/icons/icon-clock.svg') 50% 50% no-repeat;
+            }
+        }
+
+        &-inner {
+
+        }
+
+        &-title {
+            font-weight: 700;
+            font-size: 20px;
+            line-height: 24px;
+            text-transform: uppercase;
+            color: $color-gray-T3;
+            margin-bottom: 8px;
+            hyphens: auto;
+            word-break: break-word;
+        }
+        &-info {
+            font-weight: 700;
+            font-size: 22px;
+            line-height: 30px;
+            text-transform: uppercase;
+            hyphens: auto;
+            word-break: break-word;
+        }
+    }
+
+    &__lots {
+        margin-bottom: 48px;
+    }
+
+    &__offers {
+        display: flex;
+        flex-direction: column;
+        margin: 0 1% 24px;
+        width: 60%;
+    }
+
+    &__stats {
+        position: relative;
+        display: flex;
+        flex-direction: column;
+        margin: 0 1% 24px;
+        width: 36%;
+    }
+}

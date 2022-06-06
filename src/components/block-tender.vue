@@ -110,8 +110,10 @@
                 default() { return ''; }
             },
             tender: {
-                type: Number,
-                default: 1
+                type: Object,
+                default() { return {
+                    id: 1
+                }; }
             },
             whole: {
                 type: Boolean,

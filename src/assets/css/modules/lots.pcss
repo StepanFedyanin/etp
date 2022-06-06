@@ -1,0 +1,59 @@
+.lots {
+    padding: 20px 0;
+    @mixin shadow-box;
+
+    &__header,
+    &__item {
+        display: grid;
+        grid-template-columns: 30px auto 70px 70px 100px 140px 20% 100px;
+        grid-template-areas: 'A B C D E F G H';
+        gap: 10px;
+    }
+
+    &.m--with-button &__header,
+    &.m--with-button &__item {
+        grid-template-columns: 30px auto 70px 70px 100px 140px 300px;
+        grid-template-areas: 'A B C D E F G';
+    }
+
+    &__header {
+        font-weight: 700;
+        color: $color-red;
+        margin: 0 20px 12px;
+
+        &-cell {
+            padding: 12px 0;
+
+            &.m--button {
+                text-align: center;
+            }
+        }
+    }
+    &__list {}
+
+    &__item {
+        margin: 0 20px 16px;
+
+        &:nth-child(2n) {
+            background: $color-bg;
+        }
+
+        &-cell {
+            padding: 12px 0;
+            font-weight: 400;
+
+            &.m--position {
+                padding-left: 12px;
+            }
+
+            &.m--bet {
+                font-weight: 600;
+            }
+
+            &.m--button {
+                padding: 0;
+                text-align: center;
+            }
+        }
+    }        
+}

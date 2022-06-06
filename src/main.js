@@ -1,5 +1,6 @@
 import { createApp } from 'vue';
 import { plugin, defaultConfig } from '@formkit/vue';
+import { vfmPlugin } from 'vue-final-modal';
 import { ru } from '@formkit/i18n';
 import App from './App.vue';
 
@@ -13,6 +14,8 @@ const app = createApp(App);
 app.use(store);
 app.use(router);
 app.use(helpers);
+
+app.use(vfmPlugin);
 
 const confFormKit = {
     locales: { ru },
