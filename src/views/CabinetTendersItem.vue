@@ -425,59 +425,20 @@
                 </div>
             </div>
         </div>
-        <vue-final-modal 
-            v-model="showAddLotModal"
-            classes="modal__container" 
-            content-class="modal__block"
-        >
-            <button 
-                class="modal__close" 
-                @click="hideAddLotModal"
-            >
-                <span></span>
-            </button>
-            <span class="modal__title">Сделать ставку</span>
-            <div class="modal__content">
-                <div class="offers m--no-padding m--no-background m--no-shadow m--modal">
-                    <div class="offers__list">
-                        <div class="offers__item">
-                            <div class="offers__item-name">Запчасть №1</div>
-                            <div class="offers__item-info">
-                                <div class="offers__item-param">
-                                    Начальная цена <span>22 000,00 ₽</span>
-                                </div>
-                                <div class="offers__item-param m--color-red">
-                                    Текущая цена <span>17 900,00 ₽</span>
-                                </div>
-                                <div class="offers__item-param">
-                                    Текущее снижение <span>20.1 %</span>
-                                </div>
-                                <div class="offers__item-param">
-                                    Цена за ед. без НДС <span>500,00 ₽</span>
-                                </div>
-                                <div class="offers__item-param">
-                                    Цена за ед. с НДС <span>600,00 ₽</span>
-                                </div>
-                                <div class="offers__item-param">
-                                    Количество <span>50</span>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div
-                v-if="footer"
-                class="modal__footer"
-            >
-            </div>
-        </vue-final-modal>
+
+        <ModalAddLot
+            :showModal="showAddLotModal"
+            @hideModal="hideAddLotModal"
+        />
     </div>
 </template>
 
 <script>
+    import ModalAddLot from '@/components/modal-add-lot.vue';
+
     export default {
         components: {
+            ModalAddLot
         },
         data() {
             return {

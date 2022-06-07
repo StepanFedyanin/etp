@@ -29,6 +29,12 @@ const helpers = {
         if (!params) {
             params = {};
         }
+        let kop = Math.floor((Math.abs(value - Math.floor(value)) + 0.005) * 100);
+        if (kop < 10) {
+            kop = '0' + kop;
+        }
+        console.log(kop);
+        value = Math.floor(value + 0.0001);
         value = value + '';
         let text = '';
         let l = value.length;
@@ -42,6 +48,9 @@ const helpers = {
                 text = text + value.substr(i, k);
             }
             i = i + k;
+        }
+        if (params.pointer) {
+            text = text + params.pointer + kop;
         }
         if (params.sign) {
             text = text + ' ' + params.sign;

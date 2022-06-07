@@ -80,8 +80,13 @@
 
     &__comment {
         position: relative;
-        font-size: 14px;
+        font-size: 10px;
+        font-weight: 400;
+        padding-top: 8px;
         color: $color-gray-T3;
+        [data-message-type=validation] {
+            color: $color-red;
+        }
     }
 
     &--inline &__input {
