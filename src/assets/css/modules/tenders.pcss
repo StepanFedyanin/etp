@@ -1,4 +1,6 @@
 .tenders {
+    
+    
     &__item {
         position: relative;
         display: flex;
@@ -6,6 +8,20 @@
         padding: 20px;
         margin-bottom: 24px;
         @mixin shadow-box;
+
+        &-favorite {
+            position: absolute;
+            width: 32px;
+            height: 32px;
+            right: 32px;
+            top: 17px;
+            background-image: svg-load('./assets/img/icons/icon-star.svg', fill=$color-gray-T4);
+            cursor: pointer;
+
+            @mixin responsive-le-xl {
+                right: 17px;
+            }
+        }
 
         &-left {
             padding-right: 48px;
@@ -16,6 +32,11 @@
         &-right {
             padding-left: 20px;
             width: 30%;
+            padding-right: 40px;
+
+            @mixin responsive-le-xl {
+                padding-right: 20px;
+            }
         }
 
         &-title {
@@ -169,13 +190,7 @@
         }
 
         &-select {
-            @mixin select;
-
-            background-repeat: no-repeat;
-            background-position: calc(100% - 16px) center;
-            background-size: 14px 7px;
-            background-color: $color-white;
-            background-image: svg-load('assets/img/icons/icon-arrow-select.svg', fill=$color-green);
+            @mixin select--with-arrow;
         }
     }
 

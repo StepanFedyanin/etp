@@ -1,7 +1,7 @@
 .lots {
     padding: 20px 0;
     
-    &:not(.m--tenders){
+    &:not(.m--tenders, .m--tender-start, .m--docs){
         @mixin shadow-box;
     }
 
@@ -31,6 +31,28 @@
         font-weight: 400;
         font-size: 16px;
         border-bottom: 1px solid $color-shadow;
+    }
+
+    &.m--docs &__header,
+    &.m--docs &__item {
+        grid-template-columns: 25% auto 60px 60px;
+        grid-template-areas: 'A B C D';
+    }
+
+    &.m--docs &__header{
+        color: $color-gray-T3;
+        font-weight: 400;
+        font-size: 16px;
+    }
+
+    &.m--tender-start &__header,
+    &.m--tender-start &__item {
+        grid-template-columns: auto 90px 90px 120px 120px 160px 40px 40px;
+        grid-template-areas: 'A B C D E F G H';
+    }
+
+    &.m--tender-start &__header{
+        font-weight: 400;
     }
 
     &.m--tenders &__item {
@@ -83,6 +105,35 @@
                 padding: 0;
                 text-align: center;
             }
+
+            &.m--filename {
+                text-decoration: underline;
+                font-weight: 700;
+                font-size: 16px;
+                color: $color-gray-T2;
+                cursor: pointer;
+
+                &:hover {
+                    text-decoration: none;
+                }
+            }
+        }
+
+        &-edit,
+        &-delete {
+            display: block;
+            width: 24px;
+            height: 24px;
+            cursor: pointer;
+            background-size: contain;
+        }
+
+        &-edit {
+            background-image: url('./assets/img/icons/icon-edit.svg');
+        }
+
+        &-delete {
+            background-image: url('./assets/img/icons/icon-delete.svg');
         }
     }        
 }

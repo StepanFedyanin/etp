@@ -61,6 +61,17 @@
     &::-ms-expand {
         display: none;
     }
+
+}
+
+@define-mixin select--with-arrow {
+    @mixin select;
+
+    background-repeat: no-repeat;
+    background-position: calc(100% - 16px) center;
+    background-size: 14px 7px;
+    background-color: $color-white;
+    background-image: svg-load('assets/img/icons/icon-arrow-select.svg', fill=$color-green);
 }
 
 @define-mixin textarea {
