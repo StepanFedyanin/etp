@@ -10,8 +10,8 @@
                         Укажите инн и кпп вашей организации
                     </div>
                     <FormKit
-                        name="form-search"
                         v-model="regData.search"
+                        name="form-search"
                         preserve
                         type="form"
                         data-loading="showLoaderSending"
@@ -47,8 +47,8 @@
                             {{ regData.organization.name }} {{ regData.organization.inn }}
                         </div>
                         <FormKit
-                            name="form-organization"
                             v-model="regData.organization"
+                            name="form-organization"
                             preserve
                             type="form"
                             data-loading="showLoaderSending"
@@ -61,7 +61,10 @@
                             <div class="form__block">
                                 <FormKitSchema :schema="regOrganizationForm" />
                             </div>
-                            <div class="form__submit registration__form-submit" data-type="submit">
+                            <div 
+                                class="form__submit auth__form-submit" 
+                                data-type="submit"
+                            >
                                 <button
                                     :disabled="showLoaderSending"
                                     class="button button-red"
@@ -91,8 +94,8 @@
                         class="registration__form form"
                     >
                         <FormKit
-                            name="form-person"
                             v-model="regData.person"
+                            name="form-person"
                             preserve
                             type="form"
                             data-loading="showLoaderSending"
@@ -105,7 +108,10 @@
                             <div class="form__block">
                                 <FormKitSchema :schema="regPersonForm" />
                             </div>
-                            <div class="form__submit registration__form-submit" data-type="submit">
+                            <div   
+                                class="form__submit auth__form-submit" 
+                                data-type="submit"
+                            >
                                 <button
                                     :disabled="showLoaderSending"
                                     class="button button-red"
@@ -192,11 +198,9 @@
     //import organizationAddForm from '@/components/registration/organization-add-form';
     //import personAddForm from '@/components/registration/person-add-form';
     //import inviteAddForm from '@/components/registration/invite-add-form';
-    //import modal from "@/components/modal";
 
     export default {
         components: {
-            //modal,
             //organizationSearchForm,
             //organizationAddForm,
             //personAddForm,
@@ -411,14 +415,11 @@
             prev() {
                 this.$store.dispatch('setStepRegistration', this.stepRegistration - 1);
                 this.stepRegistration = this.$store.state.stepRegistration;
-                //this.regData = this.$store.state.regData;
-                //this.$emit('prev', this.serialize());
             },
             next() {
                 if (this.stepRegistration !== 4) {
                     this.$store.dispatch('setStepRegistration', this.stepRegistration + 1);
                     this.stepRegistration = this.$store.state.stepRegistration;
-                    //this.$emit('next', this.serialize());
                 } else {
                     this.$store.dispatch('setStepRegistration', null);
                     this.$store.dispatch('setRegData', null);
@@ -426,8 +427,6 @@
                 }
             },
             submitSearchHandler(data, node) {
-                //this.regData.search = Object.assign({}, this.formData);
-                //this.$store.dispatch('setRegData', this.regData);
                 this.showLoaderSending = true;
                 let params = Object.assign({}, this.regData.search);
                 api.searchOrganization(params).then(res => {
@@ -490,9 +489,6 @@
                         this.showLoaderSending = false;
                         this.$store.dispatch('showError', 'Ошибка получения токена');
                     }
-                    //this.regData.person = Object.assign({}, res);
-                    //this.$store.dispatch('setRegData', this.regData);
-                    //this.next();
                 }).catch(err => {
                     console.log(err)
                     node.setErrors(
@@ -503,7 +499,7 @@
                         }
                     );
                     this.showLoaderSending = false;
-                    //this.$store.dispatch('showError', err);
+                    this.$store.dispatch('showError', err);
                     console.error(err);
                 });
             },

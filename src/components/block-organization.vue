@@ -70,7 +70,7 @@
                     </div>
                 </div>
             </div>
-            <div class="contragent__block-col">
+            <div class="organization__block-col">
                 <div class="organization__block-item">
                     <div class="organization__block-item-name">
                         Рейтинг светофора:

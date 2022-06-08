@@ -11,12 +11,16 @@ import registration from '@/views/Registration';
 import auth from '@/views/Login';
 /* cabinet */
 import cabinet from '@/views/Cabinet';
+import cabinetProfile from '@/views/CabinetProfile';
+import CabinetProfileEdit from '@/views/CabinetProfileEdit';
 import cabinetTenders from '@/views/CabinetTenders';
 import cabinetTendersList from '@/views/CabinetTendersList';
 import cabinetTendersItem from '@/views/CabinetTendersItem';
+import cabinetTenderStart from '@/views/CabinetTenderStart';
 import cabinetContragents from '@/views/CabinetContragents';
 import cabinetContragentsList from '@/views/CabinetContragentsList';
 import cabinetContragentsItem from '@/views/CabinetContragentsItem';
+import CabinetOrganization from '@/views/CabinetOrganization';
 import cabinetNews from '@/views/CabinetNews';
 import groups from '@/views/Groups';
 
@@ -84,7 +88,7 @@ const routes = [
     }, {
         path: '/cabinet/profile',
         name: 'profile',
-        component: cabinet,
+        component: cabinetProfile,
         meta: { 
             title: 'Мой профиль', 
             breadcrumbs: ['cabinet'],
@@ -92,9 +96,19 @@ const routes = [
         },
         props: true,
     }, {
+        path: '/cabinet/profile/edit',
+        name: 'profile-edit',
+        component: CabinetProfileEdit,
+        meta: { 
+            title: 'Редактирование профиля', 
+            breadcrumbs: ['cabinet'],
+            requiresAuth: true 
+        },
+        props: true,
+    }, {
         path: '/cabinet/organization',
         name: 'organization',
-        component: cabinet,
+        component: CabinetOrganization,
         meta: { 
             title: 'Моя организация', 
             breadcrumbs: ['cabinet'],
@@ -197,7 +211,7 @@ const routes = [
     }, {
         path: '/cabinet/tender-start',
         name: 'tender-start',
-        component: cabinet,
+        component: cabinetTenderStart,
         meta: { 
             title: 'Объявить тендер', 
             breadcrumbs: ['cabinet'],
@@ -214,7 +228,7 @@ const routes = [
                 name: 'contragents',
                 component: cabinetContragentsList,
                 meta: { 
-                    title: 'Контрагент', 
+                    title: 'Контрагенты', 
                     breadcrumbs: ['cabinet'],
                     requiresAuth: true 
                 },
