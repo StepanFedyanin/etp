@@ -61,7 +61,7 @@
                             <div class="form__block">
                                 <FormKitSchema :schema="regOrganizationForm" />
                             </div>
-                            <div class="form__submit auth__form-submit" data-type="submit">
+                            <div class="form__submit registration__form-submit" data-type="submit">
                                 <button
                                     :disabled="showLoaderSending"
                                     class="button button-red"
@@ -105,7 +105,7 @@
                             <div class="form__block">
                                 <FormKitSchema :schema="regPersonForm" />
                             </div>
-                            <div class="form__submit auth__form-submit" data-type="submit">
+                            <div class="form__submit registration__form-submit" data-type="submit">
                                 <button
                                     :disabled="showLoaderSending"
                                     class="button button-red"
@@ -134,8 +134,17 @@
                     <div class="registration__content text">
                         <p>Вы сможете найти себе проверенных поставщиков или поучаствовать в тендере ....<br> Укажите ФИО и email, площадка отправит приглашения на указанную почту.</p>
                     </div>
-                    <div
-                        class="registration__form form"
+                    <FormKit
+                        name="form-invite"
+                        v-model="regData.invite"
+                        preserve
+                        type="form"
+                        data-loading="showLoaderSending"
+                        form-class="$reset registration__form form"
+                        :actions="false"
+                        :disabled="showLoaderSending"
+                        :loading="showLoaderSending ? true : undefined"
+                        @submit="submitPersonHandler"
                     >
                         <div
                             v-for="invite in inviteNumbers"
@@ -146,36 +155,31 @@
                             >
                                 Приглашение №{{ invite }}
                             </div>
-                            <invite-add-form
-                                v-if="isStage('search')"
-                                ref="person"
-                                :values="item.person"
-                                :header="header"
-                                @next="searchOrg"
-                                @prev="prevPerson"
-                            />
+                            <div class="form__block">
+                                <FormKitSchema :schema="regInviteForm" />
+                            </div>
+                            <div class="form__submit registration__form-submit" data-type="submit">
+                                <button
+                                    class="button button-green"
+                                    @click="addInvite"
+                                >
+                                    Добавить приглашение
+                                </button>
+                                <button
+                                    class="button button-green"
+                                    @click="sendInvite"
+                                >
+                                    Отправить приглашение
+                                </button>
+                                <button
+                                    class="button button-red"
+                                    @click="next"
+                                >
+                                    Завершить регистрацию
+                                </button>
+                            </div> 
                         </div>
-                        <div class="form__submit auth__form-submit">
-                            <button
-                                class="button button-green"
-                                @click="addInvite"
-                            >
-                                Добавить приглашение
-                            </button>
-                            <button
-                                class="button button-green"
-                                @click="sendInvite"
-                            >
-                                Отправить приглашение
-                            </button>
-                            <button
-                                class="button button-red"
-                                @click="next"
-                            >
-                                Завершить регистрацию
-                            </button>
-                        </div>                    
-                    </div>
+                    </FormKit>
                 </div>
             </div>
         </div>
@@ -318,7 +322,7 @@
                         name: 'organization',
                     }, {
                         $formkit: 'email',
-                        name: 'login',
+                        name: 'email',
                         label: 'Email (Логин)',
                         validation: 'required',
                         outerClass: 'field--inline field--required'
@@ -332,39 +336,60 @@
                         $formkit: 'password',
                         name: 'password_confirm',
                         label: 'Повтор пароля',
-                        validation: 'required',
+                        validation: 'required|confirm',
                         outerClass: 'field--inline field--required'
                     }, {
                         $formkit: 'text',
                         name: 'last_name',
                         label: 'Фамилия',
-                        outerClass: 'field--inline'
+                        validation: 'required',
+                        outerClass: 'field--inline field--required'
                     }, {
                         $formkit: 'text',
                         name: 'first_name',
                         label: 'Имя',
-                        outerClass: 'field--inline'
+                        validation: 'required',
+                        outerClass: 'field--inline field--required'
                     }, {
                         $formkit: 'text',
                         name: 'patronymic',
                         label: 'Отчество',
-                        outerClass: 'field--inline'
+                        validation: 'required',
+                        outerClass: 'field--inline field--required'
                     }, {
                         $formkit: 'text',
                         name: 'post',
                         label: 'Должность',
-                        outerClass: 'field--inline'
-                    }, {
-                        $formkit: 'email',
-                        name: 'email',
-                        label: 'Email (контактный)',
                         validation: 'required',
                         outerClass: 'field--inline field--required'
+                    }, {
+                        $formkit: 'email',
+                        name: 'contact_email',
+                        label: 'Email (контактный)',
+                        //validation: 'required',
+                        outerClass: 'field--inline'
                     }, {
                         $formkit: 'text',
                         name: 'phone',
                         label: 'Телефон (контактный)',
                         outerClass: 'field--inline'
+                    }
+                ],
+                regInviteForm: [
+                    {
+                        $formkit: 'text',
+                        name: 'person',
+                        label: 'ФИО',
+                        placeholder: 'ФИО',
+                        validation: 'required',
+                        outerClass: 'field--inline field--required'
+                    }, {
+                        $formkit: 'text',
+                        name: 'email',
+                        label: 'Email',
+                        placeholder: 'Email',
+                        validation: 'required',
+                        outerClass: 'field--inline field--required'
                     }
                 ],
                 stepRegistration: this.$store.state.stepRegistration || 1,
@@ -376,7 +401,6 @@
         computed: {
         },
         created() {
-            console.log('BLA BLA', this.regData);
         },
         mounted() {
         },
@@ -397,7 +421,8 @@
                     //this.$emit('next', this.serialize());
                 } else {
                     this.$store.dispatch('setStepRegistration', null);
-                    this.$router.push({ name: 'auth' });
+                    this.$store.dispatch('setRegData', null);
+                    this.$router.push({ name: 'cabinet' });
                 }
             },
             submitSearchHandler(data, node) {
@@ -446,13 +471,28 @@
             },
             submitPersonHandler(data, node) {
                 this.showLoaderSending = true;
+                this.$store.dispatch('setRegData', this.regData);
                 let params = Object.assign({}, this.regData.person);
                 api.addProfile(params).then(res => {
-                    this.showLoaderSending = false;
                     console.log(res);
-                    this.regData.person = Object.assign({}, res);
-                    this.$store.dispatch('setRegData', this.regData);
-                    this.next();
+                    if (res.access && res.refresh) {
+                        this.$store.dispatch('setToken', res);
+                        api.getMyProfile().then(res => {
+                            this.showLoaderSending = false;
+                            this.$store.dispatch('setUser', res);
+                            this.next();
+                        }).catch(err => {
+                            this.showLoaderSending = false;
+                            this.$store.dispatch('showError', err);
+                            console.error(err);
+                        });
+                    } else {
+                        this.showLoaderSending = false;
+                        this.$store.dispatch('showError', 'Ошибка получения токена');
+                    }
+                    //this.regData.person = Object.assign({}, res);
+                    //this.$store.dispatch('setRegData', this.regData);
+                    //this.next();
                 }).catch(err => {
                     console.log(err)
                     node.setErrors(

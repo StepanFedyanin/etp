@@ -66,7 +66,7 @@
                             </div>
                             <div class="form__submit">
                                 <div class="offers__item-price">
-                                    Стоимость лота: {{ $helpers.toPrice(formData.sum, {pointer: ',', sign: '₽'}) }}
+                                    Стоимость лота: {{ $helpers.toPrice(formData.sum, { pointer: ',', sign: '₽' }) }}
                                 </div>
                                 <button
                                     type="submit"

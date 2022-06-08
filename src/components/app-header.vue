@@ -62,7 +62,7 @@
                                 class="header__popup"
                             >
                                 <div class="header__popup-title">
-                                    ID: {{ user.id }} Безбородов А.А.
+                                    {{ user.last_name }} {{ user.first_name ? user.first_name[0] + '.' : '' }} {{ user.patronymic ? user.patronymic[0] + '.' : '' }}
                                     <a 
                                         href="#" 
                                         class="header__popup-close"
