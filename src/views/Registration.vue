@@ -10,8 +10,8 @@
                         Укажите инн и кпп вашей организации
                     </div>
                     <FormKit
-                        name="form-search"
                         v-model="regData.search"
+                        name="form-search"
                         preserve
                         type="form"
                         data-loading="showLoaderSending"
@@ -47,8 +47,8 @@
                             {{ regData.organization.name }} {{ regData.organization.inn }}
                         </div>
                         <FormKit
-                            name="form-organization"
                             v-model="regData.organization"
+                            name="form-organization"
                             preserve
                             type="form"
                             data-loading="showLoaderSending"
@@ -61,7 +61,10 @@
                             <div class="form__block">
                                 <FormKitSchema :schema="regOrganizationForm" />
                             </div>
-                            <div class="form__submit auth__form-submit" data-type="submit">
+                            <div 
+                                class="form__submit auth__form-submit" 
+                                data-type="submit"
+                            >
                                 <button
                                     :disabled="showLoaderSending"
                                     class="button button-red"
@@ -91,8 +94,8 @@
                         class="registration__form form"
                     >
                         <FormKit
-                            name="form-person"
                             v-model="regData.person"
+                            name="form-person"
                             preserve
                             type="form"
                             data-loading="showLoaderSending"
@@ -105,7 +108,10 @@
                             <div class="form__block">
                                 <FormKitSchema :schema="regPersonForm" />
                             </div>
-                            <div class="form__submit auth__form-submit" data-type="submit">
+                            <div   
+                                class="form__submit auth__form-submit" 
+                                data-type="submit"
+                            >
                                 <button
                                     :disabled="showLoaderSending"
                                     class="button button-red"

@@ -3,35 +3,9 @@
         <Breadcrumbs />
         <div class="cabinet">
             <div class="container">
-                <div class="11">
-                    Кабинет в разработке
-                </div>
+                <div class="sidebar__menu-link" @click="onClickProfile">Мой профиль</div>
+                <div class="sidebar__menu-link" @click="onClickOrganization">Моя организация</div>
                 <!-- <CabinetProfile /> -->
-                <!-- <div class="cabinet__content text">
-                    <h1>Сотрудник организации</h1>
-
-                    <div>{{ user.email }}</div>
-
-                    <ProfileUser />
-                    <h2 class="cabinet__subtitle">
-                        Информация о компании
-                    </h2>
-                    <div class="cabinet__block">
-                        <blockOrganization 
-                            :blockClass="contragent__organization"
-                            :organization="organization"
-                        />
-                    </div>
-                    <h2 class="cabinet__subtitle">
-                        Представители организации
-                    </h2>
-                    <div class="cabinet__block cabinet__persons">
-                        <blockPersons 
-                            :blockClass="contragent__persons"
-                            :persons="persons"
-                        />
-                    </div>
-                </div> -->
             </div>
         </div>
     </div>
@@ -110,58 +84,14 @@
         beforeDestroy() {
         },
         created() {
-            // console.log(this.formData);
-            // let params = this.formData;
-            // api.getMyProfile(params).then(res => {
-            //     console.log(res);
-
-            //     // user.email = res.email;
-            //     this.email = res.email;
-            //     console.log(this.email);
-            //     this.organization = res.organization;
-            //     this.formData = {
-            //         organization: res.id
-            //     }
-            //     // this.showLoaderSending = false;
-            //     // this.$store.dispatch('setUser', res);
-            //     // this.next();
-            // }).catch(err => {
-            //     // this.showLoaderSending = false;
-            //     // this.$store.dispatch('showError', err);
-            //     console.error(err);
-            // });
-
-            // console.log(this.formData);
-            // // // let params = this.formData;
-
         },
         methods: {
-            // onClickContragent(id) {
-            //     this.$router.push({ name: 'contragent', params: { id: id } });
-            // },
-
-            // submitOrganizationHandler(data, node) {
-            //     console.log(this.formData);
-            //     let params = this.formData;
-            //     this.regData.organization = Object.assign({}, this.formData);
-            //     this.showLoaderSending = true;
-            //     api.getOrganization(params).then(res => {
-            //         this.showLoaderSending = false;
-            //         console.log(res);
-            //         this.regData.organization = res;
-            //         this.formData = {
-            //             organization: res.id
-            //         }
-            //         this.next();
-            //     }).catch(err => {
-            //         node.setErrors(
-            //             [err.detail],
-            //         );
-            //         this.showLoaderSending = false;
-            //         this.$store.dispatch('showError', err);
-            //         console.error(err);
-            //     });
-            // },
+            onClickProfile() {
+                this.$router.push({ name: 'profile'});
+            },
+            onClickOrganization(){
+                this.$router.push({ name: 'organization'})
+            }
         }
     };
 </script>

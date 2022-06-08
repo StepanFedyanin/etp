@@ -75,9 +75,26 @@
             validation-visibility="dirty"
             autocomplete="off"
         />
+        <FormKit
+            type="button"
+            class="button button-red"
+            @click="onClickCancel"
+        >
+            Отменить
+        </FormKit>
+        <!-- <FormKit
+            type="button"
+            help="You can bind event listeners."
+            class="button button-green"
+            @click="onClickUpdateUser"
+        >
+            Сохранить
+        </FormKit> -->
     </FormKit>
 </template>
 <script>
+    import { user as api } from "@/services";
+
     export default {
         data() {
             return {
@@ -86,15 +103,29 @@
                     password: 'test_password',
                     password_confirm: 'tst_password',
                     phone: undefined,
-                    twitter_handle: 'forgotTheAt',
                 },
             }
+        },
+        created(){
+            api.getMyProfile().then(res => {
+                console.log(res);
+                this.profile = res
+            }).catch(err => {
+                // this.showLoaderSending = false;
+                // this.$store.dispatch('showError', err);
+                console.error(err);
+            });
+            console.log(this.formData);
         },
         methods: {
             async submit() {
                 return new Promise((r) => setTimeout(r, 2000))
                 // alert('submitted successfully!')
             },
+            onClickCancel() {
+                this.$router.push({ name: 'profile'});
+            }
+            // onClickUpdateUser(){}
         },
     }
 </script>

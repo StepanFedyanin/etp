@@ -104,17 +104,17 @@
         created() {
             api.getMyProfile().then(res => {
                 console.log(res);
-                this.profile = res
-
+                this.profile = res;
+                if(this.organization){
+                    this.organization = res.organization;
+                    console.log(res.organization);
+                }
             }).catch(err => {
                 // this.showLoaderSending = false;
                 // this.$store.dispatch('showError', err);
                 console.error(err);
             });
-
             console.log(this.formData);
-
-
         },
         methods: {
         }
