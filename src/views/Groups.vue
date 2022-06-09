@@ -19,7 +19,7 @@
                                 Активных торгов: <span class="group__info-red">{{ group.bidding_count }}</span>
                             </div>
                             <div class="group__info-date">
-                                Последний аукцион: <span class="group__info-red">{{ group.last_bidding }}</span>
+                                Последний аукцион: <span class="group__info-red">{{ $helpers.formatDate(new Date(group.last_bidding), 'DD.MM.YYYY HH:mm Z') }}</span>
                             </div>
                         </div>
                         <Transition name="">

@@ -6,22 +6,6 @@ export default class extends REST {
         return settings;
     }
 
-    static obtainToken(params) {
-        return this._post('token/create', {}, params).then((data) => {
-            return data;
-        }).catch((error) => {
-            throw new RESTError(error, 'Ошибка при получении токена', { request: { params } });
-        });
-    }
-
-    static refreshToken(params) {
-        return this._post('token/refresh', {}, params).then((data) => {
-            return data;
-        }).catch((error) => {
-            throw new RESTError(error, 'Ошибка при обновлении токена', { request: { params } });
-        });
-    }
-
     static getTenderList() {
         return this._get('list', {}).then((data) => {
             return data;
