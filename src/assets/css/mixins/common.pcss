@@ -36,15 +36,19 @@
     & {
         scrollbar-width: thin;
         scrollbar-color: $color $background;
-        border-radius: ($width / 2);
+        /* border-radius: calc($width / 2); */
     }
+
     &::-webkit-scrollbar {
         height: $width;
         width: $width;
     }
+
     &::-webkit-scrollbar-track {
         background: $background;
+        border-radius: $width;
     }
+
     &::-webkit-scrollbar-thumb {
         background-color: $color;
         border-radius: calc($width / 2);

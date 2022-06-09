@@ -6,13 +6,20 @@
         <div class="tenders__item-favorite" />
         <div class="tenders__item-left">
             <div class="tenders__item-title">
-                Поставка инструмента для нужд ООО "Газпром МКС" в 2022 году (для субъектов малого и среднего предпринимательства) Поставка инструмента для нужд ООО "Газпром МКС" в 2022 году (для субъектов малого и среднего предпринимательства) (БАА 22862)
+                {{ tender.name }}
             </div>
             <div class="tenders__item-param">
                 <span>Заказчик:</span> <a href="#">ООО «Екатеринбургский Цементный Завод»</a>
             </div>
             <div class="tenders__item-param">
-                <span>Категории:</span> Автомобильное оборудование
+                <span>Категории:</span>
+                <span
+                    v-for="(category, idx) in tender.category"
+                    :key="category.id"
+                >
+                    {{ category.name }}
+                    <span v-if="idx != Object.keys(tender.category).length - 1">, </span>
+                </span>
             </div>
             <div class="tenders__item-param">
                 <span>Регион:</span> Свердловская область
@@ -56,7 +63,7 @@
         </div>
         <div class="tenders__item-right">
             <div class="tenders__item-price">
-                805 800 ₽
+                {{ $helpers.toPrice(tender.price, {pointer: ',', sign: '₽'}) }}
             </div>
             <div class="tenders__item-param">
                 <span>Аукцион №1234567</span>
@@ -65,10 +72,10 @@
                 <span>Объявлено:</span> 10.03.2022 11:59 МСК
             </div>
             <div class="tenders__item-param">
-                <span>Тип аукциона:</span> Открытый
+                <span>Тип аукциона:</span> {{ tender.type }}
             </div>
             <div class="tenders__item-param">
-                <span>Лоты:</span> 35
+                <span>Лоты:</span> {{ tender.lot_count }}
             </div>
             <div class="tenders__item-param">
                 <span>Предложений от поставщиков:</span> 5

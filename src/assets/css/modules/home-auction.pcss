@@ -33,17 +33,17 @@
             max-height: 700px;
             overflow-y: auto;
             overflow-x: visible;
-            padding: 0 50px 0 20px;
+            padding: 0 20px 0 20px;
             gap: 24px;
 
-            @mixin scrollbar #F1F1F1, $color-green, 10px;
+            @mixin scrollbar $color-shadow, $color-green, 10px;
 
             &::-webkit-scrollbar-track {
                 margin: 30px 0;
             }
-            
-            &::-webkit-scrollbar-thumb {
-                border-radius: 10px;
+
+            &.is-scrollbar {
+                padding: 0 50px 0 20px;
             }
         }
 
@@ -87,32 +87,23 @@
         }
 
         &-left {
-            position: relative;
-            padding-right: 100px;
-            
+            padding-right: 48px;
+            border-right: 1px solid $color-gray-T5;
+            width: 70%;
             
             @mixin responsive-le-l {
-                padding-right: 60px;
+                padding-right: 30px;
             }
             
             @mixin responsive-le-m {
                 padding-right: 20px;
             }
-
-            &::after {
-                content: '';
-                display: block;
-                position: absolute;
-                width: 1px;
-                height: 100%;
-                top: 0;
-                right: 0;
-                background-color: #E8E8E8;
-            }
         }
         
         &-right {
-            padding-left: 32px;
+            padding-left: 20px;
+            width: 30%;
+            padding-right: 40px;
         }
         
         &-title {

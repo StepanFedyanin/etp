@@ -43,7 +43,7 @@
                     </div>
                 </div>
             </div>
-            <div class="auction">
+            <div class="auction" ref="auction">
                 <div class="container">
                     <div class="h1 auction__title">
                         Проведено 3 500 торгов на 22.03.2022
@@ -56,7 +56,10 @@
                     <div class="auction__search">
                         <search />
                     </div>
-                    <div class="auction__list">
+                    <div
+                        class="auction__list"
+                        :class="{ 'is-scrollbar': scrollbarVisible }"
+                    >
                         <div
                             v-show="scrollbarVisible"
                             class="auction__list-up"
@@ -68,12 +71,13 @@
                             @click="scrollDown"
                         />
                         <div
-                            ref="list"
                             class="auction__list-inner"
+                            ref="list"
+                            v-if="tenderList && tenderList.count"
                         >
                             <div
-                                v-for="(item, key) in auctionList"
-                                :key="key"
+                                v-for="item in tenderList.results"
+                                :key="item.id"
                                 class="auction__item"
                             >
                                 <div class="auction__item-left">
@@ -98,13 +102,20 @@
                                 </div>
                                 <div class="auction__item-right">
                                     <div class="auction__item-prop">
-                                        Тип аукциона: {{ item.status }}
+                                        Тип аукциона: {{ item.type }}
                                     </div>
                                     <div class="auction__item-prop">
-                                        Лоты: {{ item.lots }}
+                                        Лоты: {{ item.lot_count }}
                                     </div>
                                     <div class="auction__item-prop">
-                                        Категории: {{ item.cats.join(', ') }}
+                                        Категории:
+                                        <span
+                                            v-for="(category, idx) in item.category"
+                                            :key="category.id"
+                                        >
+                                            {{ category.name }}
+                                            <span v-if="idx != Object.keys(item.category).length - 1">, </span>
+                                        </span>
                                     </div>
                                 </div>
                             </div>
@@ -295,6 +306,7 @@
 </template>
 
 <script>
+    import { tender } from "@/services";
     // import Header from '../components/app-header.vue';
     //import Footer from '../components/app-footer.vue';
     import search from '../components/app-search.vue';
@@ -308,44 +320,7 @@
         },
         data() {
             return {
-                auctionList: [
-                    {
-                        name: 'Аукцион № 1234567',
-                        description:
-                            'Поставка инструмента для нужд ООО "Газпром МКС" в 2022 году (для субъектов малого и среднего предпринимательства) Поставка инструмента для нужд ООО "Газпром МКС" в 2022 году (для субъектов малого и среднего предпринимательства) (БАА 22862)',
-                        type: 'Открытый',
-                        lots: 2,
-                        cats: [
-                            'Автомобильное оборудование',
-                            'Канцелярские принадлежности для офиса',
-                        ],
-                        status: 'Идет прием заявок',
-                    },
-                    {
-                        name: 'Аукцион № 1234567',
-                        description:
-                            'Поставка инструмента для нужд ООО "Газпром МКС" в 2022 году (для субъектов малого и среднего предпринимательства) Поставка инструмента для нужд ООО "Газпром МКС" в 2022 году (для субъектов малого и среднего предпринимательства) (БАА 22862)',
-                        type: 'Открытый',
-                        lots: 2,
-                        cats: [
-                            'Автомобильное оборудование',
-                            'Канцелярские принадлежности для офиса',
-                        ],
-                        status: 'Идет прием заявок',
-                    },
-                    {
-                        name: 'Аукцион № 1234567',
-                        description:
-                            'Поставка инструмента для нужд ООО "Газпром МКС" в 2022 году (для субъектов малого и среднего предпринимательства) Поставка инструмента для нужд ООО "Газпром МКС" в 2022 году (для субъектов малого и среднего предпринимательства) (БАА 22862)',
-                        type: 'Открытый',
-                        lots: 2,
-                        cats: [
-                            'Автомобильное оборудование',
-                            'Канцелярские принадлежности для офиса',
-                        ],
-                        status: 'Идет прием заявок',
-                    },
-                ],
+                tenderList: null,
                 resizeObserver: null,
                 scrollbarVisible: false,
             };
@@ -353,8 +328,16 @@
         computed: {
         },
         mounted () {
-            this.resizeObserver = new ResizeObserver(this.onResize)
-            this.resizeObserver.observe(this.$refs.list)
+            if (this.$refs.auction) {
+                this.resizeObserver = new ResizeObserver(this.onResize)
+                this.resizeObserver.observe(this.$refs.auction)
+            }
+
+            tender.getTenderList().then(res => {
+                this.tenderList = res
+            }).catch(err => {
+                console.error(err)
+            })
         },
         methods: {
             scrollUp() {
