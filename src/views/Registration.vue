@@ -141,8 +141,8 @@
                         <p>Вы сможете найти себе проверенных поставщиков или поучаствовать в тендере ....<br> Укажите ФИО и email, площадка отправит приглашения на указанную почту.</p>
                     </div>
                     <FormKit
-                        name="form-invite"
                         v-model="regData.invite"
+                        name="form-invite"
                         preserve
                         type="form"
                         data-loading="showLoaderSending"
@@ -164,7 +164,10 @@
                             <div class="form__block">
                                 <FormKitSchema :schema="regInviteForm" />
                             </div>
-                            <div class="form__submit registration__form-submit" data-type="submit">
+                            <div 
+                                class="form__submit registration__form-submit" 
+                                data-type="submit"
+                            >
                                 <button
                                     class="button button-green"
                                     @click="addInvite"

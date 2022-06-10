@@ -77,7 +77,7 @@
 </template>
 
 <script>
-    import { footerMenu } from '@/settings';
+    import { footerMenu, footerMenuUser } from '@/settings';
     export default {
         name: 'Footer',
         data() {
@@ -86,8 +86,13 @@
                 email: 'info@tugan.ru',
                 phoneSupport: '8 (800) 765-43-21',
                 emailSupport: 'help@tugan.ru',
-                menu: footerMenu
             };
         },
+        computed: {
+            menu() {
+                return (this.$store.state.user) ? footerMenuUser : footerMenu;
+            }
+        },
+
     };
 </script>

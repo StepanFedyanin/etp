@@ -260,7 +260,7 @@
                         <div class="lots__item-cell m--button">
                             <button 
                                 class="button button-green"
-                                @click="onClickAddLot()"
+                                @click="onClickAddLotOffer()"
                             >
                                 Сделать ставку
                             </button>
@@ -288,7 +288,7 @@
                         <div class="lots__item-cell m--button">
                             <button 
                                 class="button button-green"
-                                @click="onClickAddLot()"
+                                @click="onClickAddLotOffer()"
                             >
                                 Сделать ставку
                             </button>
@@ -426,23 +426,23 @@
             </div>
         </div>
 
-        <ModalAddLot
-            :showModal="showAddLotModal"
-            @hideModal="hideAddLotModal"
+        <ModalAddLotOffer
+            :showModal="showAddLotOfferModal"
+            @hideModal="hideAddLotOfferModal"
         />
     </div>
 </template>
 
 <script>
-    import ModalAddLot from '@/components/modal-add-lot.vue';
+    import ModalAddLotOffer from '@/components/modal-add-lot-offer.vue';
 
     export default {
         components: {
-            ModalAddLot
+            ModalAddLotOffer
         },
         data() {
             return {
-                showAddLotModal: false
+                showAddLotOfferModal: false
             }
         },
         mounted() {
@@ -452,11 +452,11 @@
         created() {
         },
         methods: {
-            onClickAddLot() {
-                this.showAddLotModal = true;
+            onClickAddLotOffer() {
+                this.showAddLotOfferModal = true;
             },
-            hideAddLotModal() {
-                this.showAddLotModal = false;
+            hideAddLotOfferModal() {
+                this.showAddLotOfferModal = false;
             }
         }
     };

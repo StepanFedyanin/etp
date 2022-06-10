@@ -75,8 +75,8 @@
                                             v-for="(item, key) in menuUser"
                                             :key="key"
                                             :to="{ name: item.name }"
-                                            custom
                                             v-slot="{ href, navigate, isActive, isExactActive }"
+                                            custom
                                         >
                                             <div 
                                                 class="header__popup-menu-item"
@@ -131,7 +131,7 @@
                     >Главная страница</a>
                 </div>
                 <div class="header__title h1">
-                    {{ $route.meta.title }} {{ $route.name === 'registration' ? this.$store.state.stepRegistration || 1 : '' }}
+                    {{ $route.meta.title }} {{ $route.name === 'registration' ? $store.state.stepRegistration || 1 : '' }}
                 </div>
             </div>
         </div>
@@ -139,7 +139,7 @@
 </template>
 
 <script>
-    import { headerMenu, userMenu } from '@/settings';
+    import { headerMenu, headerMenuUser, userMenu } from '@/settings';
 
     export default {
         name: 'Header',
@@ -147,7 +147,6 @@
             return {
                 phone: '8 (800) 123-45-67',
                 email: 'info@tugan.ru',
-                menu: headerMenu,
                 menuUser: userMenu,
                 showPopup: false
             };
@@ -155,6 +154,9 @@
         computed: {
             user() {
                 return this.$store.state.user;
+            },
+            menu() {
+                return (this.$store.state.user) ? headerMenuUser : headerMenu;
             }
         },
         methods: {

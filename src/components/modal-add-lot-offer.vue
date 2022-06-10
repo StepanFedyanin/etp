@@ -8,14 +8,16 @@
             class="modal__close" 
             @click="$emit('hideModal')"
         >
-            <span></span>
+            <span/>
         </button>
         <span class="modal__title">Сделать ставку</span>
         <div class="modal__content">
             <div class="offers m--no-padding m--no-background m--no-shadow m--modal">
                 <div class="offers__list">
                     <div class="offers__item">
-                        <div class="offers__item-name">Запчасть №1</div>
+                        <div class="offers__item-name">
+                            Запчасть №1
+                        </div>
                         <div class="offers__item-info">
                             <div class="offers__item-param">
                                 Начальная цена <span>22 000,00 ₽</span>

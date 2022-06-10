@@ -58,6 +58,22 @@ const headerMenu = [
     }
 ];
 
+const headerMenuUser = [
+    {
+        name: 'bidding',
+        role: 'all',
+        title: 'Торги'
+    }, {
+        name: 'groups',
+        role: 'all',
+        title: 'Товарные группы'
+    }, {
+        name: 'about',
+        role: 'all',
+        title: 'О площадке',
+    }
+];
+
 const userMenu = [
     {
         name: 'profile',
@@ -87,6 +103,22 @@ const footerMenu = [
         name: 'registration',
         role: 'all',
         title: 'Регистрация',
+    }
+];
+
+const footerMenuUser = [
+    {
+        name: 'needs',
+        role: 'all',
+        title: 'Наши потребности'
+    }, {
+        name: 'rules',
+        role: 'all',
+        title: 'Правила работы'
+    }, {
+        name: 'cabinet',
+        role: 'all',
+        title: 'Кабинет'
     }
 ];
 
@@ -169,7 +201,9 @@ export {
     // mainMenu,
     // accountMenu,
     headerMenu,
+    headerMenuUser,
     footerMenu,
+    footerMenuUser,
     userMenu,
     sidebarMenu,
 };
