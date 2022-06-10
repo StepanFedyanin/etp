@@ -39,9 +39,9 @@
                     </div>
                 </div>
             </div>
-            <div class="tenders">
+            <div class="tenders" v-if="tenders && tenders.count">
                 <blockTender
-                    v-for="(tender, index) in tenders"
+                    v-for="(tender, index) in tenders.results"
                     :key="`tender-${index}`"
                     :tender="tender"
                     :whole="true"
@@ -52,6 +52,7 @@
 </template>
 
 <script>
+    import { tender as api } from "@/services";
     import search from '@/components/app-search.vue';
     import pagination from '@/components/pagination.vue';
     import blockTender from '@/components/block-tender.vue';
@@ -66,22 +67,16 @@
             return {
                 current: 1,
                 pageCount: 4,
-                tenders: [
-                    {
-                        id: 1
-                    }, {
-                        id: 2
-                    }, {
-                        id: 3
-                    }, {
-                        id: 4
-                    }, {
-                        id: 5
-                    }
-                ],
+                tenders: null,
             }
         },
         mounted() {
+            api.getTenderTenders().then(res => {
+                this.tenders = res
+                console.log(res)
+            }).catch(err => {
+                console.error(err)
+            })
         },
         beforeDestroy() {
         },
