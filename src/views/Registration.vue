@@ -44,7 +44,7 @@
                             v-if="regData.organization"
                             class="registration__organization"
                         >
-                            {{ regData.organization.name }} {{ regData.organization.inn }}
+                            <span>{{ regData.organization.name }}</span>, дата регистрации {{ $helpers.parseDate(regData.organization.date_registration, 'YYYY-MM-DD').toLocaleDateString('ru') }}
                         </div>
                         <FormKit
                             v-model="regData.organization"
@@ -221,13 +221,25 @@
                         name: 'inn',
                         label: 'ИНН',
                         placeholder: 'Ваш ИНН',
-                        validation: 'required',
+                        validation: [['required'], ['matches', /^(\d{10}|\d{12})$/]],
                         outerClass: 'field--inline field--required'
                     }, {
                         $formkit: 'text',
                         name: 'kpp',
                         label: 'КПП',
                         placeholder: 'Ваш КПП',
+                        validation: 'required',
+                        outerClass: 'field--inline field--required'
+                    }, {
+                        $formkit: 'checkbox',
+                        name: 'owner_type',
+                        label: 'Статус предприятия',
+                        options: {
+                            '1': 'Производитель',
+                            '2': 'Дилер / дистрибьютор',
+                            '3': 'Генподрядчик',
+                            '4': 'Подрядчик'
+                        },
                         validation: 'required',
                         outerClass: 'field--inline field--required'
                     }
@@ -432,6 +444,7 @@
             submitSearchHandler(data, node) {
                 this.showLoaderSending = true;
                 let params = Object.assign({}, this.regData.search);
+                delete params.owner_type;
                 api.searchOrganization(params).then(res => {
                     this.showLoaderSending = false;
                     if (res.inn) {

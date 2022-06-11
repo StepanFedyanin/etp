@@ -3,15 +3,6 @@
     padding-bottom: 24px;
     margin-bottom: 8px;
 
-    &--inline &__inner {
-        /*@mixin main-grid;*/
-        display: grid;
-        grid-template-columns: repeat(8, 1fr);
-        grid-column-gap: 16px;
-        grid-template-rows: auto;
-        justify-content: center;
-    }
-
     &--type_hidden {
         display: none;
     }
@@ -24,6 +15,79 @@
         font-weight: 500;
     }
 
+/*
+    &--inline&--type_boolean &__label {
+        display: none;
+    }
+*/
+    &__legend {
+        font-weight: 700;
+        font-size: 24px;
+        line-height: 30px;
+        text-transform: uppercase;
+        color: $color-gray-T3;
+        margin-bottom: 24px;
+    }
+
+    &--required &__label::after,
+    &--required &__legend::after {
+        content: '*';
+        margin-left: 4px;
+        color: $color-red;
+        font-size: 16px;
+        vertical-align: top;
+        line-height: 16px;
+    }
+
+    &__input {
+        position: relative;
+    }
+
+    &__options {
+        display: flex;
+        flex-wrap: wrap;
+    }
+
+    &__option {
+        margin-bottom: 16px;
+    }
+
+    &__option &__input input {
+        appearance: none;
+        position: absolute;
+        width: 0;
+        height: 0;
+        overflow: hidden;
+        opacity: 0;
+        left: -999em;
+    }
+
+    &__option &__input input ~ &__decorator {
+        position: relative;
+        background: none;
+        display: block;
+        width: 24px;
+        height: 24px;
+        border: 1.5px solid $color-gray-T5;
+        border-radius: 6px;
+    }
+
+    &__option &__input input:checked ~ &__decorator {
+        background-color: $color-green;
+        border: 1.5px solid $color-green;
+        background-image: svg-load('assets/img/icons/icon-check.svg', fill=$color-white);
+        background-repeat: no-repeat;
+        background-position: center;
+        background-size: 18px;
+    }
+
+    &[data-invalid=true] &__option &__input,
+    &[data-errors=true] &__option &__input {
+        &:after {
+            display: none;
+        }
+    }
+
     &__error {
         position: absolute;
         color: $color-red;
@@ -31,26 +95,6 @@
         font-weight: 500;
         font-size: 10px;
         left: 12px;
-    }
-
-    &--required &__label::after {
-        content: '*';
-        margin-left: 4px;
-        color: $color-red;
-    }
-
-    &--inline &__label {
-        grid-column: 1/4;
-        align-self: center;
-        margin: 0;
-    }
-
-    &--inline&--type_boolean &__label {
-        display: none;
-    }
-
-    &__input {
-        position: relative;
     }
 
     &__error &__input,
@@ -89,15 +133,47 @@
         }
     }
 
+    &--inline &__inner {
+        /*@mixin main-grid;*/
+        display: grid;
+        grid-template-columns: repeat(8, 1fr);
+        grid-column-gap: 16px;
+        grid-template-rows: auto;
+        justify-content: center;
+    }
+
+    &--inline &__label {
+        grid-column: 1/4;
+        align-self: center;
+        margin: 0;
+    }
+
     &--inline &__input {
         grid-column: 4/9;
     }
 
-    &--inline&--type_boolean &__input {
-        grid-column: 1/11;
+    &--inline &__option &__input {
+        grid-column: 1;
+    }
+
+    &--inline &__option &__label {
+        grid-column: 2/9;
     }
 
     &--inline &__comment {
+        display: grid;
+        grid-template-columns: repeat(8, 1fr);
+        grid-column-gap: 16px;
+        grid-template-rows: auto;
 
+        &-item {
+            grid-column: 4/9;
+        }
+    }
+
+    &--inline[data-type=checkbox] &__comment {
+        &-item {
+            grid-column: 1/9;
+        }
     }
 }

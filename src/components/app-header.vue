@@ -73,9 +73,9 @@
                                     <div class="header__popup-menu">
                                         <router-link
                                             v-for="(item, key) in menuUser"
+                                            v-slot="{ href, navigate, isActive, isExactActive }"
                                             :key="key"
                                             :to="{ name: item.name }"
-                                            v-slot="{ href, navigate, isActive, isExactActive }"
                                             custom
                                         >
                                             <div 
