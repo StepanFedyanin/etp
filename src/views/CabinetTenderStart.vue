@@ -7,7 +7,7 @@
                     Создание тендера
                 </div>
                 <FormKit
-                    v-model="tenderStart"
+                    v-model="tenderStartForm"
                     name="tender-start"
                     preserve
                     type="form"
@@ -22,7 +22,10 @@
                         Общие параметры тендера
                     </div>
                     <div class="tender-form__fieldgroup">
-                        <FormKitSchema :schema="tenderStartForm" />
+                        <FormKitSchema
+                            :schema="tenderMainInfoSchema"
+                            :data="content"
+                        />
                     </div>
 
                     <div class="tender-form__title">
@@ -32,183 +35,187 @@
                         </div>
                     </div>
                     <div class="tender-form__fieldgroup">
-                        <FormKitSchema :schema="tenderTimeForm" />
+                        <FormKitSchema :schema="tenderTimeSchema" />
                     </div>
 
-                    <div class="tender-form__title">
-                        Документация
-                    </div>
-                    <div class="tender-form__block">
-                        <div
-                            class="tenders-form__docs lots m--docs"
-                        >
-                            <div class="lots__header">
-                                <div class="lots__header-cell m--filename">
-                                    Имя файла
+                    <div v-if="false">
+                        <div class="tender-form__title">
+                            Документация
+                        </div>
+                        <div class="tender-form__block">
+                            <div
+                                class="tenders-form__docs lots m--docs"
+                            >
+                                <div class="lots__header">
+                                    <div class="lots__header-cell m--filename">
+                                        Имя файла
+                                    </div>
+                                    <div class="lots__header-cell m--name">
+                                        Описание
+                                    </div>
                                 </div>
-                                <div class="lots__header-cell m--name">
-                                    Описание
+                                <div class="lots__list">
+                                    <div
+                                        v-for="(file, idx) in uploadedFiles"
+                                        :key="idx"
+                                        class="lots__item"
+                                    >
+                                        <div class="lots__item-cell m--filename">
+                                            {{ file.name }}
+                                        </div>
+                                        <div class="lots__item-cell">
+                                            {{ file.name }}
+                                        </div>
+                                        <div class="lots__item-cell m--edit">
+                                            <div
+                                                class="lots__item-edit"
+                                                :target-id="file.id"
+                                                @click="fileEdit"
+                                            />
+                                        </div>
+                                        <div class="lots__item-cell m--delete">
+                                            <div
+                                                class="lots__item-delete"
+                                                :target-id="file.id"
+                                                @click="fileDelete"
+                                            />
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
-                            <div class="lots__list">
-                                <div
-                                    v-for="(file, idx) in uploadedFiles"
-                                    :key="idx"
-                                    class="lots__item"
+                            <button
+                                type="button"
+                                class="button button-outline-green"
+                                @click="fileUploadStart"
+                            >
+                                Добавить документ
+                            </button>
+                        </div>
+                    </div>
+
+                    <div v-if="false">
+                        <div class="tender-form__title">
+                            Лоты
+                        </div>
+                        <div class="tender-form__block">
+                            <div class="tender-form__lots lots m--tender-start">
+                                <div class="lots__header">
+                                    <div class="lots__header-cell m--name">
+                                        Название
+                                    </div>
+                                    <div class="lots__header-cell m--nums">
+                                        Кол/во
+                                    </div>
+                                    <div class="lots__header-cell m--unit">
+                                        Ед.изм
+                                    </div>
+                                    <div class="lots__header-cell m--vat">
+                                        Ставка НДС
+                                    </div>
+                                    <div class="lots__header-cell m--price">
+                                        Цена
+                                    </div>
+                                    <div class="lots__header-cell m--sum">
+                                        Сумма
+                                    </div>
+                                    <div class="lots__item-cell m--edit" />
+                                    <div class="lots__item-cell m--delete" />
+                                </div>
+                                <div class="lots__list">
+                                    <div class="lots__item">
+                                        <div class="lots__item-cell">
+                                            Двигатель Д-245, ЗИЛ-131 ( 12v, 136 л. с. ) ЕВРО-2
+                                        </div>
+                                        <div class="lots__item-cell">
+                                            20
+                                        </div>
+                                        <div class="lots__item-cell">
+                                            кг.
+                                        </div>
+                                        <div class="lots__item-cell">
+                                            20%
+                                        </div>
+                                        <div class="lots__item-cell">
+                                            600,55 ₽
+                                        </div>
+                                        <div class="lots__item-cell">
+                                            12 600,55 ₽
+                                        </div>
+                                        <div class="lots__item-cell m--edit">
+                                            <div class="lots__item-edit" />
+                                        </div>
+                                        <div class="lots__item-cell m--delete">
+                                            <div class="lots__item-delete" />
+                                        </div>
+                                    </div>
+                                    <div class="lots__item">
+                                        <div class="lots__item-cell">
+                                            Двигатель Д-245, ЗИЛ-131 ( 12v, 136 л. с. ) ЕВРО-2
+                                        </div>
+                                        <div class="lots__item-cell">
+                                            20
+                                        </div>
+                                        <div class="lots__item-cell">
+                                            кг.
+                                        </div>
+                                        <div class="lots__item-cell">
+                                            20%
+                                        </div>
+                                        <div class="lots__item-cell">
+                                            600,55 ₽
+                                        </div>
+                                        <div class="lots__item-cell">
+                                            12 600,55 ₽
+                                        </div>
+                                        <div class="lots__item-cell m--edit">
+                                            <div class="lots__item-edit" />
+                                        </div>
+                                        <div class="lots__item-cell m--delete">
+                                            <div class="lots__item-delete" />
+                                        </div>
+                                    </div>
+                                    <div class="lots__item">
+                                        <div class="lots__item-cell">
+                                            Двигатель Д-245, ЗИЛ-131 ( 12v, 136 л. с. ) ЕВРО-2
+                                        </div>
+                                        <div class="lots__item-cell">
+                                            20
+                                        </div>
+                                        <div class="lots__item-cell">
+                                            кг.
+                                        </div>
+                                        <div class="lots__item-cell">
+                                            20%
+                                        </div>
+                                        <div class="lots__item-cell">
+                                            600,55 ₽
+                                        </div>
+                                        <div class="lots__item-cell">
+                                            12 600,55 ₽
+                                        </div>
+                                        <div class="lots__item-cell m--edit">
+                                            <div class="lots__item-edit" />
+                                        </div>
+                                        <div class="lots__item-cell m--delete">
+                                            <div class="lots__item-delete" />
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="tender-form__block-actions">
+                                <button
+                                    type="button"
+                                    class="button button-outline-green"
                                 >
-                                    <div class="lots__item-cell m--filename">
-                                        {{ file.name }}
-                                    </div>
-                                    <div class="lots__item-cell">
-                                        {{ file.name }}
-                                    </div>
-                                    <div class="lots__item-cell m--edit">
-                                        <div
-                                            class="lots__item-edit"
-                                            :target-id="file.id"
-                                            @click="fileEdit"
-                                        />
-                                    </div>
-                                    <div class="lots__item-cell m--delete">
-                                        <div
-                                            class="lots__item-delete"
-                                            :target-id="file.id"
-                                            @click="fileDelete"
-                                        />
-                                    </div>
-                                </div>
+                                    Добавить лот
+                                </button>
+                                <button
+                                    type="button"
+                                    class="button button-outline-green"
+                                >
+                                    Загрузить из файла
+                                </button>
                             </div>
-                        </div>
-                        <button
-                            type="button"
-                            class="button button-outline-green"
-                            @click="fileUploadStart"
-                        >
-                            Добавить документ
-                        </button>
-                    </div>
-
-                    <div class="tender-form__title">
-                        Лоты
-                    </div>
-                    <div class="tender-form__block">
-                        <div class="tender-form__lots lots m--tender-start">
-                            <div class="lots__header">
-                                <div class="lots__header-cell m--name">
-                                    Название
-                                </div>
-                                <div class="lots__header-cell m--nums">
-                                    Кол/во
-                                </div>
-                                <div class="lots__header-cell m--unit">
-                                    Ед.изм
-                                </div>
-                                <div class="lots__header-cell m--vat">
-                                    Ставка НДС
-                                </div>
-                                <div class="lots__header-cell m--price">
-                                    Цена
-                                </div>
-                                <div class="lots__header-cell m--sum">
-                                    Сумма
-                                </div>
-                                <div class="lots__item-cell m--edit" />
-                                <div class="lots__item-cell m--delete" />
-                            </div>
-                            <div class="lots__list">
-                                <div class="lots__item">
-                                    <div class="lots__item-cell">
-                                        Двигатель Д-245, ЗИЛ-131 ( 12v, 136 л. с. ) ЕВРО-2
-                                    </div>
-                                    <div class="lots__item-cell">
-                                        20
-                                    </div>
-                                    <div class="lots__item-cell">
-                                        кг.
-                                    </div>
-                                    <div class="lots__item-cell">
-                                        20%
-                                    </div>
-                                    <div class="lots__item-cell">
-                                        600,55 ₽
-                                    </div>
-                                    <div class="lots__item-cell">
-                                        12 600,55 ₽
-                                    </div>
-                                    <div class="lots__item-cell m--edit">
-                                        <div class="lots__item-edit" />
-                                    </div>
-                                    <div class="lots__item-cell m--delete">
-                                        <div class="lots__item-delete" />
-                                    </div>
-                                </div>
-                                <div class="lots__item">
-                                    <div class="lots__item-cell">
-                                        Двигатель Д-245, ЗИЛ-131 ( 12v, 136 л. с. ) ЕВРО-2
-                                    </div>
-                                    <div class="lots__item-cell">
-                                        20
-                                    </div>
-                                    <div class="lots__item-cell">
-                                        кг.
-                                    </div>
-                                    <div class="lots__item-cell">
-                                        20%
-                                    </div>
-                                    <div class="lots__item-cell">
-                                        600,55 ₽
-                                    </div>
-                                    <div class="lots__item-cell">
-                                        12 600,55 ₽
-                                    </div>
-                                    <div class="lots__item-cell m--edit">
-                                        <div class="lots__item-edit" />
-                                    </div>
-                                    <div class="lots__item-cell m--delete">
-                                        <div class="lots__item-delete" />
-                                    </div>
-                                </div>
-                                <div class="lots__item">
-                                    <div class="lots__item-cell">
-                                        Двигатель Д-245, ЗИЛ-131 ( 12v, 136 л. с. ) ЕВРО-2
-                                    </div>
-                                    <div class="lots__item-cell">
-                                        20
-                                    </div>
-                                    <div class="lots__item-cell">
-                                        кг.
-                                    </div>
-                                    <div class="lots__item-cell">
-                                        20%
-                                    </div>
-                                    <div class="lots__item-cell">
-                                        600,55 ₽
-                                    </div>
-                                    <div class="lots__item-cell">
-                                        12 600,55 ₽
-                                    </div>
-                                    <div class="lots__item-cell m--edit">
-                                        <div class="lots__item-edit" />
-                                    </div>
-                                    <div class="lots__item-cell m--delete">
-                                        <div class="lots__item-delete" />
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="tender-form__block-actions">
-                            <button
-                                type="button"
-                                class="button button-outline-green"
-                            >
-                                Добавить лот
-                            </button>
-                            <button
-                                type="button"
-                                class="button button-outline-green"
-                            >
-                                Загрузить из файла
-                            </button>
                         </div>
                     </div>
 
@@ -239,7 +246,13 @@
 </template>
 
 <script>
+    import { tender, category, geo } from "@/services";
     import Breadcrumbs from '@/components/app-breadcrumbs';
+    import { reactive } from 'vue'
+    let content = reactive({
+        category: [],
+        region: [],
+    })
 
     export default {
         components: {
@@ -247,12 +260,14 @@
         },
         data() {
             return {
-                tenderStart: {},
+                content,
+                tenderStartForm: null,
                 showLoaderSending: false,
-                tenderStartForm: [
+                tenderMainInfoSchema: [
                     {
                         $formkit: 'text',
                         name: 'name',
+                        value: "Тестовый тендер",
                         label: 'Название тендера',
                         help: 'Напишите краткое описание закупаемых товаров или услуг',
                         validation: 'required',
@@ -272,11 +287,13 @@
                         messageClass: 'tender-form__message',
                     }, {
                         $formkit: 'select',
+                        type: 'select',
                         name: 'category',
                         label: 'Выбор категории',
                         help: 'Выберите категорию к которой относятся закупаемые товары или услуги',
-                        validation: 'required',
-                        options: ['Автомобильные запчасти'],
+                        // validation: 'required',
+                        multiple: true,
+                        options: '$category',
                         __raw__sectionsSchema: {
                             prefix: {
                                 $el: 'div',
@@ -286,17 +303,21 @@
                                 children: '$help',
                             },
                         },
-                        inputClass: 'tender-form__select',
+                        inputClass: 'tender-form__multselect',
                         helpClass: 'tender-form__hidden',
                         labelClass: 'tender-form__label',
                         outerClass: 'tender-form__field m--half',
+                        optionClass: '$reset tender-form__option',
                     }, {
                         $formkit: 'select',
                         name: 'type',
                         label: 'Тип тендера',
                         help: 'Выберите тип проводимого тендера',
                         validation: 'required',
-                        options: ['Открытый'],
+                        options: [
+                            { label: 'Открытый на понижение', value: 'reduction_opened' },
+                            { label: 'Закрытый на понижение', value: 'reduction_closed' },
+                        ],
                         __raw__sectionsSchema: {
                             prefix: {
                                 $el: 'div',
@@ -315,8 +336,8 @@
                         name: 'region',
                         label: 'Выбор региона',
                         help: 'Выберите регион исполнения заказа',
-                        validation: 'required',
-                        options: ['Челябинская область'],
+                        // validation: 'required',
+                        options: '$region',
                         __raw__sectionsSchema: {
                             prefix: {
                                 $el: 'div',
@@ -332,11 +353,11 @@
                         outerClass: 'tender-form__field m--half',
                     }, {
                         $formkit: 'select',
-                        name: 'person',
+                        name: 'supervisor',
                         label: 'Контактное лицо',
                         help: 'Выберите из списка зарегистрированных пользователей ответственного за тендер',
                         validation: 'required',
-                        options: ['Петров Иван Иванович'],
+                        options: [1],
                         __raw__sectionsSchema: {
                             prefix: {
                                 $el: 'div',
@@ -352,10 +373,11 @@
                         outerClass: 'tender-form__field m--half',
                     },
                 ],
-                tenderTimeForm: [
+                tenderTimeSchema: [
                     {
                         $formkit: 'datetime-local',
-                        name: 'timeStart',
+                        name: 'date_start',
+                        value: "2021-11-11T11:11",
                         label: 'Дата начала этапа торгов',
                         help: 'Укажите дату и время начала начала торгов (новые участники не регистрируются)',
                         validation: 'required',
@@ -375,7 +397,8 @@
                         messageClass: 'tender-form__message',
                     }, {
                         $formkit: 'datetime-local',
-                        name: 'timeEnd',
+                        name: 'date_end',
+                        value: "2022-11-11T11:11",
                         label: 'Дата завершения торгов и выбор победителя',
                         help: 'Укажите дату и время начала окончания тендера и объявления победителя',
                         validation: 'required',
@@ -399,22 +422,44 @@
             }
         },
         mounted() {
+            category.getCategoryList().then(res => {
+                content.category = res.results.map( (cat) => {
+                    return { label: cat.name, value: cat.id }
+                })
+            }).catch(err => {
+                console.error(err)
+            })
+
+            geo.getRegions().then(res => {
+                content.region = res.results.map( region => {
+                    return { label: region.name, value: region.id }
+                })
+            }).catch(err => {
+                console.error(err)
+            })
         },
         beforeDestroy() {
         },
         created() {
         },
         methods: {
-            submitTenderStart(event) {
-                console.log(event)
+            submitTenderStart(formData) {
+                let params = Object.assign({min_step: 1}, formData);
+                console.log(params)
+                
+                tender.createTender(params).then(res => {
+                    console.log(res)
+                }).catch(err => {
+                    console.error(err)
+                })
             },
             fileUploadStart(event) {
-                let countElement = document.getElementsByClassName('tender-form__file').length + 1
+                let nextElNumber = document.getElementsByClassName('tender-form__file').length + 1
                 let click = new MouseEvent("click")
                 let newInput = document.createElement('input')
 
-                newInput.id = `file_${countElement}`
-                newInput.name = `file_${countElement}`
+                newInput.id = `file_${nextElNumber}`
+                newInput.name = `file_${nextElNumber}`
                 newInput.type = 'file'
                 // newInput.multiple = true
                 newInput.onchange = this.fileUploadComplete
@@ -425,19 +470,13 @@
             },
             fileUploadComplete(event) {
                 for (let file of event.target.files) {
-                    let updated = false
                     file.id = event.target.id
-                    
-                    for (let i = 0; i < this.uploadedFiles.length; i++) {
-                        if (this.uploadedFiles[i].id === file.id) {
-                            this.uploadedFiles[i] = file
-                            updated = true
-                            break
-                        }
-                    }
+                    let update = this.uploadedFiles.findIndex(f => f.id === file.id)
 
-                    if (!updated)
-                        this.uploadedFiles.push(file)
+                    if (update >= 0)
+                        this.uploadedFiles[update] = file
+                    else
+                        this.uploadedFiles.push(file)                    
                 }
             },
             fileEdit(event) {
@@ -452,12 +491,10 @@
                 let input = document.getElementById(inputId)
                 input.remove()
 
-                for (let i = 0; i < this.uploadedFiles.length; i++) {
-                    if (this.uploadedFiles[i].id === inputId) {
-                        this.uploadedFiles.splice(i, 1)
-                        break
-                    }
-                }
+                let del = this.uploadedFiles.findIndex(f => f.id === inputId)
+
+                if (del >= 0)
+                    this.uploadedFiles.splice(del, 1)
             }
         }
     };

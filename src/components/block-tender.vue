@@ -9,20 +9,21 @@
                 {{ tender.name }}
             </div>
             <div class="tenders__item-param">
-                <span>Заказчик:</span> <a href="#">ООО «Екатеринбургский Цементный Завод»</a>
+                <span class="tenders__item-param-name">Заказчик:</span> <a href="#">ООО «Екатеринбургский Цементный Завод»</a>
             </div>
             <div class="tenders__item-param">
-                <span>Категории:</span>
+                <span class="tenders__item-param-name">Категории: </span>
                 <span
                     v-for="(category, idx) in tender.category"
                     :key="category.id"
+                    class="tenders__item-param-value"
                 >
                     {{ category.name }}
                     <span v-if="idx != Object.keys(tender.category).length - 1">, </span>
                 </span>
             </div>
             <div class="tenders__item-param">
-                <span>Регион:</span> Свердловская область
+                <span class="tenders__item-param-name">Регион:</span> Свердловская область
             </div>
             <div
                 v-if="whole"
@@ -66,19 +67,19 @@
                 {{ $helpers.toPrice(tender.price, {pointer: ',', sign: '₽'}) }}
             </div>
             <div class="tenders__item-param">
-                <span>Аукцион №1234567</span>
+                <span class="tenders__item-param-name">Аукцион №1234567</span>
             </div>
             <div class="tenders__item-param">
-                <span>Объявлено:</span> 10.03.2022 11:59 МСК
+                <span class="tenders__item-param-name">Объявлено:</span> 10.03.2022 11:59 МСК
             </div>
             <div class="tenders__item-param">
-                <span>Тип аукциона:</span> {{ tender.type }}
+                <span class="tenders__item-param-name">Тип аукциона:</span> {{ tender.type }}
             </div>
             <div class="tenders__item-param">
-                <span>Лоты:</span> {{ tender.lot_count }}
+                <span class="tenders__item-param-name">Лоты:</span> {{ tender.lot_count }}
             </div>
             <div class="tenders__item-param">
-                <span>Предложений от поставщиков:</span> 5
+                <span class="tenders__item-param-name">Предложений от поставщиков:</span> 5
             </div>
             <div
                 v-if="whole"

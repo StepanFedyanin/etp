@@ -39,7 +39,10 @@
                     </div>
                 </div>
             </div>
-            <div class="tenders" v-if="tenders && tenders.count">
+            <div
+                v-if="tenders && tenders.count"
+                class="tenders"
+            >
                 <blockTender
                     v-for="(tender, index) in tenders.results"
                     :key="`tender-${index}`"
@@ -73,7 +76,6 @@
         mounted() {
             api.getTenderTenders().then(res => {
                 this.tenders = res
-                console.log(res)
             }).catch(err => {
                 console.error(err)
             })

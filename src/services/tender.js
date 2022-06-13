@@ -18,7 +18,15 @@ export default class extends REST {
         return this._get('tenders', {}).then((data) => {
             return data;
         }).catch((error) => {
-            throw new RESTError(error, 'Ошибка при получении минималистичного список тендеров');
+            throw new RESTError(error, 'Ошибка при получении список тендеров');
+        });
+    }
+
+    static createTender(params) {
+        return this._post('tenders/create_tender', {}, params).then((data) => {
+            return data;
+        }).catch((error) => {
+            throw new RESTError(error, 'Не удалось создать тендер');
         });
     }
 }

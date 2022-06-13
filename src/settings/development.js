@@ -37,6 +37,11 @@ const category = {
     token: 'c7d63a2e58d186ae3760a5f7c690293e973c08c4'
 };
 
+const geo = {
+    url: `${urlPath}/geo`,
+    token: 'c7d63a2e58d186ae3760a5f7c690293e973c08c4'
+};
+
 const logger = {
     url: `${urlPath}/logger`,
     level: 'debug',
@@ -202,6 +207,7 @@ export {
     tender,
     user,
     category,
+    geo,
     logger,
 
     // mainMenu,

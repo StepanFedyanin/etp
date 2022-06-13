@@ -43,7 +43,10 @@
                     </div>
                 </div>
             </div>
-            <div class="auction" ref="auction">
+            <div
+                ref="auction"
+                class="auction"
+            >
                 <div class="container">
                     <div class="h1 auction__title">
                         Проведено 3 500 торгов на 22.03.2022
@@ -71,9 +74,9 @@
                             @click="scrollDown"
                         />
                         <div
-                            class="auction__list-inner"
-                            ref="list"
                             v-if="tenderList && tenderList.count"
+                            ref="list"
+                            class="auction__list-inner"
                         >
                             <div
                                 v-for="item in tenderList.results"
