@@ -1,0 +1,52 @@
+.search-form {
+
+    &__fields {
+        display: flex;
+        flex-wrap: wrap;
+        column-gap: 30px;
+        row-gap: 16px;
+        margin-bottom: 40px;
+    }
+
+    &__field {
+        &.m--inn {
+            flex-basis: 100%;
+
+            & .search-form__input {
+                max-width: 40%;
+            }
+        }
+        &.m--category {
+            & .search-form__select {
+            }
+        }
+        &.m--region {
+            & .search-form__select {
+            }
+        }
+    }
+
+    &__label {
+        display: block;
+        color: $color-red;
+        margin-bottom: 4px;
+        font-size: 16px;
+        line-height: 20px;
+    }
+
+    &__select {
+        @mixin select--with-arrow;
+        min-width: 250px;
+
+    }
+
+    &__input {
+    }
+
+    &__actions {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 36px;
+    }
+}

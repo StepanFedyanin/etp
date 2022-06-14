@@ -1,25 +1,31 @@
 <template>
     <div class="pagination">
-        <button
+        <router-link
+            :to="{ path: url, query: { page: goPrev } }"
             class="pagination__item pagination__item--prev"
-            :disabled="current === 1"
-            @click="false"
+            :class="{'m--disabled': isFirstPage}"
+            :event="isFirstPage ? '' : 'click'"
         />
         <ul class="pagination__list">
             <li
-                v-for="(page, index) in pageCount"
-                :key="'page-' + index"
+                v-for="page in pages"
+                :key="page"
                 class="pagination__item"
-                :class="{ 'pagination__item--current': page === current }"
-                @click="false"
+                :class="{ 'pagination__item--current': page === currentPage }"
             >
-                {{ page }}
+                <router-link
+                    class="pagination__link"
+                    :to="{ path: url, query: { page: page } }"
+                >
+                    {{ page }}
+                </router-link>
             </li>
         </ul>
-        <button
+        <router-link
             class="pagination__item pagination__item--next"
-            :disabled="current === pageCount"
-            @click="false"
+            :to="{ path: url, query: { page: goForward } }"
+            :class="{'m--disabled': isLastPage}"
+            :event="isLastPage ? '' : 'click'"
         />
     </div>
 </template>
@@ -27,17 +33,46 @@
 <script>
     export default {
         props: {
-            current: {
+            total: {
                 type: Number,
-                default: 1
+                required: true
             },
-            pageCount: {
+            limit: {
                 type: Number,
-                default: 4
+                required: true
+            },
+            currentPage: {
+                type: Number,
+                required: true
+            },
+            url: {
+                type: String,
+                required: true
             }
         },
         data() {
             return {
+            }
+        },
+        computed: {
+            step() {
+                return 1
+            },
+            pages() {
+                const pagesCount = Math.ceil(this.total / this.limit)
+                return this.$helpers.range(1, pagesCount)
+            },
+            goForward() {
+                return `${this.currentPage + this.step}`
+            },
+            goPrev() {
+                return `${this.currentPage - this.step}`
+            },
+            isLastPage() {
+                return this.currentPage + 1 > this.pages.length
+            },
+            isFirstPage() {
+                return this.currentPage <= 1
             }
         },
         mounted() {
@@ -47,6 +82,6 @@
         created() {
         },
         methods: {
-        }
+        },
     };
 </script>

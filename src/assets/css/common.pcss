@@ -187,6 +187,14 @@ input[type='number'] {
         }
     }
 
+    &-outline-white {
+        @mixin button--outline-color $color-white, $color-white, $color-green;
+
+        &:hover {
+            @mixin button--outline-color $color-green, $color-green, $color-white;
+        }
+    }
+
     &-filter {
         &::before {
             content: '';
@@ -194,7 +202,13 @@ input[type='number'] {
             height: 14px;
             background-size: 16px 14px;
             margin-right: 14px;
-            background-image: url('./assets/img/icons/icon-filter.svg');
+            background-image: svg-load('assets/img/icons/icon-filter.svg', fill=$color-green);
+        }
+        
+        &:hover {
+            &::before {
+                background-image: svg-load('assets/img/icons/icon-filter.svg', fill=$color-white);
+            }
         }
     }
 }

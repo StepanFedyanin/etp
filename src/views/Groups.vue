@@ -42,6 +42,12 @@
                             v-text="group.isShowProducts ? 'Скрыть информацию' : 'Показать информацию'"
                         />
                     </div>
+                    <pagination
+                        :total="groups.count"
+                        :limit="limit"
+                        :currentPage="currentPage"
+                        :url="$route.path"
+                    />
                 </div>
             </div>
         </div>
@@ -50,23 +56,45 @@
 
 <script>
     import { category as api } from "@/services";
+    import pagination from '@/components/pagination.vue';
 
     export default {
         name: 'Groups',
         components: {
+            pagination,
         },
         data() {
             return {
-                groups: null
+                groups: null,
+                limit: 5,
+                currentPage: 1,
             };
         },
+        watch: {
+            '$route.query.page': {
+                immediate: true,
+                handler() {
+                    this.getGroupsFromApi()
+                },
+            }
+        },
         mounted() {
-            api.getCategoryList().then(res => {
-                this.groups = res
-                console.log(res)
-            }).catch(err => {
-                console.error(err)
-            })
-        }
+        },
+        methods: {
+            getGroupsFromApi() {
+                this.currentPage = Number(this.$route.query.page) || 1;
+                let params = {
+                    limit: this.limit,
+                    offset: (this.currentPage - 1) * this.limit,
+                }
+
+                api.getCategoryList(params).then(res => {
+                    this.groups = res
+                    // console.log(res)
+                }).catch(err => {
+                    console.error(err)
+                })
+            }
+        },
     };
 </script>
