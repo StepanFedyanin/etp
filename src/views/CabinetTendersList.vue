@@ -5,20 +5,37 @@
                 <div class="tenders__search-form">
                     <search />
                 </div>
-                <div class="tenders__pagination">
+                <div
+                    v-if="tenders && tenders.count"
+                    class="tenders__pagination"
+                >
                     <div class="tenders__pagination-left">
                         <div class="tenders__pagination-count">
-                            Отобрано по параметрам: <span>50</span>
+                            Отобрано по параметрам: <span>{{ tenders.count }}</span>
                         </div>
                     </div>
                     <div class="tenders__pagination-right">
                         <div class="tenders__pagination-perpage">
                             <span>На страницу :</span>
                             <select
+                                v-model="limit"
                                 class="tenders__pagination-select"
                                 name="perPage"
                             >
-                                <option value="10">
+                                <option
+                                    value="1"
+                                    selected="selected"
+                                >
+                                    1 тендер
+                                </option>
+                                <option
+                                    value="2"
+                                >
+                                    2 тендера
+                                </option>
+                                <option
+                                    value="10"
+                                >
                                     10 тендеров
                                 </option>
                                 <option value="20">
@@ -33,8 +50,10 @@
                             </select>
                         </div>
                         <pagination
-                            :current="current"
-                            :pageCount="pageCount"
+                            :total="tenders.count"
+                            :limit="Number(limit)"
+                            :currentPage="currentPage"
+                            :url="$route.path"
                         />
                     </div>
                 </div>
@@ -68,23 +87,44 @@
         },
         data() {
             return {
-                current: 1,
-                pageCount: 4,
+                limit: 1,
+                currentPage: 1,
                 tenders: null,
             }
         },
+        watch: {
+            limit () {
+                this.getTendersFromApi()
+            },
+            '$route.query.page': {
+                immediate: true,
+                handler() {
+                    this.getTendersFromApi()
+                },
+            }
+        },
         mounted() {
-            api.getTenderTenders().then(res => {
-                this.tenders = res
-            }).catch(err => {
-                console.error(err)
-            })
         },
         beforeDestroy() {
         },
         created() {
         },
         methods: {
+            getTendersFromApi() {
+                this.limit = Number(this.limit)
+                this.currentPage = Number(this.$route.query.page) || 1;
+                let params = {
+                    limit: this.limit,
+                    offset: (this.currentPage - 1) * this.limit,
+                }
+
+                api.getTenderTenders(params).then(res => {
+                    this.tenders = res
+                    // console.log(res)
+                }).catch(err => {
+                    console.error(err)
+                })
+            }
         }
     };
 </script>

@@ -248,11 +248,6 @@
 <script>
     import { tender, category, geo } from "@/services";
     import Breadcrumbs from '@/components/app-breadcrumbs';
-    import { reactive } from 'vue'
-    let content = reactive({
-        category: [],
-        region: [],
-    })
 
     export default {
         components: {
@@ -260,7 +255,10 @@
         },
         data() {
             return {
-                content,
+                content: {
+                    category: [],
+                    region: [],
+                },
                 tenderStartForm: null,
                 showLoaderSending: false,
                 tenderMainInfoSchema: [
@@ -287,7 +285,6 @@
                         messageClass: 'tender-form__message',
                     }, {
                         $formkit: 'select',
-                        type: 'select',
                         name: 'category',
                         label: 'Выбор категории',
                         help: 'Выберите категорию к которой относятся закупаемые товары или услуги',
@@ -422,18 +419,27 @@
             }
         },
         mounted() {
-            category.getCategoryList().then(res => {
-                content.category = res.results.map( (cat) => {
-                    return { label: cat.name, value: cat.id }
-                })
+            let params = {
+                limit: 100
+            }
+            category.getCategoryList(params).then(res => {
+                if (res.results)
+                    this.content.category = res.results.map( (cat) => {
+                        return { label: cat.name, value: cat.id }
+                    })
+                else
+                    console.log('No getCategoryList data')
             }).catch(err => {
                 console.error(err)
             })
 
-            geo.getRegions().then(res => {
-                content.region = res.results.map( region => {
-                    return { label: region.name, value: region.id }
-                })
+            geo.getRegions(params).then(res => {
+                if (res.results)
+                    this.content.region = res.results.map( region => {
+                        return { label: region.name, value: region.id }
+                    })
+                else
+                    console.log('No getRegions data')
             }).catch(err => {
                 console.error(err)
             })

@@ -3,7 +3,11 @@
         :class="blockClass" 
         class="tenders__item"
     >
-        <div class="tenders__item-favorite" />
+        <div
+            class="tenders__item-favorite"
+            :class="{ 'm--favorite': favorite }"
+            @click="toggleFavorite"
+        />
         <div class="tenders__item-left">
             <div class="tenders__item-title">
                 {{ tender.name }}
@@ -64,7 +68,7 @@
         </div>
         <div class="tenders__item-right">
             <div class="tenders__item-price">
-                {{ $helpers.toPrice(tender.price, {pointer: ',', sign: '₽'}) }}
+                {{ $helpers.toPrice(tender.price, {sign: '₽'}) }}
             </div>
             <div class="tenders__item-param">
                 <span class="tenders__item-param-name">Аукцион №1234567</span>
@@ -95,7 +99,7 @@
             <div class="tenders__item-participate">
                 <button
                     class="button button-green"
-                    @click="onClickParticipate(tender.id)"
+                    @click="onClickParticipate"
                 >
                     Участвовать
                 </button>
@@ -238,12 +242,16 @@
         },
         data() {
             return {
-                isShowPositions: false
+                isShowPositions: false,
+                favorite: false
             };
         },
         methods: {
-            onClickParticipate(id) {
-                this.$router.push({ name: 'tender', params: { id: id } });
+            onClickParticipate() {
+                this.$router.push({ name: 'tender', params: { id: this.tender.id } });
+            },
+            toggleFavorite() {
+                this.favorite = !this.favorite
             }
         }
     };

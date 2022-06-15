@@ -97,13 +97,19 @@
                                         <div
                                             class="auction__item-button"
                                         >
-                                            <button class="button button-green">
+                                            <button
+                                                class="button button-green"
+                                                @click="$router.push({ name: 'tender', params: { id: item.id } });"
+                                            >
                                                 Участвовать
                                             </button>
                                         </div>
                                     </div>
                                 </div>
                                 <div class="auction__item-right">
+                                    <div class="tenders__item-price">
+                                        {{ $helpers.toPrice(item.price, {sign: '₽'}) }}
+                                    </div>
                                     <div class="auction__item-prop">
                                         Тип аукциона: {{ item.type }}
                                     </div>

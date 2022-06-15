@@ -15,9 +15,17 @@
             right: 32px;
             top: 17px;
             background-image: svg-load('./assets/img/icons/icon-star.svg', fill=$color-gray-T4);
+            background-size: contain;
             cursor: pointer;
 
+            &.m--favorite {
+                background-image: svg-load('./assets/img/icons/icon-star.svg', fill=$color-green);
+            }
+
             @mixin responsive-le-xl {
+                width: 24px;
+                height: 24px;
+                top: 26px;
                 right: 17px;
             }
         }
@@ -33,7 +41,11 @@
             width: 30%;
             padding-right: 40px;
 
-            @mixin responsive-le-xl {
+            @mixin responsive-le-l {
+                padding-right: 30px;
+            }
+
+            @mixin responsive-le-m {
                 padding-right: 20px;
             }
         }
@@ -71,6 +83,14 @@
             font-weight: 700;
             font-size: 34px;
             line-height: 40px;
+
+            @mixin responsive-le-xl {
+                font-size: 30px;
+            }
+
+            @mixin responsive-le-l {
+                font-size: 26px;
+            }
         }
 
         &-docs {
