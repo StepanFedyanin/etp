@@ -4,7 +4,7 @@ import { parse, format } from 'fecha';
 
 const helpers = {
     parseDate: (value, template) => {
-        return parse(value, template);
+        return (value && value.length === template.length) ? parse(value, template) : new Date(null);
     },
     formatDate: (value, template) => {
         return value ? format(value, template) : '';

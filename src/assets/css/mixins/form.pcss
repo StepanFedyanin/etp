@@ -38,9 +38,10 @@
 
     &:disabled {
         border-color: $color-gray-T4;
-        background-color: rgba($color-gray-T4, 0.005);
-        color: $color-gray;
-        cursor: not-allowed;
+        background-color: rgba($color-gray-T4, 0.02);
+        color: $color-gray-T1;
+        cursor: default;
+        pointer-events: none;
     }
 
     &[readonly] {
