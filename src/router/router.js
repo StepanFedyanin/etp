@@ -218,6 +218,19 @@ const routes = [
             requiresAuth: true 
         },
         props: true,
+        children: [
+            {
+                path: '/cabinet/tender-start/:id',
+                name: 'tender-start-edit',
+                component: cabinetTenderStart,
+                meta: { 
+                    title: 'Объявить тендер', 
+                    breadcrumbs: ['cabinet'],
+                    requiresAuth: true 
+                },
+                props: true,
+            }
+        ]
     }, {
         path: '/cabinet/contragents',
         component: cabinetContragents,

@@ -18,19 +18,19 @@
                 preserve
                 type="form"
                 data-loading="showLoaderSending"
-                form-class="$reset search-form"
+                form-class="$reset modal-form"
                 :disabled="showLoaderSending"
                 :loading="showLoaderSending ? true : undefined"
                 :actions="false"
                 @submit="submitSearchForm"
             >
-                <div class="search-form__fields">
+                <div class="modal-form__fields">
                     <FormKitSchema
                         :schema="searchFormSchema"
                         :data="content"
                     />
                 </div>
-                <div class="search-form__actions">
+                <div class="modal-form__actions">
                     <button
                         type="button"
                         class="button button-red"
@@ -51,6 +51,8 @@
 </template>
 
 <script>
+    import { category, geo } from "@/services"
+
     export default {
         props: {
             showModal: {
@@ -60,6 +62,7 @@
         },
         data() {
             return {
+                searchForm: null,
                 showLoaderSending: false,
                 content: {
                     status: [],
@@ -72,9 +75,9 @@
                         name: 'status',
                         label: 'Статус тендера',
                         options: '$status',
-                        inputClass: 'search-form__select',
-                        labelClass: '$reset search-form__label',
-                        outerClass: '$reset search-form__field',
+                        inputClass: 'modal-form__select',
+                        labelClass: '$reset modal-form__label',
+                        outerClass: '$reset modal-form__field',
                     }, {
                         $formkit: 'text',
                         name: 'priceFrom',
@@ -82,9 +85,9 @@
                         label: 'Сумма (от) тендера',
                         placeholder: "",
                         // validation: 'required',
-                        inputClass: 'search-form__input',
-                        labelClass: '$reset search-form__label',
-                        outerClass: '$reset search-form__field',
+                        inputClass: 'modal-form__input',
+                        labelClass: '$reset modal-form__label',
+                        outerClass: '$reset modal-form__field',
                     }, {
                         $formkit: 'text',
                         name: 'priceTo',
@@ -92,47 +95,47 @@
                         label: 'Сумма (до) тендера',
                         placeholder: "",
                         // validation: 'required',
-                        inputClass: 'search-form__input',
-                        labelClass: '$reset search-form__label',
-                        outerClass: '$reset search-form__field',
+                        inputClass: 'modal-form__input',
+                        labelClass: '$reset modal-form__label',
+                        outerClass: '$reset modal-form__field',
                     }, {
                         $formkit: 'datetime-local',
                         name: 'date_start',
-                        value: "2021-11-11T11:11",
+                        // value: "2021-11-11T11:11",
                         label: 'Дата начала тендера',
                         placeholder: "",
                         // validation: 'required',
-                        inputClass: 'search-form__input',
-                        labelClass: '$reset search-form__label',
-                        outerClass: '$reset search-form__field',
+                        inputClass: 'modal-form__input',
+                        labelClass: '$reset modal-form__label',
+                        outerClass: '$reset modal-form__field',
                     }, {
                         $formkit: 'datetime-local',
                         name: 'date_end',
-                        value: "2022-11-11T11:11",
+                        // value: "2022-11-11T11:11",
                         label: 'Дата окончания тендера',
                         placeholder: "",
                         // validation: 'required',
-                        inputClass: 'search-form__input',
-                        labelClass: '$reset search-form__label',
-                        outerClass: '$reset search-form__field',
+                        inputClass: 'modal-form__input',
+                        labelClass: '$reset modal-form__label',
+                        outerClass: '$reset modal-form__field',
                     }, {
                         $formkit: 'select',
                         name: 'category',
                         label: 'Выбор категории',
                         // multiple: true,
                         options: '$category',
-                        inputClass: 'search-form__select',
-                        labelClass: '$reset search-form__label',
-                        outerClass: '$reset search-form__field m--category',
+                        inputClass: 'modal-form__select',
+                        labelClass: '$reset modal-form__label',
+                        outerClass: '$reset modal-form__field m--category',
                     }, {
                         $formkit: 'select',
                         name: 'region',
                         label: 'Выбор региона',
                         // multiple: true,
                         options: '$region',
-                        inputClass: 'search-form__select',
-                        labelClass: '$reset search-form__label',
-                        outerClass: '$reset search-form__field m--region',
+                        inputClass: 'modal-form__select',
+                        labelClass: '$reset modal-form__label',
+                        outerClass: '$reset modal-form__field m--region',
                     }, {
                         $formkit: 'text',
                         name: 'name',
@@ -140,9 +143,9 @@
                         label: 'Организатор закупки',
                         placeholder: "Введите название, ИНН",
                         // validation: 'required',
-                        inputClass: 'search-form__input',
-                        labelClass: '$reset search-form__label',
-                        outerClass: '$reset search-form__field m--inn',
+                        inputClass: 'modal-form__input',
+                        labelClass: '$reset modal-form__label',
+                        outerClass: '$reset modal-form__field m--inn',
                     },
                 ],
             };
@@ -152,9 +155,36 @@
                 return this.showModal;
             },
         },
+        mounted() {
+            let params = {
+                limit: 100
+            }
+            category.getCategoryList(params).then(res => {
+                if (res.results)
+                    this.content.category = res.results.map( (cat) => {
+                        return { label: cat.name, value: cat.id }
+                    })
+                else
+                    console.log('No getCategoryList data')
+            }).catch(err => {
+                console.error(err)
+            })
+
+            geo.getRegions(params).then(res => {
+                if (res.results)
+                    this.content.region = res.results.map( region => {
+                        return { label: region.name, value: region.id }
+                    })
+                else
+                    console.log('No getRegions data')
+            }).catch(err => {
+                console.error(err)
+            })
+        },
         methods: {
             submitSearchForm(formData) {
-                console.log(formData)
+                this.$emit('advSearch', formData)
+                this.$emit('hideModal')
             }
         }
     };

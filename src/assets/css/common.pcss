@@ -169,6 +169,13 @@ input[type='number'] {
         &:hover {
             @mixin button--outline-color $color-green, $color-green, $color-white;
         }
+
+
+        &:disabled {
+            &:hover {
+                @mixin button--outline-color $color-white, $color-green, $color-green;
+            }
+        }
     }
 
     &-red {
