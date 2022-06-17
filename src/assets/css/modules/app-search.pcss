@@ -12,16 +12,19 @@
         
         &-filter {
             & button {
-                text-transform: none;
                 width: 250px;
+                padding: 14px 16px;
                 border-radius: 2px 8px 8px 2px;
                 font-weight: 300;
                 font-size: 16px;
+                filter: drop-shadow(0 0 0 $color-white);
+                text-transform: none;
             }
         }
 
         &-field {
-            width: 100%;
+            flex-basis: 100%;
+            border-right: 1px solid $color-gray-T6;
         }
 
         &-input {

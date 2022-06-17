@@ -99,7 +99,7 @@
                         labelClass: '$reset modal-form__label',
                         outerClass: '$reset modal-form__field',
                     }, {
-                        $formkit: 'datetime-local',
+                        $formkit: 'date',
                         name: 'date_start',
                         // value: "2021-11-11T11:11",
                         label: 'Дата начала тендера',
@@ -109,7 +109,7 @@
                         labelClass: '$reset modal-form__label',
                         outerClass: '$reset modal-form__field',
                     }, {
-                        $formkit: 'datetime-local',
+                        $formkit: 'date',
                         name: 'date_end',
                         // value: "2022-11-11T11:11",
                         label: 'Дата окончания тендера',
@@ -146,6 +146,32 @@
                         inputClass: 'modal-form__input',
                         labelClass: '$reset modal-form__label',
                         outerClass: '$reset modal-form__field m--inn',
+                    }, {
+                        $formkit: 'radio',
+                        name: 'type',
+                        value: "all",
+                        help: 'Показать тендера',
+                        options: [
+                            {
+                                label: 'Все',
+                                value: 'all'
+                            }, {
+                                label: 'Избранные',
+                                value: 'favorite'
+                            }, {
+                                label: 'Я - организатор',
+                                value: 'asAuthor'
+                            }, {
+                                label: 'Я - исполнитель',
+                                value: 'asPerformer'
+                            }, 
+                        ],
+                        // inputClass: 'modal-form__input',
+                        // labelClass: '$reset modal-form__label',
+                        optionClass: 'modal-form__option',
+                        helpClass: '$reset modal-form__label',
+                        wrapperClass: 'modal-form__radio',
+                        outerClass: '$reset modal-form__field m--type',
                     },
                 ],
             };
