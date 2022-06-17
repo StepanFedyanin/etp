@@ -21,10 +21,10 @@
         font-weight: 400;
         font-size: 16px;
         border-radius: 2px;
-        border: 0;
+        border: 1px solid transparent;
 
         &--current {
-            border: 1px solid $color-green;
+            border-color: $color-green;
         }
 
         &--prev,
@@ -35,7 +35,8 @@
             background-size: 7px 10px;
             background-repeat: no-repeat;
 
-            &:disabled {
+            &.m--disabled {
+                pointer-events: none;
                 background-color: transparent;
 
                 &:hover {
@@ -48,7 +49,7 @@
         &--prev {
             background-image: svg-load('assets/img/icons/icon-arrow-pagination-prev.svg', fill=$color-black);
 
-            &:disabled {
+            &.m--disabled {
                 background-image: svg-load('assets/img/icons/icon-arrow-pagination-prev.svg', fill=$color-gray-T6);
             }
         }
@@ -56,7 +57,7 @@
         &--next {
             background-image: svg-load('assets/img/icons/icon-arrow-pagination-next.svg', fill=$color-black);
 
-            &:disabled {
+            &.m--disabled {
                 background-image: svg-load('assets/img/icons/icon-arrow-pagination-next.svg', fill=$color-gray-T6);
             }
         }
@@ -66,4 +67,9 @@
             box-shadow: 0px 4px 15px rgba(0, 0, 0, 0.15);
         }
     }
-  }
+
+    &__link {
+        display: block;
+        text-decoration: none;
+    }
+}

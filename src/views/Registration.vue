@@ -35,13 +35,13 @@
                     v-if="stepRegistration === 2"
                 >
                     <div class="registration__title h2">
-                        Сведения об организации
+                        Сведения об организации {{ regFormReadOnly }}
                     </div>
                     <div
                         class="registration__form form"
                     >
                         <div
-                            v-if="regData.organization"
+                            v-if="regData.organization && regData.organization.id"
                             class="registration__organization"
                         >
                             <span>{{ regData.organization.name }}</span>, дата регистрации {{ $helpers.parseDate(regData.organization.date_registration, 'YYYY-MM-DD').toLocaleDateString('ru') }}
@@ -54,12 +54,14 @@
                             data-loading="showLoaderSending"
                             form-class="$reset registration__form form"
                             :actions="false"
-                            :disabled="showLoaderSending"
+                            :disabled="showLoaderSending || regFormReadOnly"
                             :loading="showLoaderSending ? true : undefined"
                             @submit="submitOrganizationHandler"
                         >
                             <div class="form__block">
-                                <FormKitSchema :schema="regOrganizationForm" />
+                                <FormKitSchema 
+                                    :schema="regOrganizationForm" 
+                                />
                             </div>
                             <div 
                                 class="form__submit auth__form-submit" 
@@ -215,6 +217,7 @@
             return {
                 regData: this.$store.state.regData || { search: {}, organization: {}, person: {} },
                 showLoaderSending: false,
+                regFormReadOnly: false,
                 regSearchForm: [
                     {
                         $formkit: 'text',
@@ -248,7 +251,7 @@
                     {
                         $formkit: 'text',
                         name: 'inn',
-                        //readonly: true,
+                        readonly: true,
                         label: 'ИНН',
                         placeholder: 'Ваш ИНН',
                         validation: 'required',
@@ -256,7 +259,7 @@
                     }, {
                         $formkit: 'text',
                         name: 'kpp',
-                        //readonly: true,
+                        readonly: true,
                         label: 'КПП',
                         placeholder: 'Ваш КПП',
                         validation: 'required',
@@ -422,6 +425,9 @@
         created() {
         },
         mounted() {
+            if (this.stepRegistration === 2 && this.regData.organization.id) {
+                this.regFormReadOnly = true;
+            }
         },
         methods: {
             addInvite() {
@@ -430,6 +436,13 @@
             prev() {
                 this.$store.dispatch('setStepRegistration', this.stepRegistration - 1);
                 this.stepRegistration = this.$store.state.stepRegistration;
+                if (this.stepRegistration === 1) {
+                    this.regData.organization = {};
+                    this.regData.person = {};
+                } else if (this.stepRegistration === 2) {
+                    this.regData.person = {};
+                }
+                this.$store.dispatch('setRegData', this.regData);
             },
             next() {
                 if (this.stepRegistration !== 4) {
@@ -447,10 +460,12 @@
                 delete params.owner_type;
                 api.searchOrganization(params).then(res => {
                     this.showLoaderSending = false;
-                    if (res.inn) {
+                    if (res.id) {
                         this.regData.organization = Object.assign({}, res);
+                        this.regFormReadOnly = true;
                     } else {
                         this.regData.organization = Object.assign({}, params);
+                        this.regFormReadOnly = false;
                     }
                     this.$store.dispatch('setRegData', this.regData);
                     this.next();
@@ -464,25 +479,33 @@
                 });
             },
             submitOrganizationHandler(data, node) {
-                this.showLoaderSending = true;
-                let params = Object.assign({}, this.regData.organization);
-                api.addOrganization(params).then(res => {
-                    this.showLoaderSending = false;
-                    console.log(res);
-                    this.regData.organization = Object.assign({}, res);
+                if (this.regFormReadOnly) {
                     this.regData.person = {
-                        organization: res.id
-                    }
+                        organization: this.regData.organization.id
+                    };
                     this.$store.dispatch('setRegData', this.regData);
                     this.next();
-                }).catch(err => {
-                    node.setErrors(
-                        [err.detail],
-                    );
-                    this.showLoaderSending = false;
-                    this.$store.dispatch('showError', err);
-                    console.error(err);
-                });
+                } else {
+                    this.showLoaderSending = true;
+                    let params = Object.assign({}, this.regData.organization);
+                    api.addOrganization(params).then(res => {
+                        this.showLoaderSending = false;
+                        console.log(res);
+                        this.regData.organization = Object.assign({}, res);
+                        this.regData.person = {
+                            organization: res.id
+                        };
+                        this.$store.dispatch('setRegData', this.regData);
+                        this.next();
+                    }).catch(err => {
+                        node.setErrors(
+                            [err.detail],
+                        );
+                        this.showLoaderSending = false;
+                        this.$store.dispatch('showError', err);
+                        console.error(err);
+                    });
+                }
             },
             submitPersonHandler(data, node) {
                 this.showLoaderSending = true;

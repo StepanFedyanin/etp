@@ -131,6 +131,12 @@ textarea {
     @mixin radiobox;
 }
 
+input[type="date"]::-webkit-calendar-picker-indicator,
+input[type="datetime-local"]::-webkit-calendar-picker-indicator {
+    background-image: url('assets/img/icons/icon-calendar.svg');
+    background-repeat: no-repeat;
+}
+
 /* Chrome, Safari, Edge, Opera */
 input::-webkit-outer-spin-button,
 input::-webkit-inner-spin-button {
@@ -169,6 +175,13 @@ input[type='number'] {
         &:hover {
             @mixin button--outline-color $color-green, $color-green, $color-white;
         }
+
+
+        &:disabled {
+            &:hover {
+                @mixin button--outline-color $color-white, $color-green, $color-green;
+            }
+        }
     }
 
     &-red {
@@ -187,6 +200,14 @@ input[type='number'] {
         }
     }
 
+    &-outline-white {
+        @mixin button--outline-color $color-white, $color-white, $color-green;
+
+        &:hover {
+            @mixin button--outline-color $color-green, $color-green, $color-white;
+        }
+    }
+
     &-filter {
         &::before {
             content: '';
@@ -194,7 +215,13 @@ input[type='number'] {
             height: 14px;
             background-size: 16px 14px;
             margin-right: 14px;
-            background-image: url('./assets/img/icons/icon-filter.svg');
+            background-image: svg-load('assets/img/icons/icon-filter.svg', fill=$color-green);
+        }
+        
+        &:hover {
+            &::before {
+                background-image: svg-load('assets/img/icons/icon-filter.svg', fill=$color-white);
+            }
         }
     }
 }

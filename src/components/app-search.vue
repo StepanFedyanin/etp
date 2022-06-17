@@ -3,7 +3,7 @@
         <div class="search__inner">
             <form
                 class="search__form"
-                @submit.prevent=""
+                @submit.prevent="searchTenders"
             >
                 <div class="search__form-group">
                     <div class="search__form-field">
@@ -16,9 +16,10 @@
                     <div class="search__form-filter">
                         <button
                             type="button"
-                            class="button button-red button-filter"
+                            class="button button-outline-white button-filter"
+                            @click="onClickShowSearchModal"
                         >
-                            Фильтр
+                            Расширенный поиск
                         </button>
                     </div>
                 </div>
@@ -32,21 +33,43 @@
                 </div>
             </form>
         </div>
+
+        <ModalSearch
+            :showModal="showSearchModal"
+            @hideModal="hideSearchModal"
+            @advSearch="advSearch"
+        />
     </div>
 </template>
 
 <script>
+    import ModalSearch from '@/components/modal-search.vue'
+
     export default {
-        name: 'search',
+        name: 'Search',
         components: {
+            ModalSearch
         },
         props: {
         },
         data() {
             return {
+                showSearchModal: false,
             };
         },
         computed: {
         },
+        methods: {
+            onClickShowSearchModal() {
+                this.showSearchModal = true;
+            },
+            hideSearchModal() {
+                this.showSearchModal = false;
+            },
+            advSearch(formData) {
+                console.log('formData')
+                console.log(formData)
+            }
+        }
     };
 </script>

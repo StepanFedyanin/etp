@@ -4,7 +4,7 @@ import { parse, format } from 'fecha';
 
 const helpers = {
     parseDate: (value, template) => {
-        return parse(value, template);
+        return (value && value.length === template.length) ? parse(value, template) : new Date(null);
     },
     formatDate: (value, template) => {
         return value ? format(value, template) : '';
@@ -33,7 +33,7 @@ const helpers = {
         if (kop < 10) {
             kop = '0' + kop;
         }
-        console.log(kop);
+        // console.log(kop);
         value = Math.floor(value + 0.0001);
         value = value + '';
         let text = '';
@@ -71,6 +71,9 @@ const helpers = {
         }
 
         return false
+    },
+    range: (start, end) => {
+        return [...Array(end).keys()].map(el => el + start)
     }
 }
 

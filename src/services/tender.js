@@ -14,8 +14,8 @@ export default class extends REST {
         });
     }
 
-    static getTenderTenders() {
-        return this._get('tenders', {}).then((data) => {
+    static getTenderTenders(params) {
+        return this._get('tenders', {}, params).then((data) => {
             return data;
         }).catch((error) => {
             throw new RESTError(error, 'Ошибка при получении список тендеров');

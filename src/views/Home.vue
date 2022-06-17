@@ -97,13 +97,19 @@
                                         <div
                                             class="auction__item-button"
                                         >
-                                            <button class="button button-green">
+                                            <button
+                                                class="button button-green"
+                                                @click="$router.push({ name: 'tender', params: { id: item.id } });"
+                                            >
                                                 Участвовать
                                             </button>
                                         </div>
                                     </div>
                                 </div>
                                 <div class="auction__item-right">
+                                    <div class="tenders__item-price">
+                                        {{ $helpers.toPrice(item.price, {sign: '₽'}) }}
+                                    </div>
                                     <div class="auction__item-prop">
                                         Тип аукциона: {{ item.type }}
                                     </div>
@@ -347,7 +353,7 @@
                 if (this.$refs.list) {
                     this.$refs.list.scrollTo(
                         {
-                            'top': this.$refs.list.scrollTop - 60,
+                            'top': this.$refs.list.scrollTop - 240,
                             'behavior': 'smooth'
                         }
                     )
@@ -357,7 +363,7 @@
                 if (this.$refs.list) {
                     this.$refs.list.scrollTo(
                         {
-                            'top': this.$refs.list.scrollTop + 60,
+                            'top': this.$refs.list.scrollTop + 240,
                             'behavior': 'smooth'
                         }
                     )

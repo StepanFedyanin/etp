@@ -6,8 +6,8 @@ export default class extends REST {
         return settings;
     }
 
-    static getRegions() {
-        return this._get('regions', {}).then((data) => {
+    static getRegions(params) {
+        return this._get('regions', {}, params).then((data) => {
             return data;
         }).catch((error) => {
             throw new RESTError(error, 'Ошибка при получении регионов');
