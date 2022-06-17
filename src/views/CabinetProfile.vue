@@ -3,13 +3,15 @@
         <Breadcrumbs />
         <div class="cabinet">
             <div class="container">
-                <div class="cabinet__content text">
-                    <h1>Сотрудник организации</h1>
+                <div class="cabinet__content">
+                    <h1 class="h1">
+                        Сотрудник организации
+                    </h1>
                     <ProfileUser
                         v-if="profile"
                         :user="profile"
                     />
-                    <h2 class="cabinet__subtitle">
+                    <h2 class="cabinet__subtitle h2">
                         Информация о компании
                     </h2>
                     <div class="cabinet__block">
@@ -18,7 +20,7 @@
                             :organization="organization"
                         />
                     </div>
-                    <h2 class="cabinet__subtitle">
+                    <h2 class="cabinet__subtitle h2">
                         Представители организации
                     </h2>
                     <div class="cabinet__block cabinet__persons">
@@ -50,21 +52,6 @@
         data() {
             return {
                 profile: undefined,
-                // user: {
-                //     id: 1,
-                //     contact_email: 'golyasova@flexites.org',
-                //     email: this.profile,
-                //     first_name: 'Elena',
-                //     last_name: 'Golyasova',
-                //     organization: {
-                //         id: 1,
-                //         name: 'ООО “Флексайтс”',
-                //         city: 'г. Челябинск',
-                //         activity: 'Разработка компьютерного программного обеспечения',
-                //         customer: '113',
-                //         member: '45'
-                //     },
-                // },
                 contragents: [],
                 contragent: {
                     id: 1,
@@ -103,18 +90,15 @@
         },
         created() {
             api.getMyProfile().then(res => {
-                console.log(res);
                 this.profile = res;
                 if(this.organization){
                     this.organization = res.organization;
-                    console.log(res.organization);
+                    // console.log(res.organization);
                 }
             }).catch(err => {
-                // this.showLoaderSending = false;
-                // this.$store.dispatch('showError', err);
                 console.error(err);
             });
-            console.log(this.formData);
+            // console.log(this.formData);
         },
         methods: {
         }

@@ -38,8 +38,8 @@ export default class extends REST {
         });
     }
 
-    static updateMyProfile() {
-        return this._put('update_user', {}).then((data) => {
+    static updateMyProfile(params) {
+        return this._patch('update_user', {}, params).then((data) => {
             return data;
         }).catch((error) => {
             throw new RESTError(error, 'Ошибка при обновлении профиля');
