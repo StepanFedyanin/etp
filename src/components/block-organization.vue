@@ -10,7 +10,7 @@
                         Название организации:
                     </div>
                     <div class="organization__block-item-value">
-                        ООО "Флексайтс"
+                        {{ organization.name }}
                     </div>
                 </div>
                 <div class="organization__block-item">
@@ -18,7 +18,7 @@
                         Полное название организации:
                     </div>
                     <div class="organization__block-item-value">
-                        ОБЩЕСТВО С ОГРАНИЧЕННОЙ ОТВЕТСТВЕННОСТЬЮ "ФЛЕКСАЙТС"
+                        {{ organization.full_name }}
                     </div>
                 </div>
                 <div class="organization__block-item">
@@ -26,7 +26,7 @@
                         Основной вид деятельности:
                     </div>
                     <div class="organization__block-item-value">
-                        Разработка компьютерного программного обеспечения
+                        {{ organization.principal_activity ? organization.principal_activity : '-' }}      
                     </div>
                 </div>
                 <div class="organization__block-item">
@@ -34,7 +34,7 @@
                         Руководитель:
                     </div>
                     <div class="organization__block-item-value">
-                        Жуков Николай Геннадьевич
+                        {{ organization.head_name }}
                     </div>
                 </div>
                 <div class="organization__block-item">
@@ -42,7 +42,7 @@
                         Должность:
                     </div>
                     <div class="organization__block-item-value">
-                        Директор
+                        {{ organization.head_post }} 
                     </div>
                 </div>
                 <div class="organization__block-item">
@@ -50,7 +50,7 @@
                         Юридический адрес:
                     </div>
                     <div class="organization__block-item-value">
-                        г. Челябинск, ул. Маркса, д. 46, ПОМЕЩ. 12, 454091
+                        {{ organization.legal_address }}
                     </div>
                 </div>
                 <div class="organization__block-item">
@@ -58,7 +58,7 @@
                         Фактический адрес:
                     </div>
                     <div class="organization__block-item-value">
-                        г. Челябинск, ул. Энтузиастов, д. 11в, оф. 320, 454091
+                        {{ organization.actual_address }}
                     </div>
                 </div>
                 <div class="organization__block-item">
@@ -66,7 +66,7 @@
                         ФИО бухгалтера:
                     </div>
                     <div class="organization__block-item-value">
-                        -                            
+                        {{ organization.accountant_name ? organization.accountant_name : '-' }}                        
                     </div>
                 </div>
             </div>
@@ -75,8 +75,11 @@
                     <div class="organization__block-item-name">
                         Рейтинг светофора:
                     </div>
-                    <div class="organization__block-item-value m--color-green">
-                        Зеленый
+                    <div
+                        class="organization__block-item-value"
+                        :class="[organization.color_status == 'green' ? 'm--color-green' : 'm--color-yellow' ]"
+                    >
+                        {{ organization.color_status_text }}
                     </div>
                 </div>
                 <div class="organization__block-item">
@@ -84,7 +87,7 @@
                         Статус Егрюл:
                     </div>
                     <div class="organization__block-item-value">
-                        Действующая
+                        {{ organization.status }}
                     </div>
                 </div>
                 <div class="organization__block-item">
@@ -92,7 +95,7 @@
                         Дата регистрации:
                     </div>
                     <div class="organization__block-item-value">
-                        20.11.07
+                        {{ $helpers.parseDate(organization.date_registration, 'YYYY-MM-DD').toLocaleDateString('ru') }}
                     </div>
                 </div>
                 <div class="organization__block-item">
@@ -100,7 +103,7 @@
                         Уставной капитал:
                     </div>
                     <div class="organization__block-item-value">
-                        10 000
+                        {{ $helpers.toPrice(organization.capital) }}
                     </div>
                 </div>
                 <div class="organization__block-item">
@@ -108,7 +111,7 @@
                         ИНН:
                     </div>
                     <div class="organization__block-item-value">
-                        7447123326
+                        {{ organization.inn }}
                     </div>
                 </div>
                 <div class="organization__block-item">
@@ -116,7 +119,7 @@
                         КПП:
                     </div>
                     <div class="organization__block-item-value">
-                        745301001
+                        {{ organization.kpp }}
                     </div>
                 </div>
                 <div class="organization__block-item">
@@ -124,7 +127,7 @@
                         ОКПО:
                     </div>
                     <div class="organization__block-item-value">
-                        82903111
+                        {{ organization.okpo }}
                     </div>
                 </div>
                 <div class="organization__block-item">
@@ -132,7 +135,7 @@
                         Огрн:
                     </div>
                     <div class="organization__block-item-value">
-                        1077447022575
+                        {{ organization.ogrn }}
                     </div>
                 </div>
             </div>
@@ -154,6 +157,7 @@
         },
         data() {
             return {
+
             };
         },
         methods: {
