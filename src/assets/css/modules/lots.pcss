@@ -1,8 +1,38 @@
 .lots {
     padding: 20px 0;
     
-    &:not(.m--tenders, .m--tender-start, .m--docs){
+    &:not(.m--tender, .m--tenders, .m--tender-start, .m--docs){
         @mixin shadow-box;
+    }
+
+    &__filter {
+        display: flex;
+        justify-content: space-between;
+        margin-bottom: 16px;
+
+        &-block {
+            display: flex;
+            font-weight: 500;
+            font-size: 16px;
+            line-height: 24px;
+
+            &.m--right {
+                margin-left: auto;
+            }
+        }
+
+        &-item {
+            margin: 0 8px 8px; 
+            font-weight: 400;
+            text-transform: uppercase;
+            text-decoration: none;
+            color: $color-black;
+
+            &:hover,
+            &.is-active {
+                color: $color-green;
+            }
+        }
     }
 
     &__header,
@@ -67,6 +97,10 @@
         }
     }
 
+    &.m--tender {
+        margin-bottom: 0;
+    }
+
     &__header {
         font-weight: 700;
         color: $color-red;
@@ -80,13 +114,34 @@
             }
         }
     }
+
     &__list {}
+
+    &__block {
+        display: flex;
+        flex-wrap: wrap;
+        margin: 0 -15px;
+
+        &-item&-item {
+            @mixin shadow-box;
+            padding: 20px;
+            margin: 0 15px 48px;
+            width: calc(33.33% - 30px);
+            min-width: 360px;
+            background: $color-white !important;
+        }
+    }
 
     &__item {
         margin: 0 20px 16px;
 
         &:nth-child(2n) {
             background: $color-bg;
+        }
+
+        &.m--no-grid {
+            display: flex;
+            flex-direction: column;
         }
 
         &-cell {
@@ -134,6 +189,63 @@
 
         &-delete {
             background-image: url('./assets/img/icons/icon-delete.svg');
+        }
+
+        &-header {
+            display: flex;
+            margin-bottom: 12px;
+            color: $color-gray-T4;
+            font-size: 16px;
+            line-height: 20px;
+        }
+
+        &-status {
+            margin-left: auto;
+            font-weight: 600;
+            text-transform: uppercase;
+            color: $color-gray-T3;
+        }
+
+        &-name {
+            font-weight: 400;
+            font-size: 14px;
+            line-height: 20px;
+            margin-bottom: auto;
+            padding-bottom: 12px;
+        }
+        &-params {
+            margin-bottom: 24px;
+        }
+
+        &-param {
+            display: flex;
+            font-weight: 400;
+            font-size: 16px;
+            line-height: 24px;
+            margin-bottom: 8px;
+            text-transform: uppercase;
+
+            span {
+                margin-left: auto;
+                padding-left: 16px;
+                font-weight: 600;
+            }
+
+            &.m--underline {
+                padding-bottom: 16px;
+                margin-bottom: 16px;
+                border-bottom: 1px solid $color-gray-T5;
+                font-weight: 500;
+                text-transform: none;
+
+                span {
+                    font-weight: 500;
+                }
+            }
+        }
+        &-buttons {
+            display: flex;
+            justify-content: center;
         }
     }        
 }

@@ -284,13 +284,27 @@
                         outerClass: 'tender-form__field',
                         messageClass: 'tender-form__message',
                     }, {
-                        $formkit: 'select',
+                        $formkit: 'multiselect',
                         name: 'category',
                         label: 'Выбор категории',
                         help: 'Выберите категорию к которой относятся закупаемые товары или услуги',
                         // validation: 'required',
-                        multiple: true,
-                        options: '$category',
+                        // multiple: true,
+                        mode: 'multiple',
+                        options: async (query) => {
+                            return await category.getCategoryList({ limit: 100 }).then(res => {
+                                if (res.results) {
+                                    this.content.category = res.results.map( (cat) => {
+                                        return { label: cat.name, value: cat.id }
+                                    })
+                                    return this.content.category
+                                } else {
+                                    console.log('No getCategoryList data')
+                                }
+                            }).catch(err => {
+                                console.error(err)
+                            })
+                        },
                         __raw__sectionsSchema: {
                             prefix: {
                                 $el: 'div',

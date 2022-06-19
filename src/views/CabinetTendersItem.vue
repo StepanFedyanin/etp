@@ -1,6 +1,42 @@
 <template>
     <div class="cabinet tender">
         <div class="container">
+            <div class="tender__block">
+                <div class="tender__data">
+                    <div class="tender__data-icon m--timer m--red" />
+                    <div class="tender__data-inner">
+                        <div class="tender__data-title">
+                            Осталось времени
+                        </div>
+                        <div class="tender__data-info">
+                            1 день 23 часа
+                        </div>
+                    </div>
+                </div>
+                <div class="tender__data">
+                    <div class="tender__data-icon m--status" />
+                    <div class="tender__data-inner">
+                        <div class="tender__data-title">
+                            Статус
+                        </div>
+                        <div class="tender__data-info">
+                            Проведение аукциона
+                        </div>
+                    </div>
+                </div>
+                <div class="tender__data">
+                    <div class="tender__data-icon m--clock" />
+                    <div class="tender__data-inner">
+                        <div class="tender__data-title">
+                            Продолжительность
+                        </div>
+                        <div class="tender__data-info">
+                            72:12:12 <span class="m--color-green">+20 минут</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
             <div
                 class="tender__info"
             >
@@ -17,6 +53,9 @@
                     <div class="tender__info-param">
                         <span>Регион:</span> Свердловская область
                     </div>
+                    <div class="tender__info-param">
+                        <span>Дополнительная информация:</span> Оплата 50% до поставки, 50% после поставки. Внимательно ознакомьтесь с техническим заданием.
+                    </div>
                 </div>
                 <div class="tender__info-right">
                     <div class="tender__info-price">
@@ -32,10 +71,10 @@
                         <span>Тип аукциона:</span> Открытый
                     </div>
                     <div class="tender__info-param">
-                        <span>Лоты:</span> 35
+                        <span>Минимальный шаг ставки:</span> 5
                     </div>
                     <div class="tender__info-param">
-                        <span>Предложений от поставщиков:</span> 5
+                        <span>Лоты:</span> 35
                     </div>
                 </div>
             </div>
@@ -94,37 +133,267 @@
                 </div>
             </div>
 
-            <div class="tender__block">
-                <div class="tender__data">
-                    <div class="tender__data-icon m--timer m--red" />
-                    <div class="tender__data-inner">
-                        <div class="tender__data-title">
-                            Осталось времени
+            <div class="tender__status">
+                <div class="tender__status-title">
+                    Статус вашей организации: не участвует в тендере
+                </div>
+                <div class="tender__status-block">
+                    <button 
+                        class="button button-green"
+                        @click="onClickRequest()"
+                    >
+                        Подать заявку
+                    </button>
+                </div>
+            </div>
+
+            <div class="tender__status">
+                <div class="tender__status-title">
+                    Статус вашей организации: <span>Заявка на рассмотрении</span>
+                </div>
+                <div class="tender__status-block">
+                    <button 
+                        class="button button-green"
+                        disabled
+                        @click="onClickRequest()"
+                    >
+                        Подать заявку
+                    </button>
+                </div>
+            </div>
+
+            <div class="tender__status">
+                <div class="tender__status-title">
+                    Статус вашей организации: <span class="m--color-red">Заявка отклонена</span>
+                </div>
+                <div class="tender__status-block m--underline tender__docs">
+                    <div class="tender__status-subtitle">Документация участника</div>
+                    <div class="tender__docs-list">
+                        <div class="tender__docs-item m--width-30-70">
+                            <div class="tender__docs-cell m--title">
+                                Файл
+                            </div>
+                            <div class="tender__docs-cell m--title">
+                                Описание
+                            </div>
                         </div>
-                        <div class="tender__data-info">
-                            1 день 23 часа
+                        <div class="tender__docs-item m--width-30-70">
+                            <a
+                                href="#"
+                                class="tender__docs-cell m--file"
+                            >Требование к материалам.pdf</a>
+                            <div class="tender__docs-cell m--desc">
+                                Описание объекта закупки
+                            </div>
+                        </div>
+                        <div class="tender__docs-item m--width-30-70">
+                            <a
+                                href="#"
+                                class="tender__docs-cell m--file"
+                            >Приложение 1.pdf</a>
+                            <div class="tender__docs-cell m--desc">
+                                Пример приложения с каким-то текстом
+                            </div>
                         </div>
                     </div>
                 </div>
-                <div class="tender__data">
-                    <div class="tender__data-icon m--status" />
-                    <div class="tender__data-inner">
-                        <div class="tender__data-title">
-                            Статус
-                        </div>
-                        <div class="tender__data-info">
-                            Проведение аукциона
-                        </div>
+                <div class="tender__status-block m--underline">
+                    <div class="tender__status-subtitle">Комментарий участника</div>
+                    <div class="tender__status-comment">
+                        ООО «Флексайтс». Разработка, продвижение, развитие — делаем сайты с умом! Мы с большим уважением относимся к деньгам, которые доверяют нам клиенты. При работе мы рассчитываем на такое же отношение со стороны клиентов к нашему труду, времени и квалификации. https://flexites.org/
                     </div>
                 </div>
-                <div class="tender__data">
-                    <div class="tender__data-icon m--clock" />
-                    <div class="tender__data-inner">
-                        <div class="tender__data-title">
-                            Продолжительность
+                <div class="tender__status-block">
+                    <div class="tender__status-subtitle">Решение организатора <span class="m--color-red">Заявка отклонена</span></div>
+                    <div class="tender__status-comment">
+                        Приложите лицензию на осуществление медицинской деятельности.
+                    </div>
+                </div>
+                <div class="tender__status-block">
+                    <button 
+                        class="button button-green"
+                        @click="onClickRequest()"
+                    >
+                        Подать заявку снова
+                    </button>
+                </div>
+            </div>
+
+            <div class="tender__bids">
+                <div class="tender__bids-title">
+                    Быстрые ставки
+                </div>
+                <div class="tender__bids-block">
+                    <div class="tender__bids-info">Минимальный шаг цены - 0,7 %</div>
+                    <button 
+                        class="button button-outline-green m--right"
+                        @click="onClickRequest()"
+                    >
+                        По проигрывающим лотам
+                    </button>
+                    <button 
+                        class="button button-outline-green"
+                        @click="onClickRequest()"
+                    >
+                        По всем лотам
+                    </button>
+                </div>
+            </div>
+
+            <div class="tender__lots lots m--tender">
+                <div class="tender__lots-title">Лоты</div>
+                <div class="lots__filter">
+                    <div class="lots__filter-block">
+                        Фильтр:
+                        <a href="#" class="lots__filter-item is-active">Показать все</a>
+                        <a href="#" class="lots__filter-item">Участвую</a>
+                        <a href="#" class="lots__filter-item">Не участвую</a>
+                    </div>
+                    <div class="lots__filter-block m--right">
+                        Сортировка:
+                        <a href="#" class="lots__filter-item is-active">По участию</a>
+                        <a href="#" class="lots__filter-item">По номеру лота</a>
+                    </div>
+                </div>
+
+                <div class="lots__block">
+                    <div class="lots__item lots__block-item m--no-grid">
+                        <div class="lots__item-header">
+                            Лот №1
+                            <div class="lots__item-status m--color-red">Ставка проигрывает</div>
                         </div>
-                        <div class="tender__data-info">
-                            72:12:12 <span class="m--color-green">+20 минут</span>
+                        <div class="lots__item-name">
+                            Длинное название запчасти на автомобиль КамАЗ, УАЗ, ЗИЛ, Газель, удлинненное название лота, состоящее из большого числа символов, но все символы помещаются
+                        </div>
+                        <div class="lots__item-params">
+                            <div class="lots__item-param m--underline">
+                                20 000 ед. (цистерна)
+                                <span>6 000 ₽ / ед.</span>
+                            </div>
+                            <div class="lots__item-param">
+                                Начальная цена:
+                                <span>12 000 000 ₽</span>
+                            </div>
+                            <div class="lots__item-param">
+                                Лучшая ставка:
+                                <span>10 000 000 ₽</span>
+                            </div>
+                            <div class="lots__item-param">
+                                Ваша ставка:
+                                <span>11 100 000 ₽</span>
+                            </div>
+                        </div>
+                        <div class="lots__item-buttons">
+                            <button 
+                                class="button button-outline-green"
+                            >
+                                Сделать ставку
+                            </button>
+                        </div>
+                    </div>
+
+                    <div class="lots__item lots__block-item m--no-grid">
+                        <div class="lots__item-header">
+                            Лот №1
+                            <div class="lots__item-status m--color-red">Ставка проигрывает</div>
+                        </div>
+                        <div class="lots__item-name">
+                            Длинное название запчасти на автомобиль КамАЗ, УАЗ, ЗИЛ, Газель, удлинненное название лота, состоящее из большого числа символов, но все символы помещаются
+                        </div>
+                        <div class="lots__item-params">
+                            <div class="lots__item-param m--underline">
+                                20 000 ед. (цистерна)
+                                <span>6 000 ₽ / ед.</span>
+                            </div>
+                            <div class="lots__item-param">
+                                Начальная цена:
+                                <span>12 000 000 ₽</span>
+                            </div>
+                            <div class="lots__item-param">
+                                Лучшая ставка:
+                                <span>10 000 000 ₽</span>
+                            </div>
+                            <div class="lots__item-param">
+                                Ваша ставка:
+                                <span>11 100 000 ₽</span>
+                            </div>
+                        </div>
+                        <div class="lots__item-buttons">
+                            <button 
+                                class="button button-outline-green"
+                            >
+                                Сделать ставку
+                            </button>
+                        </div>
+                    </div>
+
+                    <div class="lots__item lots__block-item m--no-grid">
+                        <div class="lots__item-header">
+                            Лот №1
+                            <div class="lots__item-status m--color-green">Ставка выигрывает</div>
+                        </div>
+                        <div class="lots__item-name">
+                            Длинное название запчасти на автомобиль КамАЗ, УАЗ, ЗИЛ, Газель, удлинненное название лота
+                        </div>
+                        <div class="lots__item-params">
+                            <div class="lots__item-param m--underline">
+                                20 000 ед. (цистерна)
+                                <span>6 000 ₽ / ед.</span>
+                            </div>
+                            <div class="lots__item-param">
+                                Начальная цена:
+                                <span>12 000 000 ₽</span>
+                            </div>
+                            <div class="lots__item-param">
+                                Лучшая ставка:
+                                <span>10 000 000 ₽</span>
+                            </div>
+                            <div class="lots__item-param">
+                                Ваша ставка:
+                                <span>11 100 000 ₽</span>
+                            </div>
+                        </div>
+                        <div class="lots__item-buttons">
+                            <button 
+                                class="button button-outline-green"
+                            >
+                                Сделать ставку
+                            </button>
+                        </div>
+                    </div>
+
+                    <div class="lots__item lots__block-item m--no-grid">
+                        <div class="lots__item-header">
+                            Лот №1
+                            <div class="lots__item-status">Вы не участвуете</div>
+                        </div>
+                        <div class="lots__item-name">
+                            Длинное название запчасти на автомобиль КамАЗ, УАЗ, ЗИЛ
+                        </div>
+                        <div class="lots__item-params">
+                            <div class="lots__item-param m--underline">
+                                20 000 ед. (цистерна)
+                                <span>6 000 ₽ / ед.</span>
+                            </div>
+                            <div class="lots__item-param">
+                                Начальная цена:
+                                <span>12 000 000 ₽</span>
+                            </div>
+                            <div class="lots__item-param">
+                                Лучшая ставка:
+                                <span>10 000 000 ₽</span>
+                            </div>
+                            <div class="lots__item-param">
+                                Ваша ставка:
+                                <span>11 100 000 ₽</span>
+                            </div>
+                        </div>
+                        <div class="lots__item-buttons">
+                            <button 
+                                class="button button-outline-green"
+                            >
+                                Сделать ставку
+                            </button>
                         </div>
                     </div>
                 </div>

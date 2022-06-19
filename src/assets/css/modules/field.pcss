@@ -1,10 +1,19 @@
 .field {
-    position: relative;
+    /*position: relative;*/
+    display: flex;
+    flex-direction: column;
     padding-bottom: 24px;
     margin-bottom: 8px;
 
     &--type_hidden {
         display: none;
+    }
+
+    &__inner {
+        display: flex;
+        flex-direction: column;
+        width: 100%;
+        height: 100%;
     }
 
     &__label {
@@ -40,7 +49,8 @@
     }
 
     &__input {
-        position: relative;
+        /*position: relative;*/
+        margin-top: auto;
     }
 
     &__options {
@@ -49,7 +59,8 @@
     }
 
     &__option {
-        margin-bottom: 16px;
+        margin-top: 8px;
+        margin-bottom: 8px;
     }
 
     &__option &__input input {
@@ -102,15 +113,19 @@
     &[data-errors=true] &__input {
         &:after {
             content: '';
-            position: absolute;
+            position: relative;
             display: block;
-            right: 12px;
-            top: calc(50% - 12px);
+            /*right: 12px;*/
+            /*top: calc(50% - 12px);*/
+            margin-top: -24px;
+            margin-left: -36px;
+            top: -12px;
+            left: 100%;
             background-image: svg-load('assets/img/icons/field-error.svg', fill=$color-red);
             background-repeat: no-repeat;
             background-position: center;
             background-size: contain;
-            min-width: 24px;
+            width: 24px;
             height: 24px;
         }
     }

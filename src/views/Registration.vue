@@ -2,7 +2,6 @@
     <div class="app__main">
         <div class="registration">
             <div class="container">
-                {{ regData }}
                 <div
                     v-if="stepRegistration === 1"
                 >
@@ -218,6 +217,13 @@
                 regData: this.$store.state.regData || { search: {}, organization: {}, person: {} },
                 showLoaderSending: false,
                 regFormReadOnly: false,
+                options: [
+                    {value: 1, label: '1 номер'},
+                    {value: 2, label: '2 номера'},
+                    {value: 3, label: '3 номера'},
+                    {value: 4, label: '4 номера'},
+                    {value: 5, label: '5 номеров'},
+                ],
                 regSearchForm: [
                     {
                         $formkit: 'text',
@@ -233,6 +239,24 @@
                         placeholder: 'Ваш КПП',
                         validation: 'required',
                         outerClass: 'field--inline field--required'
+                    /*
+                    }, {
+                        $formkit: 'multiselect',
+                        name: 'test',
+                        searchable: true,
+                        options: [
+                            {value: 1, label: '1 номер'},
+                            {value: 2, label: '2 номера'},
+                            {value: 3, label: '3 номера'},
+                            {value: 4, label: '4 номера'},
+                            {value: 5, label: '5 номеров'},
+                        ],
+                        mode: 'tags',
+                        label: 'КПП',
+                        placeholder: 'Ваш КПП',
+                        validation: 'required',
+                        outerClass: 'field--inline field--required'
+                    */
                     }, {
                         $formkit: 'checkbox',
                         name: 'owner_type',

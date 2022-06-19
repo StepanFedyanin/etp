@@ -15,65 +15,65 @@
             <div class="offers m--no-padding m--no-background m--no-shadow m--modal">
                 <div class="offers__list">
                     <div class="offers__item">
-                        <div class="offers__item-number">
-                            Лот №1
-                        </div>
                         <div class="offers__item-name">
-                            Длинное название запчасти на автомобиль КамАЗ, УАЗ, ЗИЛ, Газель, удлинненное название лота, состоящее из большого числа символов, но все символы помещаются
+                            Запчасть №1
                         </div>
                         <div class="offers__item-info">
                             <div class="offers__item-param">
                                 Начальная цена <span>22 000,00 ₽</span>
                             </div>
-                            <div class="offers__item-param">
-                                Лучшая ставка <span>17 900,00 ₽</span>
+                            <div class="offers__item-param m--color-red">
+                                Текущая цена <span>17 900,00 ₽</span>
                             </div>
                             <div class="offers__item-param">
                                 Текущее снижение <span>20.1 %</span>
                             </div>
+                            <div class="offers__item-param">
+                                Цена за ед. без НДС <span>500,00 ₽</span>
+                            </div>
+                            <div class="offers__item-param">
+                                Цена за ед. с НДС <span>600,00 ₽</span>
+                            </div>
+                            <div class="offers__item-param">
+                                Количество <span>50</span>
+                            </div>
                         </div>
                         <div class="offers__item-form form">
                             <div class="form__block m--flex">
-                                <div class="form__block-title offers__item-form-title">
+                                <div class="form__block-title">
                                     Ваше предложение
                                 </div>
-                                <div class="offers__item-form-info">
-                                    Минимальная ставка: <span>17 774,7 ₽</span> (шаг цены - <span>0,7 %</span>)
-                                </div>
+                                <FormKit
+                                    v-model="formData.nums"
+                                    type="text"
+                                    name="nums"
+                                    label=""
+                                    placeholder="Количество"
+                                    validation="required|number"
+                                    validation-visibility="dirty"
+                                    validation-label="Кол-во"
+                                    @input="calcLotSum"
+                                />
                                 <FormKit
                                     v-model="formData.price"
                                     type="text"
                                     name="price"
                                     label=""
-                                    placeholder="Ваша ставка"
+                                    placeholder="Цена за ед, ₽"
                                     validation="required|number"
                                     validation-visibility="dirty"
-                                    validation-label="ставка"
+                                    validation-label="Цена"
                                     @input="calcLotSum"
-                                />
-                                <FormKit
-                                    v-model="formData.min_bid"
-                                    type="checkbox"
-                                    name="min_bid"
-                                    label=""
-                                    :options="{'1': 'Минимальная ставка'}"
-                                    outerClass="field--inline"
-                                    @change="calcLotSum"
                                 />
                             </div>
                             <div class="form__submit">
-                                <button
-                                    type="reset"
-                                    :disabled="showLoaderSending"
-                                    class="button button-red"
-                                    @click="$emit('hideModal')"
-                                >
-                                    Отменить
-                                </button>
+                                <div class="offers__item-price">
+                                    Стоимость лота: {{ $helpers.toPrice(formData.sum, { pointer: ',', sign: '₽' }) }}
+                                </div>
                                 <button
                                     type="submit"
                                     :disabled="showLoaderSending"
-                                    class="button button-green"
+                                    class="button button-green m--right"
                                     @click="submitForm"
                                 >
                                     Сделать ставку
@@ -83,6 +83,14 @@
                     </div>
                 </div>
             </div>
+            <button
+                type="submit"
+                :disabled="showLoaderSending"
+                class="button button-outline-green"
+                @click="submitForm"
+            >
+                Добавить еще 1 лот
+            </button>
         </div>
     </vue-final-modal>
 </template>

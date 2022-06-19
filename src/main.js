@@ -1,5 +1,6 @@
 import { createApp } from 'vue';
-import { plugin, defaultConfig } from '@formkit/vue';
+import multiselectInput from '@/components/inputs/multiselect-input';
+import { plugin, defaultConfig, createInput } from '@formkit/vue';
 import { vfmPlugin } from 'vue-final-modal';
 import { ru } from '@formkit/i18n';
 //import Maska from 'maska';
@@ -33,11 +34,20 @@ const confFormKit = {
             messages: '$reset field__comment',
             message: '$reset field__comment-item',
             legend: '$reset field__legend',
+            fieldset: '$reset field__fieldset',
             options: '$reset field__options',
             option: '$reset field__option',
             decorator: '$reset field__decorator'
         }
-    }
+    },
+    inputs: {
+        select: createInput(multiselectInput, {
+            props: ['options', 'placeholder', 'mode', 'searchable'],
+        }),
+        multiselect: createInput(multiselectInput, {
+            props: ['options', 'placeholder', 'mode', 'searchable'],
+        }),
+    },
 };
 
 app.use(plugin, defaultConfig(confFormKit));
