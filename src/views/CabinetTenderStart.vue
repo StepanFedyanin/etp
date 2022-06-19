@@ -317,7 +317,7 @@
                         // multiple: true,
                         mode: 'multiple',
                         options: async (query) => {
-                            return await category.getCategoryList({ limit: 100 }).then(res => {
+                            return await categoryApi.getCategoryList({ limit: 100 }).then(res => {
                                 if (res.results) {
                                     this.content.category = res.results.map( (cat) => {
                                         return { label: cat.name, value: cat.id }
