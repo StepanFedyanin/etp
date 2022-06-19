@@ -91,7 +91,7 @@ const routes = [
         component: cabinetProfile,
         meta: { 
             title: 'Мой профиль', 
-            breadcrumbs: ['cabinet'],
+            breadcrumbs: [],
             requiresAuth: true 
         },
         props: true,
@@ -101,7 +101,7 @@ const routes = [
         component: CabinetProfileEdit,
         meta: { 
             title: 'Редактирование профиля', 
-            breadcrumbs: ['cabinet'],
+            breadcrumbs: ['profile'],
             requiresAuth: true 
         },
         props: true,
@@ -218,6 +218,19 @@ const routes = [
             requiresAuth: true 
         },
         props: true,
+        children: [
+            {
+                path: '/cabinet/tender-start/:id',
+                name: 'tender-start-edit',
+                component: cabinetTenderStart,
+                meta: { 
+                    title: 'Объявить тендер', 
+                    breadcrumbs: ['cabinet'],
+                    requiresAuth: true 
+                },
+                props: true,
+            }
+        ]
     }, {
         path: '/cabinet/contragents',
         component: cabinetContragents,

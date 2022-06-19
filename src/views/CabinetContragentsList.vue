@@ -10,7 +10,7 @@
                         Название
                     </div>
                     <div class="contragents__header-cell m--activity">
-                        Основной виде деятельности
+                        Основной вид деятельности
                     </div>
                     <div class="contragents__header-cell m--customer">
                         Заказчик

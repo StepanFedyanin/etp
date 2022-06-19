@@ -44,8 +44,8 @@
                     </div>
                     <pagination
                         :total="groups.count"
-                        :limit="limit"
-                        :currentPage="currentPage"
+                        :limit="Number(limit)"
+                        :currentPage="Number($route.query.page)"
                         :url="$route.path"
                     />
                 </div>
@@ -55,8 +55,8 @@
 </template>
 
 <script>
-    import { category as api } from "@/services";
-    import pagination from '@/components/pagination.vue';
+    import { category as api } from "@/services"
+    import pagination from '@/components/pagination.vue'
 
     export default {
         name: 'Groups',
@@ -67,8 +67,7 @@
             return {
                 groups: null,
                 limit: 5,
-                currentPage: 1,
-            };
+            }
         },
         watch: {
             '$route.query.page': {
@@ -82,10 +81,10 @@
         },
         methods: {
             getGroupsFromApi() {
-                this.currentPage = Number(this.$route.query.page) || 1;
+                let page = Number(this.$route.query.page) || 1
                 let params = {
                     limit: this.limit,
-                    offset: (this.currentPage - 1) * this.limit,
+                    offset: (page - 1) * this.limit,
                 }
 
                 api.getCategoryList(params).then(res => {
@@ -96,5 +95,5 @@
                 })
             }
         },
-    };
+    }
 </script>

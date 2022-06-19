@@ -1,131 +1,148 @@
 <template>
-    <FormKit 
-        :value="formData" 
-        type="form" 
-        @submit="submit"
-    >
-        <FormKit
-            type="text"
-            label="Email (Логин)*"
-            name="login"
-            placeholder="info@example.ru"
-            validation="required|email"
-            autocomplete="off"
-        />
-        <FormKit
-            type="password"
-            name="password"
-            label="Пароль*"
-            validation="required"
-        />
-        <FormKit
-            type="password"
-            name="password_confirm"
-            label="Повтор пароля*"
-            validation="required|confirm"
-            validation-label="Password confirmation"
-        />
-        <FormKit
-            type="text"
-            label="Фамилия*"
-            name="last_name"
-            placeholder="Петров"
-            validation="required|length:2,15|alphanumeric"
-            autocomplete="off"
-        />
-        <FormKit
-            type="text"
-            label="Имя*"
-            name="first_name"
-            placeholder="Иван"
-            validation="required|length:2,15|alphanumeric"
-            autocomplete="off"
-        />
-        <FormKit
-            type="text"
-            label="Отчество"
-            name="patronymic"
-            placeholder="Васильевич"
-            validation="length:2,15|alphanumeric"
-            autocomplete="off"
-        />
-        <FormKit
-            type="text"
-            label="Должность"
-            name="post"
-            placeholder="Директор"
-            validation="length:2,15|alphanumeric"
-            autocomplete="off"
-        />
-        <FormKit
-            type="text"
-            label="Email (контактный)"
-            name="email"
-            placeholder="info@example.ru"
-            validation="email"
-            autocomplete="off"
-        />
-        <FormKit
-            type="text"
-            label="Телефон (контактный)"
-            name="phone"
-            placeholder="x-xxx-xxx-xxxx"
-            validation="['matches', /^\d{3}-\d{3}-\d{4}$/]"
-            :validation-messages="{matches: 'Phone number must be formatted: x-xxx-xxx-xxxx',}"
-            validation-visibility="dirty"
-            autocomplete="off"
-        />
-        <FormKit
-            type="button"
-            class="button button-red"
-            @click="onClickCancel"
+    <div>
+        <FormKit 
+            id="profileEdit"
+            type="form" 
+            :value="formData"
+            form-class="$reset profile-edit__form"
+            :actions="false"
+            data-loading="showLoaderSending"
+            :loading="showLoaderSending ? true : undefined"
+            @submit="updateUserProfile"
         >
-            Отменить
+            <FormKit
+                type="text"
+                label="Фамилия*"
+                name="last_name"
+                placeholder="Петров"
+                validation="required:trim"
+                autocomplete="off"
+            />
+            <FormKit
+                type="text"
+                label="Имя*"
+                name="first_name"
+                placeholder="Иван"
+                validation="required:trim"
+                autocomplete="off"
+            />
+            <FormKit
+                type="text"
+                label="Отчество"
+                name="patronymic"
+                placeholder="Васильевич"
+                
+                autocomplete="off"
+            />
+            <FormKit
+                type="text"
+                label="Должность"
+                name="post"
+                placeholder="Директор"
+                autocomplete="off"
+            />
+            <FormKit
+                type="text"
+                label="Email (контактный)"
+                name="contact_email"
+                placeholder="info@example.ru"
+                validation="email"
+                autocomplete="off"
+            />
+            <FormKit
+                type="tel"
+                label="Телефон (контактный)"
+                name="phone"
+                placeholder="x-xxx-xxx-xxxx"
+
+                :validation-messages="{
+                    matches: 'Телефон должен быть в формате x-xxx-xxx-xxxx',
+                }"
+                validation-visibility="dirty"
+            />
+            <!-- validation="matches:/^[0-9]{1}-[0-9]{3}-[0-9]{3}-[0-9]{4}$/" -->
+            <div class="double">
+                <FormKit
+                    type="button"
+                    label="Отменить"
+                    outer-class="profile-edit__button"
+                    :input-class="{
+                        'button': true,
+                        'button-red': true
+                    }"
+                    @click="onClickCancel"
+                />
+                <FormKit
+                    type="submit"
+                    label="Сохранить"
+                    outer-class="profile-edit__button"
+                    :input-class="{
+                        'button': true,
+                        'button-green': true
+                    }"
+                    data-loading="showLoaderSending"
+                    :disabled="showLoaderSending"
+                    :loading="showLoaderSending ? true : undefined"
+                />
+                <!-- :disabled="loading || !isValid" -->
+            </div>
         </FormKit>
-        <!-- <FormKit
-            type="button"
-            help="You can bind event listeners."
-            class="button button-green"
-            @click="onClickUpdateUser"
-        >
-            Сохранить
-        </FormKit> -->
-    </FormKit>
+        <!-- <div v-if="submitted">
+            <h2>Submission successful!</h2>
+        </div> -->
+        <!-- <pre wrap>{{ formData }}</pre> -->
+    </div>
 </template>
+
 <script>
     import { user as api } from "@/services";
 
     export default {
+        name: 'ProfileEdit',
+        props: {
+            item: {
+                type: Object,
+                default() { return {} }
+            },
+        },
         data() {
             return {
-                formData: {
-                    username: 'b@dExampleUsername',
-                    password: 'test_password',
-                    password_confirm: 'tst_password',
-                    phone: undefined,
-                },
+                formData: undefined,
+                showLoaderSending: false,
             }
         },
-        created(){
-            api.getMyProfile().then(res => {
-                console.log(res);
-                this.profile = res
-            }).catch(err => {
-                // this.showLoaderSending = false;
-                // this.$store.dispatch('showError', err);
-                console.error(err);
-            });
-            console.log(this.formData);
+
+        created() {
+            this.formData = this.item
         },
         methods: {
-            async submit() {
-                return new Promise((r) => setTimeout(r, 2000))
-                // alert('submitted successfully!')
-            },
+
             onClickCancel() {
                 this.$router.push({ name: 'profile'});
-            }
-            // onClickUpdateUser(){}
+            },
+            // submitForm() {
+            //     this.$formkit.submit('profileEdit');
+            // },
+            updateUserProfile(formData, node) {
+                console.log(formData);
+                api.updateMyProfile(formData).then(res => {
+                    console.log(res);
+                    this.showLoaderSending = false;
+                    this.$router.push({ name: 'profile'});
+                }).catch(err => {
+                    node.setErrors(
+                        [err.detail],
+                    );
+                    this.showLoaderSending = false;
+                    this.$store.dispatch('showError', err);
+                    console.error(err);
+                    // this.$store.dispatch('showError', err);
+                    // console.error(err);
+                });
+                // alert(`Submitted ${formData.last_name} successfully!`)
+                
+            },
+
         },
     }
 </script>

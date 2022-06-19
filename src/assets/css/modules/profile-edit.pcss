@@ -1,23 +1,52 @@
 .profile-edit{
+    .field__inner {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        grid-column-gap: 10px;
+        align-items: center;
+    }
     &__subtitle{
         text-transform: uppercase;
         color: $color-gray-T3;
         display: inline-block;
         margin-top: 0;
     }
+    &__form {
+        max-width: 870px;
+    }
+    .double{
+        display: flex;
+        justify-content: space-evenly;
+        flex-wrap: wrap;
+    }
+    &__button{
+        .field__inner {
+            grid-template-columns: 1fr;
+        }
+        &:not(:last-child){
+            /* margin-right: 36px; */
+        }
+    }
+    .button{
+        line-height: 22px;
+    }
+    /* .formkit-actions{
+        display: inline-block;
+    } */
     .field__label{
         color: #344054;
-    }
-    .field__inner {
-        display: grid;
-        grid-template-columns: 1fr 1fr;
     }
     .field__input{
         max-width: 400px;
     }
+    .formkit-help {
+        margin-left: 8px;
+    }
+    .field__comment{
+        display: flex;
+        justify-content: flex-end;
+    }
 }
 
-.formkit-help {
-    margin-left: 8px;
-}
+
 

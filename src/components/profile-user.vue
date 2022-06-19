@@ -17,6 +17,17 @@
         </div>
         <div class="profile__table table">
             <div class="table__column">
+                <!-- <div
+                    v-for="(value, name) in user"
+                    class="table__item"
+                >
+                    <div class="table__label">
+                        {{ name }}
+                    </div>
+                    <div class="table__value">
+                        {{ value }}
+                    </div>
+                </div> -->
                 <div class="table__item">
                     <div class="table__label">
                         Email (логин):
@@ -74,6 +85,7 @@
                         Телефон (контактный):
                     </div>
                     <div class="table__value">
+                        <!-- {{ $helpers.formatTel(user.phone) }} -->
                         {{ user.phone ? user.phone : '-' }}
                     </div>
                 </div>
@@ -87,7 +99,9 @@
         props: {
             user: {
                 type: Object,
-                default() { return {} }
+                default() { 
+                    return {} 
+                }
             },
         },
         data() {

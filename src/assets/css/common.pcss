@@ -131,6 +131,12 @@ textarea {
     @mixin radiobox;
 }
 
+input[type="date"]::-webkit-calendar-picker-indicator,
+input[type="datetime-local"]::-webkit-calendar-picker-indicator {
+    background-image: url('assets/img/icons/icon-calendar.svg');
+    background-repeat: no-repeat;
+}
+
 /* Chrome, Safari, Edge, Opera */
 input::-webkit-outer-spin-button,
 input::-webkit-inner-spin-button {
@@ -168,6 +174,13 @@ input[type='number'] {
 
         &:hover {
             @mixin button--outline-color $color-green, $color-green, $color-white;
+        }
+
+
+        &:disabled {
+            &:hover {
+                @mixin button--outline-color $color-white, $color-green, $color-green;
+            }
         }
     }
 
@@ -220,5 +233,8 @@ input[type='number'] {
 
     &-red&-red {
         color: $color-red;
+    }
+    &-yellow {
+        color: $color-yellow;
     }
 }

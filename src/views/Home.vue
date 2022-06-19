@@ -353,7 +353,7 @@
                 if (this.$refs.list) {
                     this.$refs.list.scrollTo(
                         {
-                            'top': this.$refs.list.scrollTop - 60,
+                            'top': this.$refs.list.scrollTop - 240,
                             'behavior': 'smooth'
                         }
                     )
@@ -363,7 +363,7 @@
                 if (this.$refs.list) {
                     this.$refs.list.scrollTo(
                         {
-                            'top': this.$refs.list.scrollTop + 60,
+                            'top': this.$refs.list.scrollTop + 240,
                             'behavior': 'smooth'
                         }
                     )

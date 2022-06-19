@@ -52,7 +52,7 @@
                         <pagination
                             :total="tenders.count"
                             :limit="Number(limit)"
-                            :currentPage="currentPage"
+                            :currentPage="Number($route.query.page)"
                             :url="$route.path"
                         />
                     </div>
@@ -88,22 +88,25 @@
         data() {
             return {
                 limit: 1,
-                currentPage: 1,
                 tenders: null,
             }
         },
         watch: {
             limit () {
-                this.getTendersFromApi()
+                if (this.$route.query.page) {
+                    this.$router.replace({ query: {} })
+                } else {
+                    this.getTendersFromApi()
+                }
             },
             '$route.query.page': {
-                immediate: true,
                 handler() {
                     this.getTendersFromApi()
                 },
             }
         },
         mounted() {
+            this.getTendersFromApi()
         },
         beforeDestroy() {
         },
@@ -111,11 +114,11 @@
         },
         methods: {
             getTendersFromApi() {
-                this.limit = Number(this.limit)
-                this.currentPage = Number(this.$route.query.page) || 1;
+                let limit = Number(this.limit)
+                let page = Number(this.$route.query.page) || 1;
                 let params = {
-                    limit: this.limit,
-                    offset: (this.currentPage - 1) * this.limit,
+                    limit,
+                    offset: (page - 1) * limit,
                 }
 
                 api.getTenderTenders(params).then(res => {

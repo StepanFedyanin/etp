@@ -3,7 +3,7 @@
         <div class="search__inner">
             <form
                 class="search__form"
-                @submit.prevent=""
+                @submit.prevent="searchTenders"
             >
                 <div class="search__form-group">
                     <div class="search__form-field">
@@ -37,12 +37,13 @@
         <ModalSearch
             :showModal="showSearchModal"
             @hideModal="hideSearchModal"
+            @advSearch="advSearch"
         />
     </div>
 </template>
 
 <script>
-    import ModalSearch from '@/components/modal-search.vue';
+    import ModalSearch from '@/components/modal-search.vue'
 
     export default {
         name: 'Search',
@@ -64,6 +65,10 @@
             },
             hideSearchModal() {
                 this.showSearchModal = false;
+            },
+            advSearch(formData) {
+                console.log('formData')
+                console.log(formData)
             }
         }
     };

@@ -31,6 +31,8 @@
         text-transform: uppercase;
     }
     &__content {
+        overflow: auto;
+
         p {
             padding-bottom: 6px;
         }
@@ -74,5 +76,25 @@
                 background-color: $color-red;
             }
         }
+    }
+
+    &__link {
+        font-weight: 700;
+        font-size: 16px;
+        text-decoration-line: underline;
+        text-transform: uppercase;
+        color: $color-green;
+    }
+
+    &__description {
+        margin-bottom: 16px;
+    }
+
+    &__actions {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        margin: 36px 0;
+        gap: 36px;
     }
 }
