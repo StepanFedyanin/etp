@@ -27,7 +27,6 @@
                 <div class="modal-form__fields">
                     <FormKitSchema
                         :schema="searchFormSchema"
-                        :data="content"
                     />
                 </div>
                 <div class="modal-form__actions">
@@ -51,7 +50,8 @@
 </template>
 
 <script>
-    import { category, geo } from "@/services"
+    import { category as categoryApi, geo as geoApi } from "@/services"
+    // import { async } from "q";
 
     export default {
         props: {
@@ -64,23 +64,40 @@
             return {
                 searchForm: null,
                 showLoaderSending: false,
-                content: {
-                    status: [],
-                    category: [],
-                    region: [],
-                },
                 searchFormSchema: [
                     {
-                        $formkit: 'select',
+                        $formkit: 'multiselect',
+                        mode: 'multiple',
                         name: 'status',
                         label: 'Статус тендера',
-                        options: '$status',
+                        closeOnSelect: false,
+                        options: [
+                            {
+                                label: 'Прием заявок',
+                                value: '1'
+                            }, {
+                                label: 'Этап ставок',
+                                value: '2'
+                            }, {
+                                label: 'Подведение итогов',
+                                value: '3'
+                            }, {
+                                label: 'Тендер завршен',
+                                value: '4'
+                            }, {
+                                label: 'Есть победитель',
+                                value: '5'
+                            }, {
+                                label: 'Нет победителя',
+                                value: '6'
+                            }
+                        ],
                         inputClass: 'modal-form__select',
                         labelClass: '$reset modal-form__label',
                         outerClass: '$reset modal-form__field',
                     }, {
                         $formkit: 'text',
-                        name: 'priceFrom',
+                        name: 'price_from',
                         value: "",
                         label: 'Сумма (от) тендера',
                         placeholder: "",
@@ -90,7 +107,7 @@
                         outerClass: '$reset modal-form__field',
                     }, {
                         $formkit: 'text',
-                        name: 'priceTo',
+                        name: 'price_to',
                         value: "",
                         label: 'Сумма (до) тендера',
                         placeholder: "",
@@ -100,54 +117,104 @@
                         outerClass: '$reset modal-form__field',
                     }, {
                         $formkit: 'date',
-                        name: 'date_start',
+                        name: 'date_from',
                         // value: "2021-11-11T11:11",
                         label: 'Дата начала тендера',
-                        placeholder: "",
                         // validation: 'required',
                         inputClass: 'modal-form__input',
                         labelClass: '$reset modal-form__label',
                         outerClass: '$reset modal-form__field',
                     }, {
                         $formkit: 'date',
-                        name: 'date_end',
+                        name: 'date_to',
                         // value: "2022-11-11T11:11",
                         label: 'Дата окончания тендера',
-                        placeholder: "",
                         // validation: 'required',
                         inputClass: 'modal-form__input',
                         labelClass: '$reset modal-form__label',
                         outerClass: '$reset modal-form__field',
                     }, {
-                        $formkit: 'select',
+                        $formkit: 'multiselect',
+                        mode: 'multiple',
                         name: 'category',
                         label: 'Выбор категории',
-                        // multiple: true,
-                        options: '$category',
+                        groups: true,
+                        closeOnSelect: false,
+                        options: async () => {
+                            return await categoryApi.getCategoryList({ limit: 100 }).then(groups => {
+                                if (groups.results) {
+                                    let options = []
+                                    groups.results.map( (group) => {
+                                        options.push({
+                                            label: group.name,
+                                            options: group.categories.map( (cat) => {
+                                                return { label: cat.name, value: cat.id }
+                                            })
+                                        })
+                                    })
+                                    return options
+                                } else {
+                                    console.log('No getCategoryList data')
+                                }
+                            }).catch(err => {
+                                console.error(err)
+                            })
+                        },
                         inputClass: 'modal-form__select',
                         labelClass: '$reset modal-form__label',
                         outerClass: '$reset modal-form__field m--category',
                     }, {
-                        $formkit: 'select',
+                        $formkit: 'multiselect',
                         name: 'region',
                         label: 'Выбор региона',
-                        // multiple: true,
-                        options: '$region',
+                        options: async () => {
+                            return await geoApi.getRegions({ limit: 100 })
+                                .then(regions => {
+                                    if (regions) {
+                                        let options = regions.map( region => {
+                                            return { label: region.name, value: region.id }
+                                        })
+                                        return options
+                                    } else {
+                                        console.log('No getRegions data')
+                                    }
+                                }).catch(err => {
+                                    console.error(err)
+                                })
+                        },
                         inputClass: 'modal-form__select',
                         labelClass: '$reset modal-form__label',
                         outerClass: '$reset modal-form__field m--region',
                     }, {
-                        $formkit: 'text',
-                        name: 'name',
-                        value: "",
+                        $formkit: 'multiselect',
+                        searchable: true,
+                        "search-change": this.onINNChange,
+                        minChars: 3,
+                        options: async () => {
+                            return await geoApi.getRegions({ limit: 100 })
+                                .then(regions => {
+                                    if (regions) {
+                                        let options = regions.map( region => {
+                                            return { label: region.name, value: region.id }
+                                        })
+                                        return options
+                                    } else {
+                                        console.log('No getRegions data')
+                                    }
+                                }).catch(err => {
+                                    console.error(err)
+                                })
+                        },
+                        noOptionsText: '',
+                        name: 'inn',
                         label: 'Организатор закупки',
                         placeholder: "Введите название, ИНН",
                         // validation: 'required',
-                        inputClass: 'modal-form__input',
+                        innerClass: 'modal-form__input',
                         labelClass: '$reset modal-form__label',
                         outerClass: '$reset modal-form__field m--inn',
                     }, {
-                        $formkit: 'radio',
+                        $formkit: 'checkbox',
                         name: 'type',
                         value: "all",
                         help: 'Показать тендера',
@@ -160,14 +227,14 @@
                                 value: 'favorite'
                             }, {
                                 label: 'Я - организатор',
-                                value: 'asAuthor'
+                                value: 'organisation'
                             }, {
                                 label: 'Я - исполнитель',
-                                value: 'asPerformer'
+                                value: 'participation'
                             }, 
                         ],
                         // inputClass: 'modal-form__input',
-                        // labelClass: '$reset modal-form__label',
+                        // labelClass: 'modal-form__label',
                         optionClass: 'modal-form__option',
                         helpClass: '$reset modal-form__label',
                         wrapperClass: 'modal-form__radio',
@@ -182,35 +249,17 @@
             },
         },
         mounted() {
-            let params = {
-                limit: 100
-            }
-            category.getCategoryList(params).then(res => {
-                if (res.results)
-                    this.content.category = res.results.map( (cat) => {
-                        return { label: cat.name, value: cat.id }
-                    })
-                else
-                    console.log('No getCategoryList data')
-            }).catch(err => {
-                console.error(err)
-            })
-
-            geo.getRegions(params).then(res => {
-                if (res.results)
-                    this.content.region = res.results.map( region => {
-                        return { label: region.name, value: region.id }
-                    })
-                else
-                    console.log('No getRegions data')
-            }).catch(err => {
-                console.error(err)
-            })
         },
         methods: {
             submitSearchForm(formData) {
+                if (formData.category) {
+                    formData.category = formData.category.map(cat => cat.value)
+                }
                 this.$emit('advSearch', formData)
                 this.$emit('hideModal')
+            },
+            onINNChange(query, select$) {
+                select$.refreshOptions()
             }
         }
     };

@@ -78,7 +78,7 @@
                         outerClass: '$reset modal-form__field',
                     }, {
                         $formkit: 'number',
-                        name: 'amount',
+                        name: 'quantity',
                         value: "10",
                         label: 'Количество',
                         placeholder: "Введите количество",
@@ -92,7 +92,7 @@
                         value: "шт",
                         label: 'Единица измерения (например: кг,шт.)',
                         placeholder: "Введите единицу измерения",
-                        validation: 'required',
+                        // validation: 'required',
                         inputClass: 'modal-form__input',
                         labelClass: '$reset modal-form__label',
                         outerClass: '$reset modal-form__field',

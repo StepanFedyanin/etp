@@ -167,7 +167,9 @@
                     Статус вашей организации: <span class="m--color-red">Заявка отклонена</span>
                 </div>
                 <div class="tender__status-block m--underline tender__docs">
-                    <div class="tender__status-subtitle">Документация участника</div>
+                    <div class="tender__status-subtitle">
+                        Документация участника
+                    </div>
                     <div class="tender__docs-list">
                         <div class="tender__docs-item m--width-30-70">
                             <div class="tender__docs-cell m--title">
@@ -198,13 +200,17 @@
                     </div>
                 </div>
                 <div class="tender__status-block m--underline">
-                    <div class="tender__status-subtitle">Комментарий участника</div>
+                    <div class="tender__status-subtitle">
+                        Комментарий участника
+                    </div>
                     <div class="tender__status-comment">
                         ООО «Флексайтс». Разработка, продвижение, развитие — делаем сайты с умом! Мы с большим уважением относимся к деньгам, которые доверяют нам клиенты. При работе мы рассчитываем на такое же отношение со стороны клиентов к нашему труду, времени и квалификации. https://flexites.org/
                     </div>
                 </div>
                 <div class="tender__status-block">
-                    <div class="tender__status-subtitle">Решение организатора <span class="m--color-red">Заявка отклонена</span></div>
+                    <div class="tender__status-subtitle">
+                        Решение организатора <span class="m--color-red">Заявка отклонена</span>
+                    </div>
                     <div class="tender__status-comment">
                         Приложите лицензию на осуществление медицинской деятельности.
                     </div>
@@ -224,7 +230,9 @@
                     Быстрые ставки
                 </div>
                 <div class="tender__bids-block">
-                    <div class="tender__bids-info">Минимальный шаг цены - 0,7 %</div>
+                    <div class="tender__bids-info">
+                        Минимальный шаг цены - 0,7 %
+                    </div>
                     <button 
                         class="button button-outline-green m--right"
                         @click="onClickRequest()"
@@ -241,18 +249,35 @@
             </div>
 
             <div class="tender__lots lots m--tender">
-                <div class="tender__lots-title">Лоты</div>
+                <div class="tender__lots-title">
+                    Лоты
+                </div>
                 <div class="lots__filter">
                     <div class="lots__filter-block">
                         Фильтр:
-                        <a href="#" class="lots__filter-item is-active">Показать все</a>
-                        <a href="#" class="lots__filter-item">Участвую</a>
-                        <a href="#" class="lots__filter-item">Не участвую</a>
+                        <a
+                            href="#"
+                            class="lots__filter-item is-active"
+                        >Показать все</a>
+                        <a
+                            href="#"
+                            class="lots__filter-item"
+                        >Участвую</a>
+                        <a
+                            href="#"
+                            class="lots__filter-item"
+                        >Не участвую</a>
                     </div>
                     <div class="lots__filter-block m--right">
                         Сортировка:
-                        <a href="#" class="lots__filter-item is-active">По участию</a>
-                        <a href="#" class="lots__filter-item">По номеру лота</a>
+                        <a
+                            href="#"
+                            class="lots__filter-item is-active"
+                        >По участию</a>
+                        <a
+                            href="#"
+                            class="lots__filter-item"
+                        >По номеру лота</a>
                     </div>
                 </div>
 
@@ -260,7 +285,9 @@
                     <div class="lots__item lots__block-item m--no-grid">
                         <div class="lots__item-header">
                             Лот №1
-                            <div class="lots__item-status m--color-red">Ставка проигрывает</div>
+                            <div class="lots__item-status m--color-red">
+                                Ставка проигрывает
+                            </div>
                         </div>
                         <div class="lots__item-name">
                             Длинное название запчасти на автомобиль КамАЗ, УАЗ, ЗИЛ, Газель, удлинненное название лота, состоящее из большого числа символов, но все символы помещаются
@@ -295,7 +322,9 @@
                     <div class="lots__item lots__block-item m--no-grid">
                         <div class="lots__item-header">
                             Лот №1
-                            <div class="lots__item-status m--color-red">Ставка проигрывает</div>
+                            <div class="lots__item-status m--color-red">
+                                Ставка проигрывает
+                            </div>
                         </div>
                         <div class="lots__item-name">
                             Длинное название запчасти на автомобиль КамАЗ, УАЗ, ЗИЛ, Газель, удлинненное название лота, состоящее из большого числа символов, но все символы помещаются
@@ -330,7 +359,9 @@
                     <div class="lots__item lots__block-item m--no-grid">
                         <div class="lots__item-header">
                             Лот №1
-                            <div class="lots__item-status m--color-green">Ставка выигрывает</div>
+                            <div class="lots__item-status m--color-green">
+                                Ставка выигрывает
+                            </div>
                         </div>
                         <div class="lots__item-name">
                             Длинное название запчасти на автомобиль КамАЗ, УАЗ, ЗИЛ, Газель, удлинненное название лота
@@ -365,7 +396,9 @@
                     <div class="lots__item lots__block-item m--no-grid">
                         <div class="lots__item-header">
                             Лот №1
-                            <div class="lots__item-status">Вы не участвуете</div>
+                            <div class="lots__item-status">
+                                Вы не участвуете
+                            </div>
                         </div>
                         <div class="lots__item-name">
                             Длинное название запчасти на автомобиль КамАЗ, УАЗ, ЗИЛ
@@ -573,7 +606,9 @@
                     </div>
                     <div class="offers__list">
                         <div class="offers__item">
-                            <div class="offers__item-name">Запчасть №1</div>
+                            <div class="offers__item-name">
+                                Запчасть №1
+                            </div>
                             <div class="offers__item-info">
                                 <div class="offers__item-param">
                                     Начальная цена <span>22 000,00 ₽</span>
@@ -601,7 +636,9 @@
                             </div>
                         </div>
                         <div class="offers__item">
-                            <div class="offers__item-name">Запчасть №1</div>
+                            <div class="offers__item-name">
+                                Запчасть №1
+                            </div>
                             <div class="offers__item-info">
                                 <div class="offers__item-param">
                                     Начальная цена <span>22 000,00 ₽</span>
@@ -645,41 +682,65 @@
                     <div class="offers__stats">
                         <div class="offers__stats-item">
                             <div class="offers__stats-item-block">
-                                <div class="offers__stats-param m--lot-name">Запчасть №1</div>
-                                <div class="offers__stats-param m--name">ООО “Ромашка”</div>
-                                <div class="offers__stats-param m--price-best">20 865,00</div>
+                                <div class="offers__stats-param m--lot-name">
+                                    Запчасть №1
+                                </div>
+                                <div class="offers__stats-param m--name">
+                                    ООО “Ромашка”
+                                </div>
+                                <div class="offers__stats-param m--price-best">
+                                    20 865,00
+                                </div>
                             </div>
                             <div class="offers__stats-item-block">
                                 <div class="offers__stats-param m--progress m--green">
                                     <span style="width:80%" />
                                 </div>
-                                <div class="offers__stats-param m--price">23 865,00</div>
+                                <div class="offers__stats-param m--price">
+                                    23 865,00
+                                </div>
                             </div>  
                         </div>
                         <div class="offers__stats-item">
                             <div class="offers__stats-item-block">
-                                <div class="offers__stats-param m--lot-name">Запчасть №3</div>
-                                <div class="offers__stats-param m--name">ООО “Ромашка”</div>
-                                <div class="offers__stats-param m--price-best">20 865,00</div>
+                                <div class="offers__stats-param m--lot-name">
+                                    Запчасть №3
+                                </div>
+                                <div class="offers__stats-param m--name">
+                                    ООО “Ромашка”
+                                </div>
+                                <div class="offers__stats-param m--price-best">
+                                    20 865,00
+                                </div>
                             </div>
                             <div class="offers__stats-item-block">
                                 <div class="offers__stats-param m--progress m--green">
                                     <span style="width:80%" />
                                 </div>
-                                <div class="offers__stats-param m--price">23 865,00</div>
+                                <div class="offers__stats-param m--price">
+                                    23 865,00
+                                </div>
                             </div>  
                         </div>
                         <div class="offers__stats-item">
                             <div class="offers__stats-item-block">
-                                <div class="offers__stats-param m--lot-name">Запчасть №4</div>
-                                <div class="offers__stats-param m--name">ООО “Ромашка”</div>
-                                <div class="offers__stats-param m--price-best">20 865,00</div>
+                                <div class="offers__stats-param m--lot-name">
+                                    Запчасть №4
+                                </div>
+                                <div class="offers__stats-param m--name">
+                                    ООО “Ромашка”
+                                </div>
+                                <div class="offers__stats-param m--price-best">
+                                    20 865,00
+                                </div>
                             </div>
                             <div class="offers__stats-item-block">
                                 <div class="offers__stats-param m--progress m--red">
                                     <span style="width:80%" />
                                 </div>
-                                <div class="offers__stats-param m--price">23 865,00</div>
+                                <div class="offers__stats-param m--price">
+                                    23 865,00
+                                </div>
                             </div>  
                         </div>
                     </div>

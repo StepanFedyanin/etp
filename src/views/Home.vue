@@ -57,7 +57,9 @@
                         грузоперевозок и 12 других
                     </div>
                     <div class="auction__search">
-                        <search />
+                        <Search
+                            @startSearch="startSearch"
+                        />
                     </div>
                     <div
                         class="auction__list"
@@ -318,14 +320,14 @@
     import { tender } from "@/services";
     // import Header from '../components/app-header.vue';
     //import Footer from '../components/app-footer.vue';
-    import search from '../components/app-search.vue';
+    import Search from '../components/app-search.vue';
 
     export default {
         name: 'Home',
         components: {
             //Header,
             //Footer,
-            search,
+            Search,
         },
         data() {
             return {
@@ -342,8 +344,8 @@
                 this.resizeObserver.observe(this.$refs.auction)
             }
 
-            tender.getTenderList().then(res => {
-                this.tenderList = res
+            tender.getTenderList().then(tenders => {
+                this.tenderList = tenders
             }).catch(err => {
                 console.error(err)
             })
@@ -374,6 +376,16 @@
                     this.scrollbarVisible = this.$refs.list.scrollHeight > this.$refs.list.clientHeight
                 }
             },
+            startSearch(formData) {
+                console.log(formData)
+                tender.searchTenderList(formData)
+                    .then(tenders => {
+                        console.log(tenders)
+                        this.tenderList = tenders
+                    }).catch(err => {
+                        console.error(err)
+                    })
+            }
         },
     };
 </script>

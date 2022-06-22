@@ -13,7 +13,7 @@
                 {{ tender.name }}
             </div>
             <div class="tenders__item-param">
-                <span class="tenders__item-param-name">Заказчик:</span> <a href="#">ООО «Екатеринбургский Цементный Завод»</a>
+                <span class="tenders__item-param-name">Заказчик:</span> <a href="#">{{ tender.organization.full_name }}</a>
             </div>
             <div class="tenders__item-param">
                 <span class="tenders__item-param-name">Категории: </span>
@@ -26,11 +26,14 @@
                     <span v-if="idx != Object.keys(tender.category).length - 1">, </span>
                 </span>
             </div>
-            <div class="tenders__item-param">
-                <span class="tenders__item-param-name">Регион:</span> Свердловская область
+            <div
+                v-if="tender.region"
+                class="tenders__item-param"
+            >
+                <span class="tenders__item-param-name">Регион:</span> {{ tender.region }}
             </div>
             <div
-                v-if="whole"
+                v-if="documents"
                 class="tenders__item-docs"
             >
                 <div class="tenders__item-docs__title">
@@ -45,22 +48,17 @@
                             Описание
                         </div>
                     </div>
-                    <div class="tenders__item-docs__item">
+                    <div
+                        v-for="file in documents"
+                        :key="file.id"
+                        class="tenders__item-docs__item"
+                    >
                         <a
-                            href="#"
+                            :href="urlPath + file.file"
                             class="tenders__item-docs__cell m--file"
-                        >Требование к материалам.pdf</a>
+                        >{{ file.name }}</a>
                         <div class="tenders__item-docs__cell m--desc">
-                            Описание объекта закупки
-                        </div>
-                    </div>
-                    <div class="tenders__item-docs__item">
-                        <a
-                            href="#"
-                            class="tenders__item-docs__cell m--file"
-                        >Приложение 1.pdf</a>
-                        <div class="tenders__item-docs__cell m--desc">
-                            Пример приложения с каким-то текстом
+                            {{ file.description }}
                         </div>
                     </div>
                 </div>
@@ -74,10 +72,10 @@
                 <span class="tenders__item-param-name">Аукцион №1234567</span>
             </div>
             <div class="tenders__item-param">
-                <span class="tenders__item-param-name">Объявлено:</span> 10.03.2022 11:59 МСК
+                <span class="tenders__item-param-name">Объявлено:</span> {{ $helpers.formatDate(new Date(tender.date_start), 'DD.MM.YYYY HH:mm') }} МСК
             </div>
             <div class="tenders__item-param">
-                <span class="tenders__item-param-name">Тип аукциона:</span> {{ tender.type }}
+                <span class="tenders__item-param-name">Тип аукциона:</span> {{ tender.type_detail }}
             </div>
             <div class="tenders__item-param">
                 <span class="tenders__item-param-name">Лоты:</span> {{ tender.lot_count }}
@@ -86,17 +84,22 @@
                 <span class="tenders__item-param-name">Предложений от поставщиков:</span> 5
             </div>
             <div
-                v-if="whole"
                 class="tenders__item-timer"
             >
                 <div class="tenders__item-timer-date">
-                    Прием заявок: до 21.03.2022 11:59 МСК
+                    Прием заявок: {{ $helpers.formatDate(new Date(tender.date_end), 'DD.MM.YYYY HH:mm') }} МСК
                 </div>
-                <div class="tenders__item-timer-left">
-                    Осталось 1 день 23 часа
+                <div
+                    v-if="restTime"
+                    class="tenders__item-timer-left"
+                >
+                    Осталось {{ restTime }}
                 </div>
             </div>
-            <div class="tenders__item-participate">
+            <div
+                v-if="restTime"
+                class="tenders__item-participate"
+            >
                 <button
                     class="button button-green"
                     @click="onClickParticipate"
@@ -106,7 +109,7 @@
             </div>
         </div>
         <div
-            v-if="whole"
+            v-if="lots"
             class="tenders__item-lots lots m--tenders"
             :class="{'m--active': isShowPositions}"
         >
@@ -125,95 +128,28 @@
                 </div>
             </div>
             <div class="lots__list">
-                <div class="lots__item">
+                <div
+                    v-for="(lot, idx) in lots"
+                    :key="lot.id"
+                    class="lots__item"
+                >
                     <div class="lots__item-cell m--position">
-                        1
+                        {{ idx + 1 }}
                     </div>
                     <div class="lots__item-cell">
-                        Цемент М 500, 50 кг. (штука)
+                        {{ lot.name }}
                     </div>
                     <div class="lots__item-cell">
-                        20
+                        {{ lot.quantity }}
                     </div>
                     <div class="lots__item-cell">
-                        кг.
-                    </div>
-                </div>
-                <div class="lots__item">
-                    <div class="lots__item-cell m--position">
-                        2
-                    </div>
-                    <div class="lots__item-cell">
-                        Цемент строительный
-                    </div>
-                    <div class="lots__item-cell">
-                        200
-                    </div>
-                    <div class="lots__item-cell">
-                        шт.
-                    </div>
-                </div>
-                <div class="lots__item">
-                    <div class="lots__item-cell m--position">
-                        3
-                    </div>
-                    <div class="lots__item-cell">
-                        Цемент строительный
-                    </div>
-                    <div class="lots__item-cell">
-                        200
-                    </div>
-                    <div class="lots__item-cell">
-                        шт.
-                    </div>
-                </div>
-                <div class="lots__item">
-                    <div class="lots__item-cell m--position">
-                        4
-                    </div>
-                    <div class="lots__item-cell">
-                        Цемент строительный
-                    </div>
-                    <div class="lots__item-cell">
-                        200
-                    </div>
-                    <div class="lots__item-cell">
-                        шт.
-                    </div>
-                </div>
-
-                <div class="lots__item">
-                    <div class="lots__item-cell m--position">
-                        5
-                    </div>
-                    <div class="lots__item-cell">
-                        Цемент строительный
-                    </div>
-                    <div class="lots__item-cell">
-                        200
-                    </div>
-                    <div class="lots__item-cell">
-                        шт.
-                    </div>
-                </div>
-                <div class="lots__item">
-                    <div class="lots__item-cell m--position">
-                        6
-                    </div>
-                    <div class="lots__item-cell">
-                        Цемент строительный
-                    </div>
-                    <div class="lots__item-cell">
-                        200
-                    </div>
-                    <div class="lots__item-cell">
-                        шт.
+                        {{ lot.unit }}
                     </div>
                 </div>
             </div>
         </div>
         <div
-            v-if="whole"
+            v-if="lots.length > 5"
             class="tenders__item-toggle"
             :class="{'tenders__item-toggle--active': isShowPositions}"
             @click="isShowPositions = !isShowPositions"
@@ -223,6 +159,8 @@
 </template>
 
 <script>
+    import { urlPath } from '@/settings'
+
     export default {
         props: {
             blockClass: {
@@ -242,9 +180,37 @@
         },
         data() {
             return {
+                urlPath,
                 isShowPositions: false,
                 favorite: false
             };
+        },
+        computed: {
+            documents() {
+                if (this.tender.documents.length)
+                    return this.tender.documents.filter(file => file.publication)
+                
+                return false
+            },
+            lots() {
+                if (this.tender.lots.length)
+                    return this.tender.lots.filter(lot => lot.publication)
+                
+                return false
+            },
+            restTime() {
+                let rest = new Date(this.tender.date_end) - new Date()
+                if (rest < 0)
+                    return false
+
+                rest = new Date(rest)
+                let days = rest.getDay()
+                let hours = rest.getHours()
+                days = days + ' ' + this.$helpers.declinationOfNum(days, ['день', 'дня', 'дней'])
+                hours = hours + ' ' + this.$helpers.declinationOfNum(hours, ['час', 'часа', 'часов'])
+
+                return days + ' ' + hours
+            }
         },
         methods: {
             onClickParticipate() {
@@ -253,6 +219,6 @@
             toggleFavorite() {
                 this.favorite = !this.favorite
             }
-        }
+        },
     };
 </script>

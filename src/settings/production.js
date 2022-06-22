@@ -54,6 +54,7 @@ export {
     category,
     geo,
     logger,
+    urlPath,
 
     // mainMenu,
     // accountMenu,

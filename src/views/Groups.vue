@@ -42,10 +42,10 @@
                             v-text="group.isShowProducts ? 'Скрыть информацию' : 'Показать информацию'"
                         />
                     </div>
-                    <pagination
+                    <Pagination
                         :total="groups.count"
                         :limit="Number(limit)"
-                        :currentPage="Number($route.query.page)"
+                        :currentPage="Number($route.query.page || 1)"
                         :url="$route.path"
                     />
                 </div>
@@ -56,12 +56,12 @@
 
 <script>
     import { category as api } from "@/services"
-    import pagination from '@/components/pagination.vue'
+    import Pagination from '@/components/pagination.vue'
 
     export default {
         name: 'Groups',
         components: {
-            pagination,
+            Pagination,
         },
         data() {
             return {

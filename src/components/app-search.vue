@@ -8,7 +8,9 @@
                 <div class="search__form-group">
                     <div class="search__form-field">
                         <input
+                            id="name"
                             type="text"
+                            name="name"
                             class="search__form-input"
                             placeholder="Поиск торгово-закупочных процедур"
                         >
@@ -55,6 +57,7 @@
         data() {
             return {
                 showSearchModal: false,
+                advSearchFormData: null
             };
         },
         computed: {
@@ -67,8 +70,12 @@
                 this.showSearchModal = false;
             },
             advSearch(formData) {
-                console.log('formData')
-                console.log(formData)
+                this.advSearchFormData = formData
+            },
+            searchTenders(event) {
+                let formData = Object.assign({}, this.advSearchFormData)
+                formData.name = event.target.querySelector('#name').value
+                this.$emit('startSearch', formData)
             }
         }
     };

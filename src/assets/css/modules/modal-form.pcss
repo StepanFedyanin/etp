@@ -5,30 +5,45 @@
         flex-wrap: wrap;
         column-gap: 30px;
         row-gap: 16px;
+        justify-content: space-between;
     }
 
     &__field {
         margin-bottom: 16px;
+        min-width: 250px;
 
         &.m--inn {
             flex-basis: 100%;
+
+            & .modal-form__input {
+                width: 50%;
+            }
         }
         &.m--category {
-            max-width: 40%;
+            flex-basis: 58%;
         }
         &.m--region {
+            flex-basis: 38%;
         }
         &.m--type {
             width: 100%;
 
             & .modal-form__option {
-                flex-basis: 20%;
+                margin-right: 10%;
+
+                & .field__label {
+                    margin: 0 0 0 8px;
+                    color: $color-black;
+                }
             }
+
         }
     }
 
     &__radio {
         display: flex;
+        flex-direction: row;
+        align-items: center;
     }
 
     &__label {

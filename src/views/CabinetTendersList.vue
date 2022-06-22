@@ -3,7 +3,9 @@
         <div class="container">
             <div class="tenders__search">
                 <div class="tenders__search-form">
-                    <search />
+                    <Search
+                        @startSearch="startSearch"
+                    />
                 </div>
                 <div
                     v-if="tenders && tenders.count"
@@ -49,10 +51,10 @@
                                 </option>
                             </select>
                         </div>
-                        <pagination
+                        <Pagination
                             :total="tenders.count"
                             :limit="Number(limit)"
-                            :currentPage="Number($route.query.page)"
+                            :currentPage="Number($route.query.page || 1)"
                             :url="$route.path"
                         />
                     </div>
@@ -75,14 +77,14 @@
 
 <script>
     import { tender as api } from "@/services";
-    import search from '@/components/app-search.vue';
-    import pagination from '@/components/pagination.vue';
+    import Search from '@/components/app-search.vue';
+    import Pagination from '@/components/pagination.vue';
     import blockTender from '@/components/block-tender.vue';
 
     export default {
         components: {
-            search,
-            pagination,
+            Search,
+            Pagination,
             blockTender
         },
         data() {
@@ -91,42 +93,61 @@
                 tenders: null,
             }
         },
+        computed: {
+            page() {
+                return Number(this.$route.query.page) || 1
+            },
+            offset() {
+                let limit = Number(this.limit)
+                return (this.page - 1) * limit
+            }
+        },
         watch: {
             limit () {
                 if (this.$route.query.page) {
                     this.$router.replace({ query: {} })
                 } else {
-                    this.getTendersFromApi()
+                    this.getTenders()
                 }
             },
             '$route.query.page': {
                 handler() {
-                    this.getTendersFromApi()
+                    this.getTenders()
                 },
             }
         },
         mounted() {
-            this.getTendersFromApi()
+            this.getTenders()
         },
         beforeDestroy() {
         },
         created() {
         },
         methods: {
-            getTendersFromApi() {
+            getTenders() {
                 let limit = Number(this.limit)
-                let page = Number(this.$route.query.page) || 1;
                 let params = {
                     limit,
-                    offset: (page - 1) * limit,
+                    offset: this.offset
                 }
-
-                api.getTenderTenders(params).then(res => {
-                    this.tenders = res
-                    // console.log(res)
+                api.getTenders(params).then(tenders => {
+                    this.tenders = tenders
+                    // console.log(tenders)
                 }).catch(err => {
                     console.error(err)
                 })
+            },
+            startSearch(formData) {
+                formData.limit = Number(this.limit)
+                formData.offset = this.offset
+                console.log(formData)
+                api.searchTenders(formData)
+                    .then(tenders => {
+                        this.tenders = tenders
+                        console.log(tenders)
+                    }).catch(err => {
+                        console.error(err)
+                    })
             }
         }
     };

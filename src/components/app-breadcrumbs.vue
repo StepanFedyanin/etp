@@ -1,11 +1,14 @@
 <template>
     <div class="app__breadcrumbs breadcrumbs">
-        <div class="container">
+        <div
+            v-if="$route.fullPath !== '/cabinet'"
+            class="container"
+        >
             <router-link
-                :to="{ name: 'home' }"
+                :to="{ name: 'cabinet' }"
                 class="breadcrumbs__link"
             >
-                Главная
+                Кабинет
             </router-link>
             <router-link
                 v-for="(item, key) in $route.meta.breadcrumbs"
@@ -23,6 +26,16 @@
                     {{ route.meta.title }}
                 </a>
             </router-link>
+            <span
+                class="breadcrumbs__link is-current"
+            >
+                {{ $route.meta.title }}
+            </span>
+        </div>
+        <div
+            v-else
+            class="container"
+        >
             <span
                 class="breadcrumbs__link is-current"
             >
