@@ -3,18 +3,13 @@
         <h2 class="profile__title h2">
             Мой профиль
         </h2>
-        <div 
-            v-if="user.is_staff || (user.is_master && user.organization.id) " 
-            class="profile__edit"
+        <svg 
+            v-if="user.is_active" 
+            class="svg-icon svg-icon__edit"
             @click="onClickEditProfile()"
         >
-            <svg 
-                height="24" 
-                width="24"
-            >
-                <use xlink:href="../assets/img/icons/icons.svg#edit" />
-            </svg>
-        </div>
+            <use xlink:href="../assets/img/icons/icons.svg#edit" />
+        </svg>
         <div class="profile__table table">
             <div class="table__column">
                 <!-- <div

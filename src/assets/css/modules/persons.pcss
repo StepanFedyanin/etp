@@ -7,7 +7,7 @@
         font-size: 16px;
         line-height: 20px;
         display: grid;
-        grid-template-columns: 30px auto 15% 20% 20%;
+        grid-template-columns: 30px auto 15% 20% 20% 26px 26px;
         /*grid-template-areas: 'A B C D';*/
         gap: 10px;
         word-break: break-word;
@@ -16,8 +16,12 @@
             padding: 0 0 16px;
             color: $color-gray-T3;
         }
+        .svg-icon{
+            margin:0;
+        }
 
-        &-cell {
+        &:not(.m--header):hover{
+            background: #F9F9F9;
         }
     }
 }

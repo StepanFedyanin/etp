@@ -10,7 +10,7 @@
             <div class="contragent__block">
                 <blockOrganization 
                     :blockClass="contragent__organization"
-                    :organization="organization"
+                    :organization="contragent"
                 />
             </div>
             <div class="contragent__subtitle h2">
@@ -77,11 +77,27 @@
                 contragent: {
                     id: 1,
                     name: 'ООО “Флексайтс”',
+                    full_name: 'ООО “Флексайтс”',
                     city: 'г. Челябинск',
-                    activity: 'Разработка компьютерного программного обеспечения',
+                    principal_activity: 'Разработка компьютерного программного обеспечения',
+                    head_name: 'Жуков Николай Геннадьевич',
+                    head_post: 'Директор',
+                    legal_address: 'г. Челябинск, ул. Маркса, д. 46, ПОМЕЩ. 12, 454091',
+                    actual_address: 'г. Челябинск, ул. Энтузиастов, д. 11в, оф. 320, 454091',
+                    accountant_name: '',
+                    color_status: 'green',
+                    color_status_text: 'Зеленый',
+                    status: 'Действующая',
+                    date_registration: '20.11.07',
+                    capital: '10 000',
+                    inn: '7447123326',
+                    kpp: '745301001',
+                    okpo: '82903111',
+                    ogrn: '1077447022575',
                     customer: '113',
                     member: '45'
                 },
+                contragents: undefined,
                 organization: {},
                 persons: [{
                     id: 1,
@@ -110,16 +126,19 @@
         beforeDestroy() {
         },
         created() {
-            api.getMyProfile().then(res => {
-                console.log(res);
-                this.profile = res;
-                if(this.organization){
-                    this.organization = res.organization;
-                    console.log(res.organization);
-                }
-            }).catch(err => {
-                console.error(err);
-            });
+            // api.getOrganization(contragent.id).then(res => {
+            //     this.organization = res.organization;
+            // });
+            // api.getMyProfile().then(res => {
+            //     console.log(res);
+            //     this.profile = res;
+            //     if(this.organization){
+            //         this.organization = res.organization;
+            //         console.log(res.organization);
+            //     }
+            // }).catch(err => {
+            //     console.error(err);
+            // });
             console.log(this.formData);
         },
         methods: {

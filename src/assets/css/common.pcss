@@ -238,3 +238,31 @@ input[type='number'] {
         color: $color-yellow;
     }
 }
+/* .edit {
+    display: inline-block;
+    margin-left: 10px;
+    padding: 0 10px;
+    cursor: pointer;}
+     */
+    .svg-icon {
+        height: 24px; 
+        width: 24px;
+        cursor: pointer;
+
+        &&__edit{
+            display: inline-block;
+            margin: 0 20px;
+            fill: $color-green;
+            &:hover {
+                fill: $color-green-dark;
+            }
+        }
+        &&__delete{
+            fill: $color-red;
+            &:hover {
+                fill: $color-red-dark;
+            }
+        }
+
+
+}

@@ -47,8 +47,34 @@
         border-radius: 1.28571428em;
         transition: width .25s,border .25s,margin-right .25s;
     }
+    &__edit{
+        max-width: 870px;
+        
+        .field__inner {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            grid-column-gap: 10px;
+            align-items: center;
+        }
+        /* &__subtitle{
+            text-transform: uppercase;
+            color: $color-gray-T3;
+            display: inline-block;
+            margin-top: 0;
+        } */
+        .double{
+            display: flex;
+            justify-content: space-evenly;
+            flex-wrap: wrap;
+        }
+    }
 }
 
+.double .form__button{
+    .field__inner {
+        grid-template-columns: 1fr;
+    }
+}
 @keyframes rotate {
     100% {
         transform: rotate(360deg);

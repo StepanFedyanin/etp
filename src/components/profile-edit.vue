@@ -4,12 +4,12 @@
             id="profileEdit"
             type="form" 
             :value="formData"
-            form-class="$reset profile-edit__form"
+            form-class="$reset profile-edit__form form__edit"
             :actions="false"
-            data-loading="showLoaderSending"
-            :loading="showLoaderSending ? true : undefined"
             @submit="updateUserProfile"
         >
+            <!-- data-loading="showLoaderSending"
+            :loading="showLoaderSending ? true : undefined" -->
             <FormKit
                 type="text"
                 label="Фамилия*"
@@ -65,7 +65,7 @@
                 <FormKit
                     type="button"
                     label="Отменить"
-                    outer-class="profile-edit__button"
+                    outer-class="form__button"
                     :input-class="{
                         'button': true,
                         'button-red': true
@@ -75,22 +75,18 @@
                 <FormKit
                     type="submit"
                     label="Сохранить"
-                    outer-class="profile-edit__button"
+                    outer-class="form__button"
                     :input-class="{
                         'button': true,
                         'button-green': true
                     }"
-                    data-loading="showLoaderSending"
-                    :disabled="showLoaderSending"
-                    :loading="showLoaderSending ? true : undefined"
                 />
+                <!-- data-loading="showLoaderSending"
+                :disabled="showLoaderSending"
+                :loading="showLoaderSending ? true : undefined" -->
                 <!-- :disabled="loading || !isValid" -->
             </div>
         </FormKit>
-        <!-- <div v-if="submitted">
-            <h2>Submission successful!</h2>
-        </div> -->
-        <!-- <pre wrap>{{ formData }}</pre> -->
     </div>
 </template>
 
@@ -108,7 +104,7 @@
         data() {
             return {
                 formData: undefined,
-                showLoaderSending: false,
+                // showLoaderSending: false,
             }
         },
 
@@ -118,22 +114,17 @@
         methods: {
 
             onClickCancel() {
-                this.$router.push({ name: 'profile'});
+                this.$router.go(-1);
             },
-            // submitForm() {
-            //     this.$formkit.submit('profileEdit');
-            // },
             updateUserProfile(formData, node) {
-                console.log(formData);
                 api.updateMyProfile(formData).then(res => {
                     console.log(res);
-                    this.showLoaderSending = false;
-                    this.$router.push({ name: 'profile'});
+                    // this.showLoaderSending = false;
                 }).catch(err => {
                     node.setErrors(
                         [err.detail],
                     );
-                    this.showLoaderSending = false;
+                    // this.showLoaderSending = false;
                     this.$store.dispatch('showError', err);
                     console.error(err);
                     // this.$store.dispatch('showError', err);

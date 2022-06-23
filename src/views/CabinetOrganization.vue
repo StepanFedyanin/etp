@@ -3,24 +3,34 @@
         <Breadcrumbs />
         <div class="cabinet organization">
             <div class="container">
-                <div class="organization__title h1">
-                    ООО “Флексайтс”
-                </div>
-                <div class="organization__subtitle h2">
-                    Информация о компании
-                </div>
-                <div class="cabinet__block">
-                    <blockOrganization 
-                        :blockClass="contragent__organization"
-                        :organization="organization"
-                    />
+                <div 
+                    v-if=" profile"
+                    class="organization__info"
+                >
+                    <div class="organization__title h1">
+                        {{ organization.name }}
+                    </div>
+                    <div class="organization__subtitle h2">
+                        Информация о компании
+                    </div>
+                    <svg 
+                        v-if=" profile.is_staff || profile.is_master && profile.organization.id == $store._state.data.user.organization.id"
+                        class="svg-icon svg-icon__edit"
+                        @click="onClickEditOrganization()"
+                    >
+                        <use xlink:href="../assets/img/icons/icons.svg#edit" />
+                    </svg>
+                    <div class="cabinet__block">
+                        <blockOrganization 
+                            :organization="organization"
+                        />
+                    </div>
                 </div>
                 <h2 class="organization__subtitle h2">
                     Представители организации
                 </h2>
                 <div class="cabinet__block cabinet__persons">
                     <blockPersons 
-                        :blockClass="contragent__persons"
                         :persons="persons"
                     />
                 </div>
@@ -81,34 +91,17 @@
             return {
                 profile: undefined,
                 contragents: [],
-                contragent: {
-                    id: 1,
-                    name: 'ООО “Флексайтс”',
-                    city: 'г. Челябинск',
-                    activity: 'Разработка компьютерного программного обеспечения',
-                    customer: '113',
-                    member: '45'
-                },
+                contragent:{},
+                //  {
+                //     id: 1,
+                //     name: 'ООО “Флексайтс”',
+                //     city: 'г. Челябинск',
+                //     activity: 'Разработка компьютерного программного обеспечения',
+                //     customer: '113',
+                //     member: '45'
+                // },
                 organization: {},
-                persons: [{
-                    id: 1,
-                    name: 'Жуков Николай Геннадьевич',
-                    post: 'Директор',
-                    email: 'info@flexites.org',
-                    phone: '+7 (351) 267-29-94'
-                }, {
-                    id: 2,
-                    name: 'Меренков Антон Антонович',
-                    post: 'Менеджер',
-                    email: 'mav@flexites.org',
-                    phone: '+7 (351) 267-29-95'
-                }, {
-                    id: 3,
-                    name: 'Некрасов Иван Иванович',
-                    post: 'Менеджер',
-                    email: 'nekrasov@flexites.org',
-                    phone: '+7 (351) 267-29-95'
-                }],
+                persons: [],
                 tenders: [],
             }
         },
@@ -121,8 +114,17 @@
             }).catch(err => {
                 console.error(err);
             });
-
+            api.getMyOrganizationMembers().then(res => {
+                this.persons = res;
+            }).catch(err => {
+                console.error(err);
+            });
             
         },
+        methods: {
+            onClickEditOrganization(){
+                this.$router.push({ name: 'organization-edit'});
+            }
+        }
     }
 </script>

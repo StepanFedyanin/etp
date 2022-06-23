@@ -77,7 +77,7 @@
                     </div>
                     <div
                         class="organization__block-item-value"
-                        :class="[organization.color_status == 'green' ? 'm--color-green' : 'm--color-yellow' ]"
+                        :class="[organization.color_status !== 'green' ? organization.color_status == 'yellow' ? 'm--color-yellow' : 'm--color-red' : 'm--color-green' ]"
                     >
                         {{ organization.color_status_text }}
                     </div>

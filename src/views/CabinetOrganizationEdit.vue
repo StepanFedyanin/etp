@@ -3,16 +3,16 @@
         <Breadcrumbs />
         <div class="cabinet">
             <div class="container">
-                <div class="profile-edit">
-                    <h1 class="profile-edit__title h1">
-                        Сотрудник организации
+                <div class="organization-edit">
+                    <h1 class="organization-edit__title h1">
+                        Профиль организации
                     </h1>
-                    <h2 class="profile-edit__subtitle h2">
-                        Изменить данные профиля
+                    <h2 class="organization-edit__subtitle h2">
+                        {{ organization ? organization.name : "" }}
                     </h2>
-                    <ProfileEdit
-                        v-if="profile"
-                        :item="profile"
+                    <OrganizationEdit
+                        v-if="organization"
+                        :organization="organization"
                     />
                 </div>
             </div>
@@ -22,26 +22,27 @@
 
 <script>
     import Breadcrumbs from '@/components/app-breadcrumbs';
-    import ProfileEdit from '@/components/profile-edit.vue';
+    import OrganizationEdit from '@/components/organization-edit.vue';
     import { user as api } from "@/services";
 
     export default {
         components: {
             Breadcrumbs,
-            ProfileEdit,
+            OrganizationEdit
         },
         data() {
             return {
                 profile: undefined,
-                organization: {},
+                organization: undefined,
                 item: [],
             }
         },
         created() {
             api.getMyProfile().then(res => {
                 this.profile = res;
-                if(this.organization){
+                if (res.organization && res.organization.id) {
                     this.organization = res.organization;
+                    console.log(res.organization);
                 }
             }).catch(err => {
                 console.error(err);
