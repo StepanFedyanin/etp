@@ -18,6 +18,7 @@
                 <p 
                     v-for="(message, index) in errorMessages"
                     :key="index"
+                    class="m--color-red"
                 >
                     {{ message }}
                 </p>
@@ -25,7 +26,7 @@
             <template
                 v-else
             >
-                <p>{{ error }}</p>
+                <p class="m--color-red">{{ error }}</p>
             </template>
         </div>
         <div
