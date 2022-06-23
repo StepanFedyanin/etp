@@ -1,55 +1,56 @@
 <template>
-    <modal
-        :is-shown="!!error"
-        @hide="hideError"
+    <vue-final-modal 
+        v-model="showModal"
+        classes="modal__container" 
+        content-class="modal__block"
     >
-        <h3
-            slot="header"
-            class="modal__header h2"
+        <button 
+            class="modal__close" 
+            @click="hideModal"
         >
-            Произошла ошибка
-        </h3>
-        <div
-            slot="content"
-            class="modal__content text"
-        >
-            <p v-for="message in errorMessages">
-                {{ message }}
-            </p>
-            <p>
-                <strong>Для получения дополнительной информации обратитесь в отдел
-                    сопровождения</strong>
-            </p>
+            <span />
+        </button>
+        <span class="modal__title">Произошла ошибка</span>
+        <div class="modal__content">
+            <template
+                v-if="errorMessages.length"
+            >
+                <p 
+                    v-for="(message, index) in errorMessages"
+                    :key="index"
+                >
+                    {{ message }}
+                </p>
+            </template>
+            <template
+                v-else
+            >
+                <p>{{ error }}</p>
+            </template>
         </div>
         <div
-            slot="footer"
-            class="modal__panel"
+            v-if="footer"
+            class="modal__footer"
         >
-            <button
-                class="modal__prev button button--yellow"
-                @click="reportError"
-            >
-                Отправить отчет
-            </button>
-            <button
-                class="modal__next button button--red"
-                @click="hideError"
-            >
-                Закрыть
-            </button>
         </div>
-    </modal>
+    </vue-final-modal>
 </template>
 
 <script>
-// import { logger } from '@/services';
-    import modal from '@/components/modal.vue';
-
+    import { logger } from '@/services';
     export default {
         components: {
-            modal,
+        },
+        props: {
+            footer: {
+                type: String,
+                default: ''
+            },
         },
         computed: {
+            showModal() {
+                return this.error ? true : false;
+            },
             error() {
                 return this.$store.state.error;
             },
@@ -64,17 +65,20 @@
                 }
                 return messages;
             },
+            errorButton() {
+                return this.error.err.button;
+            }
         },
         methods: {
             reportError() {
                 if (this.error) {
-                    // logger.report(this.error);
+                    logger.report(this.error);
                     this.hideError();
                 }
             },
-            hideError() {
+            hideModal() {
                 this.$store.dispatch('hideError');
-            },
-        },
+            }
+        }
     };
 </script>

@@ -17,8 +17,8 @@ class RESTError extends Error {
 
         if (typeof Error.captureStackTrace === 'function') {
             Error.captureStackTrace(this, this.constructor);
-        } else {
-            this.stack = (new Error(header)).stack;
+        } else { 
+            this.stack = (new Error(header)).stack; 
         }
     }
 }

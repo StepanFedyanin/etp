@@ -59,10 +59,10 @@ export default createStore({
             context.commit('regData', data);
         },
         showError(context, error) {
-            context.commit('error', error);
+            context.commit('updateError', error);
         },
         hideError(context) {
-            context.commit('error', null);
+            context.commit('updateError', null);
         },
         showLoader(context, loader) {
             context.commit('loader', loader);
