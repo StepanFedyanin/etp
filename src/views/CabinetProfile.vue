@@ -3,20 +3,29 @@
         <Breadcrumbs />
         <div class="cabinet">
             <div class="container">
-                <div class="cabinet__content">
+                <div 
+                    v-if="profile"
+                    class="cabinet__content"
+                >
                     <h1 class="h1">
                         Сотрудник организации
                     </h1>
                     <ProfileUser
-                        v-if="profile"
                         :user="profile"
                     />
                     <h2 class="cabinet__subtitle h2">
                         Информация о компании
                     </h2>
+
+                    <svg 
+                        v-if=" profile.is_staff || profile.is_master && profile.organization.id == $store._state.data.user.organization.id"
+                        class="svg-icon svg-icon__edit"
+                        @click="onClickEditOrganization()"
+                    >
+                        <use xlink:href="../assets/img/icons/icons.svg#edit" />
+                    </svg>
                     <div class="cabinet__block">
                         <blockOrganization 
-                            :blockClass="contragent__organization"
                             :organization="organization"
                         />
                     </div>
@@ -25,7 +34,7 @@
                     </h2>
                     <div class="cabinet__block cabinet__persons">
                         <blockPersons 
-                            :blockClass="contragent__persons"
+                            :user="profile"
                             :persons="persons"
                         />
                     </div>
@@ -47,7 +56,8 @@
             Breadcrumbs,
             ProfileUser,
             blockOrganization,
-            blockPersons
+            blockPersons,
+            // ProfileOrganizationEdit
         },
         data() {
             return {
@@ -62,26 +72,9 @@
                     member: '45'
                 },
                 organization: {},
-                persons: [{
-                    id: 1,
-                    name: 'Жуков Николай Геннадьевич',
-                    post: 'Директор',
-                    email: 'info@flexites.org',
-                    phone: '+7 (351) 267-29-94'
-                }, {
-                    id: 2,
-                    name: 'Меренков Антон Антонович',
-                    post: 'Менеджер',
-                    email: 'mav@flexites.org',
-                    phone: '+7 (351) 267-29-95'
-                }, {
-                    id: 3,
-                    name: 'Некрасов Иван Иванович',
-                    post: 'Менеджер',
-                    email: 'nekrasov@flexites.org',
-                    phone: '+7 (351) 267-29-95'
-                }],
+                persons: [],
                 tenders: [],
+                // organizationId: this.$store.organization.id,
             }
         },
         mounted() {
@@ -91,16 +84,24 @@
         created() {
             api.getMyProfile().then(res => {
                 this.profile = res;
-                if(this.organization){
+                this.$store.dispatch('setUser', res);
+                if(this.organization) {
                     this.organization = res.organization;
                     // console.log(res.organization);
                 }
             }).catch(err => {
                 console.error(err);
             });
-            // console.log(this.formData);
+            api.getMyOrganizationMembers().then(res => {
+                this.persons = res;
+            }).catch(err => {
+                console.error(err);
+            });
         },
         methods: {
+            onClickEditOrganization() {
+                this.$router.push({ name: 'organization-edit'});
+            }
         }
-    };
+    }
 </script>

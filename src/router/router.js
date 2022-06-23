@@ -21,6 +21,7 @@ import cabinetContragents from '@/views/CabinetContragents';
 import cabinetContragentsList from '@/views/CabinetContragentsList';
 import cabinetContragentsItem from '@/views/CabinetContragentsItem';
 import CabinetOrganization from '@/views/CabinetOrganization';
+import CabinetOrganizationEdit from '@/views/CabinetOrganizationEdit';
 import cabinetNews from '@/views/CabinetNews';
 import groups from '@/views/Groups';
 
@@ -109,6 +110,16 @@ const routes = [
         path: '/organization',
         name: 'organization',
         component: CabinetOrganization,
+        meta: { 
+            title: 'Моя организация', 
+            breadcrumbs: [],
+            requiresAuth: true 
+        },
+        props: true,
+    }, {
+        path: '/organization/edit',
+        name: 'organization-edit',
+        component: CabinetOrganizationEdit,
         meta: { 
             title: 'Моя организация', 
             breadcrumbs: [],
@@ -229,6 +240,29 @@ const routes = [
             }
         ]
     }, {
+    //     path: '/cabinet/tender-start',
+    //     name: 'tender-start',
+    //     component: cabinetTenderStart,
+    //     meta: { 
+    //         title: 'Объявить тендер', 
+    //         breadcrumbs: ['cabinet'],
+    //         requiresAuth: true 
+    //     },
+    //     props: true,
+    //     children: [
+    //         {
+    //             path: '/cabinet/tender-start/:id',
+    //             name: 'tender-start-edit',
+    //             component: cabinetTenderStart,
+    //             meta: { 
+    //                 title: 'Объявить тендер', 
+    //                 breadcrumbs: ['cabinet'],
+    //                 requiresAuth: true 
+    //             },
+    //             props: true,
+    //         }
+    //     ]
+    // }, {
         path: '/contragents',
         component: cabinetContragents,
         props: true,

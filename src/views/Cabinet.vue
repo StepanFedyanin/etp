@@ -27,21 +27,21 @@
         },
         data() {
             return {
-                user: {
-                    id: 1,
-                    contact_email: 'golyasova@flexites.org',
-                    email: this.email,
-                    first_name: 'Elena',
-                    last_name: 'Golyasova',
-                    organization: {
-                        id: 1,
-                        name: 'ООО “Флексайтс”',
-                        city: 'г. Челябинск',
-                        activity: 'Разработка компьютерного программного обеспечения',
-                        customer: '113',
-                        member: '45'
-                    },
-                },
+                // user: {
+                //     id: 1,
+                //     contact_email: 'golyasova@flexites.org',
+                //     email: this.email,
+                //     first_name: 'Elena',
+                //     last_name: 'Golyasova',
+                //     organization: {
+                //         id: 1,
+                //         name: 'ООО “Флексайтс”',
+                //         city: 'г. Челябинск',
+                //         activity: 'Разработка компьютерного программного обеспечения',
+                //         customer: '113',
+                //         member: '45'
+                //     },
+                // },
                 contragents: [],
                 url: {
                     hashtags: 'https://dka-develop.ru/api?type=hashtag',
@@ -57,25 +57,7 @@
                     member: '45'
                 },
                 organization: {},
-                persons: [{
-                    id: 1,
-                    name: 'Жуков Николай Геннадьевич',
-                    post: 'Директор',
-                    email: 'info@flexites.org',
-                    phone: '+7 (351) 267-29-94'
-                }, {
-                    id: 2,
-                    name: 'Меренков Антон Антонович',
-                    post: 'Менеджер',
-                    email: 'mav@flexites.org',
-                    phone: '+7 (351) 267-29-95'
-                }, {
-                    id: 3,
-                    name: 'Некрасов Иван Иванович',
-                    post: 'Менеджер',
-                    email: 'nekrasov@flexites.org',
-                    phone: '+7 (351) 267-29-95'
-                }],
+                persons: [],
                 tenders: [],
             }
         },
