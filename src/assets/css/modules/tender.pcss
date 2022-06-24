@@ -92,29 +92,28 @@
 
         &-cell {
             padding-bottom: 12px;
-            &.m {
-                &--title {
-                    font-weight: 400;
-                    font-size: 16px;
-                    color: $color-gray-T3;
-                }
 
-                &--file {
-                    font-weight: 700;
-                    font-size: 16px;
-                    text-decoration: underline;
-                    color: $color-green;
+            &.m--title {
+                font-weight: 400;
+                font-size: 16px;
+                color: $color-gray-T3;
+            }
 
-                    &:hover {
-                        text-decoration: none;
-                    }
-                }
+            &.m--file {
+                font-weight: 700;
+                font-size: 16px;
+                text-decoration: underline;
+                color: $color-green;
 
-                &--desc {
-                    font-weight: 400;
-                    font-size: 16px;
-                    color: $color-black;
+                &:hover {
+                    text-decoration: none;
                 }
+            }
+
+            &.m--desc {
+                font-weight: 400;
+                font-size: 16px;
+                color: $color-black;
             }
         }
     }
@@ -190,6 +189,18 @@
 
             &.m--clock:after {
                 background: url('./assets/img/icons/icon-clock.svg') 50% 50% no-repeat;
+            }
+
+            &.m--complete:after {
+                background: url('./assets/img/icons/icon-complete.svg') 50% 50% no-repeat;
+            }
+
+            &.m--wall-clock:after {
+                background: url('./assets/img/icons/icon-wall-clock.svg') 50% 50% no-repeat;
+            }
+
+            &.m--winner:after {
+                background: url('./assets/img/icons/icon-winner.svg') 50% 50% no-repeat;
             }
         }
 

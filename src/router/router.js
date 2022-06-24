@@ -16,7 +16,8 @@ import CabinetProfileEdit from '@/views/CabinetProfileEdit';
 import cabinetTenders from '@/views/CabinetTenders';
 import cabinetTendersList from '@/views/CabinetTendersList';
 import cabinetTendersItem from '@/views/CabinetTendersItem';
-import cabinetTenderStart from '@/views/CabinetTenderStart';
+import cabinetTendersStart from '@/views/CabinetTendersStart';
+import cabinetTendersEnd from '@/views/CabinetTendersEnd';
 import cabinetContragents from '@/views/CabinetContragents';
 import cabinetContragentsList from '@/views/CabinetContragentsList';
 import cabinetContragentsItem from '@/views/CabinetContragentsItem';
@@ -154,7 +155,7 @@ const routes = [
             }, {
                 path: ':id/edit',
                 name: 'tender-edit',
-                component: cabinetTenderStart,
+                component: cabinetTendersStart,
                 meta: { 
                     title: 'Редактирование тендера',
                     breadcrumbs: ['tenders'],
@@ -162,9 +163,19 @@ const routes = [
                 },
                 props: true,
             }, {
+                path: ':id/end',
+                name: 'tender-end',
+                component: cabinetTendersEnd,
+                meta: { 
+                    title: 'Завершение тендера',
+                    breadcrumbs: ['tenders'],
+                    requiresAuth: true 
+                },
+                props: true,
+            }, {
                 path: 'start',
                 name: 'tender-start',
-                component: cabinetTenderStart,
+                component: cabinetTendersStart,
                 meta: { 
                     title: 'Объявить тендер', 
                     breadcrumbs: ['tenders'],

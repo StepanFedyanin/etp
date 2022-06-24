@@ -71,6 +71,7 @@
             },
             advSearch(formData) {
                 this.advSearchFormData = formData
+                console.log(formData)
             },
             searchTenders(event) {
                 let formData = Object.assign({}, this.advSearchFormData)

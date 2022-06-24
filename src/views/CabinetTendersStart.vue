@@ -14,7 +14,7 @@
                 :disabled="showLoaderSending"
                 :loading="showLoaderSending ? true : undefined"
                 :actions="false"
-                @submit="tender && tender.id ? updateTender() : createTender()"
+                @submit="defaultTender ? updateTender() : createTender()"
             >
                 <div class="tender-form__title">
                     Общие параметры тендера
@@ -43,7 +43,7 @@
                 </div>
 
                 <div
-                    v-if="!tender"
+                    v-if="!defaultTender"
                     class="tender-form__prepare"
                 >
                     <button
@@ -65,11 +65,11 @@
                     </div>
                     <div class="tender-form__block">
                         <div
-                            v-if="tender"
+                            v-if="defaultTender"
                             class="tenders-form__docs lots m--docs"
                         >
                             <div class="lots__header">
-                                <div class="lots__header-cell m--filename">
+                                <div class="lots__header-cell m--file">
                                     Имя файла
                                 </div>
                                 <div class="lots__header-cell m--name">
@@ -94,13 +94,13 @@
                                 >
                                     <FormKit
                                         v-if="!file.draft"
-                                        :id="String(file.id)"
-                                        :name="String(file.id)"
+                                        :id="getFileId(file.id)"
+                                        :name="getFileId(file.id)"
                                         type="file"
                                         outerClass="$reset field--type_hidden"
                                         @change="uploadFileComplete"
                                     />
-                                    <div class="lots__item-cell m--filename">
+                                    <div class="lots__item-cell m--file">
                                         <a
                                             :href="urlPath + file.file"
                                         >
@@ -112,20 +112,21 @@
                                             class="input"
                                             type="text"
                                             placeholder="Ввести данные"
-                                            :name="`description_${file.id}`"
+                                            :name="`description_${getFileId(file.id)}`"
                                             :value="file.description"
+                                            outerClass="$reset"
                                         />
                                     </div>
                                     <div class="lots__item-cell m--edit">
                                         <div
                                             class="lots__item-edit"
-                                            @click="onClickUploadFile(file.id)"
+                                            @click="onClickUploadFile(getFileId(file.id))"
                                         />
                                     </div>
                                     <div class="lots__item-cell m--delete">
                                         <div
                                             class="lots__item-delete"
-                                            @click="onClickRemoveFile(file.id)"
+                                            @click="onClickRemoveFile(getFileId(file.id))"
                                         />
                                     </div>
                                 </div>
@@ -134,7 +135,7 @@
                         <button
                             type="button"
                             class="button button-outline-green"
-                            :disabled="tender === null"
+                            :disabled="!defaultTender"
                             @click="onClickUploadFile(null)"
                         >
                             Добавить документ
@@ -148,7 +149,7 @@
                     </div>
                     <div class="tender-form__block">
                         <div
-                            v-if="tender"
+                            v-if="defaultTender"
                             class="tender-form__lots lots m--tender-start"
                         >
                             <div class="lots__header">
@@ -177,8 +178,8 @@
                                 class="lots__list"
                             >
                                 <div
-                                    v-for="(lot, idx) in lots"
-                                    :key="idx"
+                                    v-for="lot in lots"
+                                    :key="lot.id"
                                     class="lots__item"
                                 >
                                     <div class="lots__item-cell">
@@ -217,7 +218,7 @@
                         <div class="tender-form__block-actions">
                             <button
                                 type="button"
-                                :disabled="tender === null"
+                                :disabled="!defaultTender"
                                 class="button button-outline-green"
                                 @click="onClickAddLotModal(null)"
                             >
@@ -225,7 +226,7 @@
                             </button>
                             <button
                                 type="button"
-                                :disabled="tender === null"
+                                :disabled="!defaultTender"
                                 class="button button-outline-green"
                                 @click="onClickShowFileLotModal"
                             >
@@ -245,14 +246,14 @@
                     <button
                         type="button"
                         class="button button-green"
-                        @click="tender && tender.id ? updateTender() : createTender()"
+                        @click="defaultTender ? updateTender() : createTender()"
                     >
                         Сохранить как черновик
                     </button>
                     <button
                         type="button"
                         class="button button-green"
-                        :disabled="tender === null"
+                        :disabled="!defaultTender"
                         @click="publishTender"
                     >
                         Опубликовать
@@ -289,7 +290,7 @@
         data() {
             return {
                 urlPath,
-                tender: null,
+                defaultTender: null,
                 lots: [],
                 documents: [],
                 lotModalData: null,
@@ -301,6 +302,7 @@
                     {
                         $formkit: 'hidden',
                         name: 'id',
+                        value: Number(this.$route.params.id) || false
                     }, {
                         $formkit: 'text',
                         name: 'name',
@@ -329,9 +331,10 @@
                         groups: true,
                         closeOnSelect: false,
                         label: 'Выбор категории',
+                        searchable: true,
+                        minChars: 1,
                         help: 'Выберите категорию к которой относятся закупаемые товары или услуги',
                         validation: 'required',
-                        setAfterAsync: true,
                         options: async () => {
                             return await categoryApi.getCategoryList({ limit: 100 }).then(groups => {
                                 if (groups.results) {
@@ -372,7 +375,6 @@
                         label: 'Тип тендера',
                         help: 'Выберите тип проводимого тендера',
                         validation: 'required',
-                        setAfterAsync: true,
                         options: [
                             { label: 'Открытый на понижение', value: 'reduction_opened' },
                             { label: 'Закрытый на понижение', value: 'reduction_closed' },
@@ -394,9 +396,10 @@
                         $formkit: 'multiselect',
                         name: 'region',
                         label: 'Выбор региона',
+                        searchable: true,
+                        minChars: 1,
                         help: 'Выберите регион исполнения заказа',
                         validation: 'required',
-                        setAfterAsync: true,
                         options: async () => {
                             return await geoApi.getRegions({ limit: 100 })
                                 .then(regions => {
@@ -428,11 +431,14 @@
                     }, {
                         $formkit: 'multiselect',
                         name: 'supervisor',
+                        searchable: true,
+                        minChars: 1,
                         label: 'Контактное лицо',
                         help: 'Выберите из списка зарегистрированных пользователей ответственного за тендер',
                         validation: 'required',
-                        setAfterAsync: true,
-                        options: [1],
+                        options: [
+                            { label: '111', value: 1 }
+                        ],
                         __raw__sectionsSchema: {
                             prefix: {
                                 $el: 'div',
@@ -495,15 +501,17 @@
                 ],
                 tenderAdditionalSchema: [
                     {
-                        $formkit: 'text',
+                        $formkit: 'multiselect',
+                        // searchable: true,
                         name: 'min_step',
                         label: 'Минимальный шаг цены',
                         help: 'Установите минимальный шаг торгов от текущей ставки от 0,1% до 2%',
                         placeholder: 'Введите минимальный шаг',
-                        validation: "reqired",
+                        validation: "required|number",
                         validationMessages: {
                             length: 'Минимальный шаг торгов от текущей ставки от 0,1% до 2%',
                         },
+                        options: this.$helpers.range(0.1, 2, 0.1, 1),
                         __raw__sectionsSchema: {
                             prefix: {
                                 $el: 'div',
@@ -513,10 +521,10 @@
                                 children: '$help',
                             },
                         },
-                        inputClass: 'tender-form__input m--half',
+                        // inputClass: 'tender-form__input',
                         helpClass: 'tender-form__hidden',
                         labelClass: 'tender-form__label',
-                        outerClass: 'tender-form__field',
+                        outerClass: 'tender-form__field m--half',
                         messageClass: 'tender-form__message',
                     }, {
                         $formkit: 'textarea',
@@ -546,32 +554,22 @@
             '$route.params.id': {
                 immediate: true,
                 handler() {
-                    console.log(this.tenderForm)
                     let id = this.$route.params.id
                     if (id) { // редактирование тендера
                         tenderApi.getTender(id).then(tender => {
+                            this.defaultTender = tender
                             console.log(tender)
-                            this.tender = tender
-                            this.documents = tender.documents
-                            this.lots = tender.lots
-
-                            // this.tenderForm = tender
-                            this.tenderForm.name = tender.name
-                            this.tenderForm.category = tender.category
-                            this.tenderForm.min_step = tender.min_step
-                            this.tenderForm.date_start = tender.date_start.slice(0,19)
-                            this.tenderForm.date_end = tender.date_end.slice(0,19)
-                            this.tenderForm.region = tender.region
-                            this.tenderForm.description = tender.description
-                            this.tenderForm.supervisor = tender.supervisor
-                            this.tenderForm.type = tender.type
+                            this.setTender()
                         }).catch(err => {
                             console.error(err)
                         })
                     } else {
-                        this.tender = null
-                        this.documents = []
-                        this.lots = []
+                        if (this.defaultTender) {
+                            this.defaultTender = null
+                            this.resetFormTender()
+                            this.documents = []
+                            this.lots = []
+                        }
                     }
                 }
             }
@@ -586,49 +584,57 @@
                 this.updateTender()
             },
             createTender() {
-                let tender = Object.assign({}, this.tenderForm)
-                tender.category = this.tenderForm.category.map(cat => cat.value)
-                tender.region = Number(this.tenderForm.region.value)
-                tender.supervisor = Number(this.tenderForm.supervisor.value)
-                tender.type = this.tenderForm.type.value
-                tender.lots = this.lots.map(lot => lot.id)
-                tender.documents = this.documents.map(file => file.id)
-                console.log(tender)
+                let tender = this.prepareTender()
+
                 tenderApi.createTender(tender).then(tender => {
-                    this.tender = tender
-                    console.log(tender)
-                    this.$router.push({ name: 'tender-edit', params: { id: this.tender.id } })
+                    this.defaultTender = tender
+                    this.$router.push({ name: 'tender-edit', params: { id: this.defaultTender.id } })
                 }).catch(err => {
                     console.error(err)
                 })
             },
             updateTender() {
-                console.log('tenderForm', this.tenderForm)
-                console.log('tender', this.tender)
-                alert('Обновление тендера в разработке')
-                return
-                // if (!this.tender && !this.tender.id){
-                //     console.error(`Не найден tender.id ${this.tender.id}`)
-                //     return
-                // }
+                if (!this.defaultTender.id){
+                    console.error(`Не найден tender.id ${this.defaultTender.id}`)
+                    return
+                }
 
-                // let tender = Object.assign({}, this.tenderForm)
-                // tender.lots = this.lots.map(lot => lot.id)
-                // tender.documents = this.documents.map(file => file.id)
-                // console.log(tender)
-                // tenderApi.updateTender(this.tender.id, tender)
-                //     .then(tender => {
-                //         console.log('UPDATE', tender)
-                //         this.tender = tender
-                //     }).catch(err => {
-                //         console.error(err)
-                //     })
+                let tender = this.prepareTender()
+                tenderApi.updateTender(tender.id, tender)
+                    .then(tender => {
+                        this.defaultTender = tender
+                        alert('Тендер обновлён')
+                    }).catch(err => {
+                        console.error(err)
+                    })
             },
             resetFormTender() {
-                if (this.tender)
-                    this.tenderForm = this.tender
-                else
-                    this.$formkit.reset('tenderForm')
+                this.tenderForm.id = false
+                this.tenderForm.name = ''
+                this.tenderForm.min_step = null
+                this.tenderForm.category = {
+                    name: 'category',
+                    fromParent: true,
+                    value: []
+                }
+                this.tenderForm.type = {
+                    name: 'type',
+                    fromParent: true,
+                    value: null
+                }
+                this.tenderForm.region = {
+                    name: 'region',
+                    fromParent: true,
+                    value: null
+                }
+                this.tenderForm.supervisor = {
+                    name: 'supervisor',
+                    fromParent: true,
+                    value: null
+                }
+                this.tenderForm.date_start = null
+                this.tenderForm.date_end = null
+                this.tenderForm.description = null
             },
             onClickUploadFile(id) {
                 let input
@@ -643,7 +649,7 @@
             uploadFileComplete(event) {
                 for (let file of event.target.files) {
                     file.id = event.target.id
-                    let idx = this.documents.findIndex(f => String(f.id) === file.id)
+                    let idx = this.documents.findIndex(f => this.getFileId(f.id) === file.id)
 
                     const formData = new FormData()
                     formData.append("file", file)
@@ -652,13 +658,15 @@
 
                     if (idx >= 0) {
                         this.documents[idx] = file
+                        // this.defaultTender.documents = this.documents
                         alert('Обновление документов в разработке')
                         return
                     } else {
-                        tenderApi.addTenderDocument(this.tender.id, formData)
+                        tenderApi.addTenderDocument(this.defaultTender.id, formData)
                             .then(file => {
                                 this.documents.push(file)
-                                console.log(file)
+                                // this.defaultTender.documents = this.documents
+                                // console.log(file)
                             }).catch(err => {
                                 console.error(err)
                             })
@@ -666,11 +674,16 @@
                 }
             },
             onClickRemoveFile(id) {
-                let input = document.getElementById(id)
-                input.remove()
-
-                let idx = this.documents.findIndex(f => f.id === id)
-                this.documents.splice(idx, 1)
+                let idx = this.documents.findIndex(f => this.getFileId(f.id) === id)
+                if (idx >= 0) {
+                    tenderApi.deleteTenderDocument(this.defaultTender.id, this.documents[idx].id)
+                        .then(res => {
+                            this.documents.splice(idx, 1)
+                            // this.defaultTender.documents = this.documents
+                        }).catch(err => {
+                            console.error(err)
+                        })
+                }
             },
             onClickAddLotModal(id) {
                 // передать в модалку данные для редактирования лота
@@ -689,21 +702,19 @@
             },
             addLotModal(newLot) {
                 if (newLot.id) { // обновление лота
-                    alert('Обновление лотов в разработке')
-                    return
-                    // tenderApi.updateTenderLot(this.tender.id, newLot.id, newLot)
-                    //     .then(lot => {
-                    //         let idx = this.lots.findIndex(lot => lot.id === newLot.id)
-                    //         this.lots[idx] = lot
-                    //         console.log(lot)
-                    //     }).catch(err => {
-                    //         console.error(err)
-                    //     })
+                    tenderApi.updateTenderLot(this.defaultTender.id, newLot.id, newLot)
+                        .then(lot => {
+                            let idx = this.lots.findIndex(lot => lot.id === newLot.id)
+                            this.lots[idx] = lot
+                            // console.log(lot)
+                        }).catch(err => {
+                            console.error(err)
+                        })
                 } else {
-                    tenderApi.addTenderLot(this.tender.id, newLot)
+                    tenderApi.addTenderLot(this.defaultTender.id, newLot)
                         .then(lot => {
                             this.lots.push(lot)
-                            console.log('Добавлен лот', lot)
+                            // console.log('Добавлен лот', lot)
                         }).catch(err => {
                             console.error(err)
                         })
@@ -711,17 +722,76 @@
             },
             onClickRemoveLot(id) {
                 let idx = this.lots.findIndex(lot => lot.id === id)
-                this.lots.splice(idx, 1)
+                if (idx >= 0) {
+                    tenderApi.deleteTenderLot(this.defaultTender.id, id)
+                        .then(res => {
+                            this.lots.splice(idx, 1)
+                        }).catch(err => {
+                            console.error(err)
+                        })
+                }
             },
             onClickShowFileLotModal() {
                 this.showFileLotModal = true
             },
             uploadFileLot(file) {
                 console.log(file)
+                alert('Добавление файла в разработке')
             },
             hideFileLotModal() {
                 this.showFileLotModal = false
             },
+            getFileId(id) {
+                return `file_${String(id)}`
+            },
+            setTender() {
+                this.lots = this.defaultTender.lots
+                this.documents = this.defaultTender.documents
+                this.tenderForm.id = this.defaultTender.id
+                this.tenderForm.name = this.defaultTender.name
+                this.tenderForm.min_step = this.defaultTender.min_step
+                this.tenderForm.category = {
+                    fromParent: true,
+                    value: this.defaultTender.category.map(cat => {return {value: cat}})
+                }
+                this.tenderForm.type = {
+                    fromParent: true,
+                    value: this.defaultTender.type
+                }
+                this.tenderForm.region = {
+                    fromParent: true,
+                    value: {
+                        value: this.defaultTender.region
+                    }
+                }
+                this.tenderForm.supervisor = {
+                    fromParent: true,
+                    value: this.defaultTender.supervisor
+                }
+                this.tenderForm.date_start = this.defaultTender.date_start.slice(0,19)
+                this.tenderForm.date_end = this.defaultTender.date_end.slice(0,19)
+                this.tenderForm.description = this.defaultTender.description
+            },
+            prepareTender() {
+                let tender = {}
+                tender = this.tenderForm
+
+                // console.log('tenderForm', this.tenderForm)
+                // tender.id = this.tenderForm.id
+                // tender.name = this.tenderForm.name
+                // tender.category = this.tenderForm.category
+                // tender.type = this.tenderForm.type
+                // tender.region = this.tenderForm.region
+                // tender.supervisor = this.tenderForm.supervisor
+                // tender.date_start = this.tenderForm.date_start
+                // tender.date_end = this.tenderForm.date_end
+                // tender.min_step = this.tenderForm.min_step
+                // tender.description = this.tenderForm.description
+                tender.lots = this.lots
+                // tender.documents = this.documents.map(file => file.id)
+                // console.log('tender', tender)
+                return tender
+            }
         }
     }
 </script>

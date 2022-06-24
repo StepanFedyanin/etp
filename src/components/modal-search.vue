@@ -216,8 +216,9 @@
                     }, {
                         $formkit: 'checkbox',
                         name: 'type',
-                        value: "all",
+                        value: ["all"],
                         help: 'Показать тендера',
+                        onInput: this.checkType,
                         options: [
                             {
                                 label: 'Все',
@@ -248,6 +249,14 @@
                 return this.showModal;
             },
         },
+        watch: {
+            // searchForm: {
+            //     handler(a,b,c) {
+            //         console.log('handler')
+            //         console.log(a,b,c)
+            //     }
+            // }
+        },
         mounted() {
         },
         methods: {
@@ -259,7 +268,11 @@
                 this.$emit('hideModal')
             },
             onINNChange(query, select$) {
-                select$.refreshOptions()
+                // select$.refreshOptions()
+            },
+            checkType(values, node) {
+                console.log(values)
+                console.log(node.input)
             }
         }
     };

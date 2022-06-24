@@ -42,10 +42,10 @@ const confFormKit = {
     },
     inputs: {
         select: createInput(multiselectInput, {
-            props: ['options', 'placeholder', 'mode', 'searchable', 'value'],
+            props: ['options', 'placeholder', 'mode', 'searchable'],
         }),
         multiselect: createInput(multiselectInput, {
-            props: ['options', 'placeholder', 'mode', 'searchable', 'value'],
+            props: ['options', 'placeholder', 'mode', 'searchable'],
         }),
     },
 };

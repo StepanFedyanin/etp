@@ -82,8 +82,15 @@ export default class extends REST {
         return this._post(`${id}/add_document`, {}, params).then((data) => {
             return data
         }).catch((error) => {
-            console.error(error.message)
             throw new RESTError(error, 'Ошибка при добавлении документа тендера');
+        })
+    }
+
+    static deleteTenderDocument(tenderId, documentId) {
+        return this._delete(`${tenderId}/documents/${documentId}`, {}).then((data) => {
+            return data
+        }).catch((error) => {
+            throw new RESTError(error, 'Ошибка при удалении документа тендера');
         })
     }
 
@@ -108,6 +115,14 @@ export default class extends REST {
             return data
         }).catch((error) => {
             throw new RESTError(error, 'Ошибка при добавлении лота тендера');
+        })
+    }
+
+    static deleteTenderLot(tenderId, documentId) {
+        return this._delete(`${tenderId}/lots/${documentId}`, {}).then((data) => {
+            return data
+        }).catch((error) => {
+            throw new RESTError(error, 'Ошибка при удалении лота тендера');
         })
     }
 }

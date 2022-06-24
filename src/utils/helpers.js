@@ -72,8 +72,16 @@ const helpers = {
 
         return false
     },
-    range: (start, end) => {
-        return [...Array(end).keys()].map(el => el + start)
+    range: (start, end, step = 1, toFixed = null) => {
+        let arr = []
+        
+        while(start <= end) {
+            if (toFixed)
+                start = Number(start.toFixed(toFixed))
+            arr.push(start)
+            start += step
+        }
+        return arr
     },
     getFilename: (filepath) => {
         // eslint-disable-next-line

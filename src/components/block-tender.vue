@@ -13,7 +13,7 @@
                 {{ tender.name }}
             </div>
             <div class="tenders__item-param">
-                <span class="tenders__item-param-name">Заказчик:</span> 
+                <span class="tenders__item-param-name">Заказчик: </span> 
                 <a href="#">{{ tender.organization && tender.organization.full_name ? tender.organization.full_name : '(())' }}</a>
             </div>
             <div class="tenders__item-param">
@@ -31,7 +31,13 @@
                 v-if="tender.region"
                 class="tenders__item-param"
             >
-                <span class="tenders__item-param-name">Регион:</span> {{ tender.region }}
+                <span class="tenders__item-param-name">Регион:</span> {{ tender.region.name }}
+            </div>
+            <div
+                v-if="tender.description"
+                class="tenders__item-param"
+            >
+                <span class="tenders__item-param-name">Дополнительая информация:</span> {{ tender.description }}
             </div>
             <div
                 v-if="documents"
@@ -52,13 +58,13 @@
                     <div
                         v-for="file in documents"
                         :key="file.id"
-                        class="tenders__item-docs__item"
+                        class="tenders__item-docs__item m--file"
                     >
                         <a
                             :href="urlPath + file.file"
-                            class="tenders__item-docs__cell m--file"
+                            class=""
                         >{{ file.name }}</a>
-                        <div class="tenders__item-docs__cell m--desc">
+                        <div class="">
                             {{ file.description }}
                         </div>
                     </div>
@@ -177,11 +183,7 @@
                 default() { return {
                     id: 1
                 }; }
-            },
-            whole: {
-                type: Boolean,
-                default: false
-            },
+            }
         },
         data() {
             return {

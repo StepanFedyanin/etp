@@ -66,7 +66,7 @@
         data() {
             return {
                 groups: null,
-                limit: 5,
+                limit: 10,
             }
         },
         watch: {

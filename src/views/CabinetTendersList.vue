@@ -22,21 +22,11 @@
                             <select
                                 v-model="limit"
                                 class="tenders__pagination-select"
-                                name="perPage"
+                                name="limit"
                             >
                                 <option
-                                    value="1"
-                                    selected="selected"
-                                >
-                                    1 тендер
-                                </option>
-                                <option
-                                    value="2"
-                                >
-                                    2 тендера
-                                </option>
-                                <option
                                     value="10"
+                                    selected="selected"
                                 >
                                     10 тендеров
                                 </option>
@@ -68,7 +58,6 @@
                     v-for="(tender, index) in tenders.results"
                     :key="`tender-${index}`"
                     :tender="tender"
-                    :whole="true"
                 />
             </div>
         </div>
@@ -89,7 +78,7 @@
         },
         data() {
             return {
-                limit: 1,
+                limit: 10,
                 tenders: null,
             }
         },
@@ -132,7 +121,7 @@
                 }
                 api.getTenders(params).then(tenders => {
                     this.tenders = tenders
-                    // console.log(tenders)
+                    console.log(tenders)
                 }).catch(err => {
                     console.error(err)
                 })

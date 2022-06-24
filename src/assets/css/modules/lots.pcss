@@ -73,6 +73,19 @@
         color: $color-gray-T3;
         font-weight: 400;
         font-size: 16px;
+        margin: 0;
+    }
+
+    &.m--docs &__item {
+        margin: 0 0 16px;
+
+        &:nth-child(2n) {
+            background: transparent;
+        }
+
+        &-cell {
+            padding: 0;
+        }
     }
 
     &.m--tender-start &__header,
@@ -161,17 +174,22 @@
                 text-align: center;
             }
 
-            &.m--filename {
+            &.m--file {
                 text-decoration: underline;
                 font-weight: 700;
                 font-size: 16px;
-                color: $color-gray-T2;
-                cursor: pointer;
-                align-self: center;
-                word-break: break-all;
+                
+                & a {
+                    word-break: break-all;
+                    color: $color-green;
 
-                &:hover {
-                    text-decoration: none;
+                    &:hover {
+                        text-decoration: none;
+                    }
+                }
+
+                & div {
+                    
                 }
             }
 
