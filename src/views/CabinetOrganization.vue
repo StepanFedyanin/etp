@@ -39,9 +39,10 @@
                 </div>
                 <div class="contragent__tenders tenders">
                     <blockTender
-                        v-for="(tender, index) in 5"
+                        v-for="(tender, index) in tenders.results"
                         :key="`tender-${index}`"
                         :tender="tender"
+                        :whole="true"
                     />
 
                     <a 
@@ -56,9 +57,10 @@
                 </div>
                 <div class="contragent__tenders tenders">
                     <blockTender
-                        v-for="(tender, index) in 1"
+                        v-for="(tender, index) in tenders.results"
                         :key="`tender-${index}`"
                         :tender="tender"
+                        :whole="true"
                     />
 
                     <a 
@@ -108,6 +110,7 @@
         created() {
             api.getMyProfile().then(res => {
                 this.profile = res;
+                // this.$store.dispatch('setUser', res);
                 if(this.organization){
                     this.organization = res.organization;
                 }

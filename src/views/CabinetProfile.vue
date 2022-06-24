@@ -94,6 +94,7 @@
             });
             api.getMyOrganizationMembers().then(res => {
                 this.persons = res;
+                // this.$store.dispatch('setUser', res);
             }).catch(err => {
                 console.error(err);
             });

@@ -33,7 +33,7 @@
                 {{ item.full_name }}
             </div>
             <div class="persons__item-cell">
-                {{ item.post }}
+                {{ item.post }} 
             </div>
             <div class="persons__item-cell">
                 {{ item.email }}

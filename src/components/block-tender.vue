@@ -13,7 +13,8 @@
                 {{ tender.name }}
             </div>
             <div class="tenders__item-param">
-                <span class="tenders__item-param-name">Заказчик:</span> <a href="#">{{ tender.organization.full_name }}</a>
+                <span class="tenders__item-param-name">Заказчик:</span> 
+                <a href="#">{{ tender.organization && tender.organization.full_name ? tender.organization.full_name : '(())' }}</a>
             </div>
             <div class="tenders__item-param">
                 <span class="tenders__item-param-name">Категории: </span>
@@ -72,7 +73,9 @@
                 <span class="tenders__item-param-name">Аукцион №1234567</span>
             </div>
             <div class="tenders__item-param">
-                <span class="tenders__item-param-name">Объявлено:</span> {{ $helpers.formatDate(new Date(tender.date_start), 'DD.MM.YYYY HH:mm') }} МСК
+                <span
+                    v-if="tender.date_start" 
+                    class="tenders__item-param-name">Объявлено:</span> {{ $helpers.formatDate(new Date(tender.date_start), 'DD.MM.YYYY HH:mm') }} МСК
             </div>
             <div class="tenders__item-param">
                 <span class="tenders__item-param-name">Тип аукциона:</span> {{ tender.type_detail }}
@@ -86,7 +89,9 @@
             <div
                 class="tenders__item-timer"
             >
-                <div class="tenders__item-timer-date">
+                <div
+                    v-if="tender.date_end" 
+                    class="tenders__item-timer-date">
                     Прием заявок: {{ $helpers.formatDate(new Date(tender.date_end), 'DD.MM.YYYY HH:mm') }} МСК
                 </div>
                 <div

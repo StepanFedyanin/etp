@@ -130,6 +130,7 @@
                     // this.$store.dispatch('showError', err);
                     // console.error(err);
                 });
+                this.$router.go(-1);
                 // alert(`Submitted ${formData.last_name} successfully!`)
                 
             },

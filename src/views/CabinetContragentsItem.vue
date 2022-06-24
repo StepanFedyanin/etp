@@ -27,9 +27,10 @@
             </div>
             <div class="contragent__tenders tenders">
                 <blockTender
-                    v-for="(tender, index) in 5"
+                    v-for="(tender, index) in tenders.results"
                     :key="`tender-${index}`"
                     :tender="tender"
+                    :whole="true"
                 />
 
                 <a 
@@ -42,11 +43,15 @@
             <div class="contragent__subtitle h2">
                 Участник <span class="m--color-green">1 тендер</span>
             </div>
-            <div class="contragent__tenders tenders">
+            <div 
+                v-if="tenders && tenders.count"
+                class="contragent__tenders tenders"
+            >
                 <blockTender
-                    v-for="(tender, index) in 1"
+                    v-for="(tender, index) in tenders.results"
                     :key="`tender-${index}`"
                     :tender="tender"
+                    :whole="true"
                 />
 
                 <a 
