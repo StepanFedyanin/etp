@@ -1,4 +1,18 @@
 .loader {
+    display: flex;
+    align-items: center;
+    font-size: 20px;
+    font-weight: 600;
+    color: $color-green;
+
+    .spinner {
+        margin-right: 16px;
+        width: 30px;
+        height: 30px;
+    }
+}
+/*
+.loader {
     position: absolute;
     z-index: 1000;
     left: 0;
@@ -41,10 +55,6 @@
         min-height: 100%;
     }
 
-    &__spinner {
-        /* dummy */
-    }
-
     &__label {
         margin-top: 40px;
         color: $color-gray;
@@ -52,7 +62,6 @@
         text-align: center;
     }
 
-    /* Vue.js transition loader */
     &.loader-enter,
     &.loader-leave-active {
         opacity: 0;
@@ -63,3 +72,4 @@
         }
     }
 }
+*/

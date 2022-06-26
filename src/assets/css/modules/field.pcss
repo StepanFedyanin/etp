@@ -130,6 +130,15 @@
         }
     }
 
+    &[data-invalid=true][data-type=select] &__input,
+    &[data-errors=true][data-type=select] &__input,
+    &[data-invalid=true][data-type=multiselect] &__input,
+    &[data-errors=true][data-type=multiselect] &__input {
+        &:after {
+            margin-left: -60px;
+        }
+    }
+
     &[data-invalid=true] .input,
     &[data-errors=true] .input {
         border-color: $color-red;
