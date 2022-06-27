@@ -76,7 +76,7 @@
                 {{ $helpers.toPrice(tender.price, {sign: '₽'}) }}
             </div>
             <div class="tenders__item-param">
-                <span class="tenders__item-param-name">Аукцион №1234567</span>
+                <span class="tenders__item-param-name">Аукцион №{{ tender.id }}</span>
             </div>
             <div class="tenders__item-param">
                 <span
@@ -104,7 +104,7 @@
                     v-if="restTime"
                     class="tenders__item-timer-left"
                 >
-                    Осталось {{ restTime }}
+                    Осталось {{ $helpers.dateRangeToDaysHours(new Date(), new Date(tender.date_end)) }}
                 </div>
             </div>
             <div
@@ -207,16 +207,7 @@
             },
             restTime() {
                 let rest = new Date(this.tender.date_end) - new Date()
-                if (rest < 0)
-                    return false
-
-                rest = new Date(rest)
-                let days = rest.getDay()
-                let hours = rest.getHours()
-                days = days + ' ' + this.$helpers.declinationOfNum(days, ['день', 'дня', 'дней'])
-                hours = hours + ' ' + this.$helpers.declinationOfNum(hours, ['час', 'часа', 'часов'])
-
-                return days + ' ' + hours
+                return (rest < 0) ? false : true;
             }
         },
         methods: {

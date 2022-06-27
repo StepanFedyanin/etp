@@ -14,6 +14,20 @@
                 <div class="tender__block">
                     <div class="tender__data">
                         <div 
+                            class="tender__data-icon"
+                            :class="tender.status === 'closed' ? 'm--finish' : 'm--status'"
+                        />
+                        <div class="tender__data-inner">
+                            <div class="tender__data-title">
+                                Статус
+                            </div>
+                            <div class="tender__data-info">
+                                {{ tender.status_detail }}
+                            </div>
+                        </div>
+                    </div>
+                    <div class="tender__data">
+                        <div 
                             class="tender__data-icon m--timer"
                             :class="tender.limit.secs > 0 ? 'm--green' : 'm--red'"
                         />
@@ -23,9 +37,9 @@
                             </div>
                             <div class="tender__data-info">
                                 <template
-                                    v-if="tender.limit.secs > 0"
+                                    v-if="tender.limit > 0"
                                 >
-                                    {{ $helpers.stringForNumber(tender.limit.days, ['день', 'дня', 'дней']) }} {{ $helpers.stringForNumber(tender.limit.hours, ['час', 'часа', 'часов']) }}
+                                    {{ $helpers.dateRangeToDaysHours(new Date(), new Date(tender.date_end)) }}
                                 </template>
                                 <template
                                     v-else
@@ -36,24 +50,19 @@
                         </div>
                     </div>
                     <div class="tender__data">
-                        <div class="tender__data-icon m--status" />
-                        <div class="tender__data-inner">
-                            <div class="tender__data-title">
-                                Статус
-                            </div>
-                            <div class="tender__data-info">
-                                ?? Проведение аукциона
-                            </div>
-                        </div>
-                    </div>
-                    <div class="tender__data">
                         <div class="tender__data-icon m--clock" />
                         <div class="tender__data-inner">
                             <div class="tender__data-title">
                                 Продолжительность
                             </div>
                             <div class="tender__data-info">
-                                {{ $helpers.toHHMMSS(tender.duration) }} <span class="m--color-green">+ ?? {{ tender.prolong }} минут</span>
+                                {{ $helpers.toHHMMSS(tender.duration) }} 
+                                <span
+                                    v-if="tender.prolong > 0"
+                                    class="m--color-green"
+                                >
+                                    +{{ tender.prolong }} мин.
+                                </span>
                             </div>
                         </div>
                     </div>
@@ -78,10 +87,10 @@
                             </template>
                         </div>
                         <div class="tender__info-param">
-                            <span>Регион:</span> {{ tender.region_detail.name }}
+                            <span>Регион:</span> {{ tender.region_detail ? tender.region_detail.name : '' }}
                         </div>
                         <div class="tender__info-param">
-                            <span>Дополнительная информация:</span> {{ tender.type_detail }}
+                            <span>Дополнительная информация:</span> {{ tender.description }}
                         </div>
                     </div>
                     <div class="tender__info-right">
@@ -92,13 +101,13 @@
                             <span>Аукцион №{{ tender.id }}</span>
                         </div>
                         <div class="tender__info-param">
-                            <span>Объявлено:</span> {{ $helpers.formatDate(new Date(tender.date_start), 'DD.MM.YYYY HH:MM') }} МСК
+                            <span>Объявлено:</span> {{ $helpers.formatDate(new Date(tender.date_start), 'DD.MM.YYYY HH:mm') }} МСК
                         </div>
                         <div class="tender__info-param">
                             <span>Тип аукциона:</span> {{ types[tender.type] }}
                         </div>
                         <div class="tender__info-param">
-                            <span>Минимальный шаг ставки:</span> ???
+                            <span>Минимальный шаг ставки:</span> {{ tender.min_step }}
                         </div>
                         <div class="tender__info-param">
                             <span>Лоты:</span> {{ tender.lot_count }}
@@ -163,15 +172,24 @@
                         <div class="tender__contact-title">
                             Контактное лицо
                         </div>
-                        <div class="tender__contact-param">
-                            <span>Менеджер:</span> ???
-                        </div>
-                        <div class="tender__contact-param">
-                            <span>Телефон:</span> +? ??? ??? ?? ??
-                        </div>
-                        <div class="tender__contact-param">
-                            <span>E-mail:</span> ???????@????????.??
-                        </div>
+                        <template
+                            v-if="tender.contact_person"
+                        >
+                            <div class="tender__contact-param">
+                                <span>Менеджер:</span> {{ tender.contact_person.full_name }}
+                            </div>
+                            <div class="tender__contact-param">
+                                <span>Телефон:</span> {{ tender.contact_person.phone || '—' }}
+                            </div>
+                            <div class="tender__contact-param">
+                                <span>E-mail:</span> {{ tender.contact_person.contact_email || tender.contact_person.email || '—' }}
+                            </div>
+                        </template>
+                        <template
+                            v-else
+                        >
+                            —
+                        </template>
                     </div>
                 </div>
 
@@ -201,93 +219,13 @@
                 </div>
 
                 <TenderLots
+                    :lots="tender.lots"
+                />
+                <TenderBids
                     @AddLotOffer="onClickAddLotOffer"
                 />
 
-
-                <div class="tender__lots lots">
-                    <div class="lots__header">
-                        <div class="lots__header-cell m--position">
-                            №
-                        </div>
-                        <div class="lots__header-cell m--name">
-                            Название
-                        </div>
-                        <div class="lots__header-cell m--nums">
-                            Кол/во
-                        </div>
-                        <div class="lots__header-cell m--unit">
-                            ед.изм
-                        </div>
-                        <div class="lots__header-cell m--price">
-                            Цена за ед. с НДС
-                        </div>
-                        <div class="lots__header-cell m--sum">
-                            Сумма, с учетом НДС
-                        </div>
-                        <div class="lots__header-cell m--member">
-                            Участник с лучшей ставкой
-                        </div>
-                        <div class="lots__header-cell m--bet">
-                            Лучшая ставка
-                        </div>
-                    </div>
-                    <div class="lots__list">
-                        <div class="lots__item">
-                            <div class="lots__item-cell m--position">
-                                1
-                            </div>
-                            <div class="lots__item-cell">
-                                Запчасть №1
-                            </div>
-                            <div class="lots__item-cell">
-                                20
-                            </div>
-                            <div class="lots__item-cell">
-                                кг.
-                            </div>
-                            <div class="lots__item-cell">
-                                600,55
-                            </div>
-                            <div class="lots__item-cell">
-                                12 600,55
-                            </div>
-                            <div class="lots__item-cell">
-                                ООО “Флексайтс”
-                            </div>
-                            <div class="lots__item-cell m--bet">
-                                10 600,55
-                            </div>
-                        </div>
-                        <div class="lots__item">
-                            <div class="lots__item-cell m--position">
-                                1
-                            </div>
-                            <div class="lots__item-cell">
-                                Запчасть №1
-                            </div>
-                            <div class="lots__item-cell">
-                                20
-                            </div>
-                            <div class="lots__item-cell">
-                                кг.
-                            </div>
-                            <div class="lots__item-cell">
-                                600,55
-                            </div>
-                            <div class="lots__item-cell">
-                                12 600,55
-                            </div>
-                            <div class="lots__item-cell">
-                                ООО “Флексайтс”
-                            </div>
-                            <div class="lots__item-cell m--bet">
-                                10 600,55
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
+                <!--
                 <div class="tender__lots lots m--with-button">
                     <div class="lots__header">
                         <div class="lots__header-cell m--position">
@@ -371,7 +309,8 @@
                         </div>
                     </div>
                 </div>
-
+                -->
+                <!--
                 <div class="tender__block">
                     <div class="tender__offers offers">
                         <div class="offers__title">
@@ -527,6 +466,7 @@
                         </div>
                     </div>
                 </div>
+                -->
             </template>
         </div>
 
@@ -541,12 +481,14 @@
     import { tender as tenderApi } from "@/services"
     import TenderOrganizationStatus from '@/components/tender-organization-status';
     import TenderLots from '@/components/tender-lots';
+    import TenderBids from '@/components/tender-bids';
     import ModalAddLotOffer from '@/components/modal-add-lot-offer';
 
     export default {
         components: {
             TenderOrganizationStatus,
             TenderLots,
+            TenderBids,
             ModalAddLotOffer
         },
         props: {
@@ -559,8 +501,14 @@
             return {
                 tender: null,
                 types: {
-                    'reduction_opened': 'Открытый',
-                    'reduction_closed': 'Закрытый',
+                    reduction_opened: 'Открытый',
+                    reduction_closed: 'Закрытый',
+                },
+                statuses: {
+                    bid_accept: 'Прием заявок',
+                    bidding_process: 'Идут торги',
+                    bidding_completed: 'Подведение итогов',
+                    closed: 'Тендер завершен'
                 },
                 showAddLotOfferModal: false,
                 showLoaderSending: false
@@ -576,13 +524,7 @@
                 let duration = new Date(this.tender.date_end) - new Date(this.tender.date_start);
                 this.tender.duration = Math.ceil(duration / 1000);
                 let limit = (new Date(this.tender.date_end) - new Date()) / 1000;
-                let days = Math.floor(Math.abs(limit / (3600 * 24)));
-                let hours = Math.floor(Math.abs(limit / 3600 - days * 24));
-                this.tender.limit = {
-                    days: days,
-                    hours: hours,
-                    secs: limit
-                };
+                this.tender.limit = (new Date(this.tender.date_end) - new Date()) / 1000;
                 console.log(res);
             }).catch(err => {
                 this.showLoaderSending = false;
@@ -596,7 +538,7 @@
             },
             hideAddLotOfferModal() {
                 this.showAddLotOfferModal = false;
-            }
+            },
         }
     };
 </script>

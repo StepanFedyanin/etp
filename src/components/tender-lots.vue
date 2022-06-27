@@ -1,187 +1,54 @@
 <template>
-    <div class="tender__lots lots m--tender">
-        <div class="tender__lots-title">
-            Лоты
-        </div>
-        <div class="lots__filter">
-            <div class="lots__filter-block">
-                Фильтр:
-                <a
-                    href="#"
-                    class="lots__filter-item is-active"
-                >Показать все</a>
-                <a
-                    href="#"
-                    class="lots__filter-item"
-                >Участвую</a>
-                <a
-                    href="#"
-                    class="lots__filter-item"
-                >Не участвую</a>
+    <div class="tender__lots lots">
+        <div class="lots__header">
+            <div class="lots__header-cell m--position">
+                №
             </div>
-            <div class="lots__filter-block m--right">
-                Сортировка:
-                <a
-                    href="#"
-                    class="lots__filter-item is-active"
-                >По участию</a>
-                <a
-                    href="#"
-                    class="lots__filter-item"
-                >По номеру лота</a>
+            <div class="lots__header-cell m--name">
+                Название
+            </div>
+            <div class="lots__header-cell m--nums">
+                Кол/во
+            </div>
+            <div class="lots__header-cell m--unit">
+                ед.изм
+            </div>
+            <div class="lots__header-cell m--tax">
+                Ставка НДС
+            </div>
+            <div class="lots__header-cell m--price">
+                Цена
+            </div>
+            <div class="lots__header-cell m--sum">
+                Сумма, с учетом НДС
             </div>
         </div>
-
-        <div class="lots__block">
-            <div class="lots__item lots__block-item m--no-grid">
-                <div class="lots__item-header">
-                    Лот №1
-                    <div class="lots__item-status m--color-red">
-                        Ставка проигрывает
-                    </div>
+        <div class="lots__list">
+            <div
+                v-for="lot in lots"
+                :key="`lot-${lot.id}`" 
+                class="lots__item"
+            >
+                <div class="lots__item-cell m--position">
+                    {{ lot.num }}
                 </div>
-                <div class="lots__item-name">
-                    Длинное название запчасти на автомобиль КамАЗ, УАЗ, ЗИЛ, Газель, удлинненное название лота, состоящее из большого числа символов, но все символы помещаются
+                <div class="lots__item-cell">
+                    {{ lot.name }}
                 </div>
-                <div class="lots__item-params">
-                    <div class="lots__item-param m--underline">
-                        20 000 ед. (цистерна)
-                        <span>6 000 ₽ / ед.</span>
-                    </div>
-                    <div class="lots__item-param">
-                        Начальная цена:
-                        <span>12 000 000 ₽</span>
-                    </div>
-                    <div class="lots__item-param">
-                        Лучшая ставка:
-                        <span>10 000 000 ₽</span>
-                    </div>
-                    <div class="lots__item-param">
-                        Ваша ставка:
-                        <span>11 100 000 ₽</span>
-                    </div>
+                <div class="lots__item-cell">
+                    {{ lot.quantity }}
                 </div>
-                <div class="lots__item-buttons">
-                    <button 
-                        class="button button-outline-green"
-                        @click.stop="AddLotOffer()"
-                    >
-                        Сделать ставку
-                    </button>
+                <div class="lots__item-cell">
+                    {{ lot.unit }}
                 </div>
-            </div>
-
-            <div class="lots__item lots__block-item m--no-grid">
-                <div class="lots__item-header">
-                    Лот №1
-                    <div class="lots__item-status m--color-red">
-                        Ставка проигрывает
-                    </div>
+                <div class="lots__item-cell">
+                    {{ lot.nds }}
                 </div>
-                <div class="lots__item-name">
-                    Длинное название запчасти на автомобиль КамАЗ, УАЗ, ЗИЛ, Газель, удлинненное название лота, состоящее из большого числа символов, но все символы помещаются
+                <div class="lots__item-cell">
+                    {{ $helpers.toPrice(lot.price, { sign: '₽', pointer: ',' }) }}
                 </div>
-                <div class="lots__item-params">
-                    <div class="lots__item-param m--underline">
-                        20 000 ед. (цистерна)
-                        <span>6 000 ₽ / ед.</span>
-                    </div>
-                    <div class="lots__item-param">
-                        Начальная цена:
-                        <span>12 000 000 ₽</span>
-                    </div>
-                    <div class="lots__item-param">
-                        Лучшая ставка:
-                        <span>10 000 000 ₽</span>
-                    </div>
-                    <div class="lots__item-param">
-                        Ваша ставка:
-                        <span>11 100 000 ₽</span>
-                    </div>
-                </div>
-                <div class="lots__item-buttons">
-                    <button 
-                        class="button button-outline-green"
-                        @click.stop="AddLotOffer()"
-                    >
-                        Сделать ставку
-                    </button>
-                </div>
-            </div>
-
-            <div class="lots__item lots__block-item m--no-grid">
-                <div class="lots__item-header">
-                    Лот №1
-                    <div class="lots__item-status m--color-green">
-                        Ставка выигрывает
-                    </div>
-                </div>
-                <div class="lots__item-name">
-                    Длинное название запчасти на автомобиль КамАЗ, УАЗ, ЗИЛ, Газель, удлинненное название лота
-                </div>
-                <div class="lots__item-params">
-                    <div class="lots__item-param m--underline">
-                        20 000 ед. (цистерна)
-                        <span>6 000 ₽ / ед.</span>
-                    </div>
-                    <div class="lots__item-param">
-                        Начальная цена:
-                        <span>12 000 000 ₽</span>
-                    </div>
-                    <div class="lots__item-param">
-                        Лучшая ставка:
-                        <span>10 000 000 ₽</span>
-                    </div>
-                    <div class="lots__item-param">
-                        Ваша ставка:
-                        <span>11 100 000 ₽</span>
-                    </div>
-                </div>
-                <div class="lots__item-buttons">
-                    <button 
-                        class="button button-outline-green"
-                        @click.stop="AddLotOffer()"
-                    >
-                        Сделать ставку
-                    </button>
-                </div>
-            </div>
-
-            <div class="lots__item lots__block-item m--no-grid">
-                <div class="lots__item-header">
-                    Лот №1
-                    <div class="lots__item-status">
-                        Вы не участвуете
-                    </div>
-                </div>
-                <div class="lots__item-name">
-                    Длинное название запчасти на автомобиль КамАЗ, УАЗ, ЗИЛ
-                </div>
-                <div class="lots__item-params">
-                    <div class="lots__item-param m--underline">
-                        20 000 ед. (цистерна)
-                        <span>6 000 ₽ / ед.</span>
-                    </div>
-                    <div class="lots__item-param">
-                        Начальная цена:
-                        <span>12 000 000 ₽</span>
-                    </div>
-                    <div class="lots__item-param">
-                        Лучшая ставка:
-                        <span>10 000 000 ₽</span>
-                    </div>
-                    <div class="lots__item-param">
-                        Ваша ставка:
-                        <span>11 100 000 ₽</span>
-                    </div>
-                </div>
-                <div class="lots__item-buttons">
-                    <button 
-                        class="button button-outline-green"
-                        @click.stop="AddLotOffer()"
-                    >
-                        Сделать ставку
-                    </button>
+                <div class="lots__item-cell">
+                    ??
                 </div>
             </div>
         </div>
@@ -191,6 +58,10 @@
 <script>
     export default {
         props: {
+            lots: {
+                type: Array,
+                default() { return []; }
+            },
         },
         data() {
             return {

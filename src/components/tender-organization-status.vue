@@ -7,7 +7,7 @@
             <div class="tender__status-block">
                 <button 
                     class="button button-green"
-                    @click="onClickRequest()"
+                    @click="onClickRequestPartipation()"
                 >
                     Подать заявку
                 </button>
@@ -22,7 +22,7 @@
                 <button 
                     class="button button-green"
                     disabled
-                    @click="onClickRequest()"
+                    @click="onClickRequestPartipation()"
                 >
                     Подать заявку
                 </button>
@@ -85,21 +85,32 @@
             <div class="tender__status-block">
                 <button 
                     class="button button-green"
-                    @click="onClickRequest()"
+                    @click="onClickRequestPartipation()"
                 >
                     Подать заявку снова
                 </button>
             </div>
         </div>
+
+        <ModalRequestPartipation
+            :showModal="showRequestPartipationModal"
+            @hideModal="hideRequestPartipationModal"
+        />
     </div>
 </template>
 
 <script>
+    import ModalRequestPartipation from '@/components/modal-request-partipation';
     export default {
+        components: {
+            ModalRequestPartipation
+        },
         props: {
         },
         data() {
             return {
+                showRequestPartipationModal: false,
+                showLoaderSending: false
             }
         },
         computed: {
@@ -109,6 +120,12 @@
         created() {
         },
         methods: {
+            onClickRequestPartipation() {
+                this.showRequestPartipationModal = true;  
+            },
+            hideRequestPartipationModal() {
+                this.showRequestPartipationModal = false;
+            },
         },
     };
 </script>

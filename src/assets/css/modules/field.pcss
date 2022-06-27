@@ -140,7 +140,11 @@
     }
 
     &[data-invalid=true] .input,
-    &[data-errors=true] .input {
+    &[data-errors=true] .input,
+    &[data-invalid=true][data-type=select] .multiselect,
+    &[data-errors=true][data-type=select] .multiselect,
+    &[data-invalid=true][data-type=multiselect] .multiselect,
+    &[data-errors=true][data-type=multiselect] .multiselect {
         border-color: $color-red;
         background-color: rgba($color-red, 0.03);
         color: $color-red;

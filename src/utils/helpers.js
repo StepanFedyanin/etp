@@ -97,6 +97,14 @@ const helpers = {
         // eslint-disable-next-line
         return filepath.replace(/^.*[\\\/]/, '')
     },
+    dateRangeToDaysHours(start, end) {
+        let limit = (end - start) / 1000;
+        let days = Math.floor(Math.abs(limit / (3600 * 24)));
+        let hours = Math.floor(Math.abs(limit / 3600 - days * 24));
+        let string = helpers.stringForNumber(days, ['день', 'дня', 'дней']) + ' ' + helpers.stringForNumber(hours, ['час', 'часа', 'часов']);
+        return string;
+    },
+    // ??? Дублирует stringForNumber
     declinationOfNum(value, words) {
         value = Math.abs(value) % 100
         let num = value % 10

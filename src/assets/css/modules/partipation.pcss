@@ -1,0 +1,100 @@
+.partipation {
+    max-width: 680px;
+
+    &__docs {
+        padding: 20px 0 0;
+
+        &-title {
+            font-weight: 600;
+            font-size: 16px;
+            line-height: 20px;
+            text-transform: uppercase;
+            color: $color-gray-T3;
+            margin-bottom: 16px;
+        }
+
+        &-list {
+        }
+
+        &-item {
+            display: grid;
+            grid-template-columns: 30% auto 40px 40px;
+            grid-template-areas: 'A B C D';
+            gap: 12px;
+        }
+
+        &-cell {
+            padding-bottom: 12px;
+
+            &.m--title {
+                font-weight: 400;
+                font-size: 16px;
+                color: $color-gray-T3;
+            }
+
+            &.m--file {
+                text-decoration: underline;
+                font-weight: 700;
+                font-size: 16px;
+                
+                & a {
+                    word-break: break-all;
+                    color: $color-green;
+
+                    &:hover {
+                        text-decoration: none;
+                    }
+                }
+
+                & div {
+                    
+                }
+            }
+
+            &.m--edit,
+            &.m--delete {
+                align-self: center;
+                justify-self: center;
+            }
+
+            &.m--desc {
+                font-weight: 400;
+                font-size: 16px;
+                color: $color-black;
+            }
+        }
+        &-edit,
+        &-delete {
+            display: block;
+            width: 24px;
+            height: 24px;
+            cursor: pointer;
+            background-size: contain;
+        }
+
+        &-edit {
+            background-image: url('./assets/img/icons/icon-edit.svg');
+        }
+
+        &-delete {
+            background-image: url('./assets/img/icons/icon-delete.svg');
+        }
+    }
+
+    &__form {
+        &-title {
+            font-weight: 600;
+            font-size: 16px;
+            line-height: 20px;
+            text-transform: uppercase;
+            color: $color-gray-T3;
+            margin-bottom: 16px;
+        }
+
+        .form__block {
+            .field {
+                margin-right: 0;
+            }
+        }
+    }
+}

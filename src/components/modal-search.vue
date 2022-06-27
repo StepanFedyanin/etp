@@ -95,6 +95,7 @@
                         inputClass: 'modal-form__select',
                         labelClass: '$reset modal-form__label',
                         outerClass: '$reset modal-form__field',
+                        multiselectClass: '$reset m--checkbox'
                     }, {
                         $formkit: 'text',
                         name: 'price_from',
