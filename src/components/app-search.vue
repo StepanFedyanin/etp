@@ -8,9 +8,10 @@
                 <div class="search__form-group">
                     <div class="search__form-field">
                         <input
-                            id="name"
+                            id="query"
+                            ref="query"
                             type="text"
-                            name="name"
+                            name="query"
                             class="search__form-input"
                             placeholder="Поиск торгово-закупочных процедур"
                         >
@@ -75,7 +76,7 @@
             },
             searchTenders(event) {
                 let formData = Object.assign({}, this.advSearchFormData)
-                formData.name = event.target.querySelector('#name').value
+                formData.query = event.target.querySelector('#query').value
                 this.$emit('startSearch', formData)
             }
         }
