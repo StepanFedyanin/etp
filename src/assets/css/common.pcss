@@ -5,11 +5,10 @@
 }
 
 html {
-    /*scroll-behavior: smooth;*/
     min-width: 100%;
     height: 100%;
     height: -webkit-fill-available;
-    /*overflow-x: auto;*/
+    overflow-x: auto;
 }
 
 body {
@@ -258,6 +257,13 @@ input[type='number'] {
                 fill: $color-green-dark;
             }
         }
+        &&__activate{
+            fill: $color-green;
+            &:hover {
+                fill: $color-green-dark;
+            }
+        }
+
         &&__delete{
             fill: $color-red;
             &:hover {

@@ -13,7 +13,7 @@
                     <ProfileUser
                         :user="profile"
                     />
-                    <!-- <h2 class="cabinet__subtitle h2">
+                    <h2 class="cabinet__subtitle h2">
                         Информация о компании
                     </h2>
 
@@ -38,7 +38,7 @@
                             :persons="persons"
                             @updated="getMembers"
                         />
-                    </div> -->
+                    </div>
                 </div>
             </div>
         </div>
@@ -48,24 +48,24 @@
 <script>
     import Breadcrumbs from '@/components/app-breadcrumbs';
     import ProfileUser from '@/components/profile-user.vue';
-    // import blockOrganization from '@/components/block-organization.vue';
-    // import blockPersons from '@/components/block-persons.vue';
+    import blockOrganization from '@/components/block-organization.vue';
+    import blockPersons from '@/components/block-persons.vue';
     import { user as api } from "@/services";
 
     export default {
         components: {
             Breadcrumbs,
             ProfileUser,
-            // blockOrganization,
-            // blockPersons,
+            blockOrganization,
+            blockPersons,
             // ProfileOrganizationEdit
         },
-        // props: {
-        //     id: {
-        //         type: Number,
-        //         default() { return null; }
-        //     },
-        // },
+        props: {
+            id: {
+                type: Number,
+                default() { return null; }
+            },
+        },
         data() {
             return {
                 profile: undefined,
@@ -89,42 +89,32 @@
         beforeDestroy() {
         },
         created() {
-            api.getMyProfile().then(res => {
+            console.log(this.id);
+            api.getProfile(this.id).then(res => {
                 this.profile = res;
-                this.$store.dispatch('setUser', res);
+                console.log(this.profile);
+                // this.$store.dispatch('setUser', res);
                 if(this.organization) {
                     this.organization = res.organization;
                 }
             }).catch(err => {
                 console.error(err);
             });
-            // api.getProfile(this.id).then(res => {
-            //     this.profileItem = res;
-            //     console.log(this.profile);
-            //     // this.$store.dispatch('setUser', res);
-            //     if(this.organization) {
-            //         this.organization = res.organization;
-            //     }
-            // }).catch(err => {
-            //     console.error(err);
-            // });
-
-
-            // this.getMembers();
+            this.getMembers();
         },
         methods: {
             onClickEditOrganization() {
                 this.$router.push({ name: 'organization-edit'});
             },
-            // getMembers() {
-            //     console.log('getMembers');
-            //     api.getMyOrganizationMembers().then(res => {
-            //         this.persons = res;
+            getMembers() {
+                console.log('wdwd');
+                api.getMyOrganizationMembers().then(res => {
+                    this.persons = res;
 
-            //     }).catch(err => {
-            //         console.error(err);
-            //     });
-            // }
+                }).catch(err => {
+                    console.error(err);
+                });
+            }
         }
     }
 </script>

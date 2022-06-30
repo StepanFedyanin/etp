@@ -117,7 +117,7 @@
                 this.$router.go(-1);
             },
             updateUserProfile(formData, node) {
-                api.updateMyProfile(formData).then(res => {
+                api.updateProfile(formData).then(res => {
                     console.log(res);
                     // this.showLoaderSending = false;
                 }).catch(err => {
@@ -131,6 +131,20 @@
                     // console.error(err);
                 });
                 this.$router.go(-1);
+                // api.updateMyProfile(formData).then(res => {
+                //     console.log(res);
+                //     // this.showLoaderSending = false;
+                // }).catch(err => {
+                //     node.setErrors(
+                //         [err.detail],
+                //     );
+                //     // this.showLoaderSending = false;
+                //     this.$store.dispatch('showError', err);
+                //     console.error(err);
+                //     // this.$store.dispatch('showError', err);
+                //     // console.error(err);
+                // });
+                // this.$router.go(-1);
                 // alert(`Submitted ${formData.last_name} successfully!`)
                 
             },

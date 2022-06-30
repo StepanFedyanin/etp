@@ -31,7 +31,9 @@
                 </h2>
                 <div class="cabinet__block cabinet__persons">
                     <blockPersons 
+                        :user="profile"
                         :persons="persons"
+                        @updated="getMembers"
                     />
                 </div>
                 <div class="contragent__subtitle h2">
@@ -122,11 +124,20 @@
             }).catch(err => {
                 console.error(err);
             });
-            
+            this.getMembers();
         },
         methods: {
             onClickEditOrganization(){
                 this.$router.push({ name: 'organization-edit'});
+            },
+            getMembers() {
+                console.log('getMembers');
+                api.getMyOrganizationMembers().then(res => {
+                    this.persons = res;
+
+                }).catch(err => {
+                    console.error(err);
+                });
             }
         }
     }

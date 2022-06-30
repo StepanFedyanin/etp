@@ -71,8 +71,9 @@
             if (Array.isArray(v.value) && !v.value.length)
                 return
 
-            if (v.value)
+            if (v.value) {
                 multiselect._value.select(v.value)
+            }
         }
     })
 </script>

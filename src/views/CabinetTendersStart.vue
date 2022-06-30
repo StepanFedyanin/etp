@@ -277,7 +277,7 @@
 </template>
 
 <script>
-    import { tender as tenderApi, category as categoryApi, geo as geoApi } from "@/services"
+    import { tender as tenderApi, category as categoryApi, geo as geoApi, user as userApi } from "@/services"
     import ModalAddLot from '@/components/modal-add-lot.vue'
     import ModalAddLotFile from '@/components/modal-add-lot-file.vue'
     import { urlPath } from '@/settings'
@@ -436,9 +436,16 @@
                         label: 'Контактное лицо',
                         help: 'Выберите из списка зарегистрированных пользователей ответственного за тендер',
                         validation: 'required',
-                        options: [
-                            { label: '111', value: 1 }
-                        ],
+                        options: async () => {
+                            return await userApi.getMyOrganizationMembers().then(members => {
+                                console.log(members)
+                                return members.map((member) => {
+                                    return { label: member.full_name, value: member.id }
+                                })
+                            }).catch(err => {
+                                console.error(err);
+                            })
+                        },
                         __raw__sectionsSchema: {
                             prefix: {
                                 $el: 'div',
@@ -613,22 +620,18 @@
                 this.tenderForm.name = ''
                 this.tenderForm.min_step = null
                 this.tenderForm.category = {
-                    name: 'category',
                     fromParent: true,
                     value: []
                 }
                 this.tenderForm.type = {
-                    name: 'type',
                     fromParent: true,
                     value: null
                 }
                 this.tenderForm.region = {
-                    name: 'region',
                     fromParent: true,
                     value: null
                 }
                 this.tenderForm.supervisor = {
-                    name: 'supervisor',
                     fromParent: true,
                     value: null
                 }
@@ -749,7 +752,10 @@
                 this.documents = this.defaultTender.documents
                 this.tenderForm.id = this.defaultTender.id
                 this.tenderForm.name = this.defaultTender.name
-                this.tenderForm.min_step = this.defaultTender.min_step
+                this.tenderForm.min_step = {
+                    fromParent: true,
+                    value: this.defaultTender.min_step
+                }
                 this.tenderForm.category = {
                     fromParent: true,
                     value: this.defaultTender.category.map(cat => {return {value: cat}})
@@ -761,15 +767,19 @@
                 this.tenderForm.region = {
                     fromParent: true,
                     value: {
+                        label: this.defaultTender.region_detail.name,
                         value: this.defaultTender.region
                     }
                 }
                 this.tenderForm.supervisor = {
                     fromParent: true,
-                    value: this.defaultTender.supervisor
+                    value: {
+                        label: this.defaultTender.contact_person.full_name,
+                        value: this.defaultTender.supervisor
+                    }
                 }
-                this.tenderForm.date_start = this.defaultTender.date_start.slice(0,19)
-                this.tenderForm.date_end = this.defaultTender.date_end.slice(0,19)
+                this.tenderForm.date_start = this.defaultTender.date_start.slice(0,16)
+                this.tenderForm.date_end = this.defaultTender.date_end.slice(0,16)
                 this.tenderForm.description = this.defaultTender.description
             },
             prepareTender() {
@@ -788,7 +798,7 @@
                 // tender.min_step = this.tenderForm.min_step
                 // tender.description = this.tenderForm.description
                 tender.lots = this.lots
-                // tender.documents = this.documents.map(file => file.id)
+                tender.documents = this.documents
                 // console.log('tender', tender)
                 return tender
             }

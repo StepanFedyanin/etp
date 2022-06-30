@@ -50,7 +50,7 @@
 </template>
 
 <script>
-    import { category as categoryApi, geo as geoApi } from "@/services"
+    import { category as categoryApi, geo as geoApi, user as userApi } from "@/services"
     // import { async } from "q";
 
     export default {
@@ -74,22 +74,22 @@
                         options: [
                             {
                                 label: 'Прием заявок',
-                                value: '1'
+                                value: 'bid_accept'
                             }, {
                                 label: 'Этап ставок',
-                                value: '2'
+                                value: 'bidding_process'
                             }, {
                                 label: 'Подведение итогов',
-                                value: '3'
+                                value: 'bidding_completed'
                             }, {
                                 label: 'Тендер завршен',
-                                value: '4'
+                                value: 'closed'
                             }, {
                                 label: 'Есть победитель',
-                                value: '5'
+                                value: 'closed'
                             }, {
                                 label: 'Нет победителя',
-                                value: '6'
+                                value: 'closed'
                             }
                         ],
                         inputClass: 'modal-form__select',
@@ -189,22 +189,15 @@
                     }, {
                         $formkit: 'multiselect',
                         searchable: true,
-                        "search-change": this.onINNChange,
                         minChars: 3,
                         options: async () => {
-                            return await geoApi.getRegions({ limit: 100 })
-                                .then(regions => {
-                                    if (regions) {
-                                        let options = regions.map( region => {
-                                            return { label: region.name, value: region.id }
-                                        })
-                                        return options
-                                    } else {
-                                        console.log('No getRegions data')
-                                    }
-                                }).catch(err => {
-                                    console.error(err)
+                            return await userApi.getOrganizations().then(orgs => {
+                                return orgs.results.map((org) => {
+                                    return { label: org.inn, value: org.id }
                                 })
+                            }).catch(err => {
+                                console.error(err);
+                            })
                         },
                         noOptionsText: '',
                         name: 'inn',
@@ -235,8 +228,6 @@
                                 value: 'participation'
                             }, 
                         ],
-                        // inputClass: 'modal-form__input',
-                        // labelClass: 'modal-form__label',
                         optionClass: 'modal-form__option',
                         helpClass: '$reset modal-form__label',
                         wrapperClass: 'modal-form__radio',
@@ -251,12 +242,6 @@
             },
         },
         watch: {
-            // searchForm: {
-            //     handler(a,b,c) {
-            //         console.log('handler')
-            //         console.log(a,b,c)
-            //     }
-            // }
         },
         mounted() {
         },
@@ -265,15 +250,21 @@
                 if (formData.category) {
                     formData.category = formData.category.map(cat => cat.value)
                 }
+                formData.type.map(type => {
+                    formData[type] = true
+                })
+                delete formData.type
                 this.$emit('advSearch', formData)
                 this.$emit('hideModal')
             },
-            onINNChange(query, select$) {
-                // select$.refreshOptions()
-            },
             checkType(values, node) {
-                console.log(values)
-                console.log(node.input)
+                if (values.length > 1) {
+                    if (values.at(-1) === 'all') {
+                        node.input(['all'])
+                    } else {
+                        node.input( values.filter(value => value !== 'all') )
+                    }
+                }
             }
         }
     };

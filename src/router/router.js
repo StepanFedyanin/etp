@@ -12,7 +12,9 @@ import auth from '@/views/Login';
 /* cabinet */
 import cabinet from '@/views/Cabinet';
 import cabinetProfile from '@/views/CabinetProfile';
-import CabinetProfileEdit from '@/views/CabinetProfileEdit';
+import cabinetProfileEdit from '@/views/CabinetProfileEdit';
+import cabinetProfileItem from '@/views/CabinetProfileItem';
+import cabinetProfileItemEdit from '@/views/CabinetProfileItemEdit';
 import cabinetTenders from '@/views/CabinetTenders';
 import cabinetTendersList from '@/views/CabinetTendersList';
 import cabinetTendersItem from '@/views/CabinetTendersItem';
@@ -97,12 +99,55 @@ const routes = [
             requiresAuth: true 
         },
         props: true,
+        // children: [
+        //     {
+        //         path: ':id',
+        //         name: 'profile-user',
+        //         component: cabinetProfileItem,
+        //         meta: { 
+        //             title: 'Профиль', 
+        //             breadcrumbs: ['profile'],
+        //             requiresAuth: true 
+        //         },
+        //         props: true,
+        //     }, {
+        //         path: ':id/edit',
+        //         name: 'profile-edit-user',
+        //         component: cabinetProfileItemEdit,
+        //         meta: { 
+        //             title: 'Редактирование профиля',
+        //             breadcrumbs: ['profile'],
+        //             requiresAuth: true 
+        //         },
+        //         props: true,
+        //     }, 
+        // ]
     }, {
         path: '/profile/edit',
         name: 'profile-edit',
-        component: CabinetProfileEdit,
+        component: cabinetProfileEdit,
         meta: { 
             title: 'Редактирование профиля', 
+            breadcrumbs: ['profile'],
+            requiresAuth: true 
+        },
+        props: true,
+    }, {
+        path: '/profile/:id',
+        name: 'profile-user',
+        component: cabinetProfileItem,
+        meta: { 
+            title: 'Профиль', 
+            breadcrumbs: ['profile'],
+            requiresAuth: true 
+        },
+        props: true,
+    }, {
+        path: '/profile/:id/edit',
+        name: 'profile-edit-user',
+        component: cabinetProfileItemEdit,
+        meta: { 
+            title: 'Редактирование профиля',
             breadcrumbs: ['profile'],
             requiresAuth: true 
         },
