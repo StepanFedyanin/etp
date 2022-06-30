@@ -60,6 +60,28 @@
         }
     }       
 
+    &__actions {
+        padding: 30px;
+        margin: 0 0 48px;
+        @mixin shadow-box;
+
+        &-title {
+            font-weight: 700;
+            font-size: 20px;
+            text-transform: uppercase;
+            color: $color-black;
+            margin-bottom: 24px;
+        }
+
+        &-buttons {
+            display: flex;
+
+            .button {
+                margin-right: 24px;
+            }
+        }
+    }
+
     &__docs {
         width: 60%;
         padding: 20px;
@@ -245,6 +267,51 @@
             text-transform: uppercase;
             color: $color-gray-T3;
             margin-bottom: 20px;
+        }
+    }
+
+    &__participants {
+        margin-bottom: 48px;
+
+        &-title {
+            font-weight: 700;
+            font-size: 20px;
+            line-height: 24px;
+            text-transform: uppercase;
+            color: $color-gray-T3;
+            margin-bottom: 20px;
+        }
+
+        &-item {
+            padding: 20px;
+            margin-bottom: 16px;
+            @mixin shadow-box;
+
+            &-block {
+                display: grid;
+                grid-template-columns: auto 300px 170px;
+                grid-template-areas: 'A B C';
+                gap: 12px;
+            }
+
+            &-name {
+                font-weight: 700;
+                color: $color-green;
+                align-self: center;
+            }
+            &-status {
+                font-weight: 600;
+                font-size: 18px;
+                line-height: 22px;
+                text-transform: uppercase;
+                text-align: center;
+                align-self: center;
+            }
+            &-more {
+                @mixin show-hide-mode-toggler;
+                padding-top: 0;
+                justify-content: flex-end;
+            }
         }
     }
 

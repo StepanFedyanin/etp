@@ -9,9 +9,12 @@
             @click="toggleFavorite"
         />
         <div class="tenders__item-left">
-            <div class="tenders__item-title">
+            <router-link
+                :to="{ name: 'tender', params: { id: this.tender.id } }"
+                class="tenders__item-title"
+            >
                 {{ tender.name }}
-            </div>
+            </router-link>
             <div class="tenders__item-param">
                 <span class="tenders__item-param-name">Заказчик: </span> 
                 <a href="#">{{ tender.organization && tender.organization.full_name ? tender.organization.full_name : '(())' }}</a>

@@ -111,6 +111,7 @@
                     price: 0,
                     sum: 0
                 },
+                showLoaderSending: false
             };
         },
         methods: {

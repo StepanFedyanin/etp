@@ -115,6 +115,26 @@
                     </div>
                 </div>
 
+                <div class="tender__actions">
+                    <div class="tender__actions-title">
+                        Действия с тендером
+                    </div>
+                    <div class="tender__actions-buttons">
+                        <button 
+                            class="button button-red"
+                            @click.stop=""
+                        >
+                            Отменить тендер
+                        </button>
+                        <button 
+                            class="button button-green"
+                            @click.stop=""
+                        >
+                            Отправить приглашение
+                        </button>
+                    </div>
+                </div>
+
                 <div class="tender__block">
                     <div
                         class="tender__docs"
@@ -193,15 +213,22 @@
                     </div>
                 </div>
 
-                <TenderOrganizationStatus />
+                <TenderOrganizationStatus
+                    v-if="tender.bet_enabled && user.id !== tender.creator"
+                    :tender="tender"
+                    @getTenderData="getTenderData"
+                />
 
-                <div class="tender__bids">
+                <div 
+                    v-if="tender.user_participation && tender.user_participation.status === 'participant'"
+                    class="tender__bids"
+                >
                     <div class="tender__bids-title">
                         Быстрые ставки
                     </div>
                     <div class="tender__bids-block">
                         <div class="tender__bids-info">
-                            Минимальный шаг цены - 0,7 %
+                            Минимальный шаг цены - {{ tender.min_step }}%
                         </div>
                         <button 
                             class="button button-outline-green m--right"
@@ -222,7 +249,14 @@
                     :lots="tender.lots"
                 />
                 <TenderBids
+                    v-if="tender.user_participation && tender.user_participation.status === 'participant'"
                     @AddLotOffer="onClickAddLotOffer"
+                />
+
+                <TenderParticipants
+                    :tender="tender"
+                    :participants="participants"
+                    @getTenderData="getTenderData"
                 />
 
                 <!--
@@ -480,6 +514,7 @@
 <script>
     import { tender as tenderApi } from "@/services"
     import TenderOrganizationStatus from '@/components/tender-organization-status';
+    import TenderParticipants from '@/components/tender-participants';
     import TenderLots from '@/components/tender-lots';
     import TenderBids from '@/components/tender-bids';
     import ModalAddLotOffer from '@/components/modal-add-lot-offer';
@@ -487,6 +522,7 @@
     export default {
         components: {
             TenderOrganizationStatus,
+            TenderParticipants,
             TenderLots,
             TenderBids,
             ModalAddLotOffer
@@ -499,7 +535,9 @@
         },
         data() {
             return {
+                user: this.$store.state.user,
                 tender: null,
+                participants: [],
                 types: {
                     reduction_opened: 'Открытый',
                     reduction_closed: 'Закрытый',
@@ -511,26 +549,16 @@
                     closed: 'Тендер завершен'
                 },
                 showAddLotOfferModal: false,
-                showLoaderSending: false
+                showLoaderSending: false,
+                formValues: {},
             }
+        },
+        computed: {
         },
         mounted() {
         },
         created() {
-            this.showLoaderSending = true;
-            tenderApi.getTender(this.id).then(res => {
-                this.showLoaderSending = false;
-                this.tender = res;
-                let duration = new Date(this.tender.date_end) - new Date(this.tender.date_start);
-                this.tender.duration = Math.ceil(duration / 1000);
-                let limit = (new Date(this.tender.date_end) - new Date()) / 1000;
-                this.tender.limit = (new Date(this.tender.date_end) - new Date()) / 1000;
-                console.log(res);
-            }).catch(err => {
-                this.showLoaderSending = false;
-                this.$store.dispatch('showError', err);
-                console.error(err);
-            });
+            this.getTenderData();
         },
         methods: {
             onClickAddLotOffer() {
@@ -538,6 +566,32 @@
             },
             hideAddLotOfferModal() {
                 this.showAddLotOfferModal = false;
+            },
+            getTenderData() {
+                this.showLoaderSending = true;
+                tenderApi.getTender(this.id).then(res => {
+                    this.showLoaderSending = false;
+                    this.tender = res;
+                    let duration = new Date(this.tender.date_end) - new Date(this.tender.date_start);
+                    this.tender.duration = Math.ceil(duration / 1000);
+                    let limit = (new Date(this.tender.date_end) - new Date()) / 1000;
+                    this.tender.limit = (new Date(this.tender.date_end) - new Date()) / 1000;
+                    console.log(res);
+                    if (this.user.id === this.tender.creator) {
+                        tenderApi.getTenderParticipants(this.id).then(res => {
+                            this.participants = res;
+                            console.log(res);
+                        }).catch(err => {
+                            this.showLoaderSending = false;
+                            this.$store.dispatch('showError', err);
+                            console.error(err);
+                        });
+                    }
+                }).catch(err => {
+                    this.showLoaderSending = false;
+                    this.$store.dispatch('showError', err);
+                    console.error(err);
+                });
             },
         }
     };

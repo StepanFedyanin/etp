@@ -125,4 +125,68 @@ export default class extends REST {
             throw new RESTError(error, 'Ошибка при удалении лота тендера');
         })
     }
+
+    static addTenderParticipant(tenderId, params) {
+        return this._post(`${tenderId}/participants/apply`, {}, params).then((data) => {
+            return data
+        }).catch((error) => {
+            throw new RESTError(error, 'Ошибка при добавлении заявки на участие в тендере');
+        })
+    }
+
+    static getTenderParticipant(tenderId, participantId) {
+        return this._get(`${tenderId}/participants/${participantId}`, {}, {}).then((data) => {
+            return data
+        }).catch((error) => {
+            throw new RESTError(error, 'Ошибка при получении заявки на участие в тендере');
+        })
+    }
+
+    static confirmTenderParticipant(tenderId, participantId, params) {
+        return this._post(`${tenderId}/participants/${participantId}/confirm`, {}, params).then((data) => {
+            return data
+        }).catch((error) => {
+            throw new RESTError(error, 'Ошибка при подтверждении заявки на участие в тендере');
+        })
+    }
+
+    static denyTenderParticipant(tenderId, participantId, params) {
+        return this._post(`${tenderId}/participants/${participantId}/deny`, {}, params).then((data) => {
+            return data
+        }).catch((error) => {
+            throw new RESTError(error, 'Ошибка при отказе заявки на участие в тендере');
+        })
+    }
+
+    static getTenderParticipants(tenderId) {
+        return this._get(`${tenderId}/participants`, {}, {}).then((data) => {
+            return data
+        }).catch((error) => {
+            throw new RESTError(error, 'Ошибка при получении заявок на участие в тендере');
+        })
+    }
+
+    static cancelTenderParticipant(tenderId) {
+        return this._delete(`${tenderId}/participants/cancel`, {}, {}).then((data) => {
+            return data
+        }).catch((error) => {
+            throw new RESTError(error, 'Ошибка при отмене заявки на участие в тендере');
+        })
+    }
+
+    static addTenderParticipantDocument(id, params) {
+        return this._post(`${id}/participants/upload_document`, {}, params).then((data) => {
+            return data
+        }).catch((error) => {
+            throw new RESTError(error, 'Ошибка при добавлении документа заявки');
+        })
+    }
+
+    static deleteTenderParticipantDocument(tenderId, params) {
+        return this._delete(`${tenderId}/participants/remove_document/`, {}, params).then((data) => {
+            return data
+        }).catch((error) => {
+            throw new RESTError(error, 'Ошибка при удалении документа тендера');
+        })
+    }
 }

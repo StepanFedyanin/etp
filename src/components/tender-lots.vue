@@ -48,7 +48,7 @@
                     {{ $helpers.toPrice(lot.price, { sign: '₽', pointer: ',' }) }}
                 </div>
                 <div class="lots__item-cell">
-                    ??
+                    {{ $helpers.toPrice(lot.quantity * lot.price, { sign: '₽', pointer: ',' }) }}
                 </div>
             </div>
         </div>

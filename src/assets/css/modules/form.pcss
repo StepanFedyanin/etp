@@ -27,7 +27,8 @@
         display: flex;
         justify-content: center;
     }
-    &[loading="true"] [data-type="submit"] .button[type="submit"]:before {
+    &[loading="true"] [data-type="submit"] .button[type="submit"]:before,
+    &[loading="true"] .button.m--loading:before {
         -webkit-animation: rotate .75s linear infinite;
         animation: rotate .75s linear infinite;
         width: 1.28571428em;
@@ -37,7 +38,8 @@
         margin-right: .75em;
     }
 
-    [data-type="submit"] .button[type="submit"]:before {
+    [data-type="submit"] .button[type="submit"]:before,
+    .button.m--loading:before {
         box-sizing: border-box;
         content: '';
         width: 0;

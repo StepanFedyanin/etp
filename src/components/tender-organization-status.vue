@@ -1,6 +1,9 @@
 <template>
     <div>
-        <div class="tender__status">
+        <div 
+            v-if="!tender.user_participation"
+            class="tender__status"
+        >
             <div class="tender__status-title">
                 Статус вашей организации: не участвует в тендере
             </div>
@@ -14,7 +17,10 @@
             </div>
         </div>
 
-        <div class="tender__status">
+        <div 
+            v-else-if="tender.user_participation && tender.user_participation.status === 'sent'"
+            class="tender__status"
+        >
             <div class="tender__status-title">
                 Статус вашей организации: <span>Заявка на рассмотрении</span>
             </div>
@@ -29,7 +35,10 @@
             </div>
         </div>
 
-        <div class="tender__status">
+        <div 
+            v-else-if="tender.user_participation && tender.user_participation.status === 'rejected'"
+            class="tender__status"
+        >
             <div class="tender__status-title">
                 Статус вашей организации: <span class="m--color-red">Заявка отклонена</span>
             </div>
@@ -46,22 +55,19 @@
                             Описание
                         </div>
                     </div>
-                    <div class="tender__docs-item m--width-30-70">
+                    <div
+                        v-for="doc in tender.user_participation.documents"
+                        :key="`doc-${doc.id}`"
+                        class="tender__docs-item m--width-30-70"
+                    >
                         <a
-                            href="#"
+                            :href="urlPath + doc.file"
                             class="tender__docs-cell m--file"
-                        >Требование к материалам.pdf</a>
+                        >
+                            {{ doc.name }}
+                        </a>
                         <div class="tender__docs-cell m--desc">
-                            Описание объекта закупки
-                        </div>
-                    </div>
-                    <div class="tender__docs-item m--width-30-70">
-                        <a
-                            href="#"
-                            class="tender__docs-cell m--file"
-                        >Приложение 1.pdf</a>
-                        <div class="tender__docs-cell m--desc">
-                            Пример приложения с каким-то текстом
+                            {{ doc.description }}
                         </div>
                     </div>
                 </div>
@@ -71,7 +77,7 @@
                     Комментарий участника
                 </div>
                 <div class="tender__status-comment">
-                    ООО «Флексайтс». Разработка, продвижение, развитие — делаем сайты с умом! Мы с большим уважением относимся к деньгам, которые доверяют нам клиенты. При работе мы рассчитываем на такое же отношение со стороны клиентов к нашему труду, времени и квалификации. https://flexites.org/
+                    {{ tender.user_participation.comment }}
                 </div>
             </div>
             <div class="tender__status-block">
@@ -79,7 +85,7 @@
                     Решение организатора <span class="m--color-red">Заявка отклонена</span>
                 </div>
                 <div class="tender__status-comment">
-                    Приложите лицензию на осуществление медицинской деятельности.
+                    {{ tender.user_participation.creator_comment }}
                 </div>
             </div>
             <div class="tender__status-block">
@@ -92,8 +98,19 @@
             </div>
         </div>
 
+        <div 
+            v-else-if="tender.user_participation && tender.user_participation.status === 'participant'"
+            class="tender__status"
+        >
+            <div class="tender__status-title">
+                Статус вашей организации: <span class="m--color-green">Участник</span>
+            </div>
+        </div>
+
         <ModalRequestPartipation
             :showModal="showRequestPartipationModal"
+            :tender="tender"
+            @getTenderData="getTenderData"
             @hideModal="hideRequestPartipationModal"
         />
     </div>
@@ -101,16 +118,21 @@
 
 <script>
     import ModalRequestPartipation from '@/components/modal-request-partipation';
+    import { urlPath } from '@/settings'
     export default {
         components: {
             ModalRequestPartipation
         },
         props: {
+            tender: {
+                type: Object,
+                default() { return {}; }
+            },
         },
         data() {
             return {
+                urlPath,
                 showRequestPartipationModal: false,
-                showLoaderSending: false
             }
         },
         computed: {
@@ -123,8 +145,11 @@
             onClickRequestPartipation() {
                 this.showRequestPartipationModal = true;  
             },
-            hideRequestPartipationModal() {
+            hideRequestPartipationModal(updateData) {
                 this.showRequestPartipationModal = false;
+                if (updateData) {
+                    this.$emit('getTenderData');
+                }
             },
         },
     };
