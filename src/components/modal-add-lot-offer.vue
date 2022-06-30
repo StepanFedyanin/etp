@@ -14,12 +14,13 @@
         <div class="modal__content">
             <div class="offers m--no-padding m--no-background m--no-shadow m--modal">
                 <div class="offers__list">
+                    {{ lot }}
                     <div class="offers__item">
                         <div class="offers__item-number">
-                            Лот №1
+                            Лот №{{ lot.num }}
                         </div>
                         <div class="offers__item-name">
-                            Длинное название запчасти на автомобиль КамАЗ, УАЗ, ЗИЛ, Газель, удлинненное название лота, состоящее из большого числа символов, но все символы помещаются
+                            {{ lot.name }}
                         </div>
                         <div class="offers__item-info">
                             <div class="offers__item-param">
@@ -38,7 +39,7 @@
                                     Ваше предложение
                                 </div>
                                 <div class="offers__item-form-info">
-                                    Минимальная ставка: <span>17 774,7 ₽</span> (шаг цены - <span>0,7 %</span>)
+                                    Минимальная ставка: <span>17 774,7 ₽</span> (шаг цены - <span>?? %</span>)
                                 </div>
                                 <FormKit
                                     v-model="formData.price"
@@ -94,7 +95,7 @@
                 type: Boolean,
                 default() { return false; }
             },
-            tender: {
+            lot: {
                 type: Object,
                 default() { return {}; }
             },

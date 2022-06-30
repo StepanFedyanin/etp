@@ -61,7 +61,7 @@
                                     v-if="tender.prolong > 0"
                                     class="m--color-green"
                                 >
-                                    +{{ tender.prolong }} мин.
+                                    +{{ tender.prolong / 60 }} мин.
                                 </span>
                             </div>
                         </div>
@@ -119,10 +119,12 @@
                     <div class="tender__actions-title">
                         Действия с тендером
                     </div>
-                    <div class="tender__actions-buttons">
+                    <div
+                        v-if="tender.status === 'bid_accept'" 
+                        class="tender__actions-buttons">
                         <button 
                             class="button button-red"
-                            @click.stop=""
+                            @click.stop="onClickCancelTender"
                         >
                             Отменить тендер
                         </button>
@@ -131,6 +133,22 @@
                             @click.stop=""
                         >
                             Отправить приглашение
+                        </button>
+                    </div>
+                    <div
+                        v-else-if="tender.status === 'bidding_process'" 
+                        class="tender__actions-buttons">
+                        <button 
+                            class="button button-red"
+                            @click.stop="onClickFinishTender(true)"
+                        >
+                            Завершить досрочно и выбрать победителя
+                        </button>
+                        <button 
+                            class="button button-green"
+                            @click.stop="onClickFinishTender(false)"
+                        >
+                            Завершить досрочно без победителя
                         </button>
                     </div>
                 </div>
@@ -246,10 +264,13 @@
                 </div>
 
                 <TenderLots
+                    :tender="tender"
                     :lots="tender.lots"
                 />
                 <TenderBids
                     v-if="tender.user_participation && tender.user_participation.status === 'participant'"
+                    :tender="tender"
+                    :lots="tender.lots"
                     @AddLotOffer="onClickAddLotOffer"
                 />
 
@@ -505,6 +526,7 @@
         </div>
 
         <ModalAddLotOffer
+            :lot="lot"
             :showModal="showAddLotOfferModal"
             @hideModal="hideAddLotOfferModal"
         />
@@ -537,6 +559,7 @@
             return {
                 user: this.$store.state.user,
                 tender: null,
+                lot: null,
                 participants: [],
                 types: {
                     reduction_opened: 'Открытый',
@@ -561,7 +584,8 @@
             this.getTenderData();
         },
         methods: {
-            onClickAddLotOffer() {
+            onClickAddLotOffer(lot) {
+                this.lot = lot;
                 this.showAddLotOfferModal = true;
             },
             hideAddLotOfferModal() {
@@ -587,6 +611,16 @@
                             console.error(err);
                         });
                     }
+                    /*
+                    tenderApi.getTenderLots(this.id).then(res => {
+                        this.participants = res;
+                        console.log(res);
+                    }).catch(err => {
+                        this.showLoaderSending = false;
+                        this.$store.dispatch('showError', err);
+                        console.error(err);
+                    });
+                    */
                 }).catch(err => {
                     this.showLoaderSending = false;
                     this.$store.dispatch('showError', err);

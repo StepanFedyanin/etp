@@ -1,5 +1,8 @@
 <template>
-    <div class="tender__lots lots">
+    <div 
+        class="tender__lots lots"
+        :class="(tender.status === 'bidding_process' && user.id === tender.creator) ? 'm--process' : ''"
+    >
         <div class="lots__header">
             <div class="lots__header-cell m--position">
                 №
@@ -22,6 +25,16 @@
             <div class="lots__header-cell m--sum">
                 Сумма, с учетом НДС
             </div>
+            <template
+                v-if="tender.status === 'bidding_process' && user.id === tender.creator"
+            >
+                <div class="lots__header-cell m--sum">
+                    Участник с лучшей ставкой
+                </div>
+                <div class="lots__header-cell m--sum">
+                    Лучшая ставка
+                </div>
+            </template>
         </div>
         <div class="lots__list">
             <div
@@ -50,6 +63,34 @@
                 <div class="lots__item-cell">
                     {{ $helpers.toPrice(lot.quantity * lot.price, { sign: '₽', pointer: ',' }) }}
                 </div>
+                <template
+                    v-if="tender.status === 'bidding_process' && user.id === tender.creator"
+                >
+                    <div class="lots__item-cell">
+                        <template
+                            v-if="lot.last_bet"
+                        >
+                            {{ lot.last_bet.organization.name }}
+                        </template>
+                        <template
+                            v-else
+                        >
+                            —
+                        </template>
+                    </div>
+                    <div class="lots__item-cell">
+                        <template
+                            v-if="lot.last_bet"
+                        >
+                            {{ $helpers.toPrice(lot.last_bet.price || 0, { sign: '₽', pointer: ',' }) }}
+                        </template>
+                        <template
+                            v-else
+                        >
+                            —
+                        </template>
+                    </div>
+                </template>
             </div>
         </div>
     </div>
@@ -58,6 +99,10 @@
 <script>
     export default {
         props: {
+            tender: {
+                type: Object,
+                default() { return {}; }
+            },
             lots: {
                 type: Array,
                 default() { return []; }
@@ -65,6 +110,7 @@
         },
         data() {
             return {
+                user: this.$store.state.user,
             }
         },
         computed: {
