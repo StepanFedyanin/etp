@@ -22,9 +22,11 @@
             <div class="persons__item-cell" />
             <div class="persons__item-cell" />
         </div>
-        <div 
+        <!-- <template v-for="(item, index) in persons"> -->
+        <div
             v-for="(item, index) in persons"
             class="persons__item"
+            :class="[item.is_active ? '' : 'not_active']"
         >
             <div class="persons__item-cell">
                 {{ index + 1 }}
@@ -36,26 +38,39 @@
                 {{ item.post }} 
             </div>
             <div class="persons__item-cell">
-                {{ item.email }}
+                {{ item.contact_email }}
             </div>
             <div class="persons__item-cell">
                 {{ item.phone }}
             </div>
-            <svg 
-                v-if=" user.is_staff || user.is_master && user.organization.id == $store._state.data.user.organization.id"
-                class="svg-icon svg-icon__edit"
-                @click="onClickEditPerson(item.id)"
+            <div
+                v-if=" user.is_staff || user.is_master && user.organization.id == $store._state.data.user.organization.id "
+                class="cell-icons"
             >
-                <use xlink:href="../assets/img/icons/icons.svg#edit" />
-            </svg>
-            <svg 
-                v-if=" user.is_staff || user.is_master && user.organization.id == $store._state.data.user.organization.id"
-                class="svg-icon svg-icon__delete"
-                @click="onClickDeletePerson(item.id)"
-            >
-                <use xlink:href="../assets/img/icons/icons.svg#delete" />
-            </svg>
+                <svg 
+                    class="svg-icon svg-icon__edit"
+                    @click="onClickEditPerson(item.id)"
+                >
+                    <use xlink:href="../assets/img/icons/icons.svg#edit" />
+                </svg>
+
+                <svg 
+                    v-if=" item.is_active && item.id !== user.id"
+                    class="svg-icon svg-icon__delete"
+                    @click="onClickDeletePerson(item.id)"
+                >
+                    <use xlink:href="../assets/img/icons/icons.svg#delete" />
+                </svg>
+                <svg 
+                    v-else-if="item.id !== user.id"
+                    class="svg-icon svg-icon__activate"
+                    @click="onClickActivatePerson(item.id)"
+                >
+                    <use xlink:href="../assets/img/icons/icons.svg#activate" />
+                </svg>
+            </div>
         </div>
+        <!-- </template> -->
     </div>
 </template>
 
@@ -87,16 +102,26 @@
             // this.persons = this.item
         },
         methods: {
-            onClickDeletePerson(id){
+            onClickDeletePerson(id) {
                 api.deleteProfile(id).then(res => {
                     console.log(res);
+                    this.$emit('updated');
                 }).catch(err => {
                     console.error(err);
                 });
             },
-            // onClickEditPerson(id){
-            //     this.$router.push({ name: 'edit', params: { id: this.id } });
-            // }
+            onClickActivatePerson(id) {
+                api.activateProfile(id).then(res => {
+                    console.log(res);
+                    this.$emit('updated');
+                }).catch(err => {
+                    console.error(err);
+                });
+            },
+            onClickEditPerson(id){
+                // console.log(id);
+                this.$router.push({ name: 'profile-edit-user', params: { id: id } });
+            }
         }
     };
 </script>

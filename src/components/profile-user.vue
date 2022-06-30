@@ -1,7 +1,16 @@
 <template>
     <div class="profile">
-        <h2 class="profile__title h2">
+        <h2 
+            v-if="user.id == $store._state.data.user.id"
+            class="profile__title h2"
+        >
             Мой профиль
+        </h2>
+        <h2 
+            v-else
+            class="profile__title h2"
+        >
+            Профиль сотрудника
         </h2>
         <svg 
             v-if="user.is_active" 
@@ -98,14 +107,29 @@
                     return {} 
                 }
             },
+            // userItem: {
+            //     type: Object,
+            //     default() { 
+            //         return {} 
+            //     }
+            // },
+            // id: {
+            //     type: Number,
+            //     default() { return null; }
+            // },
         },
         data() {
             return {
+
             };
+        },
+        created() {
+            console.log(this)
         },
         methods: {
             onClickEditProfile() {
                 this.$router.push({ name: 'profile-edit'});
+                // this.$router.push({ name: 'profile-edit-user', params: { id: id } });
             }
         }
     };

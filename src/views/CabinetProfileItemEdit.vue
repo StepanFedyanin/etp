@@ -2,13 +2,17 @@
     <div class="app__main">
         <Breadcrumbs />
         <div class="cabinet">
+            <div>
+                <!-- 1) {{ $store._state.data.user.id }}
+                2) {{ user.id }} -->
+            </div>
             <div class="container">
                 <div class="profile-edit">
                     <h1 class="profile-edit__title h1">
                         Сотрудник организации
                     </h1>
                     <h2 class="profile-edit__subtitle h2">
-                        Изменить данные моего профиля
+                        Изменить данные профиля
                     </h2>
                     <ProfileEdit
                         v-if="profile"
@@ -30,6 +34,12 @@
             Breadcrumbs,
             ProfileEdit,
         },
+        props: {
+            id: {
+                type: Number,
+                default() { return null; }
+            },
+        },
         data() {
             return {
                 profile: undefined,
@@ -38,15 +48,28 @@
             }
         },
         created() {
-            api.getMyProfile().then(res => {
+            console.log(this.id);
+            api.getProfile(this.id).then(res => {
                 this.profile = res;
-                if(this.organization){
+                console.log(this.profile);
+                this.$store.dispatch('setUser', res);
+                if(this.organization) {
                     this.organization = res.organization;
                 }
             }).catch(err => {
                 console.error(err);
             });
+            // this.getMembers();
         },
+        //     api.getMyProfile().then(res => {
+        //         this.profile = res;
+        //         if(this.organization){
+        //             this.organization = res.organization;
+        //         }
+        //     }).catch(err => {
+        //         console.error(err);
+        //     });
+        // },
         methods: {
         }
     }

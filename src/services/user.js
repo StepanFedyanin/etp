@@ -62,8 +62,8 @@ export default class extends REST {
         });
     }
 
-    static updateProfile(id, params) {
-        return this._put(`profiles/${id}`, {}, params).then((data) => {
+    static updateProfile(params) {
+        return this._patch(`profiles/${params.id}`, {}, params).then((data) => {
             return data;
         }).catch((error) => {
             throw new RESTError(error, 'Ошибка при обновлении профиля', { request: { params } });
@@ -75,6 +75,14 @@ export default class extends REST {
             return data;
         }).catch((error) => {
             throw new RESTError(error, 'Ошибка при деактивации профиля пользователя');
+        });
+    }
+
+    static activateProfile(id) {
+        return this._patch(`profiles/${id}`, {}, {'is_active': true}).then((data) => {
+            return data;
+        }).catch((error) => {
+            throw new RESTError(error, 'Ошибка при активации профиля пользователя');
         });
     }
 

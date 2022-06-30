@@ -7,7 +7,7 @@
         font-size: 16px;
         line-height: 20px;
         display: grid;
-        grid-template-columns: 30px auto 15% 20% 20% 26px 26px;
+        grid-template-columns: 30px auto 15% 20% 20% 52px;
         /*grid-template-areas: 'A B C D';*/
         gap: 10px;
         word-break: break-word;
@@ -18,10 +18,21 @@
         }
         .svg-icon{
             margin:0;
+            &:first-child{
+                margin-right: 5px;
+            }
         }
 
         &:not(.m--header):hover{
             background: #F9F9F9;
         }
+
+        &.not_active{
+            /* background: grey; */
+            color: $color-gray-T4;
+        }
+    }
+    .cell-icons{
+        display: flex;
     }
 }
