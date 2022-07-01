@@ -92,14 +92,14 @@
                                     :key="idx"
                                     class="lots__item"
                                 >
-                                    <FormKit
+                                    <!-- <FormKit
                                         v-if="!file.draft"
                                         :id="getFileId(file.id)"
                                         :name="getFileId(file.id)"
                                         type="file"
                                         outerClass="$reset field--type_hidden"
                                         @change="uploadFileComplete"
-                                    />
+                                    /> -->
                                     <div class="lots__item-cell m--file">
                                         <a
                                             :href="urlPath + file.file"
@@ -112,21 +112,22 @@
                                             class="input"
                                             type="text"
                                             placeholder="Ввести данные"
-                                            :name="`description_${getFileId(file.id)}`"
+                                            :name="`description_${file.id}`"
                                             :value="file.description"
                                             outerClass="$reset"
+                                            @focusout="updateDocument(file.id)"
                                         />
                                     </div>
                                     <div class="lots__item-cell m--edit">
                                         <div
                                             class="lots__item-edit"
-                                            @click="onClickUploadFile(getFileId(file.id))"
+                                            @click="updateDocument(file.id)"
                                         />
                                     </div>
                                     <div class="lots__item-cell m--delete">
                                         <div
                                             class="lots__item-delete"
-                                            @click="onClickRemoveFile(getFileId(file.id))"
+                                            @click="onClickRemoveFile(file.id)"
                                         />
                                     </div>
                                 </div>
@@ -192,7 +193,7 @@
                                         {{ lot.unit }}
                                     </div>
                                     <div class="lots__item-cell">
-                                        {{ lot.vat }}
+                                        {{ lot.nds }}
                                     </div>
                                     <div class="lots__item-cell">
                                         {{ $helpers.toPrice(lot.price, { pointer: ',', sign: '₽' }) }}
@@ -438,7 +439,6 @@
                         validation: 'required',
                         options: async () => {
                             return await userApi.getMyOrganizationMembers().then(members => {
-                                console.log(members)
                                 return members.map((member) => {
                                     return { label: member.full_name, value: member.id }
                                 })
@@ -565,7 +565,7 @@
                     if (id) { // редактирование тендера
                         tenderApi.getTender(id).then(tender => {
                             this.defaultTender = tender
-                            console.log(tender)
+                            // console.log(tender)
                             this.setTender()
                         }).catch(err => {
                             console.error(err)
@@ -652,24 +652,31 @@
             uploadFileComplete(event) {
                 for (let file of event.target.files) {
                     file.id = event.target.id
-                    let idx = this.documents.findIndex(f => this.getFileId(f.id) === file.id)
 
                     const formData = new FormData()
                     formData.append("file", file)
                     formData.append("description", this.tenderForm[`description_${file.id}`] || file.name)
                     formData.append("publication", true)
-
+                    tenderApi.addTenderDocument(this.defaultTender.id, formData)
+                        .then(newFile => {
+                            this.documents.push(newFile)
+                            // this.defaultTender.documents = this.documents
+                        }).catch(err => {
+                            console.error(err)
+                        })
+                }
+            },
+            updateDocument(id) {
+                if (this.tenderForm[`description_${id}`]) {
+                    let idx = this.documents.findIndex(f => f.id === id)
                     if (idx >= 0) {
-                        this.documents[idx] = file
-                        // this.defaultTender.documents = this.documents
-                        alert('Обновление документов в разработке')
-                        return
-                    } else {
-                        tenderApi.addTenderDocument(this.defaultTender.id, formData)
-                            .then(file => {
-                                this.documents.push(file)
+                        const formData = new FormData()
+                        formData.append("description", this.tenderForm[`description_${id}`])
+                        tenderApi.updateTenderDocument(this.defaultTender.id, this.documents[idx].id, formData)
+                            .then(newFile => {
+                                // console.log(newFile)
+                                this.documents[idx] = newFile
                                 // this.defaultTender.documents = this.documents
-                                // console.log(file)
                             }).catch(err => {
                                 console.error(err)
                             })
@@ -677,7 +684,7 @@
                 }
             },
             onClickRemoveFile(id) {
-                let idx = this.documents.findIndex(f => this.getFileId(f.id) === id)
+                let idx = this.documents.findIndex(f => f.id === id)
                 if (idx >= 0) {
                     tenderApi.deleteTenderDocument(this.defaultTender.id, this.documents[idx].id)
                         .then(res => {
@@ -744,9 +751,9 @@
             hideFileLotModal() {
                 this.showFileLotModal = false
             },
-            getFileId(id) {
-                return `file_${String(id)}`
-            },
+            // getFileId(id) {
+            //     return `file_${String(id)}`
+            // },
             setTender() {
                 this.lots = this.defaultTender.lots
                 this.documents = this.defaultTender.documents

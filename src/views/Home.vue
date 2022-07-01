@@ -331,12 +331,17 @@
         },
         data() {
             return {
+                limit: 10,
                 tenderList: null,
                 resizeObserver: null,
                 scrollbarVisible: false,
             };
         },
         computed: {
+            offset() {
+                let limit = Number(this.limit)
+                return (this.page - 1) * limit
+            }
         },
         mounted () {
             if (this.$refs.auction) {
@@ -377,8 +382,10 @@
                 }
             },
             startSearch(formData) {
+                formData.limit = Number(this.limit)
+                formData.offset = this.offset
                 console.log(formData)
-                tender.searchTenderList(formData)
+                tender.searchTenders(formData)
                     .then(tenders => {
                         console.log(tenders)
                         this.tenderList = tenders
