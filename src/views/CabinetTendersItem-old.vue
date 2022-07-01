@@ -262,6 +262,7 @@
                         </button>
                     </div>
                 </div>
+
                 <TenderLots
                     :tender="tender"
                     :lots="tender.lots"
@@ -270,15 +271,266 @@
                     v-if="tender.user_participation && tender.user_participation.status === 'participant'"
                     :tender="tender"
                     :lots="tender.lots"
-                    @getTenderData="getTenderData"
+                    @AddLotOffer="onClickAddLotOffer"
                 />
+
                 <TenderParticipants
                     :tender="tender"
                     :participants="participants"
                     @getTenderData="getTenderData"
                 />
+
+                <!--
+                <div class="tender__lots lots m--with-button">
+                    <div class="lots__header">
+                        <div class="lots__header-cell m--position">
+                            №
+                        </div>
+                        <div class="lots__header-cell m--name">
+                            Название
+                        </div>
+                        <div class="lots__header-cell m--nums">
+                            Кол/во
+                        </div>
+                        <div class="lots__header-cell m--unit">
+                            ед.изм
+                        </div>
+                        <div class="lots__header-cell m--price">
+                            Цена за ед. с НДС
+                        </div>
+                        <div class="lots__header-cell m--sum">
+                            Сумма, с учетом НДС
+                        </div>
+                        <div class="lots__header-cell m--button">
+                            Участие
+                        </div>
+                    </div>
+                    <div class="lots__list">
+                        <div class="lots__item">
+                            <div class="lots__item-cell m--position">
+                                1
+                            </div>
+                            <div class="lots__item-cell">
+                                Запчасть №1
+                            </div>
+                            <div class="lots__item-cell">
+                                20
+                            </div>
+                            <div class="lots__item-cell">
+                                кг.
+                            </div>
+                            <div class="lots__item-cell">
+                                600,55
+                            </div>
+                            <div class="lots__item-cell">
+                                12 600,55
+                            </div>
+                            <div class="lots__item-cell m--button">
+                                <button 
+                                    class="button button-green"
+                                    @click="onClickAddLotOffer()"
+                                >
+                                    Сделать ставку
+                                </button>
+                            </div>
+                        </div>
+                        <div class="lots__item">
+                            <div class="lots__item-cell m--position">
+                                1
+                            </div>
+                            <div class="lots__item-cell">
+                                Запчасть №1
+                            </div>
+                            <div class="lots__item-cell">
+                                20
+                            </div>
+                            <div class="lots__item-cell">
+                                кг.
+                            </div>
+                            <div class="lots__item-cell">
+                                600,55
+                            </div>
+                            <div class="lots__item-cell">
+                                12 600,55
+                            </div>
+                            <div class="lots__item-cell m--button">
+                                <button 
+                                    class="button button-green"
+                                    @click="onClickAddLotOffer()"
+                                >
+                                    Сделать ставку
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                -->
+                <!--
+                <div class="tender__block">
+                    <div class="tender__offers offers">
+                        <div class="offers__title">
+                            Ваши предложения
+                        </div>
+                        <div class="offers__list">
+                            <div class="offers__item">
+                                <div class="offers__item-name">
+                                    Запчасть №1
+                                </div>
+                                <div class="offers__item-info">
+                                    <div class="offers__item-param">
+                                        Начальная цена <span>22 000,00 ₽</span>
+                                    </div>
+                                    <div class="offers__item-param m--color-red">
+                                        Текущая цена <span>17 900,00 ₽</span>
+                                    </div>
+                                    <div class="offers__item-param">
+                                        Текущее снижение <span>20.1 %</span>
+                                    </div>
+                                    <div class="offers__item-param">
+                                        Ваше последнее ценовое предложение <span>20 000,00 ₽</span>
+                                    </div>
+                                    <div class="offers__item-param">
+                                        Ваша текущая позиция <span>3</span>
+                                    </div>
+                                </div>
+                                <div class="offers__item-button">
+                                    <a 
+                                        href="#"
+                                        class="button button-outline-green" 
+                                    >
+                                        Обновить ставку
+                                    </a>
+                                </div>
+                            </div>
+                            <div class="offers__item">
+                                <div class="offers__item-name">
+                                    Запчасть №1
+                                </div>
+                                <div class="offers__item-info">
+                                    <div class="offers__item-param">
+                                        Начальная цена <span>22 000,00 ₽</span>
+                                    </div>
+                                    <div class="offers__item-param m--color-red">
+                                        Текущая цена <span>17 900,00 ₽</span>
+                                    </div>
+                                    <div class="offers__item-param">
+                                        Текущее снижение <span>20.1 %</span>
+                                    </div>
+                                    <div class="offers__item-param">
+                                        Ваше последнее ценовое предложение <span>20 000,00 ₽</span>
+                                    </div>
+                                    <div class="offers__item-param">
+                                        Ваша текущая позиция <span>3</span>
+                                    </div>
+                                </div>
+                                <div class="offers__item-button">
+                                    <a 
+                                        href="#"
+                                        class="button button-outline-green" 
+                                    >
+                                        Обновить ставку
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="offers__more">
+                            <a 
+                                href="#"
+                                class="button button-green" 
+                            >
+                                Cмотреть все
+                            </a>
+                        </div>
+                    </div>
+                    <div class="tender__stats offers">
+                        <div class="offers__title">
+                            Лучшие предложения
+                        </div>
+                        <div class="offers__stats">
+                            <div class="offers__stats-item">
+                                <div class="offers__stats-item-block">
+                                    <div class="offers__stats-param m--lot-name">
+                                        Запчасть №1
+                                    </div>
+                                    <div class="offers__stats-param m--name">
+                                        ООО “Ромашка”
+                                    </div>
+                                    <div class="offers__stats-param m--price-best">
+                                        20 865,00
+                                    </div>
+                                </div>
+                                <div class="offers__stats-item-block">
+                                    <div class="offers__stats-param m--progress m--green">
+                                        <span style="width:80%" />
+                                    </div>
+                                    <div class="offers__stats-param m--price">
+                                        23 865,00
+                                    </div>
+                                </div>  
+                            </div>
+                            <div class="offers__stats-item">
+                                <div class="offers__stats-item-block">
+                                    <div class="offers__stats-param m--lot-name">
+                                        Запчасть №3
+                                    </div>
+                                    <div class="offers__stats-param m--name">
+                                        ООО “Ромашка”
+                                    </div>
+                                    <div class="offers__stats-param m--price-best">
+                                        20 865,00
+                                    </div>
+                                </div>
+                                <div class="offers__stats-item-block">
+                                    <div class="offers__stats-param m--progress m--green">
+                                        <span style="width:80%" />
+                                    </div>
+                                    <div class="offers__stats-param m--price">
+                                        23 865,00
+                                    </div>
+                                </div>  
+                            </div>
+                            <div class="offers__stats-item">
+                                <div class="offers__stats-item-block">
+                                    <div class="offers__stats-param m--lot-name">
+                                        Запчасть №4
+                                    </div>
+                                    <div class="offers__stats-param m--name">
+                                        ООО “Ромашка”
+                                    </div>
+                                    <div class="offers__stats-param m--price-best">
+                                        20 865,00
+                                    </div>
+                                </div>
+                                <div class="offers__stats-item-block">
+                                    <div class="offers__stats-param m--progress m--red">
+                                        <span style="width:80%" />
+                                    </div>
+                                    <div class="offers__stats-param m--price">
+                                        23 865,00
+                                    </div>
+                                </div>  
+                            </div>
+                        </div>
+                        <div class="offers__more">
+                            <a 
+                                href="#"
+                                class="button button-green" 
+                            >
+                                Cмотреть все
+                            </a>
+                        </div>
+                    </div>
+                </div>
+                -->
             </template>
         </div>
+
+        <ModalAddLotOffer
+            :tender="tender || {}"
+            :lot="lot || {}"
+            :showModal="showAddLotOfferModal"
+            @hideModal="hideAddLotOfferModal"
+        />
     </div>
 </template>
 
@@ -288,6 +540,7 @@
     import TenderParticipants from '@/components/tender-participants';
     import TenderLots from '@/components/tender-lots';
     import TenderBids from '@/components/tender-bids';
+    import ModalAddLotOffer from '@/components/modal-add-lot-offer';
 
     export default {
         components: {
@@ -295,6 +548,7 @@
             TenderParticipants,
             TenderLots,
             TenderBids,
+            ModalAddLotOffer
         },
         props: {
             id: {
@@ -318,6 +572,7 @@
                     bidding_completed: 'Подведение итогов',
                     closed: 'Тендер завершен'
                 },
+                showAddLotOfferModal: false,
                 showLoaderSending: false,
                 formValues: {},
             }
@@ -330,6 +585,13 @@
             this.getTenderData();
         },
         methods: {
+            onClickAddLotOffer(lot) {
+                this.lot = lot;
+                this.showAddLotOfferModal = true;
+            },
+            hideAddLotOfferModal() {
+                this.showAddLotOfferModal = false;
+            },
             getTenderData() {
                 this.showLoaderSending = true;
                 tenderApi.getTender(this.id).then(res => {

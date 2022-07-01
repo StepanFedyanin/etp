@@ -63,7 +63,8 @@
         margin-bottom: 8px;
     }
 
-    &__option &__input input {
+    &__option &__input input,
+    &[data-type=checkbox] &__input input {
         appearance: none;
         position: absolute;
         width: 0;
@@ -73,7 +74,8 @@
         left: -999em;
     }
 
-    &__option &__input input ~ &__decorator {
+    &__option &__input input ~ &__decorator,
+    &[data-type=checkbox] &__input input ~ &__decorator {
         position: relative;
         background: none;
         display: block;
@@ -83,7 +85,8 @@
         border-radius: 6px;
     }
 
-    &__option &__input input:checked ~ &__decorator {
+    &__option &__input input:checked ~ &__decorator,
+    &[data-type=checkbox] &__input input:checked ~ &__decorator {
         background-color: $color-green;
         border: 1.5px solid $color-green;
         background-image: svg-load('assets/img/icons/icon-check.svg', fill=$color-white);
@@ -170,6 +173,10 @@
         justify-content: center;
     }
 
+    &[data-type=checkbox] &__inner {
+        align-content: center;
+    }
+
     &--inline &__label {
         grid-column: 1/4;
         align-self: center;
@@ -180,11 +187,13 @@
         grid-column: 4/9;
     }
 
-    &--inline &__option &__input {
+    &--inline &__option &__input,
+    &[data-type=checkbox] &__input {
         grid-column: 1;
     }
 
-    &--inline &__option &__label {
+    &--inline &__option &__label,
+    &[data-type=checkbox] &__label {
         grid-column: 2/9;
     }
 

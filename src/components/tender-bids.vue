@@ -80,7 +80,7 @@
                         <span
                             v-if="lot.last_price"
                         >
-                            {{ $helpers.toPrice(lot.last_price * lot.quantity, { sign: '₽' }) }}
+                            {{ $helpers.toPrice(lot.last_price, { sign: '₽' }) }}
                         </span>
                         <span
                             v-else
@@ -93,7 +93,7 @@
                         <span
                             v-if="lot.user_price"
                         >
-                            {{ $helpers.toPrice(lot.user_price * lot.quantity, { sign: '₽' }) }}
+                            {{ $helpers.toPrice(lot.user_price, { sign: '₽' }) }}
                         </span>
                         <span
                             v-else
@@ -105,18 +105,28 @@
                 <div class="lots__item-buttons">
                     <button 
                         class="button button-outline-green"
-                        @click.stop="AddLotOffer(lot)"
+                        @click.prevent="onClickAddLotOffer(lot)"
                     >
                         Сделать ставку
                     </button>
                 </div>
             </div>
         </div>
+        <ModalAddLotOffer
+            :tender="tender || {}"
+            :lot="lot || {}"
+            :showModal="showAddLotOfferModal"
+            @hideModal="hideAddLotOfferModal"
+        />
     </div>
 </template>
 
 <script>
+    import ModalAddLotOffer from '@/components/modal-add-lot-offer';
     export default {
+        components: {
+            ModalAddLotOffer
+        },
         props: {
             tender: {
                 type: Object,
@@ -140,7 +150,8 @@
                     lot_number: 'По номеру лота'
 
                 },
-                currentSorting: 'participate'
+                currentSorting: 'participate',
+                showAddLotOfferModal: false,
             }
         },
         computed: {
@@ -156,9 +167,17 @@
             changeSorting(key) {
                 this.currentSorting = key;
             },
-            AddLotOffer(lot) {
-                this.$emit('AddLotOffer', lot);
-            }
+            onClickAddLotOffer(lot) {
+                this.lot = lot;
+                this.showAddLotOfferModal = true;
+            },
+            hideAddLotOfferModal(updateData) {
+                this.showAddLotOfferModal = false;
+                if (updateData) {
+                    this.$emit('getTenderData');
+                }
+            },
+
         },
     };
 </script>
