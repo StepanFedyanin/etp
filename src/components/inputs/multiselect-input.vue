@@ -19,7 +19,31 @@
         noResultsText="Результатов не найдено"
         @change="handleSelect"
         @search-change="searchChange"
-    />
+    >
+        <template v-slot:option="{ option }" v-if="inn">
+            <div class="multiselect-inn">
+                <div class="multiselect-inn__inner">
+                    <div class="multiselect-inn__left">
+                        <div class="multiselect-inn__inn">ИНН <span>{{ option.label }}</span></div>
+                        <div class="multiselect-inn__kpp">КПП <span>{{ option.kpp }}</span></div>
+                    </div>
+                    <div class="multiselect-inn__right">
+                        <div class="multiselect-inn__name-city">
+                            <div class="multiselect-inn__name">
+                                <span>{{ option.name }}</span>
+                            </div>
+                            <div class="multiselect-inn__city">
+                                <span>{{ option.city }}</span>
+                            </div>
+                        </div>
+                        <div class="multiselect-inn__principal_activity">
+                            {{ option.principal_activity }}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </template>
+    </Multiselect>
 </template>
 
 <script setup>
@@ -46,6 +70,7 @@
     const closeOnSelect = props.context.attrs.closeOnSelect !== undefined ? props.context.attrs.closeOnSelect : true;
     const resolveOnLoad = props.context.attrs.resolveOnLoad !== undefined ? props.context.attrs.resolveOnLoad : true;
     const object = props.context.attrs.resolveOnLoad !== undefined ? true : false;
+    const inn = props.context.attrs.inn !== undefined ? true : false;
     // let vModelValue = reactive({})
 
     function handleSelect(value, select$) {

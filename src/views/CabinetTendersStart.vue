@@ -439,7 +439,6 @@
                         validation: 'required',
                         options: async () => {
                             return await userApi.getMyOrganizationMembers().then(members => {
-                                console.log(members)
                                 return members.map((member) => {
                                     return { label: member.full_name, value: member.id }
                                 })
@@ -566,7 +565,7 @@
                     if (id) { // редактирование тендера
                         tenderApi.getTender(id).then(tender => {
                             this.defaultTender = tender
-                            console.log(tender)
+                            // console.log(tender)
                             this.setTender()
                         }).catch(err => {
                             console.error(err)
@@ -642,7 +641,6 @@
             },
             onClickUploadFile(id) {
                 let input
-                console.log(id)
                 if (id) { // for file edit
                     input = document.getElementById(id)
                 } else {
