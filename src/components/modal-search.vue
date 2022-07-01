@@ -188,6 +188,7 @@
                         outerClass: '$reset modal-form__field m--region',
                     }, {
                         $formkit: 'multiselect',
+                        name: 'creator',
                         searchable: true,
                         minChars: 3,
                         options: async () => {
@@ -200,7 +201,6 @@
                             })
                         },
                         noOptionsText: '',
-                        name: 'inn',
                         label: 'Организатор закупки',
                         placeholder: "Введите название, ИНН",
                         // validation: 'required',
@@ -253,6 +253,9 @@
                 formData.type.map(type => {
                     formData[type] = true
                 })
+
+                if (formData.region)
+                    formData.region = [ formData.region ]
                 delete formData.type
                 this.$emit('advSearch', formData)
                 this.$emit('hideModal')
@@ -267,5 +270,5 @@
                 }
             }
         }
-    };
+    }
 </script>

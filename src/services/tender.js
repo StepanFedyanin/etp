@@ -14,14 +14,6 @@ export default class extends REST {
         });
     }
 
-    static searchTenderList(params) {
-        return this._post('list', {}, params).then((data) => {
-            return data;
-        }).catch((error) => {
-            throw new RESTError(error, 'Ошибка при поиске минималистичного списка тендеров');
-        });
-    }
-
     static getTenders(params) {
         return this._get('tenders', {}, params).then((data) => {
             return data;
@@ -83,6 +75,14 @@ export default class extends REST {
             return data
         }).catch((error) => {
             throw new RESTError(error, 'Ошибка при добавлении документа тендера');
+        })
+    }
+
+    static updateTenderDocument(tenderId, documentId, params) {
+        return this._post(`${tenderId}/documents/${documentId}/update_doc`, {}, params).then((data) => {
+            return data
+        }).catch((error) => {
+            throw new RESTError(error, 'Ошибка при обновлении документа тендера');
         })
     }
 
