@@ -28,10 +28,12 @@
                     >
                         <div class="contragents__item-cell m--name">
                             {{ contragent.name }}
-                            <div class="m--name-city">{{ contragent.city }}</div>
+                            <div class="m--name-city">
+                                {{ contragent.city }}
+                            </div>
                         </div>
                         <div class="contragents__item-cell m--activity">
-                            {{ contragent.activity }}
+                            {{ contragent.principal_activity }}
                         </div>
                         <div class="contragents__item-cell m--customer">
                             {{ contragent.customer }}
@@ -47,33 +49,14 @@
 </template>
 
 <script>
+    import { user as api } from "@/services";
+
     export default {
         components: {
         },
         data() {
             return {
-                contragents: [{
-                    id: 1,
-                    name: 'ООО “Флексайтс”',
-                    city: 'г. Челябинск',
-                    activity: 'Разработка компьютерного программного обеспечения',
-                    customer: '113',
-                    member: '45'
-                }, {
-                    id: 2,
-                    name: 'ООО “Газпромнефть-Региональные Продажи”',
-                    city: 'г. Челябинск',
-                    activity: 'Торговля оптовая моторным топливом, включая авиационный бензин',
-                    customer: '1',
-                    member: '145'
-                }, {
-                    id: 3,
-                    name: 'ООО “Аэрофлот”',
-                    city: 'г. Челябинск',
-                    activity: 'Перевозка воздушным пассажирским транспортом, подчиняющимся расписанию',
-                    customer: '11',
-                    member: '5'
-                }]
+                contragents: [],
             }
         },
         mounted() {
@@ -81,6 +64,16 @@
         beforeDestroy() {
         },
         created() {
+            api.getOrganizations(this.id).then(res => {
+                this.contragents = res.results;
+                console.log(res.results);
+                // this.$store.dispatch('setUser', res);
+                // if(this.organization) {
+                //     this.organization = res.organization;
+                // }
+            }).catch(err => {
+                console.error(err);
+            })
         },
         methods: {
             onClickContragent(id) {

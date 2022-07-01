@@ -106,7 +106,7 @@ export default class extends REST {
         return this._get(`organizations`, {}, params).then((data) => {
             return data;
         }).catch((error) => {
-            throw new RESTError(error, 'Не удалось получить организацию');
+            throw new RESTError(error, 'Не удалось получить организации');
         });
     }
 
@@ -120,6 +120,14 @@ export default class extends REST {
 
     static getMyOrganizationMembers(params) {
         return this._get(`organization/profiles`, {}, params).then((data) => {
+            return data;
+        }).catch((error) => {
+            throw new RESTError(error, 'Не удалось представителей организации');
+        });
+    }
+
+    static getOrganizationMembers(id, params) {
+        return this._get(`organizations/${id}/members`, {}, params).then((data) => {
             return data;
         }).catch((error) => {
             throw new RESTError(error, 'Не удалось представителей организации');
