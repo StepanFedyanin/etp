@@ -13,6 +13,7 @@ import auth from '@/views/Login';
 import cabinet from '@/views/Cabinet';
 import cabinetProfile from '@/views/CabinetProfile';
 import cabinetProfileEdit from '@/views/CabinetProfileEdit';
+import cabinetProfilePassword from '@/views/CabinetProfilePassword';
 import cabinetProfileItem from '@/views/CabinetProfileItem';
 import cabinetProfileItemEdit from '@/views/CabinetProfileItemEdit';
 import cabinetTenders from '@/views/CabinetTenders';
@@ -133,6 +134,16 @@ const routes = [
         },
         props: true,
     }, {
+        path: '/profile/password',
+        name: 'profile-edit-password',
+        component: cabinetProfilePassword,
+        meta: { 
+            title: 'Редактирование пароля', 
+            breadcrumbs: ['profile'],
+            requiresAuth: true 
+        },
+        props: true,
+    },{
         path: '/profile/:id',
         name: 'profile-user',
         component: cabinetProfileItem,

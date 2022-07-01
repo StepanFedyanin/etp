@@ -26,8 +26,8 @@
                 Заказчик <span class="m--color-green">5 тендеров</span>
             </div>
             <div class="contragent__tenders tenders">
-                <blockTender
-                    v-for="(tender, index) in tenders.results"
+                <blockTenderMini
+                    v-for="(tender, index) in createdTenders.results"
                     :key="`tender-${index}`"
                     :tender="tender"
                     :whole="true"
@@ -36,6 +36,7 @@
                 <a 
                     class="button button-outline-green tenders__more"
                     href="#"
+                    @click="getParticipationTendersMore()"
                 >
                     показать все
                 </a>
@@ -44,11 +45,11 @@
                 Участник <span class="m--color-green">1 тендер</span>
             </div>
             <div 
-                v-if="tenders && tenders.count"
+                v-if="participationTenders && participationTenders.count"
                 class="contragent__tenders tenders"
             >
-                <blockTender
-                    v-for="(tender, index) in tenders.results"
+                <blockTenderMini
+                    v-for="(tender, index) in participationTenders.results"
                     :key="`tender-${index}`"
                     :tender="tender"
                     :whole="true"
@@ -68,14 +69,16 @@
 <script>
     import blockOrganization from '@/components/block-organization.vue';
     import blockPersons from '@/components/block-persons.vue';
-    import blockTender from '@/components/block-tender.vue';
+    // import blockTender from '@/components/block-tender.vue';
+    import blockTenderMini from '@/components/block-tender-mini.vue';
     import { user as api } from "@/services";
 
     export default {
         components: {
             blockOrganization,
             blockPersons,
-            blockTender
+            // blockTender,
+            blockTenderMini
         },
         props: {
             id: {
@@ -87,28 +90,13 @@
             return {
                 contragent: {},
                 contragents: undefined,
-                organization: {},
+                // organization: {},
                 persons: [],
-                // [{
-                //     id: 1,
-                //     name: 'Жуков Николай Геннадьевич',
-                //     post: 'Директор',
-                //     email: 'info@flexites.org',
-                //     phone: '+7 (351) 267-29-94'
-                // }, {
-                //     id: 2,
-                //     name: 'Меренков Антон Антонович',
-                //     post: 'Менеджер',
-                //     email: 'mav@flexites.org',
-                //     phone: '+7 (351) 267-29-95'
-                // }, {
-                //     id: 3,
-                //     name: 'Некрасов Иван Иванович',
-                //     post: 'Менеджер',
-                //     email: 'nekrasov@flexites.org',
-                //     phone: '+7 (351) 267-29-95'
-                // }],
-                tenders: [],
+                participationTenders: {},
+                createdTenders: {},
+                limit: 5,
+                offset: 0,
+                tenders: null,
             }
         },
         mounted() {
@@ -118,12 +106,13 @@
         created() {
             api.getOrganization(this.id).then(res => {
                 this.contragent = res;
-                // console.log(res);
             }).catch(err => {
                 console.error(err);
             });
+
+            this.getCreatedTenders();
+            this.getParticipationTenders();
             this.getMembers();
-            // console.log(this);
         },
         methods: {
             getMembers() {
@@ -133,10 +122,47 @@
                 }).catch(err => {
                     console.error(err);
                 });
+            },
+            getParticipationTenders(){
+                let limit = Number(this.limit)
+                let params = {
+                    limit,
+                    offset: this.offset
+                }
+                api.getParticipationTenders(this.id,params).then(res =>{
+                    this.participationTenders = res;
+                    console.log(res);
+                });
+            },
+            getCreatedTenders(){
+                let limit = Number(this.limit)
+                let params = {
+                    limit,
+                    offset: this.offset
+                }
+                api.getCreatedTenders(this.id, params).then(res =>{
+                    this.createdTenders = res;
+                    console.log(res);
+                });
+            },
+            getParticipationTendersMore(){
+                // let limit = Number(this.limit)
+                
+                let params = {
+                    limit: this.limit,
+                    offset: this.offset += 10
+                }
+                console.log(params.limit);
+                console.log(params.offset);
+                // const createdTenders = this.getCreatedTenders(this.id, params);
+                // console.log(createdTenders());
+
+                // createdTenders +=
+
             }
-            // onClickContragent(id) {
-            //     this.$router.push({ name: 'contragent', params: { id: id } });
-            // }
+
+            
+
         }
     };
 </script>

@@ -95,6 +95,18 @@
                 </div>
             </div>
         </div>
+        <button 
+            class="button button-green"
+            @click="onClickEditProfile()"
+        >
+            изменить данные
+        </button>
+        <button 
+            class="button "
+            @click="onClickEditPassword()"
+        >
+            изменить пароль
+        </button>
     </div>
 </template>
 <script>
@@ -130,6 +142,9 @@
             onClickEditProfile() {
                 this.$router.push({ name: 'profile-edit'});
                 // this.$router.push({ name: 'profile-edit-user', params: { id: id } });
+            },
+            onClickEditPassword() {
+                this.$router.push({ name: 'profile-edit-password'});
             }
         }
     };
