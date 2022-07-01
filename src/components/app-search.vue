@@ -8,7 +8,6 @@
                 <div class="search__form-group">
                     <div class="search__form-field">
                         <input
-                            id="query"
                             ref="query"
                             type="text"
                             name="query"
@@ -58,7 +57,7 @@
         data() {
             return {
                 showSearchModal: false,
-                advSearchFormData: null
+                modalFormData: null
             };
         },
         computed: {
@@ -71,12 +70,11 @@
                 this.showSearchModal = false;
             },
             advSearch(formData) {
-                this.advSearchFormData = formData
-                console.log(formData)
+                this.modalFormData = formData
             },
             searchTenders(event) {
-                let formData = Object.assign({}, this.advSearchFormData)
-                formData.query = event.target.querySelector('#query').value
+                let formData = Object.assign({}, this.modalFormData)
+                formData.query = this.$refs.query.value
                 this.$emit('startSearch', formData)
             }
         }

@@ -98,7 +98,7 @@
                         outerClass: '$reset modal-form__field',
                     }, {
                         $formkit: 'number',
-                        name: 'vat',
+                        name: 'nds',
                         value: "10",
                         label: 'Ставка НДС',
                         placeholder: "Установите НДС",

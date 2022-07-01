@@ -14,14 +14,6 @@ export default class extends REST {
         });
     }
 
-    static searchTenderList(params) {
-        return this._post('list', {}, params).then((data) => {
-            return data;
-        }).catch((error) => {
-            throw new RESTError(error, 'Ошибка при поиске минималистичного списка тендеров');
-        });
-    }
-
     static getTenders(params) {
         return this._get('tenders', {}, params).then((data) => {
             return data;
@@ -86,6 +78,14 @@ export default class extends REST {
         })
     }
 
+    static updateTenderDocument(tenderId, documentId, params) {
+        return this._post(`${tenderId}/documents/${documentId}/update_doc`, {}, params).then((data) => {
+            return data
+        }).catch((error) => {
+            throw new RESTError(error, 'Ошибка при обновлении документа тендера');
+        })
+    }
+
     static deleteTenderDocument(tenderId, documentId) {
         return this._delete(`${tenderId}/documents/${documentId}`, {}).then((data) => {
             return data
@@ -123,6 +123,14 @@ export default class extends REST {
             return data
         }).catch((error) => {
             throw new RESTError(error, 'Ошибка при удалении лота тендера');
+        })
+    }
+
+    static addTenderLotBet(tenderId, lotId, params) {
+        return this._post(`${tenderId}/lots/${lotId}/bets/create_bet`, {}, params).then((data) => {
+            return data
+        }).catch((error) => {
+            throw new RESTError(error, 'Ошибка при добавлении ставки лота');
         })
     }
 

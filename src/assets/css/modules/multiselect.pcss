@@ -434,6 +434,49 @@
     display: none;
 }
 
+
+.multiselect-option {
+    &:not(:last-child) {
+        & .multiselect-inn {
+            border-bottom: 1.5px solid $color-gray-T5;
+        }    
+    }
+}
+
+.multiselect-inn {
+    width: 100%;
+    margin-right: 10px;    
+    
+    &__inner {
+        display: flex;
+        gap: 10px;
+        width: 100%;
+        font-weight: 300;
+        font-size: 12px;
+        margin-bottom: 10px;
+    }
+
+    &__left {
+        flex-basis: 20%;
+    }
+    
+    &__right {
+        flex-basis: 80%;
+        padding-left: 10px;
+        border-left: 1.5px solid $color-gray-T5;
+    }
+
+    &__name-city {
+        display: flex;
+        justify-content: space-between;
+        gap: 10px;
+    }
+
+    & span {
+        font-weight: 400;
+    }
+}
+
 @keyframes multiselect-spin {
     from {
         transform: rotate(0);

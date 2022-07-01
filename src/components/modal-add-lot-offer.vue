@@ -6,15 +6,23 @@
     >
         <button 
             class="modal__close" 
-            @click="$emit('hideModal')"
+            @click="$emit('hideModal', updateData)"
         >
             <span/>
         </button>
         <span class="modal__title">Сделать ставку</span>
-        <div class="modal__content">
+        <div
+            v-if="betSended"
+            class="modal__content"
+        >
+            Ваша ставка отправлена.
+        </div>
+        <div 
+            v-else
+            class="modal__content"
+        >
             <div class="offers m--no-padding m--no-background m--no-shadow m--modal">
                 <div class="offers__list">
-                    {{ lot }}
                     <div class="offers__item">
                         <div class="offers__item-number">
                             Лот №{{ lot.num }}
@@ -24,25 +32,47 @@
                         </div>
                         <div class="offers__item-info">
                             <div class="offers__item-param">
-                                Начальная цена <span>22 000,00 ₽</span>
+                                Начальная цена <span>{{ $helpers.toPrice(lot.price || 0, { sign: '₽', pointer: ',' }) }}</span>
                             </div>
                             <div class="offers__item-param">
-                                Лучшая ставка <span>17 900,00 ₽</span>
+                                Лучшая ставка 
+                                <span
+                                    v-if="lot.last_price"
+                                >
+                                    {{ $helpers.toPrice(lot.last_price || 0, { sign: '₽', pointer: ',' }) }}
+                                </span>
+                                <span
+                                    v-else
+                                >
+                                    —
+                                </span>
                             </div>
                             <div class="offers__item-param">
-                                Текущее снижение <span>20.1 %</span>
+                                Текущее снижение <span>??? %</span>
                             </div>
                         </div>
-                        <div class="offers__item-form form">
+                        <FormKit
+                            v-model="formValues"
+                            name="form-offer"
+                            preserve
+                            type="form"
+                            data-loading="loading"
+                            form-class="$reset offers__item-form form"
+                            :actions="false"
+                            :disabled="loading"
+                            :loading="loading ? true : undefined"
+                            @submit="submitHandler"
+                        >
                             <div class="form__block m--flex">
+                                {{ formData }}
                                 <div class="form__block-title offers__item-form-title">
                                     Ваше предложение
                                 </div>
                                 <div class="offers__item-form-info">
-                                    Минимальная ставка: <span>17 774,7 ₽</span> (шаг цены - <span>?? %</span>)
+                                    Минимальная ставка: <span>{{ $helpers.toPrice(lot.min_price || 0, { sign: '₽', pointer: ',' }) }}</span> (шаг цены - <span>{{ tender.min_step }} %</span>)
                                 </div>
                                 <FormKit
-                                    v-model="formData.price"
+                                    v-model="formValues.price"
                                     type="text"
                                     name="price"
                                     label=""
@@ -50,19 +80,20 @@
                                     validation="required|number"
                                     validation-visibility="dirty"
                                     validation-label="ставка"
-                                    @input="calcLotSum"
                                 />
                                 <FormKit
-                                    v-model="formData.min_bid"
+                                    v-model="formValues.min_bid"
                                     type="checkbox"
                                     name="min_bid"
-                                    label=""
-                                    :options="{'1': 'Минимальная ставка'}"
+                                    label="Минимальная ставка"
                                     outerClass="field--inline"
-                                    @change="calcLotSum"
+                                    @change="setMinBid"
                                 />
                             </div>
-                            <div class="form__submit">
+                            <div 
+                                class="form__submit offers__form-submit" 
+                                data-type="submit"
+                            >
                                 <button
                                     type="reset"
                                     :disabled="showLoaderSending"
@@ -80,7 +111,7 @@
                                     Сделать ставку
                                 </button>
                             </div>
-                        </div>
+                        </FormKit>
                     </div>
                 </div>
             </div>
@@ -89,11 +120,16 @@
 </template>
 
 <script>
+    import { tender as tenderApi } from "@/services"
     export default {
         props: {
             showModal: {
                 type: Boolean,
                 default() { return false; }
+            },
+            tender: {
+                type: Object,
+                default() { return {}; }
             },
             lot: {
                 type: Object,
@@ -107,19 +143,41 @@
         },
         data() {
             return {
-                formData: {
-                    nums: 0,
+                formValues: {
                     price: 0,
-                    sum: 0
+                    min_bid: null
                 },
-                showLoaderSending: false
+                loading: false,
+                showLoaderSending: false,
+                betSended: false,
+                updateData: false,
             };
         },
         methods: {
-            calcLotSum(data, node) {
+            setMinBid(data, node) {
                 console.log(this.formData);
-                this.formData.sum = this.formData.nums * this.formData.price;
-                console.log(node.props.errors);
+                this.formValues.price = this.lot.min_price;
+            },
+            submitHandler(data, node) {
+                this.showLoaderSending = true;
+                this.loading = true;
+                let params = Object.assign({}, this.formValues);
+                console.log(params);
+                tenderApi.addTenderLotBet(this.tender.id, this.lot.id, params).then(res => {
+                    this.showLoaderSending = false;
+                    this.loading = false;
+                    this.betSended = true;
+                    this.updateData = true;
+                    console.log(res);
+                }).catch(err => {
+                    node.setErrors(
+                        [err.detail],
+                    );
+                    this.showLoaderSending = false;
+                    this.loading = false;
+                    this.$store.dispatch('showError', err);
+                    console.error(err);
+                });
             }
         }
     };
