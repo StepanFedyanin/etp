@@ -1,7 +1,7 @@
 <template>
     <div 
         class="tender__lots lots"
-        :class="(tender.status === 'bidding_process' && user.id === tender.creator) ? 'm--process' : ''"
+        :class="(tender.status === 'bidding_process' && user.id === tender.creator) ? 'm--process' : (tender.status === 'closed' && user.id === tender.creator) ? 'm--finished' : '' "
     >
         <div class="lots__header">
             <div class="lots__header-cell m--position">
@@ -34,6 +34,17 @@
                 <div class="lots__header-cell m--sum">
                     Лучшая ставка
                 </div>
+            </template>
+            <template
+                v-if="tender.status === 'closed' && user.id === tender.creator"
+            >
+                <div class="lots__header-cell m--sum">
+                    Победитель
+                </div>
+                <div class="lots__header-cell m--sum">
+                    Ставка победителя
+                </div>
+                <div class="lots__header-cell m--edit" />
             </template>
         </div>
         <div class="lots__list">
@@ -78,7 +89,7 @@
                             —
                         </template>
                     </div>
-                    <div class="lots__item-cell">
+                    <div class="lots__item-cell m--bold">
                         <template
                             v-if="lot.last_bet"
                         >
@@ -91,13 +102,60 @@
                         </template>
                     </div>
                 </template>
+                <template
+                    v-else-if="tender.status === 'closed' && user.id === tender.creator"
+                >
+                    <div class="lots__item-cell">
+                        <template
+                            v-if="lot.winner_organization"
+                        >
+                            {{ lot.winner_organization.name }}
+                        </template>
+                        <template
+                            v-else
+                        >
+                            —
+                        </template>
+                    </div>
+                    <div class="lots__item-cell m--bold">
+                        <template
+                            v-if="lot.winner_bet && lot.winner_bet.price"
+                        >
+                            {{ $helpers.toPrice(lot.winner_bet.price || 0, { sign: '₽', pointer: ',' }) }}
+                        </template>
+                        <template
+                            v-else
+                        >
+                            —
+                        </template>
+                    </div>
+                    <div class="lots__item-cell m--edit">
+                        <a
+                            href="#"
+                            class="lots__item-edit"
+                            @click.prevent="onClickWinnerLotModal(lot)"
+                        />
+                    </div>
+                </template>
             </div>
         </div>
+        <ModalWinnerLot
+            v-if="lot"
+            :tender="tender || {}"
+            :lot="lot || {}"
+            :bets="bets || []"
+            :showModal="showWinnerLotModal"
+            @hideModal="hideWinnerLotModal"
+        />
     </div>
 </template>
 
 <script>
+    import ModalWinnerLot from '@/components/modal-winner-lot';
     export default {
+        components: {
+            ModalWinnerLot
+        },
         props: {
             tender: {
                 type: Object,
@@ -111,6 +169,8 @@
         data() {
             return {
                 user: this.$store.state.user,
+                lot: null,
+                showWinnerLotModal: false,
             }
         },
         computed: {
@@ -120,9 +180,17 @@
         created() {
         },
         methods: {
-            AddLotOffer(id) {
-                this.$emit('AddLotOffer', id);
-            }
+            onClickWinnerLotModal(lot) {
+                console.log('onClickWinnerLotModal');
+                this.lot = lot;
+                this.showWinnerLotModal = true;
+            },
+            hideWinnerLotModal(updateData) {
+                this.showWinnerLotModal = false;
+                if (updateData) {
+                    this.$emit('getTenderData');
+                }
+            },
         },
     };
 </script>

@@ -19,9 +19,13 @@
         noResultsText="Результатов не найдено"
         @change="handleSelect"
         @search-change="searchChange"
+        @open="handleOpen"
     >
-        <template v-slot:option="{ option }" v-if="inn">
-            <div class="multiselect-inn">
+        <template v-slot:option="{ option }">
+            <div 
+                v-if="inn"
+                class="multiselect-inn"
+            >
                 <div class="multiselect-inn__inner">
                     <div class="multiselect-inn__left">
                         <div class="multiselect-inn__inn">ИНН <span>{{ option.label }}</span></div>
@@ -40,6 +44,15 @@
                             {{ option.principal_activity }}
                         </div>
                     </div>
+                </div>
+            </div>
+            <div 
+                v-else-if="bet"
+                class="multiselect-bet"
+            >
+                <div class="multiselect-bet__inner">
+                    <div class="multiselect-bet__name">{{ option.label }}</div>
+                    <div class="multiselect-bet__price">{{ $helpers.toPrice(option.price || 0, { sign: '₽', pointer: ',' }) }}</div>
                 </div>
             </div>
         </template>
@@ -71,7 +84,16 @@
     const resolveOnLoad = props.context.attrs.resolveOnLoad !== undefined ? props.context.attrs.resolveOnLoad : true;
     const object = props.context.attrs.resolveOnLoad !== undefined ? true : false;
     const inn = props.context.attrs.inn !== undefined ? true : false;
+    const bet = props.context.attrs.bet !== undefined ? true : false;
     // let vModelValue = reactive({})
+
+    function handleOpen(select$) {
+        console.log('handleOpen')
+        if (props.context.attrs.bet) {
+            multiselect._value.refreshOptions();
+        }
+        //select$.refreshOptions();
+    }
 
     function handleSelect(value, select$) {
         // console.log('handleSelect')
@@ -100,5 +122,6 @@
                 multiselect._value.select(v.value)
             }
         }
+        console.log('onUpdated');
     })
 </script>

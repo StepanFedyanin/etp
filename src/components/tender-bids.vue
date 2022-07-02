@@ -33,84 +33,88 @@
         </div>
 
         <div class="lots__block">
-            <div
+            <template
                 v-for="lot in lots"
-                :key="`lot-bid-${lot.id}`"
-                class="lots__item lots__block-item m--no-grid"
             >
-                <div class="lots__item-header">
-                    Лот №{{ lot.num }}
-                    <div 
-                        v-if="!lot.user_price"
-                        class="lots__item-status"
-                    >
-                        Вы не участвуете
-                    </div>
-                    <template
-                        v-else
-                    >
+                <div
+                    v-if="filterLot(lot)"
+                    :key="`lot-bid-${lot.id}`"
+                    class="lots__item lots__block-item m--no-grid"
+                >
+                    <div class="lots__item-header">
+                        Лот №{{ lot.num }}
                         <div 
-                            v-if="lot.user_price > lot.last_price"
-                            class="lots__item-status m--color-red"
+                            v-if="!lot.user_price"
+                            class="lots__item-status"
                         >
-                            Ставка проигрывает
+                            Вы не участвуете
                         </div>
-                        <div 
+                        <template
                             v-else
-                            class="lots__item-status m--color-green"
                         >
-                            Ставка выигрывает
+                            <div 
+                                v-if="lot.user_price > lot.last_price"
+                                class="lots__item-status m--color-red"
+                            >
+                                Ставка проигрывает
+                            </div>
+                            <div 
+                                v-else
+                                class="lots__item-status m--color-green"
+                            >
+                                Ставка выигрывает
+                            </div>
+                        </template>
+                    </div>
+                    <div class="lots__item-name">
+                        {{ lot.name }}
+                    </div>
+                    <div class="lots__item-params">
+                        <div class="lots__item-param m--underline">
+                            {{ lot.quantity }} {{ lot.unit }}
+                            <span>{{ $helpers.toPrice(lot.price, { sign: '₽ / ед.' }) }}</span>
                         </div>
-                    </template>
-                </div>
-                <div class="lots__item-name">
-                    {{ lot.name }}
-                </div>
-                <div class="lots__item-params">
-                    <div class="lots__item-param m--underline">
-                        {{ lot.quantity }} {{ lot.unit }}
-                        <span>{{ $helpers.toPrice(lot.price, { sign: '₽ / ед.' }) }}</span>
+                        <div class="lots__item-param">
+                            Начальная цена:
+                            <span>{{ $helpers.toPrice(lot.price * lot.quantity, { sign: '₽' }) }}</span>
+                        </div>
+                        <div class="lots__item-param">
+                            Лучшая ставка:
+                            <span
+                                v-if="lot.last_price"
+                            >
+                                {{ $helpers.toPrice(lot.last_price, { sign: '₽' }) }}
+                            </span>
+                            <span
+                                v-else
+                            >
+                                —
+                            </span>
+                        </div>
+                        <div class="lots__item-param">
+                            Ваша ставка:
+                            <span
+                                v-if="lot.user_price"
+                            >
+                                {{ $helpers.toPrice(lot.user_price, { sign: '₽' }) }}
+                            </span>
+                            <span
+                                v-else
+                            >
+                                —
+                            </span>
+                        </div>
                     </div>
-                    <div class="lots__item-param">
-                        Начальная цена:
-                        <span>{{ $helpers.toPrice(lot.price * lot.quantity, { sign: '₽' }) }}</span>
-                    </div>
-                    <div class="lots__item-param">
-                        Лучшая ставка:
-                        <span
-                            v-if="lot.last_price"
+                    <div class="lots__item-buttons">
+                        <button 
+                            class="button button-outline-green"
+                            @click.prevent="onClickAddLotOffer(lot)"
                         >
-                            {{ $helpers.toPrice(lot.last_price, { sign: '₽' }) }}
-                        </span>
-                        <span
-                            v-else
-                        >
-                            —
-                        </span>
-                    </div>
-                    <div class="lots__item-param">
-                        Ваша ставка:
-                        <span
-                            v-if="lot.user_price"
-                        >
-                            {{ $helpers.toPrice(lot.user_price, { sign: '₽' }) }}
-                        </span>
-                        <span
-                            v-else
-                        >
-                            —
-                        </span>
+                            Сделать ставку
+                        </button>
                     </div>
                 </div>
-                <div class="lots__item-buttons">
-                    <button 
-                        class="button button-outline-green"
-                        @click.prevent="onClickAddLotOffer(lot)"
-                    >
-                        Сделать ставку
-                    </button>
-                </div>
-            </div>
+            </template>
         </div>
         <ModalAddLotOffer
             :tender="tender || {}"
@@ -139,6 +143,7 @@
         },
         data() {
             return {
+                lot: null,
                 filters: {
                     all: 'Показать все',
                     participate: 'Участвую',
@@ -161,6 +166,18 @@
         created() {
         },
         methods: {
+            filterLot(lot) {
+                if (this.currentFilter === 'participate' && lot.user_price) {
+                    return true;
+                }
+                if (this.currentFilter === 'not_participate' && !lot.user_price) {
+                    return true;
+                }
+                if (this.currentFilter === 'all') {
+                    return true;
+                }
+                return false;
+            },
             changeFilter(key) {
                 this.currentFilter = key;
             },
@@ -177,7 +194,6 @@
                     this.$emit('getTenderData');
                 }
             },
-
         },
     };
 </script>

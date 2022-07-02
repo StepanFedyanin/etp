@@ -134,6 +134,22 @@ export default class extends REST {
         })
     }
 
+    static getTenderLotUsers(tenderId, lotId) {
+        return this._get(`${tenderId}/lots/${lotId}/played_users`, {}, {}).then((data) => {
+            return data
+        }).catch((error) => {
+            throw new RESTError(error, 'Ошибка при получении участников лота');
+        })
+    }
+
+    static changeTenderLotWinner(tenderId, lotId, params) {
+        return this._post(`${tenderId}/lots/${lotId}/change_winner`, {}, params).then((data) => {
+            return data
+        }).catch((error) => {
+            throw new RESTError(error, 'Ошибка при изменении ставки победителя');
+        })
+    }
+
     static addTenderParticipant(tenderId, params) {
         return this._post(`${tenderId}/participants/apply`, {}, params).then((data) => {
             return data

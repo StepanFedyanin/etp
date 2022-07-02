@@ -115,7 +115,10 @@
                     </div>
                 </div>
 
-                <div class="tender__actions">
+                <div 
+                    v-if="tender.creator === user.id && tender.status !== 'closed'" 
+                    class="tender__actions"
+                >
                     <div class="tender__actions-title">
                         Действия с тендером
                     </div>
@@ -156,6 +159,7 @@
                 <div class="tender__block">
                     <div
                         class="tender__docs"
+                        :class="tender.creator === user.id ? 'm--width-100' : ''"
                     >
                         <div class="tender__docs-title">
                             Документы:
@@ -205,6 +209,7 @@
                         </div>
                     </div>
                     <div
+                        v-if="tender.creator !== user.id"
                         class="tender__contact"
                     >
                         <div class="tender__contact-title">
@@ -265,6 +270,7 @@
                 <TenderLots
                     :tender="tender"
                     :lots="tender.lots"
+                    @getTenderData="getTenderData"
                 />
                 <TenderBids
                     v-if="tender.user_participation && tender.user_participation.status === 'participant'"

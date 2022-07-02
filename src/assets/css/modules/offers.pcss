@@ -35,6 +35,11 @@
         border-bottom: 1px solid $color-gray-T5;
         margin-bottom: 16px;
 
+        &.m--no-border {
+            border-bottom: none;
+            padding-bottom: 0;
+        }
+
         &-number {
             font-weight: 600;
             font-size: 16px;
@@ -48,6 +53,16 @@
             font-size: 14px;
             line-height: 20px;
             margin-bottom: 16px;
+        }
+
+        &-title {
+            font-weight: 600;
+            font-size: 16px;
+            line-height: 20px;
+            text-transform: uppercase;
+            color: $color-gray-T3;
+            margin-bottom: 16px;
+            margin-left: 0;
         }
 
         &-info {
@@ -69,6 +84,19 @@
                 font-weight: 600;
                 padding-left: 12px;
             }
+
+            &.m--winner {
+                display: block;
+                margin-right: 0;
+                margin-bottom: 8px;
+                text-transform: none;
+
+                span {
+                    padding-left: 0;
+                    padding-right: 12px;
+                }
+            }
+
         }
 
         &-price {
@@ -77,6 +105,21 @@
             line-height: 30px;
             align-self: center;
             text-transform: uppercase;
+        }
+
+        &-winner {
+            display: flex;
+            padding-bottom: 8px;
+            margin-bottom: 24px;
+            border-bottom: 1px solid $color-gray-T5;
+
+            &-block {
+                width: 50%;
+
+                &.m--width-100 {
+                    width: 100%;
+                }
+            }
         }
 
         &-button {

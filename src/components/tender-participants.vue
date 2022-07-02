@@ -11,7 +11,7 @@
         >
             <div class="tender__participants-item-block">
                 <div class="tender__participants-item-name">{{ participant.organization.name }}</div>
-                <div class="tender__participants-item-status">{{ participant.status }}</div>
+                <div class="tender__participants-item-status">{{ statuses[participant.status] }}</div>
                 <div 
                     class="tender__participants-item-more"
                     :class="{'tender__participants-item-more--active': participant.isShowMore}"
@@ -28,10 +28,13 @@
                 >
                     <div class="partipation__info">
                         <div class="partipation__info-organization">
-                            <div class="partipation__info-item"><span>ИНН:</span></div>
+                            <div class="partipation__info-item"><span>ИНН:</span> {{ participant.organization.inn }}</div>
+                            <div class="partipation__info-item"><span>КПП:</span> {{ participant.organization.kpp }}</div>
                         </div>
                         <div class="partipation__info-person">
-                            <div class="partipation__info-item"><span>Менеджер:</span> Иванов Иван Иванович</div>
+                            <div class="partipation__info-item"><span>Менеджер:</span> {{ participant.contact_person.full_name }}</div>
+                            <div class="partipation__info-item"><span>Телефон:</span> {{ participant.contact_person.phone }}</div>
+                            <div class="partipation__info-item"><span>Email:</span> {{ participant.contact_person.email }}</div>
                         </div>
                     </div>
                     <div
@@ -172,7 +175,10 @@
             return {
                 //participants: [],
                 statuses: {
-                    bid_accept: 'Прием заявок',
+                    sent: 'Требует рассмотрения',
+                    rejected: 'Заявка отклонена',
+                    participant: 'Участник',
+                    winner: 'Победитель',
                 },
                 formValues: {},
                 loadingConfirm: false,

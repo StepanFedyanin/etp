@@ -56,6 +56,12 @@
         grid-template-areas: 'A B C D E F G H I';
     }
 
+    &.m--finished &__header,
+    &.m--finished &__item {
+        grid-template-columns: 30px auto 70px 70px 100px 100px 140px 200px 140px 60px;
+        grid-template-areas: 'A B C D E F G H I J';
+    }
+
     &.m--tenders &__header,
     &.m--tenders &__item {
         grid-template-columns: 100px 60% 20% 60px;
@@ -166,6 +172,8 @@
         &-cell {
             padding: 12px 0;
             font-weight: 400;
+            justify-self: center;
+            align-self: center;
 
             &.m--position {
                 padding-left: 12px;

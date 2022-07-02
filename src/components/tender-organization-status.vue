@@ -24,15 +24,6 @@
             <div class="tender__status-title">
                 Статус вашей организации: <span>Заявка на рассмотрении</span>
             </div>
-            <div class="tender__status-block">
-                <button 
-                    class="button button-green"
-                    disabled
-                    @click="onClickRequestPartipation()"
-                >
-                    Подать заявку
-                </button>
-            </div>
         </div>
 
         <div 

@@ -64,7 +64,6 @@
                             @submit="submitHandler"
                         >
                             <div class="form__block m--flex">
-                                {{ formData }}
                                 <div class="form__block-title offers__item-form-title">
                                     Ваше предложение
                                 </div>
@@ -77,7 +76,7 @@
                                     name="price"
                                     label=""
                                     placeholder="Ваша ставка"
-                                    validation="required|number"
+                                    :validation="`required|number|between:0,${lot.min_price}`"
                                     validation-visibility="dirty"
                                     validation-label="ставка"
                                 />
