@@ -40,7 +40,7 @@
                 v-if="tender.description"
                 class="tenders__item-param"
             >
-                <span class="tenders__item-param-name">Дополнительая информация:</span> {{ tender.description }}
+                <span class="tenders__item-param-name">Дополнительная информация:</span> {{ tender.description }}
             </div>
             <div
                 v-if="documents"

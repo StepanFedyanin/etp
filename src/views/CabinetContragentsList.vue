@@ -36,12 +36,50 @@
                             {{ contragent.principal_activity }}
                         </div>
                         <div class="contragents__item-cell m--customer">
-                            {{ contragent.customer }}
+                            {{ contragent.created_tenders_count }}
                         </div>
                         <div class="contragents__item-cell m--member">
-                            {{ contragent.member }}
+                            {{ contragent.participation_tenders_count }}
                         </div>
                     </div>
+                </div>
+                <!-- <button 
+                    class="button"
+                    @click="getOrganizations()"
+                >
+                    Показать еще
+                </button> -->
+                <div class="tenders__pagination-right">
+                    <div class="tenders__pagination-perpage">
+                        <span>Выводить на страницу :</span>
+                        <select
+                            v-model="limit"
+                            class="tenders__pagination-select"
+                            name="limit"
+                        >
+                            <option
+                                value="10"
+                                selected="selected"
+                            >
+                                10 контрагентов
+                            </option>
+                            <option value="20">
+                                20 контрагентов
+                            </option>
+                            <option value="50">
+                                50 контрагентов
+                            </option>
+                            <option value="100">
+                                100 контрагентов
+                            </option>
+                        </select>
+                    </div>
+                    <Pagination
+                        :total="contragents.count"
+                        :limit="Number(limit)"
+                        :currentPage="Number($route.query.page || 1)"
+                        :url="$route.path"
+                    />
                 </div>
             </div>
         </div>
@@ -52,11 +90,33 @@
     import { user as api } from "@/services";
 
     export default {
-        components: {
-        },
         data() {
             return {
                 contragents: [],
+                limit: 10,
+            }
+        },
+        computed: {
+            page() {
+                return Number(this.$route.query.page) || 1
+            },
+            offset() {
+                let limit = Number(this.limit)
+                return (this.page - 1) * limit
+            }
+        },
+        watch: {
+            limit () {
+                if (this.$route.query.page) {
+                    this.$router.replace({ query: {} })
+                } else {
+                    this.getOrganizations()
+                }
+            },
+            '$route.query.page': {
+                handler() {
+                    this.getOrganizations()
+                },
             }
         },
         mounted() {
@@ -64,21 +124,40 @@
         beforeDestroy() {
         },
         created() {
-            api.getOrganizations(this.id).then(res => {
-                this.contragents = res.results;
-                console.log(res.results);
-                // this.$store.dispatch('setUser', res);
-                // if(this.organization) {
-                //     this.organization = res.organization;
-                // }
-            }).catch(err => {
-                console.error(err);
-            })
+            this.getOrganizations();
+            // api.getOrganizations(this.id).then(res => {
+            //     this.contragents = res.results;
+            //     console.log(res.results);
+            //     // this.$store.dispatch('setUser', res);
+            //     // if(this.organization) {
+            //     //     this.organization = res.organization;
+            //     // }
+            // }).catch(err => {
+            //     console.error(err);
+            // })
         },
         methods: {
             onClickContragent(id) {
                 this.$router.push({ name: 'contragent', params: { id: id } });
+            },
+            getOrganizations(){
+                let limit = Number(this.limit)
+                let params = {
+                    limit,
+                    offset: this.offset
+                }
+                api.getOrganizations(params).then(res => {
+                    this.contragents = res.results;
+                    console.log(res.results);
+                    // this.$store.dispatch('setUser', res);
+                    // if(this.organization) {
+                    //     this.organization = res.organization;
+                    // }
+                }).catch(err => {
+                    console.error(err);
+                })
             }
+
         }
     };
 </script>

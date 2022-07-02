@@ -23,7 +23,7 @@ export default class extends REST {
     }
 
     static updatePassword(params) {
-        return this._post('change_password', {}, params).then((data) => {
+        return this._post('update_password', {}, params).then((data) => {
             return data;
         }).catch((error) => {
             throw new RESTError(error, 'Ошибка при смене пароля', { request: { params } });
@@ -103,7 +103,7 @@ export default class extends REST {
     }
 
     static getOrganizations(params) {
-        return this._get(`organizations`, {}, params).then((data) => {
+        return this._get(`organizations`, params, params).then((data) => {
             return data;
         }).catch((error) => {
             throw new RESTError(error, 'Не удалось получить организации');
@@ -122,7 +122,7 @@ export default class extends REST {
         return this._get(`organization/profiles`, {}, params).then((data) => {
             return data;
         }).catch((error) => {
-            throw new RESTError(error, 'Не удалось представителей организации');
+            throw new RESTError(error, 'Не удалось получить представителей моей организации');
         });
     }
 
@@ -130,7 +130,7 @@ export default class extends REST {
         return this._get(`organizations/${id}/members`, {}, params).then((data) => {
             return data;
         }).catch((error) => {
-            throw new RESTError(error, 'Не удалось представителей организации');
+            throw new RESTError(error, 'Не удалось получить представителей организации');
         });
     }
 
@@ -139,6 +139,22 @@ export default class extends REST {
             return data;
         }).catch((error) => {
             throw new RESTError(error, 'Ошибка при обновлении профиля организации');
+        });
+    }
+
+    static getParticipationTenders(id, params) {
+        return this._get(`organizations/${id}/participation_tenders`, {}, params).then((data) => {
+            return data;
+        }).catch((error) => {
+            throw new RESTError(error, 'Ошибка при получении тендеров');
+        });
+    }
+
+    static getCreatedTenders(id, params) {
+        return this._get(`organizations/${id}/created_tenders`, {}, params).then((data) => {
+            return data;
+        }).catch((error) => {
+            throw new RESTError(error, 'Ошибка при обновлении созданных тендеров');
         });
     }
 }
