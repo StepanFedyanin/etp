@@ -288,7 +288,7 @@
                 />
 
                 <div 
-                    v-if="tender.user_participation && tender.user_participation.status === 'participant'"
+                    v-if="tender.bet_enabled && tender.user_participation && tender.user_participation.status === 'participant'"
                     class="tender__bids"
                 >
                     <div class="tender__bids-title">
@@ -318,7 +318,7 @@
                     @getTenderData="getTenderData"
                 />
                 <TenderBids
-                    v-if="tender.user_participation && tender.user_participation.status === 'participant'"
+                    v-if="tender.bet_enabled && tender.user_participation && tender.user_participation.status === 'participant'"
                     :tender="tender"
                     :lots="tender.lots"
                     @getTenderData="getTenderData"
