@@ -11,6 +11,8 @@ import registration from '@/views/Registration';
 import auth from '@/views/Login';
 /* cabinet */
 import cabinet from '@/views/Cabinet';
+import cabinetCustomer from '@/views/CabinetCustomer';
+import cabinetCustomerTendersList from '@/views/CabinetCustomerTendersList';
 import cabinetProfile from '@/views/CabinetProfile';
 import cabinetProfileEdit from '@/views/CabinetProfileEdit';
 import cabinetProfilePassword from '@/views/CabinetProfilePassword';
@@ -243,7 +245,7 @@ const routes = [
     }, {
         path: '/customer',
         name: 'customer',
-        component: cabinet,
+        component: cabinetCustomer,
         meta: { 
             title: 'Заказчик', 
             breadcrumbs: [],
@@ -252,25 +254,39 @@ const routes = [
         props: true,
         children: [
             {
-                path: 'current',
-                name: 'customer-current',
+                path: 'drafts',
+                name: 'customer-drafts',
                 component: cabinet,
                 meta: { 
-                    title: 'Текущие торги заказчика', 
+                    title: 'Черновики тендеров', 
                     breadcrumbs: ['customer'],
                     requiresAuth: true 
                 },
                 props: true,
             }, {
+                path: 'current',
+                name: 'customer-current',
+                component: cabinetCustomerTendersList,
+                meta: { 
+                    title: 'Текущие торги заказчика', 
+                    breadcrumbs: ['customer'],
+                    requiresAuth: true 
+                },
+                props: { 
+                    status: 'currents' 
+                },
+            }, {
                 path: 'closed',
                 name: 'customer-closed',
-                component: cabinet,
+                component: cabinetCustomerTendersList,
                 meta: { 
                     title: 'Завершенные торги заказчика', 
                     breadcrumbs: ['customer'],
                     requiresAuth: true 
                 },
-                props: true,
+                props: { 
+                    status: 'closed' 
+                },
             }
         ]
     }, {

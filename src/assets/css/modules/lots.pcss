@@ -38,7 +38,7 @@
     &__header,
     &__item {
         display: grid;
-        grid-template-columns: 30px auto 70px 70px 100px 140px 140px;
+        grid-template-columns: 35px auto 70px 70px 100px 140px 140px;
         grid-template-areas: 'A B C D E F G';
         gap: 10px;
 
@@ -46,25 +46,25 @@
     
     &.m--with-button &__header,
     &.m--with-button &__item {
-        grid-template-columns: 30px auto 70px 70px 100px 140px 300px;
+        grid-template-columns: 35px auto 70px 70px 100px 140px 300px;
         grid-template-areas: 'A B C D E F G';
     }
 
     &.m--process &__header,
     &.m--process &__item {
-        grid-template-columns: 30px auto 70px 70px 100px 100px 140px 200px 140px;
+        grid-template-columns: 35px auto 70px 70px 100px 100px 140px 200px 140px;
         grid-template-areas: 'A B C D E F G H I';
     }
 
     &.m--finished &__header,
     &.m--finished &__item {
-        grid-template-columns: 30px auto 70px 70px 100px 100px 140px 200px 140px 60px;
+        grid-template-columns: 35px auto 70px 70px 100px 100px 140px 200px 140px 60px;
         grid-template-areas: 'A B C D E F G H I J';
     }
 
     &.m--tenders &__header,
     &.m--tenders &__item {
-        grid-template-columns: 100px 60% 20% 60px;
+        grid-template-columns: 35px auto 100px 60px;
         grid-template-areas: 'A B C D';
     }
 
@@ -172,7 +172,7 @@
         &-cell {
             padding: 12px 0;
             font-weight: 400;
-            justify-self: center;
+            /*justify-self: center;*/
             align-self: center;
 
             &.m--position {

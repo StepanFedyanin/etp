@@ -26,7 +26,10 @@
                             </div>
                         </div>
                     </div>
-                    <div class="tender__data">
+                    <div
+                        v-if="tender.status !== 'closed'"
+                        class="tender__data"
+                    >
                         <div 
                             class="tender__data-icon m--timer"
                             :class="tender.limit.secs > 0 ? 'm--green' : 'm--red'"
@@ -49,7 +52,35 @@
                             </div>
                         </div>
                     </div>
-                    <div class="tender__data">
+                    <div
+                        v-if="tender.status === 'closed'"
+                        class="tender__data"
+                    >
+                        <div 
+                            class="tender__data-icon m--winner"
+                        />
+                        <div class="tender__data-inner">
+                            <div class="tender__data-title">
+                                Победители
+                            </div>
+                            <div class="tender__data-info">
+                                <template
+                                    v-if="tender.winner_count > 0"
+                                >
+                                    {{ tender.winner_count }}
+                                </template>
+                                <template
+                                    v-else
+                                >
+                                    —
+                                </template>
+                            </div>
+                        </div>
+                    </div>
+                    <div 
+                        v-if="tender.status !== 'closed'"
+                        class="tender__data"
+                    >
                         <div class="tender__data-icon m--clock" />
                         <div class="tender__data-inner">
                             <div class="tender__data-title">
@@ -63,6 +94,20 @@
                                 >
                                     +{{ tender.prolong / 60 }} мин.
                                 </span>
+                            </div>
+                        </div>
+                    </div>
+                    <div 
+                        v-if="tender.status === 'closed'"
+                        class="tender__data"
+                    >
+                        <div class="tender__data-icon m--wall-clock" />
+                        <div class="tender__data-inner">
+                            <div class="tender__data-title">
+                                Дата завершения
+                            </div>
+                            <div class="tender__data-info">
+                                {{ $helpers.formatDate(new Date(tender.date_end), 'DD.MM.YYYY HH:mm') }} 
                             </div>
                         </div>
                     </div>

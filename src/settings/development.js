@@ -145,6 +145,10 @@ const sidebarMenu = [
         icon: 'customer',
         items: [
             {
+                name: 'customer-drafts',
+                role: 'all',
+                title: 'Черновики',
+            }, {
                 name: 'customer-current',
                 role: 'all',
                 title: 'Текущие торги',

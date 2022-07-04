@@ -90,7 +90,16 @@
         </div>
 
         <div 
-            v-else-if="tender.user_participation && tender.user_participation.status === 'participant'"
+            v-else-if="tender.user_participation && tender.user_participation.status === 'winner'"
+            class="tender__status"
+        >
+            <div class="tender__status-title">
+                Статус вашей организации: <span class="m--color-green">Победитель (???)</span>
+            </div>
+        </div>
+
+        <div 
+            v-else-if="tender.user_participation"
             class="tender__status"
         >
             <div class="tender__status-title">
