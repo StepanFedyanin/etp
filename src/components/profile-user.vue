@@ -95,18 +95,20 @@
                 </div>
             </div>
         </div>
-        <button 
-            class="button button-green"
-            @click="onClickEditProfile()"
-        >
-            изменить данные
-        </button>
-        <button 
-            class="button "
-            @click="onClickEditPassword()"
-        >
-            изменить пароль
-        </button>
+        <div class="double">
+            <button 
+                class="button button-outline-green"
+                @click="onClickEditProfile()"
+            >
+                изменить данные
+            </button>
+            <button 
+                class="button button-outline-green"
+                @click="onClickEditPassword()"
+            >
+                изменить пароль
+            </button>
+        </div>
     </div>
 </template>
 <script>
