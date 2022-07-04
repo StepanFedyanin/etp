@@ -37,11 +37,11 @@
                     />
                 </div>
                 <div class="contragent__subtitle h2">
-                    Заказчик <span class="m--color-green">5 тендеров</span>
+                    Заказчик <span class="m--color-green">{{ createdTenders.count }} тендеров</span>
                 </div>
                 <div class="contragent__tenders tenders">
-                    <blockTender
-                        v-for="(tender, index) in tenders.results"
+                    <blockTenderMini
+                        v-for="(tender, index) in createdTenders.results"
                         :key="`tender-${index}`"
                         :tender="tender"
                         :whole="true"
@@ -50,16 +50,17 @@
                     <a 
                         class="button button-outline-green tenders__more"
                         href="#"
+                        @click="getCreatedTenders()"
                     >
-                        показать все
+                        показать еще
                     </a>
                 </div>
                 <div class="contragent__subtitle h2">
-                    Участник <span class="m--color-green">1 тендер</span>
+                    Участник <span class="m--color-green">{{ participationTenders.count }} тендер</span>
                 </div>
                 <div class="contragent__tenders tenders">
-                    <blockTender
-                        v-for="(tender, index) in tenders.results"
+                    <blockTenderMini
+                        v-for="(tender, index) in participationTenders.results"
                         :key="`tender-${index}`"
                         :tender="tender"
                         :whole="true"
@@ -68,8 +69,9 @@
                     <a 
                         class="button button-outline-green tenders__more"
                         href="#"
+                        @click="getParticipationTenders()"
                     >
-                        показать все
+                        показать еще
                     </a>
                 </div>
             </div>
@@ -81,7 +83,7 @@
     import Breadcrumbs from '@/components/app-breadcrumbs';
     import blockOrganization from '@/components/block-organization.vue';
     import blockPersons from '@/components/block-persons.vue';
-    import blockTender from '@/components/block-tender.vue';
+    import blockTenderMini from '@/components/block-tender-mini.vue';
     import { user as api } from "@/services";
 
     export default {
@@ -89,56 +91,93 @@
             Breadcrumbs,
             blockOrganization,
             blockPersons,
-            blockTender,
+            blockTenderMini,
         },
+        // props: {
+        //     id: {
+        //         type: String,
+        //         default() { return null; }
+        //     },
+        // },
         data() {
             return {
                 profile: undefined,
                 contragents: [],
                 contragent:{},
-                //  {
-                //     id: 1,
-                //     name: 'ООО “Флексайтс”',
-                //     city: 'г. Челябинск',
-                //     activity: 'Разработка компьютерного программного обеспечения',
-                //     customer: '113',
-                //     member: '45'
-                // },
                 organization: {},
+                organizationid: {},
                 persons: [],
-                tenders: [],
+                participationTenders: {},
+                createdTenders: {},
+                limitParticipation: 5,
+                offsetParticipation: 0,
+                limitCreated: 5,
+                offsetCreated: 0,
+                tenders: null,
             }
         },
         created() {
-            api.getMyProfile().then(res => {
-                this.profile = res;
-                // this.$store.dispatch('setUser', res);
-                if(this.organization){
-                    this.organization = res.organization;
-                }
-            }).catch(err => {
-                console.error(err);
-            });
+            this.getMyProfile();
             api.getMyOrganizationMembers().then(res => {
                 this.persons = res;
             }).catch(err => {
                 console.error(err);
             });
             this.getMembers();
+            this.getParticipationTenders();
+            this.getCreatedTenders();
         },
         methods: {
+            getMyProfile(){
+                api.getMyProfile().then(res => {
+                    this.profile = res;
+                    this.organization = res.organization;
+                    this.getCreatedTenders(this.organization);
+                    this.getParticipationTenders(this.organization);
+
+                    if(this.organization){
+                        console.log(this.organization.id);
+                    }
+                }).catch(err => {
+                    console.error(err);
+                });
+            },
             onClickEditOrganization(){
                 this.$router.push({ name: 'organization-edit'});
             },
             getMembers() {
-                console.log('getMembers');
                 api.getMyOrganizationMembers().then(res => {
                     this.persons = res;
 
                 }).catch(err => {
                     console.error(err);
                 });
-            }
+            },
+            getParticipationTenders(){
+                console.log(this.organization);
+                api.getParticipationTenders(this.organization.id, {limit: this.limit, offset: this.offsetParticipation}).then(res =>{
+                    if(this.offsetParticipation===0){
+                        this.participationTenders = res;
+                    }else if(this.participationTenders.results){
+                        this.participationTenders = {...this.participationTenders, ...res, results: [...this.participationTenders.results, ...res.results]}
+                    }
+                    this.offsetParticipation += 5;
+                    console.log(this.offsetParticipation);
+                });
+            },
+            getCreatedTenders(){
+                // this.organization = this.getMyProfile();
+                // console.log(this.organization);
+                api.getCreatedTenders(this.organization.id, {limit: this.limit, offset: this.offsetCreated}).then(res =>{
+                    if(this.offsetCreated===0){
+                        this.createdTenders = res;
+                    }else if(this.createdTenders.results){
+                        this.createdTenders = {...this.createdTenders, ...res, results: [...this.createdTenders.results, ...res.results]}
+                    }
+                    this.offsetCreated += 5;
+                    console.log(this.offsetCreated);
+                });
+            },
         }
     }
 </script>

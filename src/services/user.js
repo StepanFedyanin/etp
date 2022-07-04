@@ -117,6 +117,13 @@ export default class extends REST {
             throw new RESTError(error, 'Не удалось получить организацию');
         });
     }
+    // static getMyOrganization(){
+    //     return this._get('organization', {}).then((data) => {
+    //         return data;
+    //     }).catch((error) => {
+    //         throw new RESTError(error, 'Ошибка при получении моей организации');
+    //     });
+    // }
 
     static getMyOrganizationMembers(params) {
         return this._get(`organization/profiles`, {}, params).then((data) => {

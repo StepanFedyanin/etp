@@ -9,21 +9,21 @@
             </div>
             <div class="contragent__block">
                 <blockOrganization 
-                    :blockClass="contragent__organization"
                     :organization="contragent"
                 />
             </div>
+            <!-- :blockClass="contragent__organization" -->
             <div class="contragent__subtitle h2">
                 Представители организации
             </div>
             <div class="contragent__block">
                 <blockPersons 
-                    :blockClass="contragent__persons"
                     :persons="persons"
                 />
             </div>
+            <!-- :blockClass="contragent__persons" -->
             <div class="contragent__subtitle h2">
-                Заказчик <span class="m--color-green">5 тендеров</span>
+                Заказчик <span class="m--color-green"> {{ createdTenders.count }} тендеров</span>
             </div>
             <div class="contragent__tenders tenders">
                 <blockTenderMini
@@ -36,13 +36,13 @@
                 <a 
                     class="button button-outline-green tenders__more"
                     href="#"
-                    @click="getParticipationTendersMore()"
+                    @click="getCreatedTenders()"
                 >
-                    показать все
+                    показать еще
                 </a>
             </div>
             <div class="contragent__subtitle h2">
-                Участник <span class="m--color-green">1 тендер</span>
+                Участник <span class="m--color-green">{{ participationTenders.count }} тендер</span>
             </div>
             <div 
                 v-if="participationTenders && participationTenders.count"
@@ -58,8 +58,9 @@
                 <a 
                     class="button button-outline-green tenders__more"
                     href="#"
+                    @click="getParticipationTenders()"
                 >
-                    показать все
+                    показать еще
                 </a>
             </div>
         </div>
@@ -69,7 +70,6 @@
 <script>
     import blockOrganization from '@/components/block-organization.vue';
     import blockPersons from '@/components/block-persons.vue';
-    // import blockTender from '@/components/block-tender.vue';
     import blockTenderMini from '@/components/block-tender-mini.vue';
     import { user as api } from "@/services";
 
@@ -77,12 +77,11 @@
         components: {
             blockOrganization,
             blockPersons,
-            // blockTender,
             blockTenderMini
         },
         props: {
             id: {
-                type: Number,
+                type: String,
                 default() { return null; }
             },
         },
@@ -90,12 +89,13 @@
             return {
                 contragent: {},
                 contragents: undefined,
-                // organization: {},
                 persons: [],
                 participationTenders: {},
                 createdTenders: {},
-                limit: 5,
-                offset: 0,
+                limitParticipation: 5,
+                offsetParticipation: 0,
+                limitCreated: 5,
+                offsetCreated: 0,
                 tenders: null,
             }
         },
@@ -124,44 +124,27 @@
                 });
             },
             getParticipationTenders(){
-                let limit = Number(this.limit)
-                let params = {
-                    limit,
-                    offset: this.offset
-                }
-                api.getParticipationTenders(this.id,params).then(res =>{
-                    this.participationTenders = res;
-                    console.log(res);
+                api.getParticipationTenders(this.id, {limit: this.limit, offset: this.offsetParticipation}).then(res =>{
+                    if(this.offsetParticipation===0){
+                        this.participationTenders = res;
+                    }else if(this.participationTenders.results){
+                        this.participationTenders = {...this.participationTenders, ...res, results: [...this.participationTenders.results, ...res.results]}
+                    }
+                    this.offsetParticipation += 5;
+                    console.log(this.offsetParticipation);
                 });
             },
             getCreatedTenders(){
-                let limit = Number(this.limit)
-                let params = {
-                    limit,
-                    offset: this.offset
-                }
-                api.getCreatedTenders(this.id, params).then(res =>{
-                    this.createdTenders = res;
-                    console.log(res);
+                api.getCreatedTenders(this.id, {limit: this.limit, offset: this.offsetCreated}).then(res =>{
+                    if(this.offsetCreated===0){
+                        this.createdTenders = res;
+                    }else if(this.createdTenders.results){
+                        this.createdTenders = {...this.createdTenders, ...res, results: [...this.createdTenders.results, ...res.results]}
+                    }
+                    this.offsetCreated += 5;
+                    console.log(this.offsetCreated);
                 });
             },
-            getParticipationTendersMore(){
-                // let limit = Number(this.limit)
-                
-                let params = {
-                    limit: this.limit,
-                    offset: this.offset += 10
-                }
-                console.log(params.limit);
-                console.log(params.offset);
-                // const createdTenders = this.getCreatedTenders(this.id, params);
-                // console.log(createdTenders());
-
-                // createdTenders +=
-
-            }
-
-            
 
         }
     };

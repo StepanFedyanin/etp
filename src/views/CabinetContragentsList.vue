@@ -49,37 +49,49 @@
                 >
                     Показать еще
                 </button> -->
-                <div class="tenders__pagination-right">
-                    <div class="tenders__pagination-perpage">
-                        <span>Выводить на страницу :</span>
-                        <select
-                            v-model="limit"
-                            class="tenders__pagination-select"
-                            name="limit"
-                        >
-                            <option
-                                value="10"
-                                selected="selected"
-                            >
-                                10 контрагентов
-                            </option>
-                            <option value="20">
-                                20 контрагентов
-                            </option>
-                            <option value="50">
-                                50 контрагентов
-                            </option>
-                            <option value="100">
-                                100 контрагентов
-                            </option>
-                        </select>
+                <!-- {{contragents }}
+                {{contragents.count }} -->
+                <div
+                    v-if="contragents && contragents.length"
+                    class="tenders__pagination"
+                >
+                    <div class="tenders__pagination-left">
+                        <div class="tenders__pagination-count">
+                            Отобрано: <span>{{ contragents.length }}</span>
+                        </div>
                     </div>
-                    <Pagination
-                        :total="contragents.count"
-                        :limit="Number(limit)"
-                        :currentPage="Number($route.query.page || 1)"
-                        :url="$route.path"
-                    />
+                    <div class="tenders__pagination-right">
+                        <div class="tenders__pagination-perpage">
+                            <span>Выводить на страницу :</span>
+                            <select
+                                v-model="limit"
+                                class="tenders__pagination-select"
+                                name="limit"
+                            >
+                                <option
+                                    value="10"
+                                    selected="selected"
+                                >
+                                    10 контрагентов
+                                </option>
+                                <option value="20">
+                                    20 контрагентов
+                                </option>
+                                <option value="50">
+                                    50 контрагентов
+                                </option>
+                                <option value="100">
+                                    100 контрагентов
+                                </option>
+                            </select>
+                        </div>
+                        <Pagination
+                            :total="contragents.length"
+                            :limit="Number(limit)"
+                            :currentPage="Number($route.query.page || 1)"
+                            :url="$route.path"
+                        />
+                    </div>
                 </div>
             </div>
         </div>
@@ -88,13 +100,23 @@
 
 <script>
     import { user as api } from "@/services";
+    import Pagination from '@/components/pagination.vue';
 
     export default {
+        components: {
+            Pagination,
+        },
         data() {
             return {
                 contragents: [],
                 limit: 10,
             }
+        },
+        props: {
+            id: {
+                type: Number,
+                default() { return null; }
+            },
         },
         computed: {
             page() {
