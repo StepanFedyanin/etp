@@ -78,6 +78,14 @@ export default class extends REST {
         });
     }
 
+    static switchFavoriteTender(id) {
+        return this._get(`${id}/pin_unpin`, {}, {}).then((data) => {
+            return data;
+        }).catch((error) => {
+            throw new RESTError(error, 'Ошибка при изменении статуса избранного тендера');
+        });
+    }
+
     static getTenderDocuments(id) {
         return this._get(`${id}/documents`, {}).then((data) => {
             return data

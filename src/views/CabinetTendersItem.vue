@@ -282,7 +282,7 @@
                 </div>
 
                 <TenderOrganizationStatus
-                    v-if="tender.bet_enabled && user.id !== tender.creator"
+                    v-if="user.id !== tender.creator"
                     :tender="tender"
                     @getTenderData="getTenderData"
                 />
