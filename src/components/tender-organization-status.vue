@@ -1,7 +1,7 @@
 <template>
     <div>
         <div 
-            v-if="!tender.user_participation"
+            v-if="!tender.user_participation && tender.status === 'bid_accept'"
             class="tender__status"
         >
             <div class="tender__status-title">
@@ -93,8 +93,17 @@
             v-else-if="tender.user_participation && tender.user_participation.status === 'winner'"
             class="tender__status"
         >
-            <div class="tender__status-title">
-                Статус вашей организации: <span class="m--color-green">Победитель (???)</span>
+            <div 
+                v-if="tender.status === 'bidding_completed'"
+                class="tender__status-title"
+            >
+                Статус вашей организации: <span class="m--color-green">Победитель (предварительно)</span>
+            </div>
+            <div 
+                v-else-if="tender.status === 'closed'"
+                class="tender__status-title"
+            >
+                Статус вашей организации: <span class="m--color-green">Победитель</span>
             </div>
         </div>
 

@@ -93,7 +93,7 @@
                 <span class="tenders__item-param-name">Лоты:</span> {{ tender.lot_count }}
             </div>
             <div class="tenders__item-param">
-                <span class="tenders__item-param-name">Предложений от поставщиков:</span> 5
+                <span class="tenders__item-param-name">Предложений от поставщиков:</span> ?
             </div>
             <div
                 class="tenders__item-timer"
@@ -167,8 +167,18 @@
             class="tenders__item-toggle"
             :class="{'tenders__item-toggle--active': isShowPositions}"
             @click="isShowPositions = !isShowPositions"
-            v-text="isShowPositions ? 'Скрыть 1 позицию' : 'Показать 1 позицию'"
-        />
+        >
+            <template
+                v-if="isShowPositions"
+            >
+                Скрыть {{ $helpers.stringForNumber(lots.length - 5, ['позицию', 'позиции', 'позиций']) }}
+            </template>
+            <template
+                v-else
+            >
+                Показать {{ $helpers.stringForNumber(lots.length - 5, ['позицию', 'позиции', 'позиций']) }}
+            </template>
+        </div>
     </div>
 </template>
 

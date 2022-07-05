@@ -78,7 +78,7 @@
                         name: 'ogrn',
                         label: 'ОГРН',
                         placeholder: 'ОГРН организации',
-                        validation: 'required',
+                        validation: [['required'], ['matches', /^\d{13}$/]],
                         outerClass: 'field--inline field--required'
                     }, {
                         $formkit: 'text',
@@ -137,7 +137,7 @@
                         $formkit: 'text',
                         name: 'capital',
                         label: 'Сумма уставного капитала',
-                        validation: 'required',
+                        validation: 'required|number',
                         outerClass: 'field--inline field--required'
                     }, {
                         $formkit: 'text',

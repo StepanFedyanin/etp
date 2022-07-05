@@ -70,7 +70,7 @@
     });
 
     const options = props.context.options;
-    // console.log('Options', props.context)
+    //console.log('Options', options);
     const multiselect = ref(null)
     const mode = props.context.mode || 'single';
     const searchable = props.context.searchable || false;
@@ -92,7 +92,6 @@
         if (props.context.attrs.bet) {
             multiselect._value.refreshOptions();
         }
-        //select$.refreshOptions();
     }
 
     function handleSelect(value, select$) {

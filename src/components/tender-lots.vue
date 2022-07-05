@@ -103,7 +103,45 @@
                     </div>
                 </template>
                 <template
-                    v-else-if="tender.status === 'closed' || tender.status === 'bidding_completed'"
+                    v-else-if="tender.status === 'bidding_completed'"
+                >
+                    <div class="lots__item-cell">
+                        <template
+                            v-if="lot.winner_organization"
+                        >
+                            {{ lot.winner_organization.name }}
+                        </template>
+                        <template
+                            v-else
+                        >
+                            —
+                        </template>
+                    </div>
+                    <div class="lots__item-cell m--bold">
+                        <template
+                            v-if="lot.winner_bet.price"
+                        >
+                            {{ $helpers.toPrice(lot.winner_bet.price || 0, { sign: '₽', pointer: ',' }) }}
+                        </template>
+                        <template
+                            v-else
+                        >
+                            —
+                        </template>
+                    </div>
+                    <div 
+                        v-if="user.id === tender.creator"
+                        class="lots__item-cell m--edit"
+                    >
+                        <a
+                            href="#"
+                            class="lots__item-edit"
+                            @click.prevent="onClickWinnerLotModal(lot)"
+                        />
+                    </div>
+                </template>
+                <template
+                    v-else-if="tender.status === 'closed'"
                 >
                     <div class="lots__item-cell">
                         <template
@@ -144,9 +182,8 @@
         </div>
         <ModalWinnerLot
             v-if="lot"
-            :tender="tender || {}"
-            :lot="lot || {}"
-            :bets="bets || []"
+            :tender="tender"
+            :lot="lot"
             :showModal="showWinnerLotModal"
             @hideModal="hideWinnerLotModal"
         />
@@ -179,6 +216,7 @@
         computed: {
         },
         mounted() {
+            console.log('MOUNTED', this.lot);
         },
         created() {
         },
@@ -191,6 +229,7 @@
             hideWinnerLotModal(updateData) {
                 this.showWinnerLotModal = false;
                 if (updateData) {
+                    this.lot = null;
                     this.$emit('getTenderData');
                 }
             },
