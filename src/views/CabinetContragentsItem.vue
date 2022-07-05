@@ -12,7 +12,6 @@
                     :organization="contragent"
                 />
             </div>
-            <!-- :blockClass="contragent__organization" -->
             <div class="contragent__subtitle h2">
                 Представители организации
             </div>
@@ -21,32 +20,30 @@
                     :persons="persons"
                 />
             </div>
-            <!-- :blockClass="contragent__persons" -->
             <div class="contragent__subtitle h2">
                 Заказчик <span class="m--color-green"> {{ createdTenders.count }} тендеров</span>
             </div>
-            <div class="contragent__tenders tenders">
+            <div class="contragent__tenders tenders tenders__created">
                 <blockTenderMini
                     v-for="(tender, index) in createdTenders.results"
                     :key="`tender-${index}`"
                     :tender="tender"
                     :whole="true"
                 />
-
-                <a 
+                <button 
+                    v-if="createdTenders.count > this.countCreatedTenders"
                     class="button button-outline-green tenders__more"
-                    href="#"
                     @click="getCreatedTenders()"
                 >
                     показать еще
-                </a>
+                </button>
             </div>
             <div class="contragent__subtitle h2">
                 Участник <span class="m--color-green">{{ participationTenders.count }} тендер</span>
             </div>
             <div 
                 v-if="participationTenders && participationTenders.count"
-                class="contragent__tenders tenders"
+                class="contragent__tenders tenders participation__created"
             >
                 <blockTenderMini
                     v-for="(tender, index) in participationTenders.results"
@@ -55,13 +52,13 @@
                     :whole="true"
                 />
 
-                <a 
+                <button 
+                    v-if="participationTenders.count > this.countParticipationTenders"
                     class="button button-outline-green tenders__more"
-                    href="#"
                     @click="getParticipationTenders()"
                 >
                     показать еще
-                </a>
+                </button>
             </div>
         </div>
     </div>
@@ -72,6 +69,7 @@
     import blockPersons from '@/components/block-persons.vue';
     import blockTenderMini from '@/components/block-tender-mini.vue';
     import { user as api } from "@/services";
+    // import { number } from '@formkit/inputs';
 
     export default {
         components: {
@@ -97,10 +95,12 @@
                 limitCreated: 5,
                 offsetCreated: 0,
                 tenders: null,
+                countCreatedTenders: 0,
+                countParticipationTenders: 0,
             }
         },
         mounted() {
-        },
+            },
         beforeDestroy() {
         },
         created() {
@@ -131,7 +131,7 @@
                         this.participationTenders = {...this.participationTenders, ...res, results: [...this.participationTenders.results, ...res.results]}
                     }
                     this.offsetParticipation += 5;
-                    console.log(this.offsetParticipation);
+                    this.countParticipationTenders = this.participationTenders.results.length;
                 });
             },
             getCreatedTenders(){
@@ -142,10 +142,9 @@
                         this.createdTenders = {...this.createdTenders, ...res, results: [...this.createdTenders.results, ...res.results]}
                     }
                     this.offsetCreated += 5;
-                    console.log(this.offsetCreated);
+                    this.countCreatedTenders = this.createdTenders.results.length;
                 });
             },
-
         }
     };
 </script>
