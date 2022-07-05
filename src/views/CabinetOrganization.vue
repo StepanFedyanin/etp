@@ -124,8 +124,8 @@
                 console.error(err);
             });
             this.getMembers();
-            this.getParticipationTenders();
-            this.getCreatedTenders();
+            // this.getParticipationTenders();
+            // this.getCreatedTenders();
         },
         methods: {
             getMyProfile(){
