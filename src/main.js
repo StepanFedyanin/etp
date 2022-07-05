@@ -1,9 +1,10 @@
 import { createApp } from 'vue';
+import maskaInput from '@/components/inputs/maska-input';
 import multiselectInput from '@/components/inputs/multiselect-input';
 import { plugin, defaultConfig, createInput } from '@formkit/vue';
 import { vfmPlugin } from 'vue-final-modal';
 import { ru } from '@formkit/i18n';
-//import Maska from 'maska';
+import Maska from 'maska';
 
 import App from './App.vue';
 
@@ -19,6 +20,7 @@ app.use(router);
 app.use(helpers);
 
 app.use(vfmPlugin);
+app.use(Maska);
 
 const confFormKit = {
     locales: { ru },
@@ -47,10 +49,12 @@ const confFormKit = {
         multiselect: createInput(multiselectInput, {
             props: ['options', 'placeholder', 'mode', 'searchable'],
         }),
+        maska: createInput(maskaInput, {
+            props: ['maska', 'placeholder'],
+        }),
     },
 };
 
 app.use(plugin, defaultConfig(confFormKit));
-//app.use(Maska);
 
 app.mount('#app');

@@ -184,6 +184,7 @@
 
 <script>
     import { urlPath } from '@/settings'
+    import { tender as tenderApi } from "@/services"
 
     export default {
         props: {
@@ -229,6 +230,12 @@
             },
             toggleFavorite() {
                 this.favorite = !this.favorite
+                tenderApi.switchFavoriteTender(this.tender.id).then(res => {
+                    console.log(res);
+                }).catch(err => {
+                    this.$store.dispatch('showError', err);
+                    console.error(err);
+                });
             }
         },
     };

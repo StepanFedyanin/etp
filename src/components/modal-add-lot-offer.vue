@@ -72,7 +72,8 @@
                                 </div>
                                 <FormKit
                                     v-model="formValues.price"
-                                    type="text"
+                                    :maska="{ mask: '#*D##', tokens: { 'D': { pattern: /\./ }}}"
+                                    type="maska"
                                     name="price"
                                     label=""
                                     placeholder="Ваша ставка"
