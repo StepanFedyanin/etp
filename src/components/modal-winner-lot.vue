@@ -90,7 +90,7 @@
                         </div>
                         <FormKit
                             v-model="formValues"
-                            name="form-offer"
+                            id="form-offer"
                             preserve
                             type="form"
                             data-loading="loading"
@@ -179,6 +179,7 @@
                                 });
                             }).catch(err => {
                                 console.error(err);
+                                return [];
                             });
                         },
                         labelClass: 'offers__item-title',
@@ -218,6 +219,7 @@
                     this.betSended = true;
                     this.updateData = true;
                     console.log(res);
+                    this.$formkit.reset('form-offer');
                 }).catch(err => {
                     node.setErrors(
                         [err.detail],

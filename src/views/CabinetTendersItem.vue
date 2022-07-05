@@ -417,6 +417,9 @@
                     console.error(err);
                 });
             },
+            updateTenderData() {
+                this.$forceUpdate();
+            }
         }
     };
 </script>

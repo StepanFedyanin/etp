@@ -8,7 +8,7 @@
             class="modal__close" 
             @click="$emit('hideModal', updateData)"
         >
-            <span/>
+            <span />
         </button>
         <span class="modal__title">Сделать ставку</span>
         <div
@@ -32,7 +32,7 @@
                         </div>
                         <div class="offers__item-info">
                             <div class="offers__item-param">
-                                Начальная цена <span>{{ $helpers.toPrice(lot.price || 0, { sign: '₽', pointer: ',' }) }}</span>
+                                Начальная цена <span>{{ $helpers.toPrice(lot.price * lot.quantity || 0, { sign: '₽', pointer: ',' }) }}</span>
                             </div>
                             <div class="offers__item-param">
                                 Лучшая ставка 
@@ -76,8 +76,8 @@
                                     name="price"
                                     label=""
                                     placeholder="Ваша ставка"
-                                    :validation="`required|number|between:0,${lot.min_price}`"
-                                    validation-visibility="dirty"
+                                    :validation="`required|number|not:0|between:0,${lot.min_price}`"
+                                    validation-visibility="submit"
                                     validation-label="ставка"
                                 />
                                 <FormKit
@@ -135,15 +135,10 @@
                 default() { return {}; }
             },
         },
-        computed: {
-            show() {
-                return this.showModal;
-            },
-        },
         data() {
             return {
                 formValues: {
-                    price: 0,
+                    price: null,
                     min_bid: null
                 },
                 loading: false,
@@ -151,6 +146,11 @@
                 betSended: false,
                 updateData: false,
             };
+        },
+        computed: {
+            show() {
+                return this.showModal;
+            },
         },
         methods: {
             setMinBid(data, node) {
