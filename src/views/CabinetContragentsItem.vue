@@ -131,7 +131,7 @@
                         this.participationTenders = {...this.participationTenders, ...res, results: [...this.participationTenders.results, ...res.results]}
                     }
                     this.offsetParticipation += 5;
-                        this.countParticipationTenders = this.participationTenders.results.length;
+                    this.countParticipationTenders = this.participationTenders.results.length;
                 });
             },
             getCreatedTenders(){

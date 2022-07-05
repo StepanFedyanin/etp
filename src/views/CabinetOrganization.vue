@@ -47,13 +47,13 @@
                         :whole="true"
                     />
 
-                    <a 
+                    <button 
+                        v-if="createdTenders.count > this.countCreatedTenders"
                         class="button button-outline-green tenders__more"
-                        href="#"
                         @click="getCreatedTenders()"
                     >
                         показать еще
-                    </a>
+                    </button>
                 </div>
                 <div class="contragent__subtitle h2">
                     Участник <span class="m--color-green">{{ participationTenders.count }} тендер</span>
@@ -66,13 +66,13 @@
                         :whole="true"
                     />
 
-                    <a 
+                    <button 
+                        v-if="participationTenders.count > this.countParticipationTenders"
                         class="button button-outline-green tenders__more"
-                        href="#"
                         @click="getParticipationTenders()"
                     >
                         показать еще
-                    </a>
+                    </button>
                 </div>
             </div>
         </div>
@@ -93,12 +93,6 @@
             blockPersons,
             blockTenderMini,
         },
-        // props: {
-        //     id: {
-        //         type: String,
-        //         default() { return null; }
-        //     },
-        // },
         data() {
             return {
                 profile: undefined,
@@ -114,6 +108,8 @@
                 limitCreated: 5,
                 offsetCreated: 0,
                 tenders: null,
+                countCreatedTenders: 0,
+                countParticipationTenders: 0,
             }
         },
         created() {
@@ -124,8 +120,6 @@
                 console.error(err);
             });
             this.getMembers();
-            // this.getParticipationTenders();
-            // this.getCreatedTenders();
         },
         methods: {
             getMyProfile(){
@@ -154,7 +148,6 @@
                 });
             },
             getParticipationTenders(){
-                console.log(this.organization);
                 api.getParticipationTenders(this.organization.id, {limit: this.limit, offset: this.offsetParticipation}).then(res =>{
                     if(this.offsetParticipation===0){
                         this.participationTenders = res;
@@ -162,12 +155,10 @@
                         this.participationTenders = {...this.participationTenders, ...res, results: [...this.participationTenders.results, ...res.results]}
                     }
                     this.offsetParticipation += 5;
-                    console.log(this.offsetParticipation);
+                    this.countParticipationTenders = this.participationTenders.results.length;
                 });
             },
             getCreatedTenders(){
-                // this.organization = this.getMyProfile();
-                // console.log(this.organization);
                 api.getCreatedTenders(this.organization.id, {limit: this.limit, offset: this.offsetCreated}).then(res =>{
                     if(this.offsetCreated===0){
                         this.createdTenders = res;
@@ -175,7 +166,7 @@
                         this.createdTenders = {...this.createdTenders, ...res, results: [...this.createdTenders.results, ...res.results]}
                     }
                     this.offsetCreated += 5;
-                    console.log(this.offsetCreated);
+                    this.countCreatedTenders = this.createdTenders.results.length;
                 });
             },
         }
