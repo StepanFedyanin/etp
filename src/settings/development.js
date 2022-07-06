@@ -159,17 +159,17 @@ const sidebarMenu = [
             }
         ]
     }, {
-        name: 'provider',
+        name: 'participant',
         role: 'all',
         title: 'Я - поставщик',
         icon: 'provider',
         items: [
             {
-                name: 'provider-current',
+                name: 'participant-current',
                 role: 'all',
                 title: 'Текущие торги',
             }, {
-                name: 'provider-closed',
+                name: 'participant-closed',
                 role: 'all',
                 title: 'Завершенные',
             }

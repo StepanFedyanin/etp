@@ -19,7 +19,17 @@
                                 Активных торгов: <span class="group__info-red">{{ group.bidding_count }}</span>
                             </div>
                             <div class="group__info-date">
-                                Последний аукцион: <span class="group__info-red">{{ $helpers.formatDate(new Date(group.last_bidding), 'DD.MM.YYYY HH:mm') }} МСК</span>
+                                Последний аукцион: 
+                                <span 
+                                    v-if="group.last_bidding"
+                                    class="group__info-red"
+                                >{{ $helpers.formatDate(new Date(group.last_bidding), 'DD.MM.YYYY HH:mm') }} МСК
+                                </span>
+                                <span
+                                    v-else
+                                >
+                                    —
+                                </span>
                             </div>
                         </div>
                         <Transition name="">

@@ -13,6 +13,9 @@ import auth from '@/views/Login';
 import cabinet from '@/views/Cabinet';
 import cabinetCustomer from '@/views/CabinetCustomer';
 import cabinetCustomerTendersList from '@/views/CabinetCustomerTendersList';
+import cabinetCustomerDrafts from '@/views/CabinetCustomerDrafts';
+import cabinetParticipant from '@/views/CabinetParticipant';
+import cabinetParticipantTendersList from '@/views/CabinetParticipantTendersList';
 import cabinetProfile from '@/views/CabinetProfile';
 import cabinetProfileEdit from '@/views/CabinetProfileEdit';
 import cabinetProfilePassword from '@/views/CabinetProfilePassword';
@@ -256,7 +259,7 @@ const routes = [
             {
                 path: 'drafts',
                 name: 'customer-drafts',
-                component: cabinet,
+                component: cabinetCustomerDrafts,
                 meta: { 
                     title: 'Черновики тендеров', 
                     breadcrumbs: ['customer'],
@@ -290,9 +293,9 @@ const routes = [
             }
         ]
     }, {
-        path: '/provider',
-        name: 'provider',
-        component: cabinet,
+        path: '/participant',
+        name: 'participant',
+        component: cabinetParticipant,
         meta: { 
             title: 'Поставщик', 
             breadcrumbs: [],
@@ -302,24 +305,28 @@ const routes = [
         children: [
             {
                 path: 'current',
-                name: 'provider-current',
-                component: cabinet,
+                name: 'participant-current',
+                component: cabinetParticipantTendersList,
                 meta: { 
                     title: 'Текущие торги поставщика', 
-                    breadcrumbs: ['provider'],
+                    breadcrumbs: ['participant'],
                     requiresAuth: true 
                 },
-                props: true,
+                props: { 
+                    status: 'currents' 
+                },
             }, {
                 path: 'closed',
-                name: 'provider-closed',
-                component: cabinet,
+                name: 'participant-closed',
+                component: cabinetParticipantTendersList,
                 meta: { 
                     title: 'Завершенные торги поставщика', 
-                    breadcrumbs: ['cabinet', 'provider'],
+                    breadcrumbs: ['cabinet', 'participant'],
                     requiresAuth: true 
                 },
-                props: true,
+                props: { 
+                    status: 'closed' 
+                },
             }
         ]
     }, {

@@ -6,11 +6,19 @@ export default class extends REST {
         return settings;
     }
 
+    static getDraftList() {
+        return this._get('drafts', {}).then((data) => {
+            return data;
+        }).catch((error) => {
+            throw new RESTError(error, 'Ошибка при получении минималистичного списка черновиков');
+        });
+    }
+
     static getTenderList() {
         return this._get('list', {}).then((data) => {
             return data;
         }).catch((error) => {
-            throw new RESTError(error, 'Ошибка при получении минималистичного список тендеров');
+            throw new RESTError(error, 'Ошибка при получении минималистичного списка тендеров');
         });
     }
 

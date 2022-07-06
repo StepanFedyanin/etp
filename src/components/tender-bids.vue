@@ -34,10 +34,10 @@
 
         <div class="lots__block">
             <template
-                v-for="lot in lots"
+                v-for="lot in sortedLots"
             >
                 <div
-                    v-if="filterLot(lot)"
+                    v-if="filterLots(lot)"
                     :key="`lot-bid-${lot.id}`"
                     class="lots__item lots__block-item m--no-grid"
                 >
@@ -143,7 +143,7 @@
         },
         data() {
             return {
-                lot: null,
+                //bets: this.lots || [],
                 filters: {
                     all: 'Показать все',
                     participate: 'Участвую',
@@ -160,13 +160,34 @@
             }
         },
         computed: {
+            sortedLots() {
+                let bets = [...this.lots];
+                bets = bets.sort((a, b) => {
+                    if (this.currentSorting === 'participate') {
+                        if (a.user_price > b.user_price)
+                            return -1;
+                        if (a.user_price < b.user_price)
+                            return 1;
+                        return 0;
+                    }
+                    if (this.currentSorting === 'lot_number') {
+                        if (a.num < b.num)
+                            return -1;
+                        if (a.num > b.num)
+                            return 1;
+                        return 0;
+                    }
+                });
+                console.log(bets);
+                return bets;
+            }
         },
         mounted() {
         },
         created() {
         },
         methods: {
-            filterLot(lot) {
+            filterLots(lot) {
                 if (this.currentFilter === 'participate' && lot.user_price) {
                     return true;
                 }
