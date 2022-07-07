@@ -130,23 +130,13 @@
                 let params = {
                     limit,
                     offset: this.offset,
-                    organization: 1
                 }
-                if (this.status === 'currents') {
-                    api.getDraftList(params).then(tenders => {
-                        this.tenders = tenders
-                        console.log(tenders)
-                    }).catch(err => {
-                        console.error(err)
-                    })
-                } else if (this.status === 'closed') {
-                    api.getMyClosedTenders(params).then(tenders => {
-                        this.tenders = tenders
-                        console.log(tenders)
-                    }).catch(err => {
-                        console.error(err)
-                    })
-                }
+                api.getDraftList(params).then(tenders => {
+                    this.tenders = tenders
+                    console.log(tenders)
+                }).catch(err => {
+                    console.error(err)
+                })
             },
         }
     };

@@ -610,12 +610,14 @@
                 tenderApi.updateTender(tender.id, tender)
                     .then(tender => {
                         this.defaultTender = tender
-                        alert('Тендер обновлён')
+                        //alert('Тендер обновлён')
+                        this.$router.push({ name: 'tender', params: { id: tender.id } })
                     }).catch(err => {
                         console.error(err)
                     })
             },
             resetFormTender() {
+                this.$router.go(-1);
                 this.tenderForm.id = false
                 this.tenderForm.name = ''
                 this.tenderForm.min_step = null
