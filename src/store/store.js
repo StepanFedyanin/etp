@@ -14,6 +14,7 @@ export default createStore({
             token: null,
             refreshToken: null,
             user: null,
+            regData: null,
             loader: null,
             error: null
         }
@@ -50,6 +51,7 @@ export default createStore({
         },
         deathUser(context) {
             context.commit('user', null);
+            context.commit('regData', null);
             context.commit('removeToken');
         },
         setStepRegistration(context, step) {

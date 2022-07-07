@@ -307,7 +307,7 @@
                     }, {
                         $formkit: 'text',
                         name: 'name',
-                        value: "Тестовый тендер",
+                        value: '',
                         label: 'Название тендера',
                         help: 'Напишите краткое описание закупаемых товаров или услуг',
                         validation: 'required',
@@ -465,7 +465,7 @@
                     {
                         $formkit: 'datetime-local',
                         name: 'date_start',
-                        value: "2021-11-11T11:11",
+                        value: this.$helpers.formatDate(new Date(), 'YYYY-MM-DDTHH:mm'),
                         label: 'Дата начала этапа торгов',
                         help: 'Укажите дату и время начала начала торгов (новые участники не регистрируются)',
                         validation: 'required',
@@ -486,7 +486,7 @@
                     }, {
                         $formkit: 'datetime-local',
                         name: 'date_end',
-                        value: "2022-11-11T11:11",
+                        value: this.$helpers.formatDate(new Date(new Date().getTime() + 86400000), 'YYYY-MM-DDTHH:mm'),
                         label: 'Дата завершения торгов и выбор победителя',
                         help: 'Укажите дату и время начала окончания тендера и объявления победителя',
                         validation: 'required',

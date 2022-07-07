@@ -52,9 +52,9 @@
                         name: 'kpp',
                         label: 'КПП',
                         placeholder: 'Ваш КПП',
-                        validation: [['required'], ['matches', /^\d{9}$/]],
+                        validation: [['matches', /^\d{9}$/]],
                         maska: { mask: '#########' },
-                        outerClass: 'field--inline field--required'
+                        outerClass: 'field--inline'
                     }, {
                         $formkit: 'checkbox',
                         name: 'owner_type',

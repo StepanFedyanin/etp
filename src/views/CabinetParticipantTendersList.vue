@@ -50,16 +50,22 @@
                     </div>
                 </div>
             </div>
-            <div
-                v-if="tenders && tenders.count"
-                class="tenders"
+            <template
+                v-if="showLoaderSending"
+            >
+                <div class="tenders__loader loader">
+                    <div class="spinner" /> Загрузка данных
+                </div>
+            </template>
+            <template
+                v-else-if="tenders && tenders.count"
             >
                 <blockTender
                     v-for="(tender, index) in tenders.results"
                     :key="`tender-${index}`"
                     :tender="tender"
                 />
-            </div>
+            </template>
         </div>
     </div>
 </template>
@@ -86,6 +92,7 @@
             return {
                 limit: 10,
                 tenders: null,
+                showLoaderSending: false
             }
         },
         computed: {
@@ -133,15 +140,19 @@
                     participation: 1
                 }
                 if (this.status === 'currents') {
+                    this.showLoaderSending = true;
                     api.getMyCurrentsTenders(params).then(tenders => {
                         this.tenders = tenders
+                        this.showLoaderSending = false;
                         console.log(tenders)
                     }).catch(err => {
                         console.error(err)
                     })
                 } else if (this.status === 'closed') {
+                    this.showLoaderSending = true;
                     api.getMyClosedTenders(params).then(tenders => {
                         this.tenders = tenders
+                        this.showLoaderSending = false;
                         console.log(tenders)
                     }).catch(err => {
                         console.error(err)
@@ -152,13 +163,15 @@
                 formData.limit = Number(this.limit)
                 formData.offset = this.offset
                 console.log(formData)
-                api.searchTenders(formData)
-                    .then(tenders => {
-                        this.tenders = tenders
-                        console.log(tenders)
-                    }).catch(err => {
-                        console.error(err)
-                    })
+                this.showLoaderSending = true;
+                api.searchTenders(formData).then(tenders => {
+                    this.showLoaderSending = false;
+                    this.tenders = tenders
+                    console.log(tenders)
+                }).catch(err => {
+                    this.showLoaderSending = false;
+                    console.error(err)
+                })
             }
         }
     };
