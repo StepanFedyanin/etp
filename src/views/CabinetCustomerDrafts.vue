@@ -50,23 +50,15 @@
                     </div>
                 </div>
             </div>
-            <div class="tenders">
-                <template
-                    v-if="showLoaderSending"
-                >
-                    <div class="tenders__loader loader">
-                        <div class="spinner" /> Загрузка данных
-                    </div>
-                </template>
-                <template
-                    v-else-if="tenders && tenders.count"
-                >
-                    <blockTender
-                        v-for="(tender, index) in tenders.results"
-                        :key="`tender-${index}`"
-                        :tender="tender"
-                    />
-                </template>
+            <div
+                v-if="tenders && tenders.count"
+                class="tenders"
+            >
+                <blockTender
+                    v-for="(tender, index) in tenders.results"
+                    :key="`tender-${index}`"
+                    :tender="tender"
+                />
             </div>
         </div>
     </div>
@@ -94,7 +86,6 @@
             return {
                 limit: 10,
                 tenders: null,
-                showLoaderSending: false
             }
         },
         computed: {
@@ -111,72 +102,42 @@
                 if (this.$route.query.page) {
                     this.$router.replace({ query: {} })
                 } else {
-                    this.getTenders()
+                    this.getDrafts()
                 }
             },
             'status': {
                 handler() {
-                    this.getTenders()
+                    this.getDrafts()
                 },
             },
             '$route.query.page': {
                 handler() {
-                    this.getTenders()
+                    this.getDrafts()
                 },
             }
         },
         mounted() {
             console.log(this.status);
-            this.getTenders()
+            this.getDrafts()
         },
         beforeDestroy() {
         },
         created() {
         },
         methods: {
-            getTenders() {
+            getDrafts() {
                 let limit = Number(this.limit)
                 let params = {
                     limit,
                     offset: this.offset,
-                    organization: 1
                 }
-                if (this.status === 'currents') {
-                    this.showLoaderSending = true;
-                    api.getMyCurrentsTenders(params).then(tenders => {
-                        this.tenders = tenders
-                        this.showLoaderSending = false;
-                        console.log(tenders)
-                    }).catch(err => {
-                        this.showLoaderSending = false;
-                        console.error(err)
-                    })
-                } else if (this.status === 'closed') {
-                    this.showLoaderSending = true;
-                    api.getMyClosedTenders(params).then(tenders => {
-                        this.tenders = tenders
-                        this.showLoaderSending = false;
-                        console.log(tenders)
-                    }).catch(err => {
-                        this.showLoaderSending = false;
-                        console.error(err)
-                    })
-                }
-            },
-            startSearch(formData) {
-                formData.limit = Number(this.limit)
-                formData.offset = this.offset
-                console.log(formData)
-                this.showLoaderSending = true;
-                api.searchTenders(formData).then(tenders => {
+                api.getDraftList(params).then(tenders => {
                     this.tenders = tenders
-                    this.showLoaderSending = false;
                     console.log(tenders)
                 }).catch(err => {
-                    this.showLoaderSending = false;
                     console.error(err)
                 })
-            }
+            },
         }
     };
 </script>

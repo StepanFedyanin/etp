@@ -40,19 +40,21 @@
                 formValues: this.formData,
                 schema: [
                     {
-                        $formkit: 'text',
+                        $formkit: 'maska',
                         name: 'inn',
                         label: 'ИНН',
                         placeholder: 'Ваш ИНН',
                         validation: [['required'], ['matches', /^(\d{10}|\d{12})$/]],
+                        maska: { mask: ['##########', '############'] },
                         outerClass: 'field--inline field--required'
                     }, {
-                        $formkit: 'text',
+                        $formkit: 'maska',
                         name: 'kpp',
                         label: 'КПП',
                         placeholder: 'Ваш КПП',
-                        validation: 'required',
-                        outerClass: 'field--inline field--required'
+                        validation: [['matches', /^\d{9}$/]],
+                        maska: { mask: '#########' },
+                        outerClass: 'field--inline'
                     }, {
                         $formkit: 'checkbox',
                         name: 'owner_type',

@@ -219,9 +219,9 @@
                     this.$store.dispatch('setRegData', this.regData);
                     this.next();
                 }).catch(err => {
-                    node.setErrors(
-                        [err.detail],
-                    );
+                    //node.setErrors(
+                    //    [err.detail],
+                    //);
                     this.showLoaderSending = false;
                     this.$store.dispatch('showError', err);
                     console.error(err);

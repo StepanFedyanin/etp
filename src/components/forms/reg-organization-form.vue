@@ -72,13 +72,14 @@
                         label: 'КПП',
                         placeholder: 'Ваш КПП',
                         validation: 'required',
-                        outerClass: 'field--inline field--required'
+                        outerClass: 'field--inline'
                     }, {
-                        $formkit: 'text',
+                        $formkit: 'maska',
                         name: 'ogrn',
                         label: 'ОГРН',
                         placeholder: 'ОГРН организации',
                         validation: [['required'], ['matches', /^\d{13}$/]],
+                        maska: { mask: '#############' },
                         outerClass: 'field--inline field--required'
                     }, {
                         $formkit: 'text',
@@ -134,10 +135,11 @@
                         validation: 'required',
                         outerClass: 'field--inline field--required'
                     }, {
-                        $formkit: 'text',
+                        $formkit: 'maska',
                         name: 'capital',
                         label: 'Сумма уставного капитала',
                         validation: 'required|number',
+                        maska: { mask: '#*' },
                         outerClass: 'field--inline field--required'
                     }, {
                         $formkit: 'text',

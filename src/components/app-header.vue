@@ -126,7 +126,7 @@
             <div class="container">
                 <div class="header__breadcrumbs">
                     <a
-                        href="#"
+                        href="/"
                         class="header__breadcrumbs-link"
                     >Главная страница</a>
                 </div>

@@ -48,7 +48,7 @@
                                 </span>
                             </div>
                             <div class="offers__item-param">
-                                Текущее снижение <span>??? %</span>
+                                Текущее снижение <span>{{ $helpers.toPrice((100 - 100 * (lot.last_price || (lot.price * lot.quantity)) / (lot.price  * lot.quantity)), { sign: '%', pointer: ',' }) }}</span>
                             </div>
                         </div>
                         <FormKit
@@ -72,7 +72,8 @@
                                 </div>
                                 <FormKit
                                     v-model="formValues.price"
-                                    type="text"
+                                    :maska="{ mask: '#*D##', tokens: { 'D': { pattern: /\./ }}}"
+                                    type="maska"
                                     name="price"
                                     label=""
                                     placeholder="Ваша ставка"
