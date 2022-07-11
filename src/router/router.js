@@ -26,6 +26,7 @@ import cabinetTendersEnd from '@/views/CabinetTendersEnd';
 import cabinetContragents from '@/views/CabinetContragents';
 import cabinetContragentsList from '@/views/CabinetContragentsList';
 import cabinetContragentsItem from '@/views/CabinetContragentsItem';
+import cabinetOrganizationAddPerson from '@/views/CabinetOrganizationAddPerson';
 import CabinetOrganization from '@/views/CabinetOrganization';
 import CabinetOrganizationEdit from '@/views/CabinetOrganizationEdit';
 import cabinetNews from '@/views/CabinetNews';
@@ -181,6 +182,16 @@ const routes = [
         component: CabinetOrganizationEdit,
         meta: { 
             title: 'Моя организация', 
+            breadcrumbs: [],
+            requiresAuth: true 
+        },
+        props: true,
+    }, {
+        path: '/organization/add-person',
+        name: 'organization-add-person',
+        component: cabinetOrganizationAddPerson,
+        meta: { 
+            title: 'Добавить сотрудника', 
             breadcrumbs: [],
             requiresAuth: true 
         },

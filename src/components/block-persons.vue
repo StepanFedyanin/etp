@@ -45,7 +45,7 @@
             </div>
             <!-- v-if=" user.is_staff || user.is_master && user.organization.id == $store._state.data.user.organization.id " -->
             <div
-                v-if=" user.is_master && user.organization.id == $store._state.data.user.organization.id "
+                v-if=" user.is_staff || user.is_master && user.organization.id == $store._state.data.user.organization.id "
                 class="cell-icons"
             >
                 <svg 
