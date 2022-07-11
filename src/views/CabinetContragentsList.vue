@@ -21,7 +21,7 @@
                 </div>
                 <div class="contragents__list">
                     <div 
-                        v-for="contragent in contragents"
+                        v-for="contragent in this.contragents"
                         :key="`customer-${contragent.id}`"
                         class="contragents__item"
                         @click="onClickContragent(contragent.id)"
@@ -49,15 +49,19 @@
                 >
                     Показать еще
                 </button> -->
-                <!-- {{contragents }}
-                {{contragents.count }} -->
+
                 <div
-                    v-if="contragents && contragents.length"
+                    v-if="this.contragents && this.contragents.length"
                     class="tenders__pagination"
                 >
                     <div class="tenders__pagination-left">
                         <div class="tenders__pagination-count">
-                            Отобрано: <span>{{ contragents.length }}</span>
+                            Всего: <span>{{ this.count }}</span>
+                        </div>
+                    </div>
+                    <div class="tenders__pagination-left">
+                        <div class="tenders__pagination-count">
+                            Отобрано: <span>{{ this.contragents.length }}</span>
                         </div>
                     </div>
                     <div class="tenders__pagination-right">
@@ -86,7 +90,7 @@
                             </select>
                         </div>
                         <Pagination
-                            :total="contragents.length"
+                            :total="this.count"
                             :limit="Number(limit)"
                             :currentPage="Number($route.query.page || 1)"
                             :url="$route.path"
@@ -110,6 +114,7 @@
             return {
                 contragents: [],
                 limit: 10,
+                count: "",
             }
         },
         props: {
@@ -170,7 +175,8 @@
                 }
                 api.getOrganizations(params).then(res => {
                     this.contragents = res.results;
-                    console.log(res.results);
+                    this.count = res.count;
+                    // console.log(res.results);
                     // this.$store.dispatch('setUser', res);
                     // if(this.organization) {
                     //     this.organization = res.organization;
