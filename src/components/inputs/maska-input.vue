@@ -24,5 +24,4 @@
         //console.log('handleInput', $event.target.value)
         props.context.node.input($event.target.value)
     }
-
 </script>

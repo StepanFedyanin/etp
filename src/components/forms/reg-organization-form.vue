@@ -11,6 +11,7 @@
         :loading="loading ? true : undefined"
         @submit="submitHandler"
     >
+        {{ formValues }}
         <div class="form__block">
             <FormKitSchema 
                 :schema="schema" 

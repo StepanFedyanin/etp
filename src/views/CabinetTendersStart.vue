@@ -4,263 +4,274 @@
             <div class="tender-start__title h1">
                 {{ $route.params.id ? 'Редактирование тендера' : 'Создание тендера' }}
             </div>
-            <FormKit
-                id="tenderForm"
-                v-model="tenderForm"
-                name="tender-start"
-                type="form"
-                data-loading="showLoaderSending"
-                form-class="$reset tender-start__form tender-form"
-                :disabled="showLoaderSending"
-                :loading="showLoaderSending ? true : undefined"
-                :actions="false"
-                @submit="defaultTender ? updateTender() : createTender()"
+            <template
+                v-if="showLoaderSending"
             >
-                <div class="tender-form__title">
-                    Общие параметры тендера
+                <div class="tenders__loader loader">
+                    <div class="spinner" /> Загрузка данных
                 </div>
-                <div class="tender-form__fieldgroup">
-                    <FormKitSchema
-                        :schema="tenderMainInfoSchema"
-                    />
-                </div>
-
-                <div class="tender-form__title">
-                    Дата и время проведения тендера
-                    <div class="tender-form__prefix">
-                        При публикации начинается прием документов и регистрация новых участников.
-                    </div>
-                </div>
-                <div class="tender-form__fieldgroup">
-                    <FormKitSchema :schema="tenderTimeSchema" />
-                </div>
-
-                <div class="tender-form__title">
-                    Дополнительая информация
-                </div>
-                <div class="tender-form__fieldgroup">
-                    <FormKitSchema :schema="tenderAdditionalSchema" />
-                </div>
-
-                <div
-                    v-if="!defaultTender"
-                    class="tender-form__prepare"
+            </template>
+            <template
+                v-else
+            >
+                <FormKit
+                    id="tenderForm"
+                    v-model="tenderForm"
+                    name="tender-start"
+                    type="form"
+                    data-loading="showLoaderSending"
+                    form-class="$reset tender-start__form tender-form"
+                    :disabled="showLoaderSending"
+                    :loading="showLoaderSending ? true : undefined"
+                    :actions="false"
+                    @submit="defaultTender ? updateTender() : createTender()"
                 >
-                    <button
-                        type="submit"
-                        class="button button-outline-green"
-                    >
-                        Сохранить параметры
-                    </button>
-                    <div class="tender-form__prepare-info">
-                        Сохраните параметры тендера, чтобы перейти 
-                        <br>
-                        к добавлению лотов и документов
-                    </div>
-                </div>
-
-                <div>
                     <div class="tender-form__title">
-                        Документация
+                        Общие параметры тендера
                     </div>
-                    <div class="tender-form__block">
-                        <div
-                            v-if="defaultTender"
-                            class="tenders-form__docs lots m--docs"
+                    <div class="tender-form__fieldgroup">
+                        <FormKitSchema
+                            :schema="tenderMainInfoSchema"
+                        />
+                    </div>
+
+                    <div class="tender-form__title">
+                        Дата и время проведения тендера
+                        <div class="tender-form__prefix">
+                            При публикации начинается прием документов и регистрация новых участников.
+                        </div>
+                    </div>
+                    <div class="tender-form__fieldgroup">
+                        <FormKitSchema :schema="tenderTimeSchema" />
+                    </div>
+
+                    <div class="tender-form__title">
+                        Дополнительая информация
+                    </div>
+                    <div class="tender-form__fieldgroup">
+                        <FormKitSchema :schema="tenderAdditionalSchema" />
+                    </div>
+
+                    <div
+                        v-if="!defaultTender"
+                        class="tender-form__prepare"
+                    >
+                        <button
+                            type="submit"
+                            class="button button-outline-green"
                         >
-                            <div class="lots__header">
-                                <div class="lots__header-cell m--file">
-                                    Имя файла
-                                </div>
-                                <div class="lots__header-cell m--name">
-                                    Описание
-                                </div>
-                            </div>
+                            Сохранить параметры
+                        </button>
+                        <div class="tender-form__prepare-info">
+                            Сохраните параметры тендера, чтобы перейти 
+                            <br>
+                            к добавлению лотов и документов
+                        </div>
+                    </div>
+
+                    <div>
+                        <div class="tender-form__title">
+                            Документация
+                        </div>
+                        <div class="tender-form__block">
                             <div
-                                ref="documents"
-                                class="lots__list"
+                                v-if="defaultTender"
+                                class="tenders-form__docs lots m--docs"
                             >
-                                <FormKit
-                                    id="draft_file"
-                                    name="draft_file"
-                                    type="file"
-                                    outerClass="$reset field--type_hidden"
-                                    @change="uploadFileComplete"
-                                />
+                                <div class="lots__header">
+                                    <div class="lots__header-cell m--file">
+                                        Имя файла
+                                    </div>
+                                    <div class="lots__header-cell m--name">
+                                        Описание
+                                    </div>
+                                </div>
                                 <div
-                                    v-for="(file, idx) in documents"
-                                    :key="idx"
-                                    class="lots__item"
+                                    ref="documents"
+                                    class="lots__list"
                                 >
-                                    <!-- <FormKit
-                                        v-if="!file.draft"
-                                        :id="getFileId(file.id)"
-                                        :name="getFileId(file.id)"
+                                    <FormKit
+                                        id="draft_file"
+                                        name="draft_file"
                                         type="file"
                                         outerClass="$reset field--type_hidden"
                                         @change="uploadFileComplete"
-                                    /> -->
-                                    <div class="lots__item-cell m--file">
-                                        <a
-                                            :href="urlPath + file.file"
-                                        >
-                                            {{ file.name || $helpers.getFilename(file.file) }}
-                                        </a>
-                                    </div>
-                                    <div class="lots__item-cell">
-                                        <FormKit
-                                            class="input"
-                                            type="text"
-                                            placeholder="Ввести данные"
-                                            :name="`description_${file.id}`"
-                                            :value="file.description"
-                                            outerClass="$reset"
-                                            @focusout="updateDocument(file.id)"
-                                        />
-                                    </div>
-                                    <div class="lots__item-cell m--edit">
-                                        <div
-                                            class="lots__item-edit"
-                                            @click="updateDocument(file.id)"
-                                        />
-                                    </div>
-                                    <div class="lots__item-cell m--delete">
-                                        <div
-                                            class="lots__item-delete"
-                                            @click="onClickRemoveFile(file.id)"
-                                        />
+                                    />
+                                    <div
+                                        v-for="(file, idx) in documents"
+                                        :key="idx"
+                                        class="lots__item"
+                                    >
+                                        <!-- <FormKit
+                                            v-if="!file.draft"
+                                            :id="getFileId(file.id)"
+                                            :name="getFileId(file.id)"
+                                            type="file"
+                                            outerClass="$reset field--type_hidden"
+                                            @change="uploadFileComplete"
+                                        /> -->
+                                        <div class="lots__item-cell m--file">
+                                            <a
+                                                :href="urlPath + file.file"
+                                            >
+                                                {{ file.name || $helpers.getFilename(file.file) }}
+                                            </a>
+                                        </div>
+                                        <div class="lots__item-cell">
+                                            <FormKit
+                                                class="input"
+                                                type="text"
+                                                placeholder="Ввести данные"
+                                                :name="`description_${file.id}`"
+                                                :value="file.description"
+                                                outerClass="$reset"
+                                                @focusout="updateDocument(file.id)"
+                                            />
+                                        </div>
+                                        <div class="lots__item-cell m--edit">
+                                            <div
+                                                class="lots__item-edit"
+                                                @click="updateDocument(file.id)"
+                                            />
+                                        </div>
+                                        <div class="lots__item-cell m--delete">
+                                            <div
+                                                class="lots__item-delete"
+                                                @click="onClickRemoveFile(file.id)"
+                                            />
+                                        </div>
                                     </div>
                                 </div>
                             </div>
+                            <button
+                                type="button"
+                                class="button button-outline-green"
+                                :disabled="!defaultTender"
+                                @click="onClickUploadFile(null)"
+                            >
+                                Добавить документ
+                            </button>
                         </div>
+                    </div>
+
+                    <div>
+                        <div class="tender-form__title">
+                            Лоты
+                        </div>
+                        <div class="tender-form__block">
+                            <div
+                                v-if="defaultTender"
+                                class="tender-form__lots lots m--tender-start"
+                            >
+                                <div class="lots__header">
+                                    <div class="lots__header-cell m--name">
+                                        Название
+                                    </div>
+                                    <div class="lots__header-cell m--nums">
+                                        Кол/во
+                                    </div>
+                                    <div class="lots__header-cell m--unit">
+                                        Ед.изм
+                                    </div>
+                                    <div class="lots__header-cell m--vat">
+                                        Ставка НДС
+                                    </div>
+                                    <div class="lots__header-cell m--price">
+                                        Цена
+                                    </div>
+                                    <div class="lots__header-cell m--sum">
+                                        Сумма
+                                    </div>
+                                    <div class="lots__item-cell m--edit" />
+                                    <div class="lots__item-cell m--delete" />
+                                </div>
+                                <div
+                                    class="lots__list"
+                                >
+                                    <div
+                                        v-for="lot in lots"
+                                        :key="lot.id"
+                                        class="lots__item"
+                                    >
+                                        <div class="lots__item-cell">
+                                            {{ lot.name }}
+                                        </div>
+                                        <div class="lots__item-cell">
+                                            {{ lot.quantity }}
+                                        </div>
+                                        <div class="lots__item-cell">
+                                            {{ lot.unit }}
+                                        </div>
+                                        <div class="lots__item-cell">
+                                            {{ lot.nds }}
+                                        </div>
+                                        <div class="lots__item-cell">
+                                            {{ $helpers.toPrice(lot.price, { pointer: ',', sign: '₽' }) }}
+                                        </div>
+                                        <div class="lots__item-cell">
+                                            {{ $helpers.toPrice(lot.price * lot.quantity, { pointer: ',', sign: '₽' }) }}
+                                        </div>
+                                        <div class="lots__item-cell m--edit">
+                                            <div
+                                                class="lots__item-edit"
+                                                @click="onClickAddLotModal(lot.id)"
+                                            />
+                                        </div>
+                                        <div class="lots__item-cell m--delete">
+                                            <div
+                                                class="lots__item-delete"
+                                                @click="onClickRemoveLot(lot.id)"
+                                            />
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="tender-form__block-actions">
+                                <button
+                                    type="button"
+                                    :disabled="!defaultTender"
+                                    class="button button-outline-green"
+                                    @click="onClickAddLotModal(null)"
+                                >
+                                    Добавить лот
+                                </button>
+                                <button
+                                    type="button"
+                                    :disabled="!defaultTender"
+                                    class="button button-outline-green"
+                                    @click="onClickShowFileLotModal"
+                                >
+                                    Загрузить из файла
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="tender-form__actions">
                         <button
                             type="button"
-                            class="button button-outline-green"
-                            :disabled="!defaultTender"
-                            @click="onClickUploadFile(null)"
+                            class="button button-red"
+                            @click="resetFormTender"
                         >
-                            Добавить документ
+                            Отменить
+                        </button>
+                        <button
+                            type="button"
+                            class="button button-green"
+                            @click="defaultTender ? updateTender() : createTender()"
+                        >
+                            Сохранить как черновик
+                        </button>
+                        <button
+                            type="button"
+                            class="button button-green"
+                            :disabled="!defaultTender"
+                            @click="publishTender"
+                        >
+                            Опубликовать
                         </button>
                     </div>
-                </div>
-
-                <div>
-                    <div class="tender-form__title">
-                        Лоты
-                    </div>
-                    <div class="tender-form__block">
-                        <div
-                            v-if="defaultTender"
-                            class="tender-form__lots lots m--tender-start"
-                        >
-                            <div class="lots__header">
-                                <div class="lots__header-cell m--name">
-                                    Название
-                                </div>
-                                <div class="lots__header-cell m--nums">
-                                    Кол/во
-                                </div>
-                                <div class="lots__header-cell m--unit">
-                                    Ед.изм
-                                </div>
-                                <div class="lots__header-cell m--vat">
-                                    Ставка НДС
-                                </div>
-                                <div class="lots__header-cell m--price">
-                                    Цена
-                                </div>
-                                <div class="lots__header-cell m--sum">
-                                    Сумма
-                                </div>
-                                <div class="lots__item-cell m--edit" />
-                                <div class="lots__item-cell m--delete" />
-                            </div>
-                            <div
-                                class="lots__list"
-                            >
-                                <div
-                                    v-for="lot in lots"
-                                    :key="lot.id"
-                                    class="lots__item"
-                                >
-                                    <div class="lots__item-cell">
-                                        {{ lot.name }}
-                                    </div>
-                                    <div class="lots__item-cell">
-                                        {{ lot.quantity }}
-                                    </div>
-                                    <div class="lots__item-cell">
-                                        {{ lot.unit }}
-                                    </div>
-                                    <div class="lots__item-cell">
-                                        {{ lot.nds }}
-                                    </div>
-                                    <div class="lots__item-cell">
-                                        {{ $helpers.toPrice(lot.price, { pointer: ',', sign: '₽' }) }}
-                                    </div>
-                                    <div class="lots__item-cell">
-                                        {{ $helpers.toPrice(lot.price * lot.quantity, { pointer: ',', sign: '₽' }) }}
-                                    </div>
-                                    <div class="lots__item-cell m--edit">
-                                        <div
-                                            class="lots__item-edit"
-                                            @click="onClickAddLotModal(lot.id)"
-                                        />
-                                    </div>
-                                    <div class="lots__item-cell m--delete">
-                                        <div
-                                            class="lots__item-delete"
-                                            @click="onClickRemoveLot(lot.id)"
-                                        />
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="tender-form__block-actions">
-                            <button
-                                type="button"
-                                :disabled="!defaultTender"
-                                class="button button-outline-green"
-                                @click="onClickAddLotModal(null)"
-                            >
-                                Добавить лот
-                            </button>
-                            <button
-                                type="button"
-                                :disabled="!defaultTender"
-                                class="button button-outline-green"
-                                @click="onClickShowFileLotModal"
-                            >
-                                Загрузить из файла
-                            </button>
-                        </div>
-                    </div>
-                </div>
-                <div class="tender-form__actions">
-                    <button
-                        type="button"
-                        class="button button-red"
-                        @click="resetFormTender"
-                    >
-                        Отменить
-                    </button>
-                    <button
-                        type="button"
-                        class="button button-green"
-                        @click="defaultTender ? updateTender() : createTender()"
-                    >
-                        Сохранить как черновик
-                    </button>
-                    <button
-                        type="button"
-                        class="button button-green"
-                        :disabled="!defaultTender"
-                        @click="publishTender"
-                    >
-                        Опубликовать
-                    </button>
-                </div>
-            </FormKit>
+                </FormKit>
+            </template>
         </div>
 
         <ModalAddLot
@@ -464,8 +475,9 @@
                 tenderTimeSchema: [
                     {
                         $formkit: 'datetime-local',
+                        mode: 'dateTime',
                         name: 'date_start',
-                        value: this.$helpers.formatDate(new Date(), 'YYYY-MM-DDTHH:mm'),
+                        //value: this.$helpers.formatDate(new Date(), 'YYYY-MM-DDTHH:mm'),
                         label: 'Дата начала этапа торгов',
                         help: 'Укажите дату и время начала начала торгов (новые участники не регистрируются)',
                         validation: 'required',
@@ -563,11 +575,14 @@
                 handler() {
                     let id = this.$route.params.id
                     if (id) { // редактирование тендера
+                        //this.showLoaderSending = true;
                         tenderApi.getTender(id).then(tender => {
                             this.defaultTender = tender
                             // console.log(tender)
                             this.setTender()
+                            this.showLoaderSending = false;
                         }).catch(err => {
+                            this.showLoaderSending = false;
                             console.error(err)
                         })
                     } else {
@@ -691,6 +706,7 @@
                     tenderApi.deleteTenderDocument(this.defaultTender.id, this.documents[idx].id)
                         .then(res => {
                             this.documents.splice(idx, 1)
+                            console.log(res);
                             // this.defaultTender.documents = this.documents
                         }).catch(err => {
                             console.error(err)
@@ -737,6 +753,7 @@
                 if (idx >= 0) {
                     tenderApi.deleteTenderLot(this.defaultTender.id, id)
                         .then(res => {
+                            console.log(res);
                             this.lots.splice(idx, 1)
                         }).catch(err => {
                             console.error(err)
