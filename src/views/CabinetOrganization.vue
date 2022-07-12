@@ -1,11 +1,11 @@
 <template>
     <div class="app__main">
         <Breadcrumbs />
-        <div class="cabinet organization">
+        <div 
+            v-if=" profile"
+            class="cabinet organization">
             <div class="container">
-                <div 
-                    v-if=" profile"
-                    class="organization__info"
+                <div class="organization__info"
                 >
                     <div class="organization__title h1">
                         {{ organization.name }}
@@ -29,6 +29,13 @@
                 <h2 class="organization__subtitle h2">
                     Представители организации
                 </h2>
+                <svg 
+                    v-if=" profile.is_staff || profile.is_master && profile.organization.id == $store._state.data.user.organization.id"
+                    class="svg-icon svg-icon__addPerson"
+                    @click="onClickAddStaff()"
+                >
+                    <use xlink:href="../assets/img/icons/icons.svg#addPerson" />
+                </svg>
                 <div class="cabinet__block cabinet__persons">
                     <blockPersons 
                         :user="profile"
@@ -138,6 +145,9 @@
             },
             onClickEditOrganization(){
                 this.$router.push({ name: 'organization-edit'});
+            },
+            onClickAddStaff(){
+                this.$router.push({ name: 'organization-add-person'});
             },
             getMembers() {
                 api.getMyOrganizationMembers().then(res => {
