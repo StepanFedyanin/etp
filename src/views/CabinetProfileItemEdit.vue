@@ -2,10 +2,6 @@
     <div class="app__main">
         <Breadcrumbs />
         <div class="cabinet">
-            <div>
-                <!-- 1) {{ $store._state.data.user.id }}
-                2) {{ user.id }} -->
-            </div>
             <div class="container">
                 <div class="profile-edit">
                     <h1 class="profile-edit__title h1">
@@ -59,17 +55,7 @@
             }).catch(err => {
                 console.error(err);
             });
-            // this.getMembers();
         },
-        //     api.getMyProfile().then(res => {
-        //         this.profile = res;
-        //         if(this.organization){
-        //             this.organization = res.organization;
-        //         }
-        //     }).catch(err => {
-        //         console.error(err);
-        //     });
-        // },
         methods: {
         }
     }

@@ -58,7 +58,6 @@
             ProfileUser,
             blockOrganization,
             blockPersons,
-            // ProfileOrganizationEdit
         },
         props: {
             id: {
@@ -70,18 +69,9 @@
             return {
                 profile: undefined,
                 contragents: [],
-                // contragent: {
-                //     id: 1,
-                //     name: 'ООО “Флексайтс”',
-                //     city: 'г. Челябинск',
-                //     activity: 'Разработка компьютерного программного обеспечения',
-                //     customer: '113',
-                //     member: '45'
-                // },
                 organization: {},
                 persons: [],
                 tenders: [],
-                // organizationId: this.$store.organization.id,
             }
         },
         mounted() {

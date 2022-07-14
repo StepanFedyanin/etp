@@ -44,10 +44,6 @@
             api.getMyProfile().then(res => {
                 this.profile = res;
                 if (res.organization && res.organization.id) {
-                    // this.organization = res.organization.id;
-                    // this.regData.person = {
-                    //     organization: res.organization.id
-                    // };
                     this.regData.person.organization = res.organization.id;
                     console.log(res.organization);
                 }
@@ -58,9 +54,7 @@
         },
         methods: {
             submitPersonHandler(data, node) {
-                // console.log(data);
                 this.showLoaderSending = true;
-                // this.$store.dispatch('setRegData', this.regData);
                 let params = Object.assign({}, this.regData.person);
                 api.addProfile(params).then(res => {
                     console.log(res);

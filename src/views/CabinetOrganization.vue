@@ -44,7 +44,7 @@
                     />
                 </div>
                 <div class="contragent__subtitle h2">
-                    Заказчик <span class="m--color-green">{{ createdTenders.count }} тендеров</span>
+                    Заказчик <span class="m--color-green">{{ createdTenders.count }} {{ getNoun(createdTenders.count) }}</span>
                 </div>
                 <div class="contragent__tenders tenders">
                     <blockTenderMini
@@ -63,7 +63,7 @@
                     </button>
                 </div>
                 <div class="contragent__subtitle h2">
-                    Участник <span class="m--color-green">{{ participationTenders.count }} тендер</span>
+                    Участник <span class="m--color-green">{{ participationTenders.count }} {{ getNoun(participationTenders.count) }}</span>
                 </div>
                 <div class="contragent__tenders tenders">
                     <blockTenderMini
@@ -179,6 +179,18 @@
                     this.countCreatedTenders = this.createdTenders.results.length;
                 });
             },
+            getNoun(number) {
+                let n = Math.abs(number);
+                n %= 100;
+                if (n === 0 || n >= 2 && n <= 20) {
+                    return "тендеров";
+                }
+                n %= 10;
+                if (n === 1) {
+                    return "тендера";
+                }
+                return "тендеров";
+            }
         }
     }
 </script>

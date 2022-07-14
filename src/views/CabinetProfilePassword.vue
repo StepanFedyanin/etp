@@ -17,7 +17,6 @@
 <script>
     import Breadcrumbs from '@/components/app-breadcrumbs';
     import ProfilePassword from '@/components/forms/profile-password.vue';
-    // import { user as api } from "@/services";
 
     export default {
         components: {
@@ -38,18 +37,6 @@
             }
         },
         created() {
-            // console.log(this.id);
-            // api.getProfile(this.id).then(res => {
-            //     this.profile = res;
-            //     console.log(this.profile);
-            //     this.$store.dispatch('setUser', res);
-            //     if(this.organization) {
-            //         this.organization = res.organization;
-            //     }
-            // }).catch(err => {
-            //     console.error(err);
-            // });
-            // this.getMembers();
         },
 
         methods: {
