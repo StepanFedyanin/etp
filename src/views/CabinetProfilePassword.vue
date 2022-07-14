@@ -16,7 +16,7 @@
 
 <script>
     import Breadcrumbs from '@/components/app-breadcrumbs';
-    import ProfilePassword from '@/components/profile-password.vue';
+    import ProfilePassword from '@/components/forms/profile-password.vue';
     // import { user as api } from "@/services";
 
     export default {

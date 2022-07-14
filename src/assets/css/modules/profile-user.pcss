@@ -6,12 +6,17 @@
     }
     &__table{
         @mixin shadow-box;
-        margin-bottom: 30px;
+        margin-bottom: 45px;
     }
     .double{
         display: flex;
-        justify-content: space-evenly;
+        /* justify-content: space-evenly; */
+        justify-content: center;
         flex-wrap: wrap;
+
+        .button:first-child {
+            margin-right: 30px;
+        }
     }
 }
 

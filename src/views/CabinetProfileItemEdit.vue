@@ -26,7 +26,7 @@
 
 <script>
     import Breadcrumbs from '@/components/app-breadcrumbs';
-    import ProfileEdit from '@/components/profile-edit.vue';
+    import ProfileEdit from '@/components/forms/profile-edit.vue';
     import { user as api } from "@/services";
 
     export default {

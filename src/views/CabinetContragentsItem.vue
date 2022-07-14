@@ -21,7 +21,7 @@
                 />
             </div>
             <div class="contragent__subtitle h2">
-                Заказчик <span class="m--color-green"> {{ createdTenders.count }} тендеров</span>
+                Заказчик <span class="m--color-green"> {{ createdTenders.count }}  {{ getNoun(createdTenders.count) }} </span>
             </div>
             <div class="contragent__tenders tenders tenders__created">
                 <blockTenderMini
@@ -31,7 +31,7 @@
                     :whole="true"
                 />
                 <button 
-                    v-if="createdTenders.count > this.countCreatedTenders"
+                    v-if="createdTenders.count > countCreatedTenders"
                     class="button button-outline-green tenders__more"
                     @click="getCreatedTenders()"
                 >
@@ -39,7 +39,7 @@
                 </button>
             </div>
             <div class="contragent__subtitle h2">
-                Участник <span class="m--color-green">{{ participationTenders.count }} тендер</span>
+                Участник <span class="m--color-green">{{ participationTenders.count }} {{ getNoun(participationTenders.count) }} </span>
             </div>
             <div 
                 v-if="participationTenders && participationTenders.count"
@@ -53,7 +53,7 @@
                 />
 
                 <button 
-                    v-if="participationTenders.count > this.countParticipationTenders"
+                    v-if="participationTenders.count > countParticipationTenders"
                     class="button button-outline-green tenders__more"
                     @click="getParticipationTenders()"
                 >
@@ -100,7 +100,8 @@
             }
         },
         mounted() {
-            },
+            
+        },
         beforeDestroy() {
         },
         created() {
@@ -113,6 +114,7 @@
             this.getCreatedTenders();
             this.getParticipationTenders();
             this.getMembers();
+            this.getNoun(4, "тендров", "тендер", "тендера", "тендеров");
         },
         methods: {
             getMembers() {
@@ -145,6 +147,18 @@
                     this.countCreatedTenders = this.createdTenders.results.length;
                 });
             },
+            getNoun(number) {
+                let n = Math.abs(number);
+                n %= 100;
+                if (n === 0 || n >= 2 && n <= 20) {
+                    return "тендеров";
+                }
+                n %= 10;
+                if (n === 1) {
+                    return "тендера";
+                }
+                return "тендеров";
+            }
         }
     };
 </script>
