@@ -30,12 +30,12 @@
                                 :class="[isActive && 'is-active', `m--icon-${item.icon}`]"
                                 class="sidebar__menu-link"
                                 @click="navigate"
+                                @click.prevent="onClickMenuItem(item.name)"
                             >
                                 {{ item.title }}
                                 <div
                                     v-if="item.items"
                                     class="sidebar__menu-item-arrow"
-                                    @click.prevent="onClickMenuItem(item.name)"
                                 />
                             </a>
                             <template

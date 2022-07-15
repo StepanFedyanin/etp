@@ -10,7 +10,7 @@ import needs from '@/views/Needs';
 import registration from '@/views/Registration';
 import auth from '@/views/Login';
 /* cabinet */
-import cabinet from '@/views/Cabinet';
+// import cabinet from '@/views/Cabinet';
 import cabinetCustomer from '@/views/CabinetCustomer';
 import cabinetCustomerTendersList from '@/views/CabinetCustomerTendersList';
 import cabinetCustomerDrafts from '@/views/CabinetCustomerDrafts';
@@ -91,12 +91,12 @@ const routes = [
         meta: { title: 'Политика конфиденциальности' },
         props: true,
     }, {
-        path: '/cabinet',
-        name: 'cabinet',
-        component: cabinet,
-        meta: { title: 'Кабинет', requiresAuth: true },
-        props: true,
-    }, {
+    //     path: '/cabinet',
+    //     name: 'cabinet',
+    //     component: cabinet,
+    //     meta: { title: 'Кабинет', requiresAuth: true },
+    //     props: true,
+    // }, {
         path: '/profile',
         name: 'profile',
         component: cabinetProfile,
@@ -106,29 +106,6 @@ const routes = [
             requiresAuth: true 
         },
         props: true,
-        // children: [
-        //     {
-        //         path: ':id',
-        //         name: 'profile-user',
-        //         component: cabinetProfileItem,
-        //         meta: { 
-        //             title: 'Профиль', 
-        //             breadcrumbs: ['profile'],
-        //             requiresAuth: true 
-        //         },
-        //         props: true,
-        //     }, {
-        //         path: ':id/edit',
-        //         name: 'profile-edit-user',
-        //         component: cabinetProfileItemEdit,
-        //         meta: { 
-        //             title: 'Редактирование профиля',
-        //             breadcrumbs: ['profile'],
-        //             requiresAuth: true 
-        //         },
-        //         props: true,
-        //     }, 
-        // ]
     }, {
         path: '/profile/edit',
         name: 'profile-edit',
@@ -332,7 +309,7 @@ const routes = [
                 component: cabinetParticipantTendersList,
                 meta: { 
                     title: 'Завершенные торги поставщика', 
-                    breadcrumbs: ['cabinet', 'participant'],
+                    breadcrumbs: ['participant'],
                     requiresAuth: true 
                 },
                 props: { 
@@ -393,7 +370,7 @@ const routes = [
     }, {
         path: '/chat',
         name: 'chat',
-        component: cabinet,
+        component: cabinetNews,
         meta: { 
             title: 'Чат', 
             breadcrumbs: [],
@@ -413,7 +390,7 @@ const routes = [
     }, {
         path: '/help',
         name: 'help',
-        component: cabinet,
+        component: cabinetNews,
         meta: { 
             title: 'Помощь', 
             breadcrumbs: [],

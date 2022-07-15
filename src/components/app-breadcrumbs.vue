@@ -1,21 +1,20 @@
 <template>
     <div class="app__breadcrumbs breadcrumbs">
-        <div
-            v-if="$route.fullPath !== '/cabinet'"
-            class="container"
-        >
-            <router-link
-                :to="{ name: 'cabinet' }"
+        <div class="container">
+            <!-- v-if="$route.fullPath !== '/cabinet'" -->
+            <!-- {{ $route.fullPath }} -->
+            <!-- <router-link
+                :to="{ name: 'profile' }"
                 class="breadcrumbs__link"
             >
                 Кабинет
-            </router-link>
+            </router-link> -->
             <router-link
                 v-for="(item, key) in $route.meta.breadcrumbs"
                 :key="key"
+                v-slot="{ href, route, navigate, isActive, isExactActive }"
                 :to="{ name: item }"
                 custom
-                v-slot="{ href, route, navigate, isActive, isExactActive }"
             >
                 <a 
                     :href="href"
@@ -32,7 +31,7 @@
                 {{ $route.meta.title }}
             </span>
         </div>
-        <div
+        <!-- <div
             v-else
             class="container"
         >
@@ -41,7 +40,7 @@
             >
                 {{ $route.meta.title }}
             </span>
-        </div>
+        </div> -->
     </div>
 </template>
 

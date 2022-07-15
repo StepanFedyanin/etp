@@ -61,11 +61,19 @@
                 <template
                     v-else-if="tenders && tenders.count"
                 >
+                    <!-- <pre>{{tenders}}</pre> -->
                     <blockTender
                         v-for="(tender, index) in tenders.results"
                         :key="`tender-${index}`"
                         :tender="tender"
                     />
+                </template>
+                <template
+                    v-else
+                >
+                    <!-- <pre>{{tenders}}</pre> -->
+                    <div class="tenders__empty">В данный момент у вас нет ни одного тендера</div>
+                    
                 </template>
             </div>
         </div>

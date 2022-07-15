@@ -1,16 +1,16 @@
 <template>
     <div class="app__main">
-        <Breadcrumbs />
+        <!-- <Breadcrumbs /> -->
         <routerView />
     </div>
 </template>
 
 <script>
-    import Breadcrumbs from '@/components/app-breadcrumbs.vue';
+    // import Breadcrumbs from '@/components/app-breadcrumbs.vue';
 
     export default {
         components: {
-            Breadcrumbs
+            // Breadcrumbs
         },
         data() {
             return {

@@ -124,7 +124,7 @@
                 });
             },
             next() {
-                this.$router.push({ name: 'cabinet' });
+                this.$router.push({ name: 'profile' });
             }
         }
     };

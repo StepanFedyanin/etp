@@ -126,9 +126,9 @@ const footerMenuUser = [
         role: 'all',
         title: 'Правила работы'
     }, {
-        name: 'cabinet',
+        name: 'profile',
         role: 'all',
-        title: 'Кабинет'
+        title: 'Профиль'
     }
 ];
 
@@ -139,7 +139,7 @@ const sidebarMenu = [
         title: 'Тендеры',
         icon: 'search'
     }, {
-        name: 'customer',
+        name: 'customer-current',
         role: 'all',
         title: 'Я - заказчик',
         icon: 'customer',
@@ -159,7 +159,7 @@ const sidebarMenu = [
             }
         ]
     }, {
-        name: 'participant',
+        name: 'participant-current',
         role: 'all',
         title: 'Я - поставщик',
         icon: 'provider',
