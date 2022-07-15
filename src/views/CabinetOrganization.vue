@@ -1,6 +1,6 @@
 <template>
     <div class="app__main">
-        <Breadcrumbs />
+        <!-- <Breadcrumbs /> -->
         <div 
             v-if=" profile"
             class="cabinet organization">
@@ -87,7 +87,7 @@
 </template>
 
 <script>
-    import Breadcrumbs from '@/components/app-breadcrumbs';
+    // import Breadcrumbs from '@/components/app-breadcrumbs';
     import blockOrganization from '@/components/block-organization.vue';
     import blockPersons from '@/components/block-persons.vue';
     import blockTenderMini from '@/components/block-tender-mini.vue';
@@ -95,7 +95,7 @@
 
     export default {
         components: {
-            Breadcrumbs,
+            // Breadcrumbs,
             blockOrganization,
             blockPersons,
             blockTenderMini,

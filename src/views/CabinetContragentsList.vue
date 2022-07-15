@@ -152,16 +152,6 @@
         },
         created() {
             this.getOrganizations();
-            // api.getOrganizations(this.id).then(res => {
-            //     this.contragents = res.results;
-            //     console.log(res.results);
-            //     // this.$store.dispatch('setUser', res);
-            //     // if(this.organization) {
-            //     //     this.organization = res.organization;
-            //     // }
-            // }).catch(err => {
-            //     console.error(err);
-            // })
         },
         methods: {
             onClickContragent(id) {
@@ -176,11 +166,6 @@
                 api.getOrganizations(params).then(res => {
                     this.contragents = res.results;
                     this.count = res.count;
-                    // console.log(res.results);
-                    // this.$store.dispatch('setUser', res);
-                    // if(this.organization) {
-                    //     this.organization = res.organization;
-                    // }
                 }).catch(err => {
                     console.error(err);
                 })

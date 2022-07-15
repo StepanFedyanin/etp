@@ -1,6 +1,6 @@
 <template>
     <div class="app__main">
-        <Breadcrumbs />
+        <!-- <Breadcrumbs /> -->
         <div class="cabinet">
             <div class="container"> 
                 <h1 class="h1">
@@ -15,12 +15,12 @@
 </template>
 
 <script>
-    import Breadcrumbs from '@/components/app-breadcrumbs';
+    // import Breadcrumbs from '@/components/app-breadcrumbs';
     import ProfilePassword from '@/components/forms/profile-password.vue';
 
     export default {
         components: {
-            Breadcrumbs,
+            // Breadcrumbs,
             ProfilePassword,
         },
         props: {

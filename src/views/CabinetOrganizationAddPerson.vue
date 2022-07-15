@@ -1,6 +1,6 @@
 <template>
     <div class="app__main">
-        <Breadcrumbs />
+        <!-- <Breadcrumbs /> -->
         <div class="cabinet">
             <div class="container">
                 <div class="registration">
@@ -24,13 +24,13 @@
 </template>
 
 <script>
-    import Breadcrumbs from '@/components/app-breadcrumbs';
+    // import Breadcrumbs from '@/components/app-breadcrumbs';
     import { user as api } from "@/services";
     import regPersonForm from '@/components/forms/reg-person-form';
 
     export default {
         components: {
-            Breadcrumbs,
+            // Breadcrumbs,
             regPersonForm,
         },
         data() {

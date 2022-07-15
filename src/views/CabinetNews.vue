@@ -1,6 +1,6 @@
 <template>
     <div class="app__main">
-        <Breadcrumbs />
+        <!-- <Breadcrumbs /> -->
         <div class="cabinet news">
             <div class="container">
                 <div class="news__content text">
@@ -12,11 +12,11 @@
 </template>
 
 <script>
-    import Breadcrumbs from '@/components/app-breadcrumbs.vue';
+    // import Breadcrumbs from '@/components/app-breadcrumbs.vue';
 
     export default {
         components: {
-            Breadcrumbs
+            // Breadcrumbs
         },
         mounted() {
         },

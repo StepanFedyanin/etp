@@ -1,6 +1,6 @@
 <template>
     <div class="app__main">
-        <Breadcrumbs />
+        <!-- <Breadcrumbs /> -->
         <div class="cabinet">
             <div class="container">
                 <div 
@@ -46,7 +46,7 @@
 </template>
 
 <script>
-    import Breadcrumbs from '@/components/app-breadcrumbs';
+    // import Breadcrumbs from '@/components/app-breadcrumbs';
     import ProfileUser from '@/components/profile-user.vue';
     import blockOrganization from '@/components/block-organization.vue';
     import blockPersons from '@/components/block-persons.vue';
@@ -54,7 +54,7 @@
 
     export default {
         components: {
-            Breadcrumbs,
+            // Breadcrumbs,
             ProfileUser,
             blockOrganization,
             blockPersons,
