@@ -1,7 +1,7 @@
 <template>
     <div class="profile">
         <h2 
-            v-if="user.id == $store._state.data.user.id"
+            v-if="user && user.id == $store._state.data.user.id"
             class="profile__title h2"
         >
             Мой профиль

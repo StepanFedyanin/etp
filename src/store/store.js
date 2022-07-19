@@ -50,7 +50,7 @@ export default createStore({
             context.commit('user', user);
         },
         deathUser(context) {
-            context.commit('user', null);
+            context.commit('user', {});
             context.commit('regData', null);
             context.commit('removeToken');
         },

@@ -39,80 +39,7 @@
                     Сохранить
                 </button>
             </div> 
-        </FormKit>                  
-        <!-- <FormKit
-            type="text"
-            label="Фамилия*"
-            name="last_name"
-            placeholder="Петров"
-            validation="required:trim"
-            autocomplete="off"
-        />
-        <FormKit
-            type="text"
-            label="Имя*"
-            name="first_name"
-            placeholder="Иван"
-            validation="required:trim"
-            autocomplete="off"
-        />
-        <FormKit
-            type="text"
-            label="Отчество"
-            name="patronymic"
-            placeholder="Васильевич"
-            
-            autocomplete="off"
-        />
-        <FormKit
-            type="text"
-            label="Должность"
-            name="post"
-            placeholder="Директор"
-            autocomplete="off"
-        />
-        <FormKit
-            type="text"
-            label="Email (контактный)"
-            name="contact_email"
-            placeholder="info@example.ru"
-            validation="email"
-            autocomplete="off"
-        />
-        <FormKit
-            type="tel"
-            label="Телефон (контактный)"
-            name="phone"
-            placeholder="x-xxx-xxx-xxxx"
-
-            :validation-messages="{
-                matches: 'Телефон должен быть в формате x-xxx-xxx-xxxx',
-            }"
-            validation-visibility="dirty"
-        /> -->
-        <!-- validation="matches:/^[0-9]{1}-[0-9]{3}-[0-9]{3}-[0-9]{4}$/" -->
-        <!-- <div class="double">
-                <FormKit
-                    type="button"
-                    label="Отменить"
-                    outer-class="form__button"
-                    :input-class="{
-                        'button': true,
-                        'button-red': true
-                    }"
-                    @click="onClickCancel"
-                />
-                <FormKit
-                    type="submit"
-                    label="Сохранить"
-                    outer-class="form__button"
-                    :input-class="{
-                        'button': true,
-                        'button-green': true
-                    }"
-                />
-            </div> -->
-        <!-- </FormKit> -->
+        </FormKit>
     </div>
 </template>
 
@@ -138,9 +65,6 @@
                 formValues: this.formData,
                 schema: [
                     {
-                    //     $formkit: 'hidden',
-                    //     name: 'organization',
-                    // }, {
                         $formkit: 'text',
                         name: 'last_name',
                         label: 'Фамилия',
@@ -177,6 +101,12 @@
                         label: 'Телефон (контактный)',
                         outerClass: 'field--inline',
                         placeholder: "x-xxx-xxx-xxxx",
+                        // validation: 'matches:/^[0-9]{1}-[0-9]{3}-[0-9]{3}-[0-9]{4}$/',
+                        validationVisibility: 'dirty',
+                        help: 'Телефон должен быть в формате x-xxx-xxx-xxxx',
+                        // validationMessages: {
+                        //     min: 'Телефон должен быть в формате x-xxx-xxx-xxxx'
+                        // }
                         // :validation-messages: "{
                         //     matches: 'Телефон должен быть в формате x-xxx-xxx-xxxx',
                         // }",
