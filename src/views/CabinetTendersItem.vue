@@ -126,15 +126,20 @@
                         <div class="tender__info-param">
                             <span>Категории: </span> 
                             <template
-                                v-for="category in tender.category_detail"
+                                v-for="(category, index) in tender.category_detail"
                             >
-                                {{ category.name }}, 
+                                <!-- <pre>{{ index }}</pre>
+                                <pre>{{ tender.category.length }}</pre> -->
+                                {{ category.name }}<span v-if="tender.category.length > 0 && index != (tender.category.length - 1)">, </span>
                             </template>
                         </div>
                         <div class="tender__info-param">
                             <span>Регион:</span> {{ tender.region_detail ? tender.region_detail.name : '' }}
                         </div>
-                        <div class="tender__info-param">
+                        <div
+                            v-if="tender.description"
+                            class="tenders__item-param"
+                        >
                             <span>Дополнительная информация:</span> {{ tender.description }}
                         </div>
                     </div>
@@ -152,7 +157,7 @@
                             <span>Тип аукциона:</span> {{ types[tender.type] }}
                         </div>
                         <div class="tender__info-param">
-                            <span>Минимальный шаг ставки:</span> {{ tender.min_step }}
+                            <span>Минимальный шаг ставки:</span> {{ tender.min_step }}%
                         </div>
                         <div class="tender__info-param">
                             <span>Лоты:</span> {{ tender.lot_count }}

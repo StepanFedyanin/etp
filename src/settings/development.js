@@ -50,9 +50,9 @@ const logger = {
 
 const headerMenu = [
     {
-        name: 'bidding',
+        name: 'tenders',
         role: 'all',
-        title: 'Торги'
+        title: 'Тендеры'
     }, {
         name: 'groups',
         role: 'all',
@@ -70,9 +70,9 @@ const headerMenu = [
 
 const headerMenuUser = [
     {
-        name: 'bidding',
+        name: 'tenders',
         role: 'all',
-        title: 'Торги'
+        title: 'Тендеры'
     }, {
         name: 'groups',
         role: 'all',

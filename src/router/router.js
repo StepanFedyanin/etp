@@ -49,12 +49,12 @@ const routes = [
         meta: { title: 'Регистрация аккаунта - Шаг ' },
         props: true,
     }, {
-        path: '/bidding',
-        name: 'bidding',
-        component: empty,
-        meta: { title: 'Торги' },
-        props: true,
-    }, {
+    //     path: '/bidding',
+    //     name: 'bidding',
+    //     component: empty,
+    //     meta: { title: 'Торги' },
+    //     props: true,
+    // }, {
         path: '/groups',
         name: 'groups',
         component: groups,

@@ -36,9 +36,15 @@
                             {{ contragent.principal_activity }}
                         </div>
                         <div class="contragents__item-cell m--customer">
+                            <svg class="svg-icon svg-icon__hammer">
+                                <use xlink:href="../assets/img/icons/icons.svg#hammer" />
+                            </svg>
                             {{ contragent.created_tenders_count }}
                         </div>
                         <div class="contragents__item-cell m--member">
+                            <svg class="svg-icon svg-icon__briefcase">
+                                <use xlink:href="../assets/img/icons/icons.svg#briefcase" />
+                            </svg>
                             {{ contragent.participation_tenders_count }}
                         </div>
                     </div>

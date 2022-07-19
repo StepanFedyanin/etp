@@ -3,26 +3,6 @@
         :class="blockClass" 
         class="tenders__item"
     >
-        <!-- <div>номер {{ tender.id }}</div>
-        <div>Статус {{ tender.status }}</div>
-        
-        <div>{{ tender.name }}</div>
-        <div>{{ tender.category }}</div> -->
-        <!-- {{ tender.region.name }} -->
-        <!-- <span class="tenders__item-param-name">Дополнительная информация:</span>  -->
-        <!-- <div 
-            v-for="category in tender.category"
-        >
-            {{ category.name }}
-        </div> -->
-        <!-- {{ this.tender }} -->
-
-
-        <!-- <div
-            class="tenders__item-favorite"
-            :class="{ 'm--favorite': favorite }"
-            @click="toggleFavorite"
-        /> -->
         <div class="tenders__item-left">
             <router-link
                 :to="{ name: 'tender', params: { id: this.tender.id } }"
@@ -57,7 +37,6 @@
             >
                 <span class="tenders__item-param-name">Дополнительная информация:</span> {{ tender.description }}
             </div>
-
         </div>
         <div class="tenders__item-right">
             <div class="tenders__item-price">

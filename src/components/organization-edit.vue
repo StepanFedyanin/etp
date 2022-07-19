@@ -2,112 +2,25 @@
     <div>
         <FormKit 
             id="organizationEdit"
-            type="form" 
+            v-model="formValues"
+            name="organizationEdit"
+            preserve
+            type="form"
+            data-loading="loading"
             :value="formData"
             form-class="$reset organization-edit__form form__edit"
             :actions="false"
+            :disabled="loading"
+            :loading="loading ? true : undefined"
             @submit="updateOrganization"
         >
-            <!-- data-loading="showLoaderSending"
-            :loading="showLoaderSending ? true : undefined" -->
-            <FormKit
-                type="text"
-                label="ИНН"
-                name="inn"
-                placeholder="0002013922"
-                disabled
-                validation="required:trim"
-                autocomplete="off"
-            />
-            <FormKit
-                type="text"
-                label=" КПП"
-                name="kpp"
-                placeholder="667701001"
-                disabled
-                validation="required:trim"
-                autocomplete="off"
-            />
-            <FormKit
-                type="text"
-                label="ОГРН"
-                name="ogrn"
-                placeholder="1116602000140"
-                disabled
-                autocomplete="off"
-            />
-            <FormKit
-                type="text"
-                label="Полное название организации"
-                name="full_name"
-                placeholder="ОБЩЕСТВО С ОГРАНИЧЕННОЙ ОТВЕТСТВЕННОСТЬЮ 'ЕКАТЕРИНБУРГСКИЙ ЦЕМЕНТНЫЙ ЗАВОД'"
-                disabled
-                autocomplete="off"
-            />
-            <FormKit
-                type="text"
-                label="ФИО руководителя организации"
-                name="head_name"
-                placeholder="Шангареев Ринат Наилович"
-                disabled
-                autocomplete="off"
-            />
-            <FormKit
-                type="text"
-                label="Телефон (контактный)"
-                name="head_post"
-                placeholder="Директор"
-                disabled
-                autocomplete="off"
-            />
-            <FormKit
-                type="text"
-                label="ФИО главного бухгалтера"
-                name="accountant_name"
-                placeholder="Иванова Любовь Ивановна"                
-                autocomplete="off"
-            />
-            <FormKit
-                type="text"
-                label="Юридический адрес"
-                name="legal_address"
-                placeholder="Свердловская обл., г. Артемовский, ул. Дзержинского, Д. 1, К. Д, 623784"
-                disabled                
-                autocomplete="off"
-            />
-            <FormKit
-                type="text"
-                label="Фактический адрес"
-                name="actual_address"
-                placeholder="Свердловская обл., г. Артемовский, ул. Дзержинского, Д. 1, К. Д, 623784"                
-                autocomplete="off"
-            />
-            <FormKit
-                type="text"
-                label="ОКПО"
-                name="okpo"
-                placeholder="91080111" 
-                disabled               
-                autocomplete="off"
-            />
-            <FormKit
-                type="text"
-                label="Сумма уставного капитала"
-                name="capital"
-                placeholder="1 510 000" 
-                disabled               
-                autocomplete="off"
-            />
-            <FormKit
-                type="text"
-                label="Основной вид деятельности (ОКВЭД)"
-                name="principal_activity"
-                placeholder="Производство сухих бетонных смесей" 
-                disabled               
-                autocomplete="off"
-            />
+            <div class="form__block">
+                <FormKitSchema 
+                    :schema="schema" 
+                />
+            </div>
             <!-- validation="matches:/^[0-9]{1}-[0-9]{3}-[0-9]{3}-[0-9]{4}$/" -->
-            <div class="double">
+            <!-- <div class="double">
                 <FormKit
                     type="button"
                     label="Отменить"
@@ -116,6 +29,7 @@
                         'button': true,
                         'button-red': true
                     }"
+                    :disabled="loading"
                     @click="onClickCancel"
                 />
                 <FormKit
@@ -126,12 +40,32 @@
                         'button': true,
                         'button-green': true
                     }"
-                />
-                <!-- data-loading="showLoaderSending"
+                    :disabled="loading"
+                /> -->
+            <!-- data-loading="showLoaderSending"
                 :disabled="showLoaderSending"
                 :loading="showLoaderSending ? true : undefined" -->
-                <!-- :disabled="loading || !isValid" -->
-            </div>
+            <!-- :disabled="loading || !isValid" -->
+            <!-- </div> -->
+            <div 
+                class="form__submit edit__form-submit" 
+                data-type="submit"
+            >
+                <button
+                    :disabled="loading"
+                    class="button button-red"
+                    @click="onClickCancel"
+                >
+                    Отменить
+                </button>
+                <button
+                    type="submit"
+                    :disabled="loading"
+                    class="button button-green"
+                >
+                    Сохранить
+                </button>
+            </div> 
         </FormKit>
     </div>
 </template>
@@ -140,6 +74,18 @@
     export default {
         name: 'OrganizationEdit',
         props: {
+            loading: {
+                type: Boolean,
+                default() { return false; }
+            },
+            readonly: {
+                type: Boolean,
+                default() { return false; }
+            },
+            // formData: {
+            //     type: Object,
+            //     default() { return {}; }
+            // },
             user: {
                 type: Object,
                 default() { 
@@ -154,6 +100,104 @@
         data() {
             return {
                 formData: undefined,
+                formValues: this.formData,
+                schema: [
+                    {
+                        $formkit: 'text',
+                        name: 'inn',
+                        label: 'ИНН',
+                        placeholder: "0002013922",
+                        disabled: true,
+                        validation: 'required|matches:/^(d{10}|d{12})$/',
+                        // maska: { mask: ['##########', '############'] },
+                    }, {
+                        $formkit: 'text',
+                        name: 'kpp',
+                        label: 'КПП',
+                        placeholder: 'Ваш КПП',
+                        disabled: true,
+                        validation: [['matches', /^\d{9}$/]],
+                        // maska: { mask: '#########' },
+                    }, {
+                        $formkit: 'text',
+                        name: 'ogrn',
+                        label: 'ОГРН',
+                        placeholder: '1116602000140',
+                        disabled: true,
+                        validation: [['matches', /^\d{13}$/]],
+                        // maska: { mask: '#############' },
+                    },{
+                        $formkit: 'text',
+                        name: 'full_name',
+                        label: 'Полное название организации',
+                        placeholder: 'ОБЩЕСТВО С ОГРАНИЧЕННОЙ ОТВЕТСТВЕННОСТЬЮ "ЕКАТЕРИНБУРГСКИЙ ЦЕМЕНТНЫЙ ЗАВОД"',
+                        disabled: true,
+                    },{
+                        $formkit: 'text',
+                        name: 'head_name',
+                        label: 'ФИО руководителя организации',
+                        placeholder: 'Шангареев Ринат Наилович',
+                        disabled: true,
+                    },{
+                        $formkit: 'text',
+                        name: 'head_post',
+                        label: 'Должность руководителя организации',
+                        placeholder: 'Директор',
+                        disabled: true,
+                    },{
+                        $formkit: 'text',
+                        name: 'accountant_name',
+                        label: 'ФИО главного бухгалтера',
+                        placeholder: 'Иванова Любовь Ивановна',
+                        disabled: false,
+                    },{
+                        $formkit: 'text',
+                        name: 'legal_address',
+                        label: 'Юридический адрес',
+                        placeholder: 'Свердловская обл., г. Артемовский, ул. Дзержинского, Д. 1, К. Д, 623784',
+                        disabled: true,
+                    },{
+                        $formkit: 'text',
+                        name: 'actual_address',
+                        label: 'Фактический адрес',
+                        placeholder: 'Свердловская обл., г. Артемовский, ул. Дзержинского, Д. 1, К. Д, 623784',
+                        disabled: false,
+                    },{
+                        $formkit: 'text',
+                        name: 'okpo',
+                        label: 'ОКПО',
+                        placeholder: '91080111',
+                        disabled: true,
+                        validation: [['matches', /^(\d{8}|\d{10})$/]],
+                        // maska: { mask: ['########', '##########']},
+                    },{
+                        $formkit: 'text',
+                        name: 'capital',
+                        label: 'Сумма уставного капитала',
+                        validation: 'required|number',
+                        disabled: true,
+                        // maska: { mask: '#*' },
+                        outerClass: 'field--required'
+                    }, {
+                        $formkit: 'text',
+                        name: 'principal_activity',
+                        label: 'Основной виде деятельности (ОКВЭД)',
+                        disabled: true,
+                        validation: 'required',
+                        outerClass: 'field--required'
+                    // }, {
+                    //     $formkit: 'checkbox',
+                    //     name: 'owner_type',
+                    //     label: 'Статус предприятия',
+                    //     options: {
+                    //         '1': 'Производитель',
+                    //         '2': 'Дилер / дистрибьютор',
+                    //         '3': 'Генподрядчик',
+                    //         '4': 'Подрядчик'
+                    //     },
+                    //     outerClass: '
+                    }
+                ],
             };
         },
         created() {
