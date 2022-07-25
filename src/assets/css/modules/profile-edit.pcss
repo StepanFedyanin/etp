@@ -23,11 +23,17 @@
         max-width: 400px;
     }
     .formkit-help {
-        margin-left: 8px;
+        /* margin-left: 8px; */
+        color: $color-gray-T4;
+        font-size: 14px;
     }
-    .field__comment{
+    .field .field__comment{
         display: flex;
         justify-content: flex-end;
+    }
+    .form__submit + .field__comment {
+        text-align: center;
+        color: $color-red;
     }
 }
 .form__button .button:first-child {

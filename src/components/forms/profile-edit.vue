@@ -81,7 +81,7 @@
                         name: 'patronymic',
                         label: 'Отчество',
                         // validation: 'required',
-                        outerClass: 'field--inline field--required'
+                        outerClass: 'field--inline'
                     }, {
                         $formkit: 'text',
                         name: 'post',
@@ -101,9 +101,9 @@
                         label: 'Телефон (контактный)',
                         outerClass: 'field--inline',
                         placeholder: "x-xxx-xxx-xxxx",
-                        // validation: 'matches:/^[0-9]{1}-[0-9]{3}-[0-9]{3}-[0-9]{4}$/',
                         validationVisibility: 'dirty',
-                        help: 'Телефон должен быть в формате x-xxx-xxx-xxxx',
+                        // validation: 'matches:/^[0-9]{1}-[0-9]{3}-[0-9]{3}-[0-9]{4}$/',
+                        // help: 'Телефон должен быть в формате x-xxx-xxx-xxxx',
                         // validationMessages: {
                         //     min: 'Телефон должен быть в формате x-xxx-xxx-xxxx'
                         // }
