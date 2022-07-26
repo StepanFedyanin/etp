@@ -21,7 +21,7 @@
                 </div>
                 <div class="contragents__list">
                     <div 
-                        v-for="contragent in contragents"
+                        v-for="contragent in this.contragents"
                         :key="`customer-${contragent.id}`"
                         class="contragents__item"
                         @click="onClickContragent(contragent.id)"
@@ -36,9 +36,15 @@
                             {{ contragent.principal_activity }}
                         </div>
                         <div class="contragents__item-cell m--customer">
+                            <svg class="svg-icon svg-icon__hammer">
+                                <use xlink:href="../assets/img/icons/icons.svg#hammer" />
+                            </svg>
                             {{ contragent.created_tenders_count }}
                         </div>
                         <div class="contragents__item-cell m--member">
+                            <svg class="svg-icon svg-icon__briefcase">
+                                <use xlink:href="../assets/img/icons/icons.svg#briefcase" />
+                            </svg>
                             {{ contragent.participation_tenders_count }}
                         </div>
                     </div>
@@ -49,15 +55,19 @@
                 >
                     Показать еще
                 </button> -->
-                <!-- {{contragents }}
-                {{contragents.count }} -->
+
                 <div
-                    v-if="contragents && contragents.length"
+                    v-if="this.contragents && this.contragents.length"
                     class="tenders__pagination"
                 >
                     <div class="tenders__pagination-left">
                         <div class="tenders__pagination-count">
-                            Отобрано: <span>{{ contragents.length }}</span>
+                            Всего: <span>{{ this.count }}</span>
+                        </div>
+                    </div>
+                    <div class="tenders__pagination-left">
+                        <div class="tenders__pagination-count">
+                            Отобрано: <span>{{ this.contragents.length }}</span>
                         </div>
                     </div>
                     <div class="tenders__pagination-right">
@@ -86,7 +96,7 @@
                             </select>
                         </div>
                         <Pagination
-                            :total="contragents.length"
+                            :total="this.count"
                             :limit="Number(limit)"
                             :currentPage="Number($route.query.page || 1)"
                             :url="$route.path"
@@ -110,6 +120,7 @@
             return {
                 contragents: [],
                 limit: 10,
+                count: "",
             }
         },
         props: {
@@ -147,16 +158,6 @@
         },
         created() {
             this.getOrganizations();
-            // api.getOrganizations(this.id).then(res => {
-            //     this.contragents = res.results;
-            //     console.log(res.results);
-            //     // this.$store.dispatch('setUser', res);
-            //     // if(this.organization) {
-            //     //     this.organization = res.organization;
-            //     // }
-            // }).catch(err => {
-            //     console.error(err);
-            // })
         },
         methods: {
             onClickContragent(id) {
@@ -170,11 +171,7 @@
                 }
                 api.getOrganizations(params).then(res => {
                     this.contragents = res.results;
-                    console.log(res.results);
-                    // this.$store.dispatch('setUser', res);
-                    // if(this.organization) {
-                    //     this.organization = res.organization;
-                    // }
+                    this.count = res.count;
                 }).catch(err => {
                     console.error(err);
                 })

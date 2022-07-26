@@ -1,4 +1,5 @@
 import { createApp } from 'vue';
+import datePickerInput from '@/components/inputs/date-picker-input';
 import maskaInput from '@/components/inputs/maska-input';
 import multiselectInput from '@/components/inputs/multiselect-input';
 import { plugin, defaultConfig, createInput } from '@formkit/vue';
@@ -43,6 +44,9 @@ const confFormKit = {
         }
     },
     inputs: {
+        datepicker: createInput(datePickerInput, {
+            props: ['mode'],
+        }),
         select: createInput(multiselectInput, {
             props: ['options', 'placeholder', 'mode', 'searchable'],
         }),

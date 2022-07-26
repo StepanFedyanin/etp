@@ -10,7 +10,7 @@
         />
         <div class="tenders__item-left">
             <router-link
-                :to="{ name: 'tender', params: { id: this.tender.id } }"
+                :to="{ name: 'tender', params: { id: tender.id } }"
                 class="tenders__item-title"
             >
                 {{ tender.name }}
@@ -84,7 +84,11 @@
             <div class="tenders__item-param">
                 <span
                     v-if="tender.date_start" 
-                    class="tenders__item-param-name">Объявлено:</span> {{ $helpers.formatDate(new Date(tender.date_start), 'DD.MM.YYYY HH:mm') }} МСК
+                    class="tenders__item-param-name"
+                >
+                    Объявлено: 
+                </span> 
+                {{ $helpers.formatDate(new Date(tender.date_start), 'DD.MM.YYYY HH:mm') }} МСК
             </div>
             <div class="tenders__item-param">
                 <span class="tenders__item-param-name">Тип аукциона:</span> {{ tender.type_detail }}
@@ -100,7 +104,8 @@
             >
                 <div
                     v-if="tender.date_end" 
-                    class="tenders__item-timer-date">
+                    class="tenders__item-timer-date"
+                >
                     Прием заявок: {{ $helpers.formatDate(new Date(tender.date_end), 'DD.MM.YYYY HH:mm') }} МСК
                 </div>
                 <div
@@ -110,17 +115,35 @@
                     Осталось {{ $helpers.dateRangeToDaysHours(new Date(), new Date(tender.date_end)) }}
                 </div>
             </div>
-            <div
-                v-if="restTime"
-                class="tenders__item-participate"
+            <template
+                v-if="drafts"
             >
-                <button
-                    class="button button-green"
-                    @click="onClickParticipate"
+                <div
+                    class="tenders__item-participate"
                 >
-                    Участвовать
-                </button>
-            </div>
+                    <button
+                        class="button button-green"
+                        @click="onClickDraft"
+                    >
+                        Редактировать
+                    </button>
+                </div>
+            </template>
+            <template
+                v-else
+            >
+                <div
+                    v-if="restTime"
+                    class="tenders__item-participate"
+                >
+                    <button
+                        class="button button-green"
+                        @click="onClickParticipate"
+                    >
+                        Участвовать
+                    </button>
+                </div>
+            </template>
         </div>
         <div
             v-if="lots"
@@ -197,7 +220,11 @@
                 default() { return {
                     id: 1
                 }; }
-            }
+            },
+            drafts: {
+                type: Boolean,
+                default() { return false; }
+            },
         },
         data() {
             return {
@@ -225,6 +252,9 @@
             }
         },
         methods: {
+            onClickDraft() {
+                this.$router.push({ name: 'tender-edit', params: { id: this.tender.id } });
+            },
             onClickParticipate() {
                 this.$router.push({ name: 'tender', params: { id: this.tender.id } });
             },

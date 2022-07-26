@@ -44,7 +44,7 @@
                         </li>
                     </ul>
                     <template
-                        v-if="user"
+                        v-if="user && user.id"
                     >
                         <a 
                             href="#"

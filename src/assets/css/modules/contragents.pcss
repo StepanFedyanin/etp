@@ -33,7 +33,7 @@
         }
     }
     &__list {
-        padding: 12px 0;
+        /* padding: 12px 0; */
         margin-bottom: 24px;
         overflow: hidden;
         @mixin shadow-box;
@@ -58,8 +58,12 @@
         }
 
         &:hover {
-            border-radius: 8px;
+            /* border-radius: 8px; */
             background: $color-green-opacity20;
+
+            .svg-icon{
+                stroke: $color-green;
+            }
         }
 
         &-cell {

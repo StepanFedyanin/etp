@@ -14,10 +14,10 @@
                 Кол/во
             </div>
             <div class="lots__header-cell m--unit">
-                ед.изм
+                Ед.изм
             </div>
             <div class="lots__header-cell m--tax">
-                Ставка НДС
+                Ставка НДС, %
             </div>
             <div class="lots__header-cell m--price">
                 Цена

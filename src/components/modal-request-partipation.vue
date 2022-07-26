@@ -127,7 +127,7 @@
                             Загрузить файл
                         </button>
                     </div>
-                    {{ formValues }}
+                    <!-- {{ formValues }} -->
                     <div class="partipation__form form">
                         <div class="partipation__form-title">
                             Комментарий

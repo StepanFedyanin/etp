@@ -1,6 +1,6 @@
 <template>
     <div class="app__main">
-        <Breadcrumbs />
+        <!-- <Breadcrumbs /> -->
         <div class="cabinet">
             <div class="container">
                 <div 
@@ -16,9 +16,12 @@
                     <h2 class="cabinet__subtitle h2">
                         Информация о компании
                     </h2>
-
+                    <!-- <pre>{{ profile.is_staff }}</pre>
+                    <pre>{{ profile.is_master }}</pre>
+                    <pre>{{ profile.organization.id }}</pre>
+                    <pre>{{ $store._state.data.user.organization.id }}</pre> -->
                     <svg 
-                        v-if=" profile.is_staff || profile.is_master && profile.organization.id == $store._state.data.user.organization.id"
+                        v-if=" profile.is_staff || profile.organization && profile.is_master && profile.organization.id == $store._state.data.user.organization.id"
                         class="svg-icon svg-icon__edit"
                         @click="onClickEditOrganization()"
                     >
@@ -46,7 +49,7 @@
 </template>
 
 <script>
-    import Breadcrumbs from '@/components/app-breadcrumbs';
+    // import Breadcrumbs from '@/components/app-breadcrumbs';
     import ProfileUser from '@/components/profile-user.vue';
     import blockOrganization from '@/components/block-organization.vue';
     import blockPersons from '@/components/block-persons.vue';
@@ -54,11 +57,10 @@
 
     export default {
         components: {
-            Breadcrumbs,
+            // Breadcrumbs,
             ProfileUser,
             blockOrganization,
             blockPersons,
-            // ProfileOrganizationEdit
         },
         props: {
             id: {
@@ -70,18 +72,9 @@
             return {
                 profile: undefined,
                 contragents: [],
-                // contragent: {
-                //     id: 1,
-                //     name: 'ООО “Флексайтс”',
-                //     city: 'г. Челябинск',
-                //     activity: 'Разработка компьютерного программного обеспечения',
-                //     customer: '113',
-                //     member: '45'
-                // },
                 organization: {},
                 persons: [],
                 tenders: [],
-                // organizationId: this.$store.organization.id,
             }
         },
         mounted() {

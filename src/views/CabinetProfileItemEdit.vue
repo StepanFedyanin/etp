@@ -1,11 +1,7 @@
 <template>
     <div class="app__main">
-        <Breadcrumbs />
+        <!-- <Breadcrumbs /> -->
         <div class="cabinet">
-            <div>
-                <!-- 1) {{ $store._state.data.user.id }}
-                2) {{ user.id }} -->
-            </div>
             <div class="container">
                 <div class="profile-edit">
                     <h1 class="profile-edit__title h1">
@@ -25,19 +21,19 @@
 </template>
 
 <script>
-    import Breadcrumbs from '@/components/app-breadcrumbs';
-    import ProfileEdit from '@/components/profile-edit.vue';
+    // import Breadcrumbs from '@/components/app-breadcrumbs';
+    import ProfileEdit from '@/components/forms/profile-edit.vue';
     import { user as api } from "@/services";
 
     export default {
         components: {
-            Breadcrumbs,
+            // Breadcrumbs,
             ProfileEdit,
         },
         props: {
             id: {
-                type: Number,
-                default() { return null; }
+                type: String,
+                default() { return ""; }
             },
         },
         data() {
@@ -52,24 +48,14 @@
             api.getProfile(this.id).then(res => {
                 this.profile = res;
                 console.log(this.profile);
-                this.$store.dispatch('setUser', res);
-                if(this.organization) {
+                // this.$store.dispatch('setUser', res);
+                if (res.organization) {
                     this.organization = res.organization;
                 }
             }).catch(err => {
                 console.error(err);
             });
-            // this.getMembers();
         },
-        //     api.getMyProfile().then(res => {
-        //         this.profile = res;
-        //         if(this.organization){
-        //             this.organization = res.organization;
-        //         }
-        //     }).catch(err => {
-        //         console.error(err);
-        //     });
-        // },
         methods: {
         }
     }

@@ -58,6 +58,7 @@
                     v-for="(tender, index) in tenders.results"
                     :key="`tender-${index}`"
                     :tender="tender"
+                    :drafts="true"
                 />
             </div>
         </div>

@@ -82,7 +82,7 @@
                                 label: 'Подведение итогов',
                                 value: 'bidding_completed'
                             }, {
-                                label: 'Тендер завршен',
+                                label: 'Тендер завершен',
                                 value: 'closed'
                             }, {
                                 label: 'Есть победитель',
@@ -100,7 +100,7 @@
                         $formkit: 'text',
                         name: 'price_from',
                         value: "",
-                        label: 'Сумма (от) тендера',
+                        label: 'Сумма (от) тендера, ₽',
                         placeholder: "",
                         // validation: 'required',
                         inputClass: 'modal-form__input',
@@ -110,7 +110,7 @@
                         $formkit: 'text',
                         name: 'price_to',
                         value: "",
-                        label: 'Сумма (до) тендера',
+                        label: 'Сумма (до) тендера, ₽',
                         placeholder: "",
                         // validation: 'required',
                         inputClass: 'modal-form__input',

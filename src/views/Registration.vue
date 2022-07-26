@@ -200,7 +200,7 @@
                 } else {
                     this.$store.dispatch('setStepRegistration', null);
                     this.$store.dispatch('setRegData', null);
-                    this.$router.push({ name: 'cabinet' });
+                    this.$router.push({ name: 'profile' });
                 }
             },
             submitSearchHandler(data, node) {

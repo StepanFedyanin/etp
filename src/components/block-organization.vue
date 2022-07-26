@@ -84,7 +84,7 @@
                 </div>
                 <div class="organization__block-item">
                     <div class="organization__block-item-name">
-                        Статус Егрюл:
+                        Статус ЕГРЮЛ:
                     </div>
                     <div class="organization__block-item-value">
                         {{ organization.status }}
@@ -132,7 +132,7 @@
                 </div>
                 <div class="organization__block-item">
                     <div class="organization__block-item-name">
-                        Огрн:
+                        ОГРН:
                     </div>
                     <div class="organization__block-item-value">
                         {{ organization.ogrn }}

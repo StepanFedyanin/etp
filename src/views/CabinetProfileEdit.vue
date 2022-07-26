@@ -1,6 +1,6 @@
 <template>
     <div class="app__main">
-        <Breadcrumbs />
+        <!-- <Breadcrumbs /> -->
         <div class="cabinet">
             <div class="container">
                 <div class="profile-edit">
@@ -21,13 +21,13 @@
 </template>
 
 <script>
-    import Breadcrumbs from '@/components/app-breadcrumbs';
-    import ProfileEdit from '@/components/profile-edit.vue';
+    // import Breadcrumbs from '@/components/app-breadcrumbs';
+    import ProfileEdit from '@/components/forms/profile-edit.vue';
     import { user as api } from "@/services";
 
     export default {
         components: {
-            Breadcrumbs,
+            // Breadcrumbs,
             ProfileEdit,
         },
         data() {

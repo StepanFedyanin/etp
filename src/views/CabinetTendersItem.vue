@@ -87,7 +87,10 @@
                                 Продолжительность
                             </div>
                             <div class="tender__data-info">
-                                {{ $helpers.toHHMMSS(tender.duration) }} 
+                                <Timer 
+                                    :dateEnd="tender.date_end"
+                                />
+                                <!-- {{ $helpers.toHHMMSS(tender.duration) }}  -->
                                 <span
                                     v-if="tender.prolong > 0"
                                     class="m--color-green"
@@ -126,15 +129,20 @@
                         <div class="tender__info-param">
                             <span>Категории: </span> 
                             <template
-                                v-for="category in tender.category_detail"
+                                v-for="(category, index) in tender.category_detail"
                             >
-                                {{ category.name }}, 
+                                <!-- <pre>{{ index }}</pre>
+                                <pre>{{ tender.category.length }}</pre> -->
+                                {{ category.name }}<span v-if="tender.category.length > 0 && index != (tender.category.length - 1)">, </span>
                             </template>
                         </div>
                         <div class="tender__info-param">
                             <span>Регион:</span> {{ tender.region_detail ? tender.region_detail.name : '' }}
                         </div>
-                        <div class="tender__info-param">
+                        <div
+                            v-if="tender.description"
+                            class="tenders__item-param"
+                        >
                             <span>Дополнительная информация:</span> {{ tender.description }}
                         </div>
                     </div>
@@ -152,7 +160,7 @@
                             <span>Тип аукциона:</span> {{ types[tender.type] }}
                         </div>
                         <div class="tender__info-param">
-                            <span>Минимальный шаг ставки:</span> {{ tender.min_step }}
+                            <span>Минимальный шаг ставки:</span> {{ tender.min_step }}%
                         </div>
                         <div class="tender__info-param">
                             <span>Лоты:</span> {{ tender.lot_count }}
@@ -185,7 +193,8 @@
                     </div>
                     <div
                         v-else-if="tender.status === 'bidding_process'" 
-                        class="tender__actions-buttons">
+                        class="tender__actions-buttons"
+                    >
                         <button 
                             class="button button-red"
                             @click.stop="onClickFinishTender(true)"
@@ -313,17 +322,19 @@
                     </div>
                 </div>
                 <TenderLots
+                    v-if="tender.lots && tender.lots.length"
                     :tender="tender"
                     :lots="tender.lots"
                     @getTenderData="getTenderData"
                 />
                 <TenderBids
-                    v-if="tender.bet_enabled && tender.user_participation && tender.user_participation.status === 'participant'"
+                    v-if="tender.lots && tender.lots.length && tender.bet_enabled && tender.user_participation && tender.user_participation.status === 'participant'"
                     :tender="tender"
                     :lots="tender.lots"
                     @getTenderData="getTenderData"
                 />
                 <TenderParticipants
+                    v-if="participants && participants.length"
                     :tender="tender"
                     :participants="participants"
                     @getTenderData="getTenderData"
@@ -339,6 +350,7 @@
     import TenderParticipants from '@/components/tender-participants';
     import TenderLots from '@/components/tender-lots';
     import TenderBids from '@/components/tender-bids';
+    import Timer from '@/components/timer';
 
     export default {
         components: {
@@ -346,6 +358,7 @@
             TenderParticipants,
             TenderLots,
             TenderBids,
+            Timer
         },
         props: {
             id: {

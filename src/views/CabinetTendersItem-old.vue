@@ -89,7 +89,10 @@
                         <div class="tender__info-param">
                             <span>Регион:</span> {{ tender.region_detail ? tender.region_detail.name : '' }}
                         </div>
-                        <div class="tender__info-param">
+                        <div
+                            v-if="tender.description" 
+                            class="tender__info-param"
+                        >
                             <span>Дополнительная информация:</span> {{ tender.description }}
                         </div>
                     </div>

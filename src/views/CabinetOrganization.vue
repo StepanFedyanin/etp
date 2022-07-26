@@ -1,12 +1,12 @@
 <template>
     <div class="app__main">
-        <Breadcrumbs />
-        <div class="cabinet organization">
+        <!-- <Breadcrumbs /> -->
+        <div 
+            v-if=" profile"
+            class="cabinet organization"
+        >
             <div class="container">
-                <div 
-                    v-if=" profile"
-                    class="organization__info"
-                >
+                <div class="organization__info">
                     <div class="organization__title h1">
                         {{ organization.name }}
                     </div>
@@ -29,6 +29,13 @@
                 <h2 class="organization__subtitle h2">
                     Представители организации
                 </h2>
+                <svg 
+                    v-if=" profile.is_staff || profile.is_master && profile.organization.id == $store._state.data.user.organization.id"
+                    class="svg-icon svg-icon__addPerson"
+                    @click="onClickAddStaff()"
+                >
+                    <use xlink:href="../assets/img/icons/icons.svg#addPerson" />
+                </svg>
                 <div class="cabinet__block cabinet__persons">
                     <blockPersons 
                         :user="profile"
@@ -37,7 +44,7 @@
                     />
                 </div>
                 <div class="contragent__subtitle h2">
-                    Заказчик <span class="m--color-green">{{ createdTenders.count }} тендеров</span>
+                    Заказчик <span class="m--color-green">{{ createdTenders.count }} {{ getNoun(createdTenders.count) }}</span>
                 </div>
                 <div class="contragent__tenders tenders">
                     <blockTenderMini
@@ -48,7 +55,7 @@
                     />
 
                     <button 
-                        v-if="createdTenders.count > this.countCreatedTenders"
+                        v-if="createdTenders.count > countCreatedTenders"
                         class="button button-outline-green tenders__more"
                         @click="getCreatedTenders()"
                     >
@@ -56,7 +63,7 @@
                     </button>
                 </div>
                 <div class="contragent__subtitle h2">
-                    Участник <span class="m--color-green">{{ participationTenders.count }} тендер</span>
+                    Участник <span class="m--color-green">{{ participationTenders.count }} {{ getNoun(participationTenders.count) }}</span>
                 </div>
                 <div class="contragent__tenders tenders">
                     <blockTenderMini
@@ -67,7 +74,7 @@
                     />
 
                     <button 
-                        v-if="participationTenders.count > this.countParticipationTenders"
+                        v-if="participationTenders.count > countParticipationTenders"
                         class="button button-outline-green tenders__more"
                         @click="getParticipationTenders()"
                     >
@@ -80,7 +87,7 @@
 </template>
 
 <script>
-    import Breadcrumbs from '@/components/app-breadcrumbs';
+    // import Breadcrumbs from '@/components/app-breadcrumbs';
     import blockOrganization from '@/components/block-organization.vue';
     import blockPersons from '@/components/block-persons.vue';
     import blockTenderMini from '@/components/block-tender-mini.vue';
@@ -88,7 +95,7 @@
 
     export default {
         components: {
-            Breadcrumbs,
+            // Breadcrumbs,
             blockOrganization,
             blockPersons,
             blockTenderMini,
@@ -139,6 +146,9 @@
             onClickEditOrganization(){
                 this.$router.push({ name: 'organization-edit'});
             },
+            onClickAddStaff(){
+                this.$router.push({ name: 'organization-add-person'});
+            },
             getMembers() {
                 api.getMyOrganizationMembers().then(res => {
                     this.persons = res;
@@ -169,6 +179,18 @@
                     this.countCreatedTenders = this.createdTenders.results.length;
                 });
             },
+            getNoun(number) {
+                let n = Math.abs(number);
+                n %= 100;
+                if (n === 0 || n >= 2 && n <= 20) {
+                    return "тендеров";
+                }
+                n %= 10;
+                if (n === 1) {
+                    return "тендера";
+                }
+                return "тендеров";
+            }
         }
     }
 </script>

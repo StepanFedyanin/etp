@@ -5,7 +5,7 @@
         preserve
         type="form"
         data-loading="lading"
-        form-class="$reset registration__form form"
+        form-class="$reset registration__form form form-edit"
         :actions="false"
         :disabled="loading"
         :loading="loading ? true : undefined"
