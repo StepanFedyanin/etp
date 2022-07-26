@@ -7,10 +7,9 @@
                     <div class="registration__title h2">
                         Сведения о пользователе
                     </div>
-                    <div
-                        class="registration__form form"
-                    >
+                    <div class="add-person">
                         <regPersonForm 
+                            class="form__edit"
                             :loading="showLoaderSending"
                             :formData="regData.person"
                             @prevStep="prevStep"

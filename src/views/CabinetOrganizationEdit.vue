@@ -22,7 +22,7 @@
 
 <script>
     // import Breadcrumbs from '@/components/app-breadcrumbs';
-    import OrganizationEdit from '@/components/organization-edit.vue';
+    import OrganizationEdit from '@/components/forms/organization-edit.vue';
     import { user as api } from "@/services";
 
     export default {

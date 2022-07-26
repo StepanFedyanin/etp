@@ -43,10 +43,6 @@
                 let minutes = parseInt(value / 60 % 60, 10);
                 let seconds = parseInt(value % 60, 10);
 
-                console.log(new Date(value).getSeconds());
-                console.log(seconds);
-                console.log(value);
-
                 hours = hours < 10 ? "0" + hours : hours;
                 minutes = minutes < 10 ? "0" + minutes : minutes;
                 seconds = seconds < 10 ? "0" + seconds : seconds;

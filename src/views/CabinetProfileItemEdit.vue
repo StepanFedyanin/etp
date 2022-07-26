@@ -32,8 +32,8 @@
         },
         props: {
             id: {
-                type: Number,
-                default() { return null; }
+                type: String,
+                default() { return ""; }
             },
         },
         data() {

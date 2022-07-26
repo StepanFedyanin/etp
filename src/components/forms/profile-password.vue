@@ -1,68 +1,5 @@
 <template>
     <div>
-        <!-- <FormKit 
-            id="profileEditPassword"
-            type="form" 
-            :value="formData"
-            form-class="$reset profile-edit__form form__edit"
-            :actions="false"
-            @submit="updatePassword"
-        >
-            <FormKit
-                type="password"
-                name="password"
-                label="Старый пароль*"
-                validation="required:trim|length:5"
-                :validation-messages="{
-                    length: 'Минимальная длинна пароля 5 символов',
-                }"
-                placeholder="Введите пароль"
-                outerClass="field--inline"
-            />
-            <FormKit
-                type="password"
-                name="password_new"
-                label="Новый пароль*"
-                validation="required:trim|length:5"
-                :validation-messages="{
-                    length: 'Минимальная длинна пароля 5 символов',
-                }"
-                placeholder="Введите пароль"
-                outerClass="field--inline"
-            />
-            <FormKit
-                type="password"
-                name="password_confirm"
-                label="Повтор пароля*"
-                validation="required:trim|length:5"
-                :validation-messages="{
-                    length: 'Минимальная длинна пароля 5 символов',
-                }"
-                placeholder="Введите пароль"
-                outerClass="field--inline"
-            />
-            <div class="double">
-                <FormKit
-                    type="button"
-                    label="Отменить"
-                    outer-class="form__button"
-                    :input-class="{
-                        'button': true,
-                        'button-red': true
-                    }"
-                    @click="onClickCancel"
-                />
-                <FormKit
-                    type="submit"
-                    label="Сохранить"
-                    outer-class="form__button"
-                    :input-class="{
-                        'button': true,
-                        'button-green': true
-                    }"
-                />
-            </div>
-        </FormKit> -->
         <FormKit 
             id="profileEditPassword"
             v-model="formValues"
@@ -133,21 +70,21 @@
                         label: 'Старый Пароль',
                         placeholder: "Введите пароль",
                         validation: 'required',
-                        outerClass: 'field--inline field--required'
+                        outerClass: 'field--required'
                     }, {
                         $formkit: 'password',
                         name: 'password_new',
                         label: 'Новый Пароль',
                         placeholder: "Введите пароль",
                         validation: 'required',
-                        outerClass: 'field--inline field--required'
+                        outerClass: 'field--required'
                     }, {
                         $formkit: 'password',
                         name: 'password_confirm',
                         label: 'Повтор пароля',
                         placeholder: "Введите пароль",
                         validation: 'required|confirm',
-                        outerClass: 'field--inline field--required'
+                        outerClass: 'field--required'
                     }
                 ],
             }

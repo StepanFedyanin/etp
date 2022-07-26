@@ -69,37 +69,37 @@
                         name: 'last_name',
                         label: 'Фамилия',
                         validation: 'required',
-                        outerClass: 'field--inline field--required'
+                        outerClass: 'field--required'
                     }, {
                         $formkit: 'text',
                         name: 'first_name',
                         label: 'Имя',
                         validation: 'required',
-                        outerClass: 'field--inline field--required'
+                        outerClass: 'field--required'
                     }, {
                         $formkit: 'text',
                         name: 'patronymic',
                         label: 'Отчество',
                         // validation: 'required',
-                        outerClass: 'field--inline'
+                        // outerClass: 'field--inline'
                     }, {
                         $formkit: 'text',
                         name: 'post',
                         label: 'Должность',
                         validation: 'required',
-                        outerClass: 'field--inline field--required'
+                        outerClass: 'field--required'
                     }, {
                         $formkit: 'email',
                         name: 'contact_email',
                         label: 'Email (контактный)',
                         placeholder: "info@example.ru",
                         //validation: 'required',
-                        outerClass: 'field--inline'
+                        // outerClass: 'field--inline'
                     }, {
                         $formkit: 'text',
                         name: 'phone',
                         label: 'Телефон (контактный)',
-                        outerClass: 'field--inline',
+                        // outerClass: 'field--inline',
                         placeholder: "x-xxx-xxx-xxxx",
                         validationVisibility: 'dirty',
                         // validation: 'matches:/^[0-9]{1}-[0-9]{3}-[0-9]{3}-[0-9]{4}$/',

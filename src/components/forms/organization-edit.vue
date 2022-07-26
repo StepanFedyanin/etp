@@ -19,34 +19,6 @@
                     :schema="schema" 
                 />
             </div>
-            <!-- validation="matches:/^[0-9]{1}-[0-9]{3}-[0-9]{3}-[0-9]{4}$/" -->
-            <!-- <div class="double">
-                <FormKit
-                    type="button"
-                    label="Отменить"
-                    outer-class="form__button"
-                    :input-class="{
-                        'button': true,
-                        'button-red': true
-                    }"
-                    :disabled="loading"
-                    @click="onClickCancel"
-                />
-                <FormKit
-                    type="submit"
-                    label="Сохранить"
-                    outer-class="form__button"
-                    :input-class="{
-                        'button': true,
-                        'button-green': true
-                    }"
-                    :disabled="loading"
-                /> -->
-            <!-- data-loading="showLoaderSending"
-                :disabled="showLoaderSending"
-                :loading="showLoaderSending ? true : undefined" -->
-            <!-- :disabled="loading || !isValid" -->
-            <!-- </div> -->
             <div 
                 class="form__submit edit__form-submit" 
                 data-type="submit"
@@ -82,10 +54,6 @@
                 type: Boolean,
                 default() { return false; }
             },
-            // formData: {
-            //     type: Object,
-            //     default() { return {}; }
-            // },
             user: {
                 type: Object,
                 default() { 
@@ -109,6 +77,7 @@
                         placeholder: "0002013922",
                         disabled: true,
                         validation: 'required|matches:/^(d{10}|d{12})$/',
+                        outerClass: 'field--required'
                         // maska: { mask: ['##########', '############'] },
                     }, {
                         $formkit: 'text',
@@ -117,6 +86,7 @@
                         placeholder: 'Ваш КПП',
                         disabled: true,
                         validation: [['matches', /^\d{9}$/]],
+                        outerClass: 'field--required',
                         // maska: { mask: '#########' },
                     }, {
                         $formkit: 'text',
@@ -125,12 +95,14 @@
                         placeholder: '1116602000140',
                         disabled: true,
                         validation: [['matches', /^\d{13}$/]],
+                        outerClass: 'field--required',
                         // maska: { mask: '#############' },
                     },{
                         $formkit: 'text',
                         name: 'full_name',
                         label: 'Полное название организации',
                         placeholder: 'ОБЩЕСТВО С ОГРАНИЧЕННОЙ ОТВЕТСТВЕННОСТЬЮ "ЕКАТЕРИНБУРГСКИЙ ЦЕМЕНТНЫЙ ЗАВОД"',
+                        outerClass: 'field--required',
                         disabled: true,
                     },{
                         $formkit: 'text',
@@ -138,12 +110,14 @@
                         label: 'ФИО руководителя организации',
                         placeholder: 'Шангареев Ринат Наилович',
                         disabled: true,
+                        outerClass: 'field--required',
                     },{
                         $formkit: 'text',
                         name: 'head_post',
                         label: 'Должность руководителя организации',
                         placeholder: 'Директор',
                         disabled: true,
+                        outerClass: 'field--required',
                     },{
                         $formkit: 'text',
                         name: 'accountant_name',
@@ -156,6 +130,7 @@
                         label: 'Юридический адрес',
                         placeholder: 'Свердловская обл., г. Артемовский, ул. Дзержинского, Д. 1, К. Д, 623784',
                         disabled: true,
+                        outerClass: 'field--required',
                     },{
                         $formkit: 'text',
                         name: 'actual_address',
@@ -169,6 +144,7 @@
                         placeholder: '91080111',
                         disabled: true,
                         validation: [['matches', /^(\d{8}|\d{10})$/]],
+                        outerClass: 'field--required',
                         // maska: { mask: ['########', '##########']},
                     },{
                         $formkit: 'text',

@@ -3,10 +3,10 @@
         <!-- <Breadcrumbs /> -->
         <div 
             v-if=" profile"
-            class="cabinet organization">
+            class="cabinet organization"
+        >
             <div class="container">
-                <div class="organization__info"
-                >
+                <div class="organization__info">
                     <div class="organization__title h1">
                         {{ organization.name }}
                     </div>
@@ -55,7 +55,7 @@
                     />
 
                     <button 
-                        v-if="createdTenders.count > this.countCreatedTenders"
+                        v-if="createdTenders.count > countCreatedTenders"
                         class="button button-outline-green tenders__more"
                         @click="getCreatedTenders()"
                     >
@@ -74,7 +74,7 @@
                     />
 
                     <button 
-                        v-if="participationTenders.count > this.countParticipationTenders"
+                        v-if="participationTenders.count > countParticipationTenders"
                         class="button button-outline-green tenders__more"
                         @click="getParticipationTenders()"
                     >
