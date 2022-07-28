@@ -66,17 +66,17 @@
                 schema: [
                     {
                         $formkit: 'password',
-                        name: 'password',
+                        name: 'password_old',
                         label: 'Старый Пароль',
                         placeholder: "Введите пароль",
                         validation: 'required',
                         outerClass: 'field--required'
                     }, {
                         $formkit: 'password',
-                        name: 'password_new',
+                        name: 'password',
                         label: 'Новый Пароль',
                         placeholder: "Введите пароль",
-                        validation: 'required',
+                        validation: 'required|confirm',
                         outerClass: 'field--required'
                     }, {
                         $formkit: 'password',

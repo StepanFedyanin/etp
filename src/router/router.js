@@ -10,7 +10,8 @@ import needs from '@/views/Needs';
 import registration from '@/views/Registration';
 import auth from '@/views/Login';
 /* cabinet */
-// import cabinet from '@/views/Cabinet';
+import cabinet from '@/views/Cabinet';
+import cabinetInvite from '@/views/CabinetInvite';
 import cabinetCustomer from '@/views/CabinetCustomer';
 import cabinetCustomerTendersList from '@/views/CabinetCustomerTendersList';
 import cabinetCustomerDrafts from '@/views/CabinetCustomerDrafts';
@@ -91,12 +92,18 @@ const routes = [
         meta: { title: 'Политика конфиденциальности' },
         props: true,
     }, {
-    //     path: '/cabinet',
-    //     name: 'cabinet',
-    //     component: cabinet,
-    //     meta: { title: 'Кабинет', requiresAuth: true },
-    //     props: true,
-    // }, {
+        path: '/cabinet',
+        name: 'cabinet',
+        component: cabinet,
+        meta: { title: 'Кабинет', requiresAuth: true },
+        props: true,
+    }, {
+        path: '/invite',
+        name: 'invite',
+        component: cabinetInvite,
+        meta: { title: 'Пригласить партнеров', requiresAuth: true },
+        props: true,
+    }, {
         path: '/profile',
         name: 'profile',
         component: cabinetProfile,

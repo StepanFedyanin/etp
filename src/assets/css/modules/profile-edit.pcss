@@ -27,9 +27,15 @@
         color: $color-gray-T4;
         font-size: 14px;
     }
-    .field .field__comment{
-        display: flex;
-        justify-content: flex-end;
+    .field {
+        position: relative;
+        .field__comment{
+            display: flex;
+            justify-content: flex-end;
+            position: absolute;
+            bottom: 5px;
+            right: 15px;
+        }
     }
     .form__submit + .field__comment {
         text-align: center;

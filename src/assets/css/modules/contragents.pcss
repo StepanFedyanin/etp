@@ -5,7 +5,7 @@
         display: grid;
         grid-template-columns: 20% auto 140px 140px;
         grid-template-areas: 'A B C D';
-        gap: 10px;
+        gap: 15px;
     }
 
     &__header {
@@ -70,12 +70,19 @@
             font-weight: 400;
             font-size: 16px;
             line-height: 20px;
+            display: flex;
+            align-items: center;
             
             &.m--customer,
             &.m--member {
                 font-weight: 700;
                 font-size: 20px;
                 line-height: 24px;
+                display: flex;
+                align-items: center;
+            }
+            span{
+                margin-left: 10px;
             }
 
             .m--name-city {

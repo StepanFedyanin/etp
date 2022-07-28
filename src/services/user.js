@@ -164,4 +164,12 @@ export default class extends REST {
             throw new RESTError(error, 'Ошибка при обновлении созданных тендеров');
         });
     }
+
+    static sendInvites(params) {
+        return this._post(`send_invites`, {}, params).then((data) => {
+            return data;
+        }).catch((error) => {
+            throw new RESTError(error, 'Не удалось  отправить приглашения');
+        });
+    }
 }

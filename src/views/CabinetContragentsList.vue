@@ -39,13 +39,13 @@
                             <svg class="svg-icon svg-icon__hammer">
                                 <use xlink:href="../assets/img/icons/icons.svg#hammer" />
                             </svg>
-                            {{ contragent.created_tenders_count }}
+                            <span>{{ contragent.created_tenders_count }}</span>
                         </div>
                         <div class="contragents__item-cell m--member">
                             <svg class="svg-icon svg-icon__briefcase">
                                 <use xlink:href="../assets/img/icons/icons.svg#briefcase" />
                             </svg>
-                            {{ contragent.participation_tenders_count }}
+                            <span>{{ contragent.participation_tenders_count }}</span>
                         </div>
                     </div>
                 </div>
@@ -116,18 +116,18 @@
         components: {
             Pagination,
         },
+        props: {
+            id: {
+                type: Number,
+                default() { return null; }
+            },
+        },
         data() {
             return {
                 contragents: [],
                 limit: 10,
                 count: "",
             }
-        },
-        props: {
-            id: {
-                type: Number,
-                default() { return null; }
-            },
         },
         computed: {
             page() {

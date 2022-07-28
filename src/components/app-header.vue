@@ -8,7 +8,7 @@
                 <div class="header__left">
                     <div class="header__logo">
                         <router-link
-                            :to="{ name: 'home' }"
+                            :to="{ name: user && user.id ? 'cabinet' : 'home' }"
                             class="header__logo-link"
                         >
                             <img

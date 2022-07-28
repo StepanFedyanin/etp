@@ -1,5 +1,5 @@
 .field {
-    /*position: relative;*/
+    position: relative;
     display: flex;
     flex-direction: column;
     padding-bottom: 24px;
@@ -153,9 +153,11 @@
         background-color: rgba($color-red, 0.03);
         color: $color-red;
     }
-
     &__comment {
-        position: relative;
+        position: absolute;
+        right: 0;
+        left: 0;
+        bottom: -20px;
         font-size: 10px;
         font-weight: 400;
         padding-top: 8px;
@@ -163,6 +165,19 @@
         [data-message-type=validation] {
             color: $color-red;
         }
+    }
+    .field__comment {
+        /* position: absolute; */
+        right: 0;
+        left: auto;
+        bottom: 0px;
+        /* font-size: 10px;
+        font-weight: 400;
+        padding-top: 8px;
+        color: $color-gray-T3;
+        [data-message-type=validation] {
+            color: $color-red;
+        } */
     }
 
     &--inline &__inner {

@@ -3,8 +3,14 @@
         <Breadcrumbs />
         <div class="cabinet">
             <div class="container">
-                <div class="sidebar__menu-link" @click="onClickProfile">Мой профиль</div>
-                <div class="sidebar__menu-link" @click="onClickOrganization">Моя организация</div>
+                <div>Пригласить партнеров</div>
+                <div 
+                    class="button button-green" 
+                    @click="onClickInvite"
+                >
+                    Отправить приглашения
+                </div>
+                <!-- <div class="sidebar__menu-link" @click="onClickOrganization">Моя организация</div> -->
             </div>
         </div>
     </div>
@@ -50,6 +56,9 @@
             },
             onClickOrganization(){
                 this.$router.push({ name: 'organization'})
+            },
+            onClickInvite(){
+                this.$router.push({ name: 'invite'});
             }
         }
     };
