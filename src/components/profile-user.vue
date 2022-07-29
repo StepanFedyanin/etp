@@ -19,6 +19,13 @@
         >
             <use xlink:href="../assets/img/icons/icons.svg#edit" />
         </svg>
+        <svg 
+            v-if="user.is_active" 
+            class="svg-icon svg-icon__delete"
+            @click="onClickEditPassword()"
+        >
+            <use xlink:href="../assets/img/icons/icons.svg#delete" />
+        </svg>
         <div class="profile__table table">
             <div class="table__column">
                 <!-- <div
@@ -95,7 +102,7 @@
                 </div>
             </div>
         </div>
-        <div class="double">
+        <!-- <div class="double">
             <button 
                 class="button button-outline-green"
                 @click="onClickEditProfile()"
@@ -108,7 +115,7 @@
             >
                 изменить пароль
             </button>
-        </div>
+        </div> -->
     </div>
 </template>
 <script>

@@ -8,7 +8,6 @@
             <li>сделайте ваш процесс закупок более прозрачным и удобным;</li>
             <li>укрепляйте связи с проверенными партнерами.</li>
         </ul>
-        <!-- :inviteNumbers="inviteNumbers" -->
         <Invite 
             @submitInviteHandler="submitInviteHandler"
         />
@@ -37,38 +36,39 @@
         },
         data() {
             return {
-                // inviteNumbers: 1,
-                showLoaderSending: false,
+                // showLoaderSending: false,
                 showSendInviteModal: false, 
                 text: '',
             }
         },
         methods: {
-            // addInvite() {
-            //     this.inviteNumbers++;
-            // },
             submitInviteHandler(data) {
-                console.log(data);
-                this.showLoaderSending = true;
-                api.sendInvites(data).then(res => {
+                let invites = {};
+                for (let value in data) {
+                    invites = data[value];
+                }
+                invites = invites.filter(item => item.email );
+                
+                console.log(invites);
+
+
+                api.sendInvites({'invites': invites}).then(res => {
                     console.log(res.detail);
                     this.text = res.detail;
-                    this.showLoaderSending = false;
                     this.showMessage(this.text);
-                    if(res.detail){
+                    if (res.detail) {
                         // this.showSendInviteModal = true
                     }
                 }).catch(err => {
-                    this.showLoaderSending = false;
+                    // this.showLoaderSending = false;
                     console.error(err);
                 });
             },
-            showMessage(text){
+            showMessage(text) {
                 text
             },
-            hideModal(){
+            hideModal() {
                 this.showSendInviteModal = false
-                
             },
             
         }

@@ -1,14 +1,16 @@
 <template>
     <div class="app__main">
-        <Breadcrumbs />
+        <!-- <Breadcrumbs /> -->
         <div class="cabinet">
             <div class="container">
-                <div>Пригласить партнеров</div>
-                <div 
-                    class="button button-green" 
-                    @click="onClickInvite"
-                >
-                    Отправить приглашения
+                <div>
+                    <div>Пригласить партнеров</div>
+                    <div 
+                        class="button button-green" 
+                        @click="onClickInvite"
+                    >
+                        Отправить приглашения
+                    </div>
                 </div>
                 <!-- <div class="sidebar__menu-link" @click="onClickOrganization">Моя организация</div> -->
             </div>
@@ -17,10 +19,10 @@
 </template>
 
 <script>
-    import Breadcrumbs from '@/components/app-breadcrumbs';
+    // import Breadcrumbs from '@/components/app-breadcrumbs';
     export default {
         components: {
-            Breadcrumbs,
+            // Breadcrumbs,
 
         },
         data() {
