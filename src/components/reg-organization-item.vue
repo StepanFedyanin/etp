@@ -9,7 +9,7 @@
                     v-if="organization.kpp" 
                     class="option"
                 >
-                    КПП <span class="option--bold"> {{ organization.kpp }}</span>
+                    <span>КПП </span><span class="option--bold"> {{ organization.kpp }}</span>
                 </div>
             </div>
             <div class="organization__options">

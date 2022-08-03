@@ -25,7 +25,11 @@
     &__content {
         margin-bottom: 24px;
     }
-
+    &__organizations{
+        /* display: grid;
+        grid-template-columns: 50% auto;
+        grid-gap: 36px; */
+    }
     &__organization {
         position: relative;
         font-size: 16px;
@@ -68,4 +72,21 @@
             max-width: inherit;
         }
     }
+    &__alert{
+        background: $color-white;
+        padding: 22px 20px;
+        max-width: 642px;
+        justify-self: center;
+    }
+    .alert__title{
+        color: $color-red;
+        text-transform: uppercase;
+        font-weight: 700;
+        font-size: 20px;
+        padding-bottom: 16px;
+    }
+    .alert__text{
+        padding-bottom: 10px;
+    }
+    
 }

@@ -19,19 +19,28 @@
                     </div>
                     <div 
                         v-if="organizations.length != 0"
-                        class="organization organization__container"
+                        class="registration__organizations"
                     >  
                         <template 
                             v-for="organization in organizations"
                         >
+                            <regOrganizationItem
+                                v-if="!organization.error"
+                                :key="organization.inn"
+                                :organization="organization"
+                                @registerCompany="registerCompany"
+                            />
                             <div
                                 v-if="organization.color_status == 'red'"
-                                class="organization__alert"
+                                class="registration__alert alert"
                             >
-                                <p>
+                                <p class="alert__title">
+                                    организация  не может быть зарегистрирована
+                                </p>
+                                <p class="alert__text">
                                     К сожалению, организация с указанным ИНН имеет «красный» рейтинг в системе Контур.Светофор и не может быть зарегистрирована на платформе. 
                                 </p>
-                                <p>
+                                <p class="alert__text">
                                     Организации с «красным» рейтингом Светофора не допускаются на платформу TUGAN.
                                 </p>
                             </div>
@@ -41,14 +50,6 @@
                             > 
                                 <p>{{ organization.error.detail }}</p>
                             </div>
-                            <!-- <template > -->
-                            <regOrganizationItem
-                                v-if="!organization.error"
-                                :key="organization.inn"
-                                :organization="organization"
-                                @registerCompany="registerCompany"
-                            />
-                            <!-- </template> -->
                         </template>
                     </div>
                 </div>
@@ -65,7 +66,7 @@
                             v-if="regData.organization && regData.organization.id"
                             class="registration__organization"
                         >
-                            <span>{{ regData.organization.name }}</span>, дата регистрации {{ $helpers.parseDate(regData.organization.date_registration, 'YYYY-MM-DD').toLocaleDateString('ru') }}
+                            <!-- <span>{{ regData.organization.name }}</span>, дата регистрации {{ $helpers.parseDate(regData.organization.date_registration, 'YYYY-MM-DD').toLocaleDateString('ru') }} -->
                         </div>
                         <regOrganizationForm 
                             :loading="showLoaderSending"
@@ -92,65 +93,6 @@
                             @submitPersonHandler="submitPersonHandler"
                         />
                     </div>
-                </div>
-                <div
-                    v-if="stepRegistration === 4"
-                >
-                    <div class="registration__title h2">
-                        Пригласите ваших партнеров
-                    </div>
-                    <div class="registration__content text">
-                        <p>Вы сможете найти себе проверенных поставщиков или поучаствовать в тендере ....<br> Укажите ФИО и email, площадка отправит приглашения на указанную почту.</p>
-                    </div>
-                    <FormKit
-                        v-model="regData.invite"
-                        name="form-invite"
-                        preserve
-                        type="form"
-                        data-loading="showLoaderSending"
-                        form-class="$reset registration__form form"
-                        :actions="false"
-                        :disabled="showLoaderSending"
-                        :loading="showLoaderSending ? true : undefined"
-                        @submit="submitPersonHandler"
-                    >
-                        <div
-                            v-for="invite in inviteNumbers"
-                            :key="invite"
-                        >
-                            <div 
-                                class="registration__subtitle h3"
-                            >
-                                Приглашение №{{ invite }}
-                            </div>
-                            <div class="form__block">
-                                <FormKitSchema :schema="regInviteForm" />
-                            </div>
-                            <div 
-                                class="form__submit registration__form-submit" 
-                                data-type="submit"
-                            >
-                                <button
-                                    class="button button-green"
-                                    @click="addInvite"
-                                >
-                                    Добавить приглашение
-                                </button>
-                                <button
-                                    class="button button-green"
-                                    @click="sendInvite"
-                                >
-                                    Отправить приглашение
-                                </button>
-                                <button
-                                    class="button button-red"
-                                    @click="next"
-                                >
-                                    Завершить регистрацию
-                                </button>
-                            </div> 
-                        </div>
-                    </FormKit>
                 </div>
             </div>
         </div>
@@ -206,6 +148,7 @@
             };
         },
         computed: {
+            
         },
         created() {
         },
@@ -215,9 +158,9 @@
             }
         },
         methods: {
-            addInvite() {
-                this.inviteNumbers++;
-            },
+            // addInvite() {
+            //     this.inviteNumbers++;
+            // },
             prevStep() {
                 this.$store.dispatch('setStepRegistration', this.stepRegistration - 1);
                 this.stepRegistration = this.$store.state.stepRegistration;
@@ -233,13 +176,13 @@
                 this.$store.dispatch('setRegData', this.regData);
             },
             next() {
-                if (this.stepRegistration !== 4) {
+                if (this.stepRegistration !== 3) {
                     this.$store.dispatch('setStepRegistration', this.stepRegistration + 1);
                     this.stepRegistration = this.$store.state.stepRegistration;
                 } else {
                     this.$store.dispatch('setStepRegistration', null);
                     this.$store.dispatch('setRegData', null);
-                    this.$router.push({ name: 'profile' });
+                    this.$router.push({ name: 'cabinet' });
                 }
             },
             submitSearchHandler(data, node) {
@@ -270,10 +213,13 @@
                 });
             },
             registerCompany(organization, node) {
-                this.organization = organization;
+                
                 console.log(organization);
                 api.addOrganization(organization).then(res => {
                     console.log(res);
+                    if(res.id){
+                        this.organization = res;
+                    }
                     this.next();
                 }).catch(err => {
                     node.setErrors(
@@ -283,7 +229,6 @@
                     this.$store.dispatch('showError', err);
                     console.error(err);
                 });
-                
                 // this.next();
             },
             // submitOrganizationHandler(data, node) {
@@ -315,6 +260,25 @@
             //         });
             //     }
             // },
+            submitOrganizationHandler(data, node){
+                api.applyOrganization(data).then(res => {
+                    this.showLoaderSending = false;
+                    console.log(res);
+                    // this.regData.organization = Object.assign({}, res);
+                    // this.regData.person = {
+                    //     organization: res.id
+                    // };
+                    this.$store.dispatch('setRegData', this.regData);
+                    this.next();
+                }).catch(err => {
+                    node.setErrors(
+                        [err.detail],
+                    );
+                    this.showLoaderSending = false;
+                    this.$store.dispatch('showError', err);
+                    console.error(err);
+                });
+            },
             submitPersonHandler(data, node) {
                 this.showLoaderSending = true;
                 this.$store.dispatch('setRegData', this.regData);
