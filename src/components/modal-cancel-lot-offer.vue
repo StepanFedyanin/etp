@@ -10,15 +10,8 @@
         >
             <span />
         </button>
-        <span class="modal__title">Сделать ставку</span>
-        <div
-            v-if="betSended"
-            class="modal__content"
-        >
-            Ваша ставка отправлена.
-        </div>
+        <span class="modal__title">Отмена ставки</span>
         <div 
-            v-else
             class="modal__content"
         >
             <div class="offers m--no-padding m--no-background m--no-shadow m--modal">
@@ -51,7 +44,31 @@
                                 Текущее снижение <span>{{ $helpers.toPrice((100 - 100 * (lot.last_price || (lot.price * lot.quantity)) / (lot.price  * lot.quantity)), { sign: '%', pointer: ',' }) }}</span>
                             </div>
                         </div>
+                        <div
+                            v-if="betSended"
+                            class="offers__item-form form"
+                        >
+                            <div class="form__block m--flex">
+                                <div class="form__block-title m--center m--with-icon">
+                                    <span class="m--ok">Ваша ставка успешно отменена!</span>
+                                </div>
+                            </div>
+                            <div 
+                                class="form__submit offers__form-submit" 
+                                data-type="submit"
+                            >
+                                <button
+                                    type="submit"
+                                    :disabled="showLoaderSending"
+                                    class="button button-green"
+                                    @click="$emit('hideModal', updateData)"
+                                >
+                                    Закрыть
+                                </button>
+                            </div>
+                        </div>
                         <FormKit
+                            v-else
                             v-model="formValues"
                             name="form-offer"
                             preserve
@@ -64,51 +81,21 @@
                             @submit="submitHandler"
                         >
                             <div class="form__block m--flex">
-                                <div class="form__block-title offers__item-form-title">
-                                    Ваше предложение
+                                <div class="form__block-title m--center">
+                                    Вы действительно хотите отменить последнюю ставку?
                                 </div>
-                                <div class="offers__item-form-info">
-                                    Минимальная ставка: <span>{{ $helpers.toPrice(lot.min_price || 0, { sign: '₽', pointer: ',' }) }}</span> (шаг цены - <span>{{ tender.min_step }} %</span>)
-                                </div>
-                                <FormKit
-                                    v-model="formValues.price"
-                                    :maska="{ mask: '#*D##', tokens: { 'D': { pattern: /\./ }}}"
-                                    type="maska"
-                                    name="price"
-                                    label=""
-                                    placeholder="Ваша ставка"
-                                    :validation="`required|number|not:0|between:0,${lot.min_price}`"
-                                    validation-visibility="submit"
-                                    validation-label="ставка"
-                                />
-                                <FormKit
-                                    v-model="formValues.min_bid"
-                                    type="checkbox"
-                                    name="min_bid"
-                                    label="Минимальная ставка"
-                                    outerClass="field--inline"
-                                    @change="setMinBid"
-                                />
                             </div>
                             <div 
                                 class="form__submit offers__form-submit" 
                                 data-type="submit"
                             >
                                 <button
-                                    type="reset"
-                                    :disabled="showLoaderSending"
-                                    class="button button-red"
-                                    @click="$emit('hideModal')"
-                                >
-                                    Отменить
-                                </button>
-                                <button
                                     type="submit"
                                     :disabled="showLoaderSending"
                                     class="button button-green"
                                     @click="submitForm"
                                 >
-                                    Сделать ставку
+                                    Подтвердить
                                 </button>
                             </div>
                         </FormKit>
@@ -154,16 +141,12 @@
             },
         },
         methods: {
-            setMinBid(data, node) {
-                console.log(this.formData);
-                this.formValues.price = this.lot.min_price;
-            },
             submitHandler(data, node) {
                 this.showLoaderSending = true;
                 this.loading = true;
-                let params = Object.assign({}, this.formValues);
+                let params = {};
                 console.log(params);
-                tenderApi.addTenderLotBet(this.tender.id, this.lot.id, params).then(res => {
+                tenderApi.cancelTenderLotBet(this.tender.id, this.lot.id, params).then(res => {
                     this.showLoaderSending = false;
                     this.loading = false;
                     this.betSended = true;

@@ -50,6 +50,31 @@
             }
         }
 
+        &-top {
+            position: relative;
+            display: flex;
+            flex-wrap: wrap;
+            margin-bottom: 16px;
+            &-name {
+                color: $color-gray-T3;
+                margin-right: 48px;
+            }
+            &-status {
+                text-transform: uppercase;
+                font-weight: 400;
+                margin-right: 8px;
+                &.m--devider:after {
+                    content: '|';
+                    margin: 0 0 0 8px;
+                }
+            }
+            &-timer {
+                font-weight: 700;
+                text-transform: uppercase;
+                color: $color-red;
+            }
+        }
+
         &-title {
             display: block;
             font-weight: 600;
@@ -163,7 +188,7 @@
 
         &-lots {
             width: 100%;
-            margin-top: 40px;
+            /* margin-top: 40px; */
         }
 
         &-toggle {
