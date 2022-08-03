@@ -226,6 +226,24 @@ input[type='number'] {
     }
 }
 
+.color-status{
+    width: 10px;
+    height: 10px;
+    border-radius: 100px;
+    &&.m--color-red{
+        background: $color-red;
+    }
+    &&.m--color-green{
+        background: $color-green;
+    }
+    &&.m--color-green-yellow{
+        background: $color-yellow;
+    }
+    &&.m--color-yellow{
+        background: $color-yellow;
+    }
+}
+
 .m--color {
     &-green&-green {
         color: $color-green;
@@ -294,11 +312,17 @@ input[type='number'] {
         }
         &&__stop{
             height: 40px; 
-            width: 41px;
+            width: 40px;
             fill: $color-red;
-            stroke: $color-red;
             &:hover {
-                stroke: $color-red-dark;
+                fill: $color-red-dark;
+            }
+        }
+        &&__sent{
+            fill: none;
+            stroke: $color-green;
+            &:hover {
+                stroke: $color-green-dark;
             }
         }
 

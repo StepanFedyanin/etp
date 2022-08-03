@@ -67,9 +67,12 @@
                         validation: 'required',
                         outerClass: 'field--inline field--required'
                     }, {
-                        $formkit: 'text',
+                        // $formkit: 'text',
                         name: 'kpp',
                         readonly: true,
+                        // type: this.formData.owner_type == "ip" ? "hidden" : "text",
+                        // type: this.organization.owner_type == "ip" ? "hidden" : "text",
+                        type: this.formValues == "ip" ? "hidden" : "text",
                         label: 'КПП',
                         placeholder: 'Ваш КПП',
                         validation: 'required',

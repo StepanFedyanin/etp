@@ -6,7 +6,7 @@
         type="form"
         data-loading="loading"
         form-class="$reset registration__form form"
-        submit-label="Далее"
+        submit-label="Найти организацию"
         :disabled="loading"
         :loading="loading ? true : undefined"
         :submit-attrs="{
@@ -42,31 +42,32 @@
                     {
                         $formkit: 'maska',
                         name: 'inn',
-                        label: 'ИНН',
                         placeholder: 'Ваш ИНН',
                         validation: [['required'], ['matches', /^(\d{10}|\d{12})$/]],
                         maska: { mask: ['##########', '############'] },
-                        outerClass: 'field--inline field--required'
-                    }, {
-                        $formkit: 'maska',
-                        name: 'kpp',
-                        label: 'КПП',
-                        placeholder: 'Ваш КПП',
-                        validation: [['matches', /^\d{9}$/]],
-                        maska: { mask: '#########' },
-                        outerClass: 'field--inline'
-                    }, {
-                        $formkit: 'checkbox',
-                        name: 'owner_type',
-                        label: 'Статус предприятия',
-                        options: {
-                            '1': 'Производитель',
-                            '2': 'Дилер / дистрибьютор',
-                            '3': 'Генподрядчик',
-                            '4': 'Подрядчик'
-                        },
-                        outerClass: 'field--inline'
-                    }
+                        outerClass: 'field--required'
+                    }, 
+                    // {
+                    //     $formkit: 'maska',
+                    //     name: 'kpp',
+                    //     label: 'КПП',
+                    
+                    //     placeholder: 'Ваш КПП',
+                    //     validation: [['matches', /^\d{9}$/]],
+                    //     maska: { mask: '#########' },
+                    //     outerClass: 'field--inline'
+                    // }, {
+                    //     $formkit: 'checkbox',
+                    //     name: 'owner_type',
+                    //     label: 'Статус предприятия',
+                    //     options: {
+                    //         '1': 'Производитель',
+                    //         '2': 'Дилер / дистрибьютор',
+                    //         '3': 'Генподрядчик',
+                    //         '4': 'Подрядчик'
+                    //     },
+                    //     outerClass: 'field--inline'
+                    // }
                 ],
             }
         },

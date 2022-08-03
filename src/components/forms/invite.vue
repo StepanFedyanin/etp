@@ -104,7 +104,15 @@
             },
             deleteInviteForm(index) {
                 console.log(index);
-                this.invites.splice(index,1)
+                console.log(this.invites);
+                // console.log(Array.from(this.invites));
+                // console.log(typeof this.invites);
+                this.invites = Array.from(this.invites);
+                console.log(this.invites);
+
+                this.invites = this.invites.splice(index,1);
+                console.log(this.invites);
+
             },
             submitHandler(data) {
                 console.log(data);

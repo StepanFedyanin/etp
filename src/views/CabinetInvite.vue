@@ -57,10 +57,10 @@
                     this.text = res.detail;
                     this.showMessage(this.text);
                     if (res.detail) {
-                        // this.showSendInviteModal = true
+                        this.showSendInviteModal = true
                     }
                 }).catch(err => {
-                    // this.showLoaderSending = false;
+                    this.showLoaderSending = false;
                     console.error(err);
                 });
             },

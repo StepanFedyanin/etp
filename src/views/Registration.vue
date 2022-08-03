@@ -6,16 +6,50 @@
                     v-if="stepRegistration === 1"
                 >
                     <div class="registration__title h2">
-                        Укажите инн и кпп вашей организации
+                        Укажите инн вашей организации
                     </div>
                     <div
-                        class="registration__form form"
+                        class="registration__form form registration__step1"
                     >
                         <regSearchForm 
                             :loading="showLoaderSending"
                             :formData="regData.search"
                             @submitSearchHandler="submitSearchHandler"
                         />
+                    </div>
+                    <div 
+                        v-if="organizations.length != 0"
+                        class="organization organization__container"
+                    >  
+                        <template 
+                            v-for="organization in organizations"
+                        >
+                            <div
+                                v-if="organization.color_status == 'red'"
+                                class="organization__alert"
+                            >
+                                <p>
+                                    К сожалению, организация с указанным ИНН имеет «красный» рейтинг в системе Контур.Светофор и не может быть зарегистрирована на платформе. 
+                                </p>
+                                <p>
+                                    Организации с «красным» рейтингом Светофора не допускаются на платформу TUGAN.
+                                </p>
+                            </div>
+                            <div 
+                                v-if="organization.error"
+                                class="organization__error"
+                            > 
+                                <p>{{ organization.error.detail }}</p>
+                            </div>
+                            <!-- <template > -->
+                            <regOrganizationItem
+                                v-if="!organization.error"
+                                :key="organization.inn"
+                                :organization="organization"
+                                @registerCompany="registerCompany"
+                            />
+                            <!-- </template> -->
+                        </template>
                     </div>
                 </div>
                 <div
@@ -35,7 +69,7 @@
                         </div>
                         <regOrganizationForm 
                             :loading="showLoaderSending"
-                            :formData="regData.organization"
+                            :formData="organization"
                             :readonly="regFormReadOnly"
                             @prevStep="prevStep"
                             @submitOrganizationHandler="submitOrganizationHandler"
@@ -128,12 +162,15 @@
     import regSearchForm from '@/components/forms/reg-search-form';
     import regOrganizationForm from '@/components/forms/reg-organization-form';
     import regPersonForm from '@/components/forms/reg-person-form';
+    import regOrganizationItem from '@/components/reg-organization-item';
+    
 
     export default {
         components: {
             regSearchForm,
             regOrganizationForm,
             regPersonForm,
+            regOrganizationItem,
             //inviteAddForm
         },
         props: {
@@ -164,6 +201,8 @@
                 inviteNumbers: 1,
                 isValid: false,
                 person: {},
+                organizations: {},
+                // organization: {},
             };
         },
         computed: {
@@ -208,6 +247,9 @@
                 let params = Object.assign({}, this.regData.search);
                 delete params.owner_type;
                 api.searchOrganization(params).then(res => {
+                    console.log(res);
+                    this.organizations = res;
+                    console.log(this.organizations);
                     this.showLoaderSending = false;
                     if (res.id) {
                         this.regData.organization = Object.assign({}, res);
@@ -217,7 +259,7 @@
                         this.regFormReadOnly = false;
                     }
                     this.$store.dispatch('setRegData', this.regData);
-                    this.next();
+                    // this.next();
                 }).catch(err => {
                     //node.setErrors(
                     //    [err.detail],
@@ -227,35 +269,52 @@
                     console.error(err);
                 });
             },
-            submitOrganizationHandler(data, node) {
-                if (this.regFormReadOnly) {
-                    this.regData.person = {
-                        organization: this.regData.organization.id
-                    };
-                    this.$store.dispatch('setRegData', this.regData);
+            registerCompany(organization, node) {
+                this.organization = organization;
+                console.log(organization);
+                api.addOrganization(organization).then(res => {
+                    console.log(res);
                     this.next();
-                } else {
-                    this.showLoaderSending = true;
-                    let params = Object.assign({}, this.regData.organization);
-                    api.addOrganization(params).then(res => {
-                        this.showLoaderSending = false;
-                        console.log(res);
-                        this.regData.organization = Object.assign({}, res);
-                        this.regData.person = {
-                            organization: res.id
-                        };
-                        this.$store.dispatch('setRegData', this.regData);
-                        this.next();
-                    }).catch(err => {
-                        node.setErrors(
-                            [err.detail],
-                        );
-                        this.showLoaderSending = false;
-                        this.$store.dispatch('showError', err);
-                        console.error(err);
-                    });
-                }
+                }).catch(err => {
+                    node.setErrors(
+                        [err.detail],
+                    );
+                    this.showLoaderSending = false;
+                    this.$store.dispatch('showError', err);
+                    console.error(err);
+                });
+                
+                // this.next();
             },
+            // submitOrganizationHandler(data, node) {
+            //     if (this.regFormReadOnly) {
+            //         this.regData.person = {
+            //             organization: this.regData.organization.id
+            //         };
+            //         this.$store.dispatch('setRegData', this.regData);
+            //         this.next();
+            //     } else {
+            //         this.showLoaderSending = true;
+            //         let params = Object.assign({}, this.regData.organization);
+            //         api.addOrganization(params).then(res => {
+            //             this.showLoaderSending = false;
+            //             console.log(res);
+            //             this.regData.organization = Object.assign({}, res);
+            //             this.regData.person = {
+            //                 organization: res.id
+            //             };
+            //             this.$store.dispatch('setRegData', this.regData);
+            //             this.next();
+            //         }).catch(err => {
+            //             node.setErrors(
+            //                 [err.detail],
+            //             );
+            //             this.showLoaderSending = false;
+            //             this.$store.dispatch('showError', err);
+            //             console.error(err);
+            //         });
+            //     }
+            // },
             submitPersonHandler(data, node) {
                 this.showLoaderSending = true;
                 this.$store.dispatch('setRegData', this.regData);
