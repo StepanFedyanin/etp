@@ -101,7 +101,13 @@ export default class extends REST {
             throw new RESTError(error, 'Не удалось создать организацию');
         });
     }
-
+    static applyOrganization(params) {
+        return this._post(`organizations/apply`, {}, params).then((data) => {
+            return data;
+        }).catch((error) => {
+            throw new RESTError(error, 'Не удалось изменить данные организации');
+        });
+    }
     static getOrganizations(params) {
         return this._get(`organizations`, params, params).then((data) => {
             return data;
