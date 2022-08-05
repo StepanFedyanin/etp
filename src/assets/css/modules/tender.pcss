@@ -18,6 +18,10 @@
         margin-bottom: 48px;
         @mixin shadow-box;
 
+        &.m--column {
+            flex-direction: column;
+        }
+
         &-left {
             padding-right: 48px;
             border-right: 1px solid $color-gray-T5;
@@ -27,6 +31,11 @@
         &-right {
             padding-left: 20px;
             width: 30%;
+        }
+
+        &-number {
+            color: $color-gray-T3;
+            margin-bottom: 16px;
         }
 
         &-title {

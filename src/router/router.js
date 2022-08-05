@@ -12,6 +12,7 @@ import auth from '@/views/Login';
 /* cabinet */
 import cabinet from '@/views/Cabinet';
 import cabinetInvite from '@/views/CabinetInvite';
+import cabinetChat from '@/views/CabinetChat';
 import cabinetCustomer from '@/views/CabinetCustomer';
 import cabinetCustomerTendersList from '@/views/CabinetCustomerTendersList';
 import cabinetCustomerDrafts from '@/views/CabinetCustomerDrafts';
@@ -377,7 +378,7 @@ const routes = [
     }, {
         path: '/chat',
         name: 'chat',
-        component: cabinetNews,
+        component: cabinetChat,
         meta: { 
             title: 'Чат', 
             breadcrumbs: [],
