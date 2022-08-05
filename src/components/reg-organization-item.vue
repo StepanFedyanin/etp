@@ -1,6 +1,9 @@
 <template>
     <div class="organization__item">
-        <div class="organization__box">
+        <div 
+            class="organization__box"
+            :class="organization.color_status"
+        >
             <div class="organization__options ">
                 <div class="option">
                     <span>ИНН </span><span class="option--bold">{{ organization.inn }}</span> 
@@ -20,12 +23,12 @@
                     {{ organization.legal_address }}
                 </div>
             </div>
-            <div 
+            <!-- <div 
                 class="organization__color color-status"
                 :class="[organization.color_status !== 'green' ? organization.color_status == 'green-yellow' ? 'm--color-yellow' : 'm--color-red' : 'm--color-green' ]"
             > 
                 '
-            </div>
+            </div> -->
         </div>
         <button
             v-if="organization.color_status !== 'red'"

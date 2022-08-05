@@ -25,10 +25,11 @@
     &__content {
         margin-bottom: 24px;
     }
-    &__organizations{
-        /* display: grid;
+    &__item-wrapper.withAlert {
+        display: grid;
         grid-template-columns: 50% auto;
-        grid-gap: 36px; */
+        grid-gap: 36px;
+
     }
     &__organization {
         position: relative;
@@ -77,16 +78,27 @@
         padding: 22px 20px;
         max-width: 642px;
         justify-self: center;
+        border-radius: 28px;
+        .alert__title{
+            color: $color-red;
+            text-transform: uppercase;
+            font-weight: 700;
+            font-size: 20px;
+            padding-bottom: 16px;
+        }
+        .alert__text{
+            padding-bottom: 10px;
+            font-weight: 400;
+        }
     }
-    .alert__title{
-        color: $color-red;
-        text-transform: uppercase;
-        font-weight: 700;
-        font-size: 20px;
-        padding-bottom: 16px;
+    &__type-organization {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        .field[data-type=checkbox] .field__inner {
+            flex-direction: row;
+            .field__label{
+                margin: 0 0 0 8px;
+            }
+        }
     }
-    .alert__text{
-        padding-bottom: 10px;
-    }
-    
 }
