@@ -18,39 +18,45 @@
                         />
                     </div>
                     <div 
-                        v-if="organizations.length != 0"
-                        class="registration__organizations"
-                    >  
-                        <template 
-                            v-for="organization in organizations"
-                        >
-                            <regOrganizationItem
-                                v-if="!organization.error"
-                                :key="organization.inn"
-                                :organization="organization"
-                                @registerCompany="registerCompany"
-                            />
-                            <div
-                                v-if="organization.color_status == 'red'"
-                                class="registration__alert alert"
+                        class="registration__item-wrapper"
+                        :class="[colorStatusRed ? 'withAlert' : '']"
+                    >
+                        <div 
+                            v-if="organizations.length != 0"
+                            class="registration__organizations"
+                        >  
+                            <template 
+                                v-for="organization in organizations"
                             >
-                                <p class="alert__title">
-                                    организация  не может быть зарегистрирована
-                                </p>
-                                <p class="alert__text">
-                                    К сожалению, организация с указанным ИНН имеет «красный» рейтинг в системе Контур.Светофор и не может быть зарегистрирована на платформе. 
-                                </p>
-                                <p class="alert__text">
-                                    Организации с «красным» рейтингом Светофора не допускаются на платформу TUGAN.
-                                </p>
-                            </div>
-                            <div 
-                                v-if="organization.error"
-                                class="organization__error"
-                            > 
-                                <p>{{ organization.error.detail }}</p>
-                            </div>
-                        </template>
+                                <regOrganizationItem
+                                    v-if="!organization.error"
+                                    :key="organization.inn"
+                                    :organization="organization"
+                                    @registerCompany="registerCompany"
+                                />
+                                <div 
+                                    v-if="organization.error"
+                                    class="organization__error"
+                                > 
+                                    <p>{{ organization.error.detail }}</p>
+                                </div>
+                            </template>
+                            <!-- v-if="organization.color_status == 'red'" -->
+                        </div>
+                        <div
+                            v-if="colorStatusRed"
+                            class="registration__alert alert"
+                        >
+                            <p class="alert__title">
+                                организация не может быть зарегистрирована
+                            </p>
+                            <p class="alert__text">
+                                К сожалению, организация с указанным ИНН имеет «красный» рейтинг в системе Контур.Светофор и не может быть зарегистрирована на платформе. 
+                            </p>
+                            <p class="alert__text">
+                                Организации с «красным» рейтингом Светофора не допускаются на платформу TUGAN.
+                            </p>
+                        </div>
                     </div>
                 </div>
                 <div
@@ -62,12 +68,12 @@
                     <div
                         class="registration__form form"
                     >
-                        <div
+                        <!-- <div
                             v-if="regData.organization && regData.organization.id"
                             class="registration__organization"
                         >
-                            <!-- <span>{{ regData.organization.name }}</span>, дата регистрации {{ $helpers.parseDate(regData.organization.date_registration, 'YYYY-MM-DD').toLocaleDateString('ru') }} -->
-                        </div>
+                            <span>{{ regData.organization.name }}</span>, дата регистрации {{ $helpers.parseDate(regData.organization.date_registration, 'YYYY-MM-DD').toLocaleDateString('ru') }}
+                        </div> -->
                         <regOrganizationForm 
                             :loading="showLoaderSending"
                             :formData="organization"
@@ -143,17 +149,36 @@
                 inviteNumbers: 1,
                 isValid: false,
                 person: {},
-                organizations: {},
+                organizations: [],
+                // colorStatus: false,
+                colorStatusRed2: false,
                 // organization: {},
             };
         },
         computed: {
-            
+            colorStatusRed: function() {
+                return (this.organizations.filter((item) => {
+                    return item.color_status === "red";
+                })).length > 0
+            }
+            // colorStatusRed: function(organizations){
+            // if(organizations){
+            //     console.log(organizations);
+            // }
+            // return true;
+
+            // if(organization.colorStatus === "red") {
+            //     return true;
+            // } else{
+            //     return false;
+            // }
+            // },
         },
         created() {
         },
         mounted() {
-            if (this.stepRegistration === 2 && this.regData.organization.id) {
+            console.log(!this.regData.organization.created);
+            if (this.stepRegistration === 2 && this.regData.organization.created === false) {
                 this.regFormReadOnly = true;
             }
         },
@@ -169,7 +194,7 @@
                     this.regData.person = {};
                 } else if (this.stepRegistration === 2) {
                     this.regData.person = {};
-                    if (this.regData.organization.id) {
+                    if (!this.regData.organization.created) {
                         this.regFormReadOnly = true;
                     }
                 }
@@ -179,6 +204,7 @@
                 if (this.stepRegistration !== 3) {
                     this.$store.dispatch('setStepRegistration', this.stepRegistration + 1);
                     this.stepRegistration = this.$store.state.stepRegistration;
+                    console.log(this.stepRegistration);
                 } else {
                     this.$store.dispatch('setStepRegistration', null);
                     this.$store.dispatch('setRegData', null);
@@ -194,33 +220,37 @@
                     this.organizations = res;
                     console.log(this.organizations);
                     this.showLoaderSending = false;
-                    if (res.id) {
-                        this.regData.organization = Object.assign({}, res);
-                        this.regFormReadOnly = true;
-                    } else {
-                        this.regData.organization = Object.assign({}, params);
-                        this.regFormReadOnly = false;
-                    }
+                    // res.forEach(function(item) {
+                    //     if (item.inn) {
+                    // this.regData.organization = Object.assign({}, res);
+                    // this.regFormReadOnly = true;
+                    // } else {
+                    // this.regData.organization = Object.assign({}, params);
+                    // this.regFormReadOnly = false;
+                    // }
+                    // });
                     this.$store.dispatch('setRegData', this.regData);
-                    // this.next();
                 }).catch(err => {
-                    //node.setErrors(
-                    //    [err.detail],
-                    //);
+                    node.setErrors(
+                        [err.detail],
+                    );
                     this.showLoaderSending = false;
                     this.$store.dispatch('showError', err);
                     console.error(err);
                 });
             },
             registerCompany(organization, node) {
-                
-                console.log(organization);
                 api.addOrganization(organization).then(res => {
                     console.log(res);
                     if(res.id){
                         this.organization = res;
+                        this.next();
+                        console.log(this.stepRegistration);
+                        if (this.stepRegistration === 2 && !res.created) {
+                            this.regFormReadOnly = true;
+                            console.log(this.regFormReadOnly);
+                        }
                     }
-                    this.next();
                 }).catch(err => {
                     node.setErrors(
                         [err.detail],

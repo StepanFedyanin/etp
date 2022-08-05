@@ -12,6 +12,7 @@
         @submit="submitHandler"
     >
         <!-- {{ formValues }} -->
+        <!-- {{ readonly }} -->
         <div class="form__block">
             <FormKitSchema 
                 :schema="schema" 
@@ -39,6 +40,7 @@
     </FormKit>
 </template>
 <script>
+    import { createNode } from '@formkit/core'
     export default {
         props: {
             loading: {
@@ -61,7 +63,7 @@
                     {
                         $formkit: 'text',
                         name: 'inn',
-                        disabled: "disabled",
+                        disabled: true,
                         label: 'ИНН',
                         placeholder: 'Ваш ИНН',
                         validation: 'required',
@@ -70,14 +72,14 @@
                         $formkit: this.formData.owner_type == "ip" ? "hidden" : "text",
                         // $formkit: "text",
                         name: 'kpp',
-                        disabled: "disabled",
+                        disabled: true,
                         label: 'КПП',
                         placeholder: 'Ваш КПП',
                         outerClass: 'field--inline'
                     }, {
                         $formkit: 'text',
                         name: 'ogrn',
-                        disabled: "disabled",
+                        disabled: true,
                         label: 'ОГРН',
                         placeholder: 'ОГРН организации',
                         // validation: [['required'], ['matches', /^\d{13}$/]],
@@ -87,91 +89,91 @@
                         $formkit: "hidden",
                         // $formkit: "text",
                         name: 'owner_type',
-                        disabled: "disabled",
+                        disabled: true,
                         label: 'Форма собственности',
                     }, {
                         $formkit: 'text',
                         name: 'name',
-                        disabled: "disabled",
+                        disabled: true,
                         label: 'Название организации',
                         outerClass: 'field--inline'
                     }, {
                         $formkit: 'text',
                         name: 'full_name',
-                        disabled: "disabled",
+                        disabled: true,
                         label: 'Полное название организации',
                         outerClass: 'field--inline'
                     }, {
                         $formkit: 'date',
                         name: 'date_registration',
-                        disabled: "disabled",
+                        disabled: true,
                         label: 'Дата регистрации организации',
                         outerClass: 'field--inline'
                     }, {
                         $formkit: 'text',
                         name: 'head_name',
-                        disabled: "disabled",
+                        disabled: true,
                         label: 'ФИО руководителя организации',
                         // validation: 'required',
                         outerClass: 'field--inline'
                     }, {
                         $formkit: 'text',
                         name: 'head_post',
-                        disabled: "disabled",
+                        disabled: true,
                         label: 'Должность руководителя организации',
                         // validation: 'required',
                         outerClass: 'field--inline'
                     }, {
                         $formkit: 'text',
                         name: 'accountant_name',
-                        disabled: this.formData.owner_type ? true : false,
+                        disabled: this.formData.created ? true : false,
                         label: 'ФИО бухгалтера организации',
                         outerClass: 'field--inline'
                     }, {
                         $formkit: 'text',
                         name: 'legal_address',
-                        disabled: "disabled",
+                        disabled: true,
                         label: 'Юридический адрес организации',
                         // validation: 'required',
                         outerClass: 'field--inline'
                     }, {
                         $formkit: 'text',
                         name: 'actual_address',
-                        disabled: this.formData.owner_type ? "disabled" : false,
+                        disabled: this.formData.created ? true : false,
                         label: 'Фактический адрес организации',
                         outerClass: 'field--inline'
                     }, {
                         $formkit: "hidden",
                         // $formkit: "text",
                         name: 'city',
-                        disabled: "disabled",
+                        disabled: true,
                         label: 'Город',
                     }, {
                         $formkit: 'text',
                         name: 'okpo',
                         label: 'ОКПО',
-                        disabled: "disabled",
+                        disabled: true,
                         // validation: 'required',
                         outerClass: 'field--inline'
                     }, {
                         $formkit: "hidden",
                         // $formkit: "text",
                         name: 'status',
-                        disabled: "disabled",
+                        disabled: true,
                         label: 'Статус',
                     }, {
                         $formkit: this.formData.owner_type == "ip" ? "hidden" : "text",
                         // $formkit: "text",
                         name: 'capital',
                         label: 'Сумма уставного капитала',
-                        disabled: "disabled",
+                        disabled: true,
                         // validation: 'required|number',
                         // maska: { mask: '#*' },
                         outerClass: 'field--inline'
                     }, {
                         $formkit: 'text',
                         name: 'principal_activity',
-                        disabled: "disabled",
+                        disabled: true,
                         label: 'Основной виде деятельности (ОКВЭД)',
                         // validation: 'required',
                         outerClass: 'field--inline'
@@ -179,39 +181,77 @@
                         $formkit: "hidden",
                         // $formkit: "text",
                         name: 'color_status',
-                        disabled: "disabled",
+                        disabled: true,
                         label: 'Статус цвета',
                     }, {
                         $formkit: "hidden",
                         // $formkit: "text",
                         name: 'filial',
-                        disabled: "disabled",
+                        disabled: true,
                         label: 'Филиал',
                     }, {
                         $formkit: "hidden",
-                        // $formkit: "text",
-                        name: 'manufacturer',
-                        disabled: "disabled",
-                    }, {
-                        $formkit: "hidden",
-                        name: 'dealer',
-                        disabled: "disabled",
-                    }, {
-                        $formkit: "hidden",
-                        // $formkit: "text",
-                        name: 'gen_contractor',
-                        disabled: "disabled",
-                    }, {
-                        $formkit: "hidden",
-                        // $formkit: "text",
-                        name: 'contractor',
-                        disabled: "disabled",
-                    }, {
-                        $formkit: "hidden",
-                        // $formkit: "text",
                         name: 'id',
-                        // disabled: "disabled",
-                    }
+                        disabled: true,
+                    }, {         
+                        $el: 'div',
+                        children: 'Статус предприятия*',
+                        attrs: {
+                            class: 'registration__title h2'
+                        },
+                    }, {
+                        $el: 'div',
+                        attrs: {
+                            class: 'registration__type-organization'
+                        },
+                        children: [
+                            {
+                                $formkit: "checkbox",
+                                label: "Производитель",
+                                disabled: this.formData.created ? true : false,
+                            },{
+                                $formkit: "checkbox",
+                                label: "Дилер / дистрибьютор",
+                                name: 'dealer',
+                                disabled: this.formData.created ? true : false,
+                            },{
+                                $formkit: "checkbox",
+                                label: "Генподрядчик",
+                                name: 'gen_contractor',
+                                disabled: this.formData.created ? true : false,
+                            },{
+                                $formkit: "checkbox",
+                                label: "Подрядчик",
+                                name: 'contractor',
+                                disabled: this.formData.created ? true : false,
+                            },
+                        ],
+                    }, 
+                    // {
+                    //     $formkit: "checkbox",
+                    //     label: "Производитель",
+                    //     name: 'manufacturer',
+                    //     outer: "dwd",
+                    //     disabled: this.formData.created ? true : false,
+                    //     attrs: {
+                    //         class: 'registration__checkbox',
+                    //     },
+                    // }, {
+                    //     $formkit: "checkbox",
+                    //     label: "Дилер / дистрибьютор",
+                    //     name: 'dealer',
+                    //     disabled: this.formData.created ? true : false,
+                    // }, {
+                    //     $formkit: "checkbox",
+                    //     label: "Генподрядчик",
+                    //     name: 'gen_contractor',
+                    //     disabled: this.formData.created ? true : false,
+                    // }, {
+                    //     $formkit: "checkbox",
+                    //     label: "Подрядчик",
+                    //     name: 'contractor',
+                    //     disabled: this.formData.created ? true : false,
+                    // },
                 ],
             }
         },
