@@ -104,6 +104,14 @@
                                 —
                             </span>
                         </div>
+                        <a
+                            v-if="lot.user_price"
+                            href="#"
+                            class="lots__item-cancel"
+                            @click.prevent="onClickCancelLotOffer(lot)"
+                        >
+                            Отменить последнюю ставку
+                        </a>
                     </div>
                     <div class="lots__item-buttons">
                         <button 
@@ -122,14 +130,22 @@
             :showModal="showAddLotOfferModal"
             @hideModal="hideAddLotOfferModal"
         />
+        <ModalCancelLotOffer
+            :tender="tender || {}"
+            :lot="lot || {}"
+            :showModal="showCancelLotOfferModal"
+            @hideModal="hideCancelLotOfferModal"
+        />
     </div>
 </template>
 
 <script>
     import ModalAddLotOffer from '@/components/modal-add-lot-offer';
+    import ModalCancelLotOffer from '@/components/modal-cancel-lot-offer';
     export default {
         components: {
-            ModalAddLotOffer
+            ModalAddLotOffer,
+            ModalCancelLotOffer
         },
         props: {
             tender: {
@@ -157,6 +173,8 @@
                 },
                 currentSorting: 'participate',
                 showAddLotOfferModal: false,
+                showCancelLotOfferModal: false,
+                lot: {}
             }
         },
         computed: {
@@ -211,6 +229,16 @@
             },
             hideAddLotOfferModal(updateData) {
                 this.showAddLotOfferModal = false;
+                if (updateData) {
+                    this.$emit('getTenderData');
+                }
+            },
+            onClickCancelLotOffer(lot) {
+                this.lot = lot;
+                this.showCancelLotOfferModal = true;
+            },
+            hideCancelLotOfferModal(updateData) {
+                this.showCancelLotOfferModal = false;
                 if (updateData) {
                     this.$emit('getTenderData');
                 }

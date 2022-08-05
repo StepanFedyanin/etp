@@ -9,6 +9,27 @@
             @click="toggleFavorite"
         />
         <div class="tenders__item-left">
+            <div class="tenders__item-top">
+                <div class="tenders__item-top-name">
+                    Аукцион №{{ tender.id }}
+                </div>
+                <div 
+                    class="tenders__item-top-status"
+                    :class="restTime ? 'm--devider' : ''"
+                >
+                    {{ tender.status_detail || tender.status }}
+                </div>
+                <div
+                    class="tenders__item-top-timer"
+                >
+                    <template
+                        v-if="restTime"
+                    >
+                        Осталось {{ $helpers.dateRangeToDaysHours(new Date(), new Date(tender.date_end)) }}
+                    </template>
+                </div>
+
+            </div>
             <router-link
                 :to="{ name: 'tender', params: { id: tender.id } }"
                 class="tenders__item-title"
@@ -78,42 +99,42 @@
             <div class="tenders__item-price">
                 {{ $helpers.toPrice(tender.price, {sign: '₽'}) }}
             </div>
-            <div class="tenders__item-param">
-                <span class="tenders__item-param-name">Аукцион №{{ tender.id }}</span>
-            </div>
-            <div class="tenders__item-param">
+            <div 
+                v-if="tender.date_start" 
+                class="tenders__item-param"
+            >
                 <span
-                    v-if="tender.date_start" 
                     class="tenders__item-param-name"
                 >
-                    Объявлено: 
+                    Дата публикации: 
                 </span> 
                 {{ $helpers.formatDate(new Date(tender.date_start), 'DD.MM.YYYY HH:mm') }} МСК
             </div>
+            <div
+                v-if="tender.date_end" 
+                class="tenders__item-param"
+            >
+                <span
+                    class="tenders__item-param-name"
+                >
+                    Дата окончания: 
+                </span>
+                {{ $helpers.formatDate(new Date(tender.date_end), 'DD.MM.YYYY HH:mm') }} МСК
+            </div>
+
             <div class="tenders__item-param">
                 <span class="tenders__item-param-name">Тип аукциона:</span> {{ tender.type_detail }}
             </div>
+            <!--
             <div class="tenders__item-param">
                 <span class="tenders__item-param-name">Лоты:</span> {{ tender.lot_count }}
             </div>
+            -->
             <div class="tenders__item-param">
-                <span class="tenders__item-param-name">Предложений от поставщиков:</span> ?
+                <span class="tenders__item-param-name">Минимальный шаг ставки:</span> {{ tender.min_step || '?' }}
             </div>
-            <div
-                class="tenders__item-timer"
-            >
-                <div
-                    v-if="tender.date_end" 
-                    class="tenders__item-timer-date"
-                >
-                    Прием заявок: {{ $helpers.formatDate(new Date(tender.date_end), 'DD.MM.YYYY HH:mm') }} МСК
-                </div>
-                <div
-                    v-if="restTime"
-                    class="tenders__item-timer-left"
-                >
-                    Осталось {{ $helpers.dateRangeToDaysHours(new Date(), new Date(tender.date_end)) }}
-                </div>
+            <div class="tenders__item-param">
+                <span class="tenders__item-param-name">Предложений от поставщиков:</span> {{ tender.unique_offer_count }}
             </div>
             <template
                 v-if="drafts"
