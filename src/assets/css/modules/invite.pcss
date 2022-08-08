@@ -1,9 +1,48 @@
-.invite__form {
-    .form__block{
-        display: grid;
-        grid-template-columns: 1fr 1fr;
+.invite{
+    &__form {
+        .form__block{
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+        }
+    }
+    &__benefits {
+        padding-left: 23px;
+        padding-bottom: 34px;
+        font-size: 18px;
+        line-height: 22px;
+        li{
+            list-style-image: svg-load('assets/img/icons/icon-list.svg', fill=$color-red);
+        }
+        li:not(:last-child){
+            padding-bottom: 14px;
+        }
+    }
+    &__container + .vfm .vfm__content.modal-content{
+        position: relative;
+    }
+    .item__title {
+        font-weight: 700;
+        font-size: 20px;
+        line-height: 24px;
+        text-transform: uppercase;
+        display: flex;
+        align-items: center;
+        margin-bottom: 16px;
+        svg {
+           margin-left: 10px;
+        }
+    }
+    .button-transparent{
+        background: none;
+        padding: 16px 7px;
+        color: $color-green;
+        margin-bottom: 33px;
+    }
+    .button-transparent:active:not(:disabled){
+        padding: 16px 7px;
     }
 }
-.invite__container + .vfm .vfm__content.modal-content{
-    position: relative;
+.svg-icon__sent {
+  width: 120px;
+  height: 120px;
 }

@@ -101,4 +101,43 @@
         margin: 24px 0;
         gap: 36px;
     }
+
+    &__notice {
+        flex-direction: row;
+        align-items: center;
+        justify-content: center;
+        height: 500px;
+        width: 1461px;
+        /* padding: 130px 254px; */
+        .modal{
+            &__content {
+                max-width: 756px;
+                padding: 0 45px;
+                /* margin-left: 45px; */
+                flex-shrink: 6;
+            }
+            &__text {
+                margin-bottom: 24px;
+            }
+            &__title {
+            margin-bottom: 24px;
+            font-size: 34px;
+            text-transform: inherit;
+        }
+        }
+        svg {
+            flex-shrink: 1;
+        }
+        .text__email {
+            color: $color-green;
+        }
+        .text__important {
+            font-weight: 400;
+        }
+        p {
+            margin-bottom: 24px;
+            font-weight: 300;
+        }
+
+    }
 }

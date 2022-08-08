@@ -58,7 +58,7 @@
                         Фактический адрес:
                     </div>
                     <div class="organization__block-item-value">
-                        {{ organization.actual_address }}
+                        {{ organization.actual_address ? organization.actual_address : '-' }}  
                     </div>
                 </div>
                 <div class="organization__block-item">
@@ -77,9 +77,15 @@
                     </div>
                     <div
                         class="organization__block-item-value"
-                        :class="[organization.color_status !== 'green' ? organization.color_status == 'yellow' ? 'm--color-yellow' : 'm--color-red' : 'm--color-green' ]"
+                        :class="organization.color_status"
                     >
-                        {{ organization.color_status_text }}
+                        <!-- :class="[organization.color_status !== 'green' ? organization.color_status == 'yellow' ? 'm--color-yellow' : 'm--color-red' : 'm--color-green' ]" -->
+
+                        <span
+                            v-if="organization.color_status !== 'green-yellow'"
+                        >
+                            {{ organization.color_status_detail }}
+                        </span>
                     </div>
                 </div>
                 <div class="organization__block-item">
@@ -87,7 +93,7 @@
                         Статус ЕГРЮЛ:
                     </div>
                     <div class="organization__block-item-value">
-                        {{ organization.status }}
+                        {{ organization.status_detail }}
                     </div>
                 </div>
                 <div class="organization__block-item">

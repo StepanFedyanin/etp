@@ -1,28 +1,36 @@
 <template>
     <vue-final-modal
         v-model="show"
-        classes="modal-container"
-        content-class="modal-content"
+        classes="modal__container" 
+        content-class="modal__block modal__notice"
     >
-        <button class="modal__close" @click="show = false">
-            <mdi-close></mdi-close>
+        <button 
+            class="modal__close" 
+            @click="$emit('hideModal')"
+        >
+            <span />
         </button>
         <svg class="svg-icon svg-icon__sent">
             <use xlink:href="../assets/img/icons/icons.svg#sent" />
         </svg>
-        <span class="modal__title">Ваше приглашение отправлено!</span>
         <div class="modal__content">
-            <p>На электронную почту: ivan@yandex.ru, artem@mail.ru, info@flexites.org.</p>
-            <p>Ваши партнеры получат ссылку-приглашение на почту, после чего смогут зарегистрироваться в системе TUGAN.</p>
-            {{ text }}
+            <div class="modal__title">{{ text }}</div>
+            <div class="modal__text text">
+                <p class="text__important">На электронную почту: <span class="text__email">{{ emails }}</span></p>
+                <p>Ваши партнеры получат ссылку-приглашение на почту, после чего смогут зарегистрироваться в системе TUGAN.</p>
+            </div>
+            <button 
+                class="button button-green"
+                @click="$emit('hideModal')"
+            >
+                Спасибо!
+            </button>
         </div>
-        <button @click="$emit('hideModal')">Спасибо!</button>
     </vue-final-modal>
 </template>
 <script>
     export default {
         props: {
-            // showModal: false,
             showModal: {
                 type: Boolean,
                 default() { return false; }
@@ -30,25 +38,25 @@
             text: {
                 type: String,
                 default(){ return ""; }
+            },
+            emails: {
+                type: String,
+                default(){ return ""; }
             }
-            // data: {
-            //     type: Object,
-            //     default() { return null; }
-            // },
+
         },
         data() {
             return {
                 showLoaderSending: false,
-                // showModal: false,
             }
         },
         computed: {
             show() {
                 return this.showModal;
             },
-            // hide(){
-            //     return this.hideModal;
-            // }
+        },
+        created() {
+            // this.emails = [];
         },
         methods: {
             // submitAddLotForm(formData) {

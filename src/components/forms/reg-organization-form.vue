@@ -7,12 +7,10 @@
         data-loading="loading"
         form-class="$reset registration__form form"
         :actions="false"
-        :disabled="loading || readonly"
+        :disabled="loading || formData.created ? false : true"
         :loading="loading ? true : undefined"
         @submit="submitHandler"
     >
-        <!-- {{ formValues }} -->
-        <!-- {{ readonly }} -->
         <div class="form__block">
             <FormKitSchema 
                 :schema="schema" 
@@ -40,14 +38,13 @@
     </FormKit>
 </template>
 <script>
-    import { createNode } from '@formkit/core'
     export default {
         props: {
             loading: {
                 type: Boolean,
                 default() { return false; }
             },
-            readonly: {
+            disabled: {
                 type: Boolean,
                 default() { return false; }
             },
@@ -70,7 +67,6 @@
                         outerClass: 'field--inline'
                     }, {
                         $formkit: this.formData.owner_type == "ip" ? "hidden" : "text",
-                        // $formkit: "text",
                         name: 'kpp',
                         disabled: true,
                         label: 'КПП',
@@ -82,12 +78,9 @@
                         disabled: true,
                         label: 'ОГРН',
                         placeholder: 'ОГРН организации',
-                        // validation: [['required'], ['matches', /^\d{13}$/]],
-                        // maska: { mask: '#############' },
                         outerClass: 'field--inline'
                     }, {
                         $formkit: "hidden",
-                        // $formkit: "text",
                         name: 'owner_type',
                         disabled: true,
                         label: 'Форма собственности',
@@ -114,19 +107,17 @@
                         name: 'head_name',
                         disabled: true,
                         label: 'ФИО руководителя организации',
-                        // validation: 'required',
                         outerClass: 'field--inline'
                     }, {
                         $formkit: 'text',
                         name: 'head_post',
                         disabled: true,
                         label: 'Должность руководителя организации',
-                        // validation: 'required',
                         outerClass: 'field--inline'
                     }, {
                         $formkit: 'text',
                         name: 'accountant_name',
-                        disabled: this.formData.created ? true : false,
+                        disabled: this.formData.created ? false : true,
                         label: 'ФИО бухгалтера организации',
                         outerClass: 'field--inline'
                     }, {
@@ -134,17 +125,15 @@
                         name: 'legal_address',
                         disabled: true,
                         label: 'Юридический адрес организации',
-                        // validation: 'required',
                         outerClass: 'field--inline'
                     }, {
                         $formkit: 'text',
                         name: 'actual_address',
-                        disabled: this.formData.created ? true : false,
+                        disabled: this.formData.created ? false : true,
                         label: 'Фактический адрес организации',
                         outerClass: 'field--inline'
                     }, {
                         $formkit: "hidden",
-                        // $formkit: "text",
                         name: 'city',
                         disabled: true,
                         label: 'Город',
@@ -153,39 +142,31 @@
                         name: 'okpo',
                         label: 'ОКПО',
                         disabled: true,
-                        // validation: 'required',
                         outerClass: 'field--inline'
                     }, {
                         $formkit: "hidden",
-                        // $formkit: "text",
                         name: 'status',
                         disabled: true,
                         label: 'Статус',
                     }, {
                         $formkit: this.formData.owner_type == "ip" ? "hidden" : "text",
-                        // $formkit: "text",
                         name: 'capital',
                         label: 'Сумма уставного капитала',
                         disabled: true,
-                        // validation: 'required|number',
-                        // maska: { mask: '#*' },
                         outerClass: 'field--inline'
                     }, {
                         $formkit: 'text',
                         name: 'principal_activity',
                         disabled: true,
                         label: 'Основной виде деятельности (ОКВЭД)',
-                        // validation: 'required',
                         outerClass: 'field--inline'
                     }, {
                         $formkit: "hidden",
-                        // $formkit: "text",
                         name: 'color_status',
                         disabled: true,
                         label: 'Статус цвета',
                     }, {
                         $formkit: "hidden",
-                        // $formkit: "text",
                         name: 'filial',
                         disabled: true,
                         label: 'Филиал',
@@ -208,50 +189,25 @@
                             {
                                 $formkit: "checkbox",
                                 label: "Производитель",
-                                disabled: this.formData.created ? true : false,
+                                disabled: this.formData.created ? false : true,
                             },{
                                 $formkit: "checkbox",
                                 label: "Дилер / дистрибьютор",
                                 name: 'dealer',
-                                disabled: this.formData.created ? true : false,
+                                disabled: this.formData.created ? false : true,
                             },{
                                 $formkit: "checkbox",
                                 label: "Генподрядчик",
                                 name: 'gen_contractor',
-                                disabled: this.formData.created ? true : false,
+                                disabled: this.formData.created ? false : true,
                             },{
                                 $formkit: "checkbox",
                                 label: "Подрядчик",
                                 name: 'contractor',
-                                disabled: this.formData.created ? true : false,
+                                disabled: this.formData.created ? false : true,
                             },
                         ],
                     }, 
-                    // {
-                    //     $formkit: "checkbox",
-                    //     label: "Производитель",
-                    //     name: 'manufacturer',
-                    //     outer: "dwd",
-                    //     disabled: this.formData.created ? true : false,
-                    //     attrs: {
-                    //         class: 'registration__checkbox',
-                    //     },
-                    // }, {
-                    //     $formkit: "checkbox",
-                    //     label: "Дилер / дистрибьютор",
-                    //     name: 'dealer',
-                    //     disabled: this.formData.created ? true : false,
-                    // }, {
-                    //     $formkit: "checkbox",
-                    //     label: "Генподрядчик",
-                    //     name: 'gen_contractor',
-                    //     disabled: this.formData.created ? true : false,
-                    // }, {
-                    //     $formkit: "checkbox",
-                    //     label: "Подрядчик",
-                    //     name: 'contractor',
-                    //     disabled: this.formData.created ? true : false,
-                    // },
                 ],
             }
         },

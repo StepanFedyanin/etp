@@ -8,38 +8,45 @@
             :disabled="false"
             @submit="submitHandler"
         >
-            <h2>Пригласить партнеров</h2>
-
             <FormKit type="list">
-                <div
-                    v-for="(item, index) in invites"
+                <div 
+                    v-for="(index) in invitesCount"
                     :key="index"
+                    class="list__item"
                 >   
-                    {{ index }} 
+                    <div class="item__title">
+                        Приглашение №{{ index }} 
+                        <svg 
+                            v-if="index" 
+                            class="svg-icon svg-icon__crossCircle"
+                            @click="deleteInviteForm(index - 1, list)"
+                        >
+                            <use xlink:href="../../assets/img/icons/icons.svg#crossCircle" />
+                        </svg>
+                    </div> 
                     <FormKit type="group">
+                        <FormKit
+                            type="hidden"
+                            name="index"
+                        />
                         <FormKit
                             name="name"
                             label="ФИО"
                             placeholder="Петров Петр"
                             validation="required"
+                            outerClass="field--required"
                         />
                         <FormKit
                             name="email"
                             label="Email"
                             placeholder="petrov@mail.ru"
                             validation="required|email"
+                            outerClass="field--required"
                         />
                     </FormKit>
-                    <svg 
-                        v-if="item" 
-                        class="svg-icon svg-icon__stop"
-                        @click="deleteInviteForm(index)"
-                    >
-                        <use xlink:href="../../assets/img/icons/icons.svg#stop" />
-                    </svg>
                 </div>
                 <div 
-                    class="button button-outline-green"
+                    class="button button-transparent"
                     @click="addInvite"
                 >
                     + Добавить приглашение
@@ -59,66 +66,29 @@
         name: 'Invite',
         data() {
             return {
-                groupValues: {},
-                simpleText: {
-                    type: 'input',
-                    schema: [
-                        {
-                            $el: 'input',
-                            name: 'name',
-                            attrs: {
-                                onInput: '$handlers.DOMInput',
-                                value: '$_value',
-                                
-                            },
-                        },
-                    ],
-                },
                 formData: undefined,
                 formValues: this.formData,
-                schema: [
-                    {
-                        $formkit: 'text',
-                        name: 'name',
-                        label: 'ФИО',
-                        placeholder: "Петров Петр",
-                        outerClass: 'field--required'
-                    }, {
-                        $formkit: 'email',
-                        name: 'email',
-                        label: 'EMAIL',
-                        placeholder: 'petrov@mail.ru',
-                        outerClass: 'field--required',
-                    }
-                ],
                 list:[],
-                invites: [{
-                    name: '',
-                    email: ''
-                }]
+                invitesCount: 1
             }
         },
         methods: {
             addInvite() {
-                this.invites.push({name: '', email: ''});
+                this.invitesCount++
             },
-            deleteInviteForm(index) {
-                console.log(index);
-                console.log(this.invites);
-                // console.log(Array.from(this.invites));
-                // console.log(typeof this.invites);
-                this.invites = Array.from(this.invites);
-                console.log(this.invites);
-
-                this.invites = this.invites.splice(index,1);
-                console.log(this.invites);
-
+            deleteInviteForm(index, list) {
+                let arrInvites = [];
+                for (let value in list) {
+                    arrInvites = [...list[value]];
+                }
+                arrInvites.splice(index, 1);
+                this.invitesCount--;
+                for (let value in list) {
+                    this.list[value] = [...arrInvites];
+                }
             },
             submitHandler(data) {
-                console.log(data);
-                console.log(this.invites);
                 this.$emit('submitInviteHandler', data)
-
             },
         }
 

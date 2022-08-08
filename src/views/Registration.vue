@@ -77,7 +77,7 @@
                         <regOrganizationForm 
                             :loading="showLoaderSending"
                             :formData="organization"
-                            :readonly="regFormReadOnly"
+                            :disabled="regFormReadOnly"
                             @prevStep="prevStep"
                             @submitOrganizationHandler="submitOrganizationHandler"
                         />
@@ -294,10 +294,10 @@
                 api.applyOrganization(data).then(res => {
                     this.showLoaderSending = false;
                     console.log(res);
-                    // this.regData.organization = Object.assign({}, res);
-                    // this.regData.person = {
-                    //     organization: res.id
-                    // };
+                    this.regData.organization = Object.assign({}, res);
+                    this.regData.person = {
+                        organization: res.id
+                    };
                     this.$store.dispatch('setRegData', this.regData);
                     this.next();
                 }).catch(err => {

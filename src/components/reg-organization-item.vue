@@ -23,12 +23,6 @@
                     {{ organization.legal_address }}
                 </div>
             </div>
-            <!-- <div 
-                class="organization__color color-status"
-                :class="[organization.color_status !== 'green' ? organization.color_status == 'green-yellow' ? 'm--color-yellow' : 'm--color-red' : 'm--color-green' ]"
-            > 
-                '
-            </div> -->
         </div>
         <button
             v-if="organization.color_status !== 'red'"
