@@ -1,0 +1,207 @@
+.chat {
+    padding: 64px 0 48px;
+    width: 100%;
+
+    &__block {
+        position: relative;
+        display: flex;
+        height: 90vh;
+
+        &-up,
+        &-down {
+            position: absolute;
+            width: 42px;
+            height: 42px;
+            background-color: $color-green;
+            -webkit-mask-position: center;
+            mask-position: center;
+            -webkit-mask-repeat: no-repeat;
+            mask-repeat: no-repeat;
+            -webkit-mask-size: contain;
+            mask-size: contain;
+            cursor: pointer;
+            z-index: 10;
+        }
+
+        &-up {
+            top: -18px;
+            right: -17px;
+            -webkit-mask-image: url('./assets/img/icons/chevron-up.svg');
+            mask-image: url('./assets/img/icons/chevron-up.svg');
+        }
+
+        &-down {
+            bottom: -18px;
+            right: -17px;
+            -webkit-mask-image: url('./assets/img/icons/chevron-down.svg');
+            mask-image: url('./assets/img/icons/chevron-down.svg');
+        }
+    }
+
+    &__users {
+        position: relative;
+        display: flex;
+        min-width: 350px;
+        width: 30%;
+        height: 100%;
+
+        &-inner {
+            position: relative;
+            display: flex;
+            flex-direction: column;
+            width: 100%;
+            max-height: 100%;
+            overflow-y: auto;
+            overflow-x: visible;
+            padding: 0 15px 0 0;
+
+            @mixin scrollbar $color-shadow, $color-green, 10px;
+
+            &::-webkit-scrollbar-track {
+                margin: 20px 0;
+            }
+        }
+    }
+    
+    &__user {
+        position: relative;
+        display: flex;
+        flex-direction: column;
+        padding: 25px 20px;
+        margin-bottom: 8px;
+        background: $color-white;
+        border-radius: 28px;
+        cursor: pointer;
+        &:hover,
+        &.is-active {
+            background: $color-green-opacity20;
+        }
+
+        &-status {
+            position: absolute;
+            top: 31px;
+            right: 20px;
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            &.is-online {
+                background: $color-green;
+            }
+        }
+
+        &-name {
+            font-weight: 500;
+            font-size: 20px;
+            line-height: 24px;
+            text-transform: uppercase;
+            margin-bottom: 12px;
+        }
+
+        &-info {
+            display: flex;
+            justify-content: space-between;
+        }
+    }
+
+
+    &__board {
+        position: relative;
+        display: flex;
+        width: 70%;
+        height: 100%;
+
+        &-inner {
+            position: relative;
+            display: flex;
+            flex-direction: column;
+            width: 100%;
+            max-height: 100%;
+            overflow-y: auto;
+            overflow-x: visible;
+            padding: 0 15px 0 30px;
+
+            @mixin scrollbar $color-shadow, $color-green, 10px;
+
+            &::-webkit-scrollbar-track {
+                margin: 20px 0;
+            }
+
+            scroll-margin: 10px;
+        }
+
+        &-form {
+            position: sticky !important;
+            bottom: 0;
+            display: block;
+
+            &-message {
+                overflow: hidden;
+                padding: 16px 16px 42px;
+                box-shadow: none;
+                filter: drop-shadow(0px 2px 6px rgba(0, 0, 0, 0.04)) drop-shadow(0px 0px 1px rgba(0, 0, 0, 0.04));
+            }
+
+            &-button {
+                position: absolute;
+                bottom: 0;
+                right: 0;
+                width: 48px;
+                height: 48px;
+                background: url('./assets/img/icons/icon-send.svg') 50% 50% no-repeat;
+                background-size: 100%;
+                padding: 0;
+                margin: 0;
+                border: none;
+                cursor: pointer;
+            }
+        }
+    }
+
+    &__messages {
+        position: relative;
+        display: flex;
+        flex-direction: column;
+        margin-top: auto;
+
+        &-date {
+            font-weight: 400;
+            font-size: 12px;
+            line-height: 15px;
+            margin: 16px auto;
+            color: $color-gray-T4;
+        }
+
+        &-item {
+            position: relative;
+            display: flex;
+            flex-direction: column;
+            padding: 8px 16px;
+            border-radius: 20px;
+            margin-bottom: 16px;
+            &.is-your {
+                background: $color-white;
+                border-top-right-radius: 0;
+                margin-left: auto;
+                align-items: flex-end;
+            }
+            &.is-recipient {
+                background: $color-green-opacity20;
+                border-top-left-radius: 0;
+                margin-right: auto;
+                align-items: flex-start;
+            }
+            &-text {
+                font-weight: 400;
+                font-size: 16px;
+                line-height: 20px;
+                margin-bottom: 6px;
+            }
+            &-time {
+                font-weight: 300;
+                font-size: 10px;
+                line-height: 12px;
+                color: $color-gray-T4;
+            }
+        }
+    }
+}
