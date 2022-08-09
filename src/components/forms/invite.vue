@@ -17,7 +17,7 @@
                     <div class="item__title">
                         Приглашение №{{ index }} 
                         <svg 
-                            v-if="index" 
+                            v-if="index && invitesCount > 1" 
                             class="svg-icon svg-icon__crossCircle"
                             @click="deleteInviteForm(index - 1, list)"
                         >

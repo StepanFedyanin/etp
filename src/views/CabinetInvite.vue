@@ -1,22 +1,26 @@
 <template>
-    <div class="cabinet invite">
-        <h1 class="h1">
-            Пригласить партнеров
-        </h1>
-        <ul class="invite__benefits">
-            <li>пригласите на площадку тех, с кем ваша компания уже торгует;</li>
-            <li>сделайте ваш процесс закупок более прозрачным и удобным;</li>
-            <li>укрепляйте связи с проверенными партнерами.</li>
-        </ul>
-        <Invite 
-            @submitInviteHandler="submitInviteHandler"
-        />
-        <ModalSendInvite 
-            :text="text || ''"
-            :emails="emails || ''"
-            :showModal="showSendInviteModal"
-            @hideModal="hideSendInviteModal"
-        />
+    <div class="app__main">
+        <div class="cabinet invite">
+            <div class="container">
+                <h1 class="h1">
+                    Пригласить партнеров
+                </h1>
+                <ul class="invite__benefits">
+                    <li>пригласите на площадку тех, с кем ваша компания уже торгует;</li>
+                    <li>сделайте ваш процесс закупок более прозрачным и удобным;</li>
+                    <li>укрепляйте связи с проверенными партнерами.</li>
+                </ul>
+                <Invite 
+                    @submitInviteHandler="submitInviteHandler"
+                />
+                <ModalSendInvite 
+                    :text="text || ''"
+                    :emails="emails || ''"
+                    :showModal="showSendInviteModal"
+                    @hideModal="hideSendInviteModal"
+                />
+            </div>
+        </div>
     </div>
 </template>
 <script>

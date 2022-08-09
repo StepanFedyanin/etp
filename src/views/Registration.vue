@@ -41,7 +41,6 @@
                                     <p>{{ organization.error.detail }}</p>
                                 </div>
                             </template>
-                            <!-- v-if="organization.color_status == 'red'" -->
                         </div>
                         <div
                             v-if="colorStatusRed"
@@ -68,12 +67,6 @@
                     <div
                         class="registration__form form"
                     >
-                        <!-- <div
-                            v-if="regData.organization && regData.organization.id"
-                            class="registration__organization"
-                        >
-                            <span>{{ regData.organization.name }}</span>, дата регистрации {{ $helpers.parseDate(regData.organization.date_registration, 'YYYY-MM-DD').toLocaleDateString('ru') }}
-                        </div> -->
                         <regOrganizationForm 
                             :loading="showLoaderSending"
                             :formData="organization"
@@ -161,18 +154,6 @@
                     return item.color_status === "red";
                 })).length > 0
             }
-            // colorStatusRed: function(organizations){
-            // if(organizations){
-            //     console.log(organizations);
-            // }
-            // return true;
-
-            // if(organization.colorStatus === "red") {
-            //     return true;
-            // } else{
-            //     return false;
-            // }
-            // },
         },
         created() {
         },
@@ -183,9 +164,6 @@
             }
         },
         methods: {
-            // addInvite() {
-            //     this.inviteNumbers++;
-            // },
             prevStep() {
                 this.$store.dispatch('setStepRegistration', this.stepRegistration - 1);
                 this.stepRegistration = this.$store.state.stepRegistration;

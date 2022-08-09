@@ -49,6 +49,9 @@
                         />
                     </div>
                 </div>
+                <div v-else>
+                    У вас нет черновиков тендеров.
+                </div>
             </div>
             <div
                 v-if="tenders && tenders.count"
