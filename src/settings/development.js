@@ -145,6 +145,11 @@ const sidebarMenu = [
         icon: 'customer',
         items: [
             {
+                name: 'tender-start',
+                role: 'all',
+                title: 'Объявить тендер',
+                icon: 'loudspeaker'
+            }, {
                 name: 'customer-drafts',
                 role: 'all',
                 title: 'Черновики',
@@ -152,6 +157,10 @@ const sidebarMenu = [
                 name: 'customer-current',
                 role: 'all',
                 title: 'Текущие торги',
+            }, {
+                name: 'private-tender',
+                role: 'all',
+                title: 'Закрытые торги',
             }, {
                 name: 'customer-closed',
                 role: 'all',
@@ -172,13 +181,17 @@ const sidebarMenu = [
                 name: 'participant-closed',
                 role: 'all',
                 title: 'Завершенные',
+            }, {
+                name: 'participant-invites',
+                role: 'all',
+                title: 'Приглашения',
             }
         ]
     }, {
-        name: 'tender-start',
+        name: 'favorites',
         role: 'all',
-        title: 'Объявить тендер',
-        icon: 'loudspeaker'
+        title: 'Избранные тендеры',
+        icon: 'favorites'
     }, {
         name: 'contragents',
         role: 'all',
@@ -189,19 +202,20 @@ const sidebarMenu = [
     }, {
         name: 'chat',
         role: 'all',
-        title: 'Чат?',
+        title: 'Чат',
         icon: 'loudspeaker'
     }, {
-        name: 'news',
+        name: 'notifications',
         role: 'all',
-        title: 'Новости',
-        icon: 'news'
-    }, {
-        name: 'help',
-        role: 'all',
-        title: 'Помощь',
-        icon: 'info'
-    }
+        title: 'Уведомления',
+        icon: 'notifications'
+    }, 
+    // {
+    //     name: 'help',
+    //     role: 'all',
+    //     title: 'Помощь',
+    //     icon: 'info'
+    // }
 ];
 
 export {

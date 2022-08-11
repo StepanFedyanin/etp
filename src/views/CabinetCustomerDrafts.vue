@@ -63,7 +63,7 @@
                     :tender="tender"
                     :drafts="true"
                 />
-            </div>
+            </div>           
         </div>
     </div>
 </template>
@@ -78,7 +78,7 @@
         components: {
             //Search,
             Pagination,
-            blockTender
+            blockTender,
         },
         props: {
             status: {

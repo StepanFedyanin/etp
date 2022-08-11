@@ -339,6 +339,9 @@
                     :participants="participants"
                     @getTenderData="getTenderData"
                 />
+                <inviteTender 
+                    :tender="tender"
+                />
             </template>
         </div>
     </div>
@@ -351,6 +354,7 @@
     import TenderLots from '@/components/tender-lots';
     import TenderBids from '@/components/tender-bids';
     import Timer from '@/components/timer';
+    import inviteTender from '@/components/invite-tender.vue';
 
     export default {
         components: {
@@ -358,7 +362,8 @@
             TenderParticipants,
             TenderLots,
             TenderBids,
-            Timer
+            Timer,
+            inviteTender,
         },
         props: {
             id: {
@@ -385,10 +390,6 @@
                 showLoaderSending: false,
                 formValues: {},
             }
-        },
-        computed: {
-        },
-        mounted() {
         },
         created() {
             this.getTenderData();
@@ -425,6 +426,7 @@
                     });
                     */
                 }).catch(err => {
+                    //сюда надо будет добавить проверку на статус ошибки, если у пользователя нет доступа к тендеру
                     this.showLoaderSending = false;
                     this.$store.dispatch('showError', err);
                     console.error(err);
