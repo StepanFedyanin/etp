@@ -15,9 +15,12 @@ import cabinetInvite from '@/views/CabinetInvite';
 import cabinetChat from '@/views/CabinetChat';
 import cabinetCustomer from '@/views/CabinetCustomer';
 import cabinetCustomerTendersList from '@/views/CabinetCustomerTendersList';
+import cabinetCustomerPrivateTenders from '@/views/СabinetCustomerPrivateTenders';
 import cabinetCustomerDrafts from '@/views/CabinetCustomerDrafts';
 import cabinetParticipant from '@/views/CabinetParticipant';
+import cabinetParticipantInvites from '@/views/CabinetParticipantInvites';
 import cabinetParticipantTendersList from '@/views/CabinetParticipantTendersList';
+import cabinetCabinetFavorites from '@/views/CabinetFavorites';
 import cabinetProfile from '@/views/CabinetProfile';
 import cabinetProfileEdit from '@/views/CabinetProfileEdit';
 import cabinetProfilePassword from '@/views/CabinetProfilePassword';
@@ -34,7 +37,7 @@ import cabinetContragentsItem from '@/views/CabinetContragentsItem';
 import cabinetOrganizationAddPerson from '@/views/CabinetOrganizationAddPerson';
 import CabinetOrganization from '@/views/CabinetOrganization';
 import CabinetOrganizationEdit from '@/views/CabinetOrganizationEdit';
-import cabinetNews from '@/views/CabinetNews';
+import cabinetNotifications from '@/views/CabinetNotifications';
 import groups from '@/views/Groups';
 
 const routes = [
@@ -252,6 +255,7 @@ const routes = [
         },
         props: true,
         children: [
+            
             {
                 path: 'drafts',
                 name: 'customer-drafts',
@@ -274,6 +278,16 @@ const routes = [
                 props: { 
                     status: 'currents' 
                 },
+            }, {
+                path: 'current',
+                name: 'private-tender',
+                component: cabinetCustomerPrivateTenders,
+                meta: { 
+                    title: 'Закрытые торги', 
+                    breadcrumbs: ['customer'],
+                    requiresAuth: true 
+                },
+                props: true,
             }, {
                 path: 'closed',
                 name: 'customer-closed',
@@ -298,6 +312,7 @@ const routes = [
             requiresAuth: true 
         },
         props: true,
+        
         children: [
             {
                 path: 'current',
@@ -323,8 +338,26 @@ const routes = [
                 props: { 
                     status: 'closed' 
                 },
+            }, {
+                path: 'closed',
+                name: 'participant-invites',
+                component: cabinetParticipantInvites,
+                meta: { 
+                    title: 'Завершенные торги поставщика', 
+                    breadcrumbs: ['participant'],
+                    requiresAuth: true 
+                },
+                props: { 
+                    status: 'closed' 
+                },
             }
         ]
+    }, {
+        path: '/favorites',
+        name: 'favorites',
+        component: cabinetCabinetFavorites,
+        meta: { title: 'Избранные тендеры', requiresAuth: true },
+        props: true,
     }, {
     //     path: '/cabinet/tender-start',
     //     name: 'tender-start',
@@ -386,26 +419,16 @@ const routes = [
         },
         props: true,
     }, {
-        path: '/news',
-        name: 'news',
-        component: cabinetNews,
+        path: '/notifications',
+        name: 'notifications',
+        component: cabinetNotifications,
         meta: { 
-            title: 'Новости',
+            title: 'Уведомления',
             breadcrumbs: [],
             requiresAuth: true 
         },
         props: true,
-    }, {
-        path: '/help',
-        name: 'help',
-        component: cabinetNews,
-        meta: { 
-            title: 'Помощь', 
-            breadcrumbs: [],
-            requiresAuth: true 
-        },
-        props: true,
-    }
+    }, 
 ];
 
 const router = createRouter({

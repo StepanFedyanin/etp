@@ -1,5 +1,6 @@
 <template>
-    <div>
+    <div> 
+        <!-- <pre>{{tender.user_participation}}</pre><pre>{{tender.status}}</pre> -->
         <div 
             v-if="!tender.user_participation && tender.status === 'bid_accept'"
             class="tender__status"

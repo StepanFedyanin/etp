@@ -253,4 +253,25 @@ export default class extends REST {
             throw new RESTError(error, 'Ошибка при удалении документа тендера');
         })
     }
+    static sendInvitationInTender(tenderId, params){
+        return this._post(`${tenderId}/invites/invite`, {}, params).then((data) => {
+            return data
+        }).catch((error) => {
+            throw new RESTError(error, 'Ошибка при отправке приглашения в тендер');
+        })
+    }
+    static getInvitationInTender(tenderId, params){
+        return this._get(`${tenderId}/invites`, {}, params).then((data) => {
+            return data
+        }).catch((error) => {
+            throw new RESTError(error, 'Ошибка при получении списка приглашений в тендер');
+        })
+    }
+    static cancelInvitation(tenderId, inviteId){
+        return this._post(`${tenderId}/invites/${inviteId}/cancel`, {}, {}).then((data) => {
+            return data
+        }).catch((error) => {
+            throw new RESTError(error, 'Ошибка при отмене приглашения в тендер');
+        })
+    }
 }

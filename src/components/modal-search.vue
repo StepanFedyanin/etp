@@ -197,13 +197,13 @@
                                 console.log(orgs)
                                 return orgs.results.map((org) => {
                                     return {
-                                            label: org.inn,
-                                            kpp: org.kpp,
-                                            name: org.name,
-                                            city: 'Город',
-                                            principal_activity: org.principal_activity,
-                                            value: org.id,
-                                        }
+                                        label: org.inn,
+                                        kpp: org.kpp,
+                                        name: org.name,
+                                        city: 'Город',
+                                        principal_activity: org.principal_activity,
+                                        value: org.id,
+                                    }
                                 })
                             }).catch(err => {
                                 console.error(err);
