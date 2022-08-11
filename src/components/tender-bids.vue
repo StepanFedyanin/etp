@@ -1,7 +1,7 @@
 <template>
     <div class="tender__lots lots m--tender">
         <div class="tender__lots-title">
-            Лоты
+            Ставки
         </div>
         <div class="lots__filter">
             <div class="lots__filter-block">
