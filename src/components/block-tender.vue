@@ -251,7 +251,7 @@
             return {
                 urlPath,
                 isShowPositions: false,
-                favorite: false
+                favorite: this.tender.favorite
             };
         },
         computed: {
@@ -280,7 +280,7 @@
                 this.$router.push({ name: 'tender', params: { id: this.tender.id } });
             },
             toggleFavorite() {
-                this.favorite = !this.favorite
+                this.favorite = !this.favorite;
                 tenderApi.switchFavoriteTender(this.tender.id).then(res => {
                     console.log(res);
                 }).catch(err => {

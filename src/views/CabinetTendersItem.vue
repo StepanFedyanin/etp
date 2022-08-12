@@ -15,105 +15,109 @@
                     <div class="tender__data">
                         <div 
                             class="tender__data-icon"
-                            :class="tender.status === 'closed' ? 'm--finish' : 'm--status'"
+                            :class="[tender.status === 'closed' ? 'm--finish' : 'm--status', tender.publication ? '' : 'm--red']"
                         />
                         <div class="tender__data-inner">
                             <div class="tender__data-title">
                                 Статус
                             </div>
                             <div class="tender__data-info">
-                                {{ tender.status_detail }}
+                                {{ !tender.publication ? 'Черновик' : tender.status_detail }}
                             </div>
                         </div>
                     </div>
-                    <div
-                        v-if="tender.status !== 'closed'"
-                        class="tender__data"
+                    <template
+                        v-if="tender.publication"
                     >
+                        <div
+                            v-if="tender.status !== 'closed'"
+                            class="tender__data"
+                        >
+                            <div 
+                                class="tender__data-icon m--timer"
+                                :class="tender.limit.secs > 0 ? 'm--green' : 'm--red'"
+                            />
+                            <div class="tender__data-inner">
+                                <div class="tender__data-title">
+                                    Осталось времени
+                                </div>
+                                <div class="tender__data-info">
+                                    <template
+                                        v-if="tender.limit > 0"
+                                    >
+                                        {{ $helpers.dateRangeToDaysHours(new Date(), new Date(tender.date_end)) }}
+                                    </template>
+                                    <template
+                                        v-else
+                                    >
+                                        —
+                                    </template>
+                                </div>
+                            </div>
+                        </div>
+                        <div
+                            v-if="tender.status === 'closed'"
+                            class="tender__data"
+                        >
+                            <div 
+                                class="tender__data-icon m--winner"
+                            />
+                            <div class="tender__data-inner">
+                                <div class="tender__data-title">
+                                    Победители
+                                </div>
+                                <div class="tender__data-info">
+                                    <template
+                                        v-if="tender.winner_count > 0"
+                                    >
+                                        {{ tender.winner_count }}
+                                    </template>
+                                    <template
+                                        v-else
+                                    >
+                                        —
+                                    </template>
+                                </div>
+                            </div>
+                        </div>
                         <div 
-                            class="tender__data-icon m--timer"
-                            :class="tender.limit.secs > 0 ? 'm--green' : 'm--red'"
-                        />
-                        <div class="tender__data-inner">
-                            <div class="tender__data-title">
-                                Осталось времени
-                            </div>
-                            <div class="tender__data-info">
-                                <template
-                                    v-if="tender.limit > 0"
-                                >
-                                    {{ $helpers.dateRangeToDaysHours(new Date(), new Date(tender.date_end)) }}
-                                </template>
-                                <template
-                                    v-else
-                                >
-                                    —
-                                </template>
+                            v-if="tender.status !== 'closed'"
+                            class="tender__data"
+                        >
+                            <div class="tender__data-icon m--clock" />
+                            <div class="tender__data-inner">
+                                <div class="tender__data-title">
+                                    Продолжительность
+                                </div>
+                                <div class="tender__data-info">
+                                    <Timer 
+                                        :dateEnd="tender.date_end"
+                                    />
+                                    <!-- {{ $helpers.toHHMMSS(tender.duration) }}  -->
+                                    <span
+                                        v-if="tender.prolong > 0"
+                                        class="m--color-green"
+                                    >
+                                        +{{ tender.prolong / 60 }} мин.
+                                    </span>
+                                </div>
                             </div>
                         </div>
-                    </div>
-                    <div
-                        v-if="tender.status === 'closed'"
-                        class="tender__data"
-                    >
                         <div 
-                            class="tender__data-icon m--winner"
-                        />
-                        <div class="tender__data-inner">
-                            <div class="tender__data-title">
-                                Победители
+                            v-if="tender.status === 'closed'"
+                            class="tender__data"
+                        >
+                            <div class="tender__data-icon m--wall-clock" />
+                            <div class="tender__data-inner">
+                                <div class="tender__data-title">
+                                    Дата завершения
+                                </div>
+                                <div class="tender__data-info">
+                                    {{ $helpers.formatDate(new Date(tender.date_end), 'DD.MM.YYYY HH:mm') }} 
+                                </div>
                             </div>
-                            <div class="tender__data-info">
-                                <template
-                                    v-if="tender.winner_count > 0"
-                                >
-                                    {{ tender.winner_count }}
-                                </template>
-                                <template
-                                    v-else
-                                >
-                                    —
-                                </template>
-                            </div>
-                        </div>
-                    </div>
-                    <div 
-                        v-if="tender.status !== 'closed'"
-                        class="tender__data"
-                    >
-                        <div class="tender__data-icon m--clock" />
-                        <div class="tender__data-inner">
-                            <div class="tender__data-title">
-                                Продолжительность
-                            </div>
-                            <div class="tender__data-info">
-                                <Timer 
-                                    :dateEnd="tender.date_end"
-                                />
-                                <!-- {{ $helpers.toHHMMSS(tender.duration) }}  -->
-                                <span
-                                    v-if="tender.prolong > 0"
-                                    class="m--color-green"
-                                >
-                                    +{{ tender.prolong / 60 }} мин.
-                                </span>
-                            </div>
-                        </div>
-                    </div>
-                    <div 
-                        v-if="tender.status === 'closed'"
-                        class="tender__data"
-                    >
-                        <div class="tender__data-icon m--wall-clock" />
-                        <div class="tender__data-inner">
-                            <div class="tender__data-title">
-                                Дата завершения
-                            </div>
-                            <div class="tender__data-info">
-                                {{ $helpers.formatDate(new Date(tender.date_end), 'DD.MM.YYYY HH:mm') }} 
-                            </div>
-                        </div>
-                    </div>
+                        </div>                        
+                    </template>
                 </div>
 
                 <div
@@ -141,7 +145,7 @@
                         </div>
                         <div
                             v-if="tender.description"
-                            class="tenders__item-param"
+                            class="tender__info-param"
                         >
                             <span>Дополнительная информация:</span> {{ tender.description }}
                         </div>
@@ -212,6 +216,7 @@
 
                 <div class="tender__block">
                     <div
+                        v-if="tender.documents.length"
                         class="tender__docs"
                         :class="tender.creator === user.id ? 'm--width-100' : ''"
                     >
@@ -219,44 +224,31 @@
                             Документы:
                         </div>
                         <div class="tender__docs-list">
-                            <template
-                                v-if="tender.documents.length"
-                            >
-                                <div class="tender__docs-item">
-                                    <div class="tender__docs-cell m--title">
-                                        Файл
-                                    </div>
-                                    <div class="tender__docs-cell m--title">
-                                        Описание
-                                    </div>
+                            <div class="tender__docs-item">
+                                <div class="tender__docs-cell m--title">
+                                    Файл
                                 </div>
-                                <template 
-                                    v-for="doc in tender.documents"
-                                >
-                                    <div 
-                                        v-if="doc.publication"
-                                        :key="`doc-${doc.id}`"
-                                        class="tender__docs-item"
-                                    >
-                                        <a
-                                            :href="doc.file"
-                                            class="tender__docs-cell m--file"
-                                            target="_blank"
-                                        >
-                                            {{ doc.name }}
-                                        </a>
-                                        <div class="tender__docs-cell m--desc">
-                                            {{ doc.description }}
-                                        </div>
-                                    </div>
-                                </template>
-                            </template>
-                            <template
-                                v-else
+                                <div class="tender__docs-cell m--title">
+                                    Описание
+                                </div>
+                            </div>
+                            <template 
+                                v-for="doc in tender.documents"
                             >
-                                <div class="tender__docs-item">
-                                    <div class="tender__docs-cell m--title">
-                                        —
+                                <div 
+                                    v-if="doc.publication"
+                                    :key="`doc-${doc.id}`"
+                                    class="tender__docs-item"
+                                >
+                                    <a
+                                        :href="doc.file"
+                                        class="tender__docs-cell m--file"
+                                        target="_blank"
+                                    >
+                                        {{ doc.name }}
+                                    </a>
+                                    <div class="tender__docs-cell m--desc">
+                                        {{ doc.description }}
                                     </div>
                                 </div>
                             </template>
@@ -265,6 +257,7 @@
                     <div
                         v-if="tender.creator !== user.id"
                         class="tender__contact"
+                        :class="tender.documents.length ? '' : 'm--full-width'"
                     >
                         <div class="tender__contact-title">
                             Контактное лицо
@@ -289,13 +282,17 @@
                         </template>
                     </div>
                 </div>
-
                 <TenderOrganizationStatus
                     v-if="user.id !== tender.creator"
                     :tender="tender"
                     @getTenderData="getTenderData"
                 />
-
+                <TenderLots
+                    v-if="tender.lots && tender.lots.length"
+                    :tender="tender"
+                    :lots="tender.lots"
+                    @getTenderData="getTenderData"
+                />
                 <div 
                     v-if="tender.bet_enabled && tender.user_participation && tender.user_participation.status === 'participant'"
                     class="tender__bids"
@@ -321,12 +318,6 @@
                         </button>
                     </div>
                 </div>
-                <TenderLots
-                    v-if="tender.lots && tender.lots.length"
-                    :tender="tender"
-                    :lots="tender.lots"
-                    @getTenderData="getTenderData"
-                />
                 <TenderBids
                     v-if="tender.lots && tender.lots.length && tender.bet_enabled && tender.user_participation && tender.user_participation.status === 'participant'"
                     :tender="tender"

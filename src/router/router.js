@@ -447,7 +447,11 @@ router.beforeEach((to, from, next) => {
             next({ name: 'auth' });
         }
     } else {
-        next();
+        if (to.name === 'home' && store.state.user && store.state.user.id) {
+            next({ name: 'cabinet' });
+        } else {
+            next();
+        }
     }
 });
 
