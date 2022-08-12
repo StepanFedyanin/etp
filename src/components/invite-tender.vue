@@ -13,15 +13,33 @@
                     <!-- <svg>d</svg> -->
                 </div>
                 
-                <div class="invite__status">
+                <div 
+                    :class="invite.status"
+                    class="invite__status "
+                >
                     {{ invite.status_detail }}
                 </div>
-                <button 
-                    class="button button-red"
-                    @click="cancelInvitation(invite.id)"
+                <template
+                    v-if="invite.status === 'sent'"
                 >
-                    Отменить
-                </button>
+                    <button 
+                        class="button button-red"
+                        @click="cancelInvitation(invite.id)"
+                    >
+                        Отменить
+                    </button>
+                </template>
+                <template
+                    v-else-if="invite.status === 'rejected'"
+                >
+                    <!-- {{invite.organization.id}} -->
+                    <button 
+                        class="button button-green"
+                        @click="repeatlInvitation(invite.organization.id)"
+                    >
+                        Повторить
+                    </button>
+                </template>
             </div>
         </div>
         <FormKit
@@ -96,6 +114,7 @@
                         innerClass: 'modal-form__input',
                         labelClass: '$reset modal-form__label',
                         outerClass: '$reset modal-form__field m--inn',
+                        organization: {},
                     }
 
                 ]
@@ -106,8 +125,8 @@
             tenderId() {
                 return this.tender.id;
             },
-            // inviteId() {
-            //     return this.invites.id;
+            // organizationId() {
+            //     return this.organization.id;
             // }
         },
         created(){
@@ -123,7 +142,6 @@
                     this.organizations = res;
                     console.log(this.organizations);
                     this.showLoaderSending = false;
-                    this.$store.dispatch('setRegData', this.regData);
                 }).catch(err => {
                     node.setErrors(
                         [err.detail],
@@ -143,10 +161,24 @@
                     console.error(err);
                 });
             },
-            cancelInvitation(invitesId){
+            cancelInvitation(invitesId) {
                 tenderApi.cancelInvitation(this.tenderId, invitesId).then(res => {
                     console.log(res);
                     this.invites = res;
+                }).catch(err => {
+                    this.showLoaderSending = false;
+                    this.$store.dispatch('showError', err);
+                    console.error(err);
+                });
+            },
+            repeatlInvitation(organizationId) {
+                this.organization = { organization: organizationId}
+                tenderApi.sendInvitationInTender(this.tenderId, this.organization).then(res => {
+                    console.log(res);
+                    this.organizations = res;
+                    console.log(this.organizations);
+                    this.showLoaderSending = false;
+                    this.invite.status = "sent";
                 }).catch(err => {
                     this.showLoaderSending = false;
                     this.$store.dispatch('showError', err);
