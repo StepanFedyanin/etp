@@ -274,4 +274,11 @@ export default class extends REST {
             throw new RESTError(error, 'Ошибка при отмене приглашения в тендер');
         })
     }
+    static getListlInvitation(){
+        return this._post(`/tender/invites/`, {}).then((data) => {
+            return data
+        }).catch((error) => {
+            throw new RESTError(error, 'Ошибка при получении приглашений в тендер');
+        })
+    }
 }
