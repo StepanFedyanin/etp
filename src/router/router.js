@@ -279,7 +279,7 @@ const routes = [
                     status: 'currents' 
                 },
             }, {
-                path: 'current',
+                path: 'private',
                 name: 'private-tender',
                 component: cabinetCustomerPrivateTenders,
                 meta: { 
@@ -339,7 +339,7 @@ const routes = [
                     status: 'closed' 
                 },
             }, {
-                path: 'closed',
+                path: 'invites',
                 name: 'participant-invites',
                 component: cabinetParticipantInvites,
                 meta: { 

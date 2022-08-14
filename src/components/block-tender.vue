@@ -137,7 +137,40 @@
                 <span class="tenders__item-param-name">Предложений от поставщиков:</span> {{ tender.unique_offer_count }}
             </div>
             <template
-                v-if="drafts"
+                v-if="invites"
+            >
+                <!-- <pre>{{tender.user_invite.status === "sent"}}</pre> -->
+                <div
+                    v-if="tender.user_invite.status === 'sent'"
+                    class="tenders__item-participate"
+                >
+                    <button
+                        class="button button-green"
+                        @click="onClickAcceptInvite"
+                    >
+                        Принять приглашение
+                    </button>
+                    <button
+                        class="button button-red"
+                        @click="onClickRejectInvite"
+                    >
+                        Отказаться
+                    </button>
+                </div>
+                <!-- <div
+                    v-else-if="tender.user_invite.status === 'sent'"
+                    class="tenders__item-participate"
+                >
+                    <button
+                        class="button button-green"
+                        @click="onClickDraft"
+                    >
+                        Редактировать0
+                    </button>
+                </div> -->
+            </template>
+            <template
+                v-else-if="drafts"
             >
                 <div
                     class="tenders__item-participate"
@@ -246,6 +279,10 @@
                 type: Boolean,
                 default() { return false; }
             },
+            invites: {
+                type: Boolean,
+                default() { return false; }
+            },
         },
         data() {
             return {
@@ -282,6 +319,22 @@
             toggleFavorite() {
                 this.favorite = !this.favorite;
                 tenderApi.switchFavoriteTender(this.tender.id).then(res => {
+                    console.log(res);
+                }).catch(err => {
+                    this.$store.dispatch('showError', err);
+                    console.error(err);
+                });
+            },
+            onClickAcceptInvite(){
+                tenderApi.acceptInvitation(this.tender.id).then(res => {
+                    console.log(res);
+                }).catch(err => {
+                    this.$store.dispatch('showError', err);
+                    console.error(err);
+                });
+            },
+            onClickRejectInvite(){
+                tenderApi.rejectInvitation(this.tender.id).then(res => {
                     console.log(res);
                 }).catch(err => {
                     this.$store.dispatch('showError', err);
