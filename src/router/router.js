@@ -63,7 +63,7 @@ const routes = [
         path: '/groups',
         name: 'groups',
         component: groups,
-        meta: { title: 'Товарные группы' },
+        meta: { title: 'Товарные группы', showSidebarAuth: true },
         props: true,
     }, {
         path: '/about',

@@ -123,7 +123,15 @@
                 <div
                     class="tender__info"
                 >
+                    <div
+                        class="tender__info-favorite"
+                        :class="{ 'm--favorite': tender.favorite }"
+                        @click="toggleFavorite"
+                    />
                     <div class="tender__info-left">
+                        <div class="tender__info-number">
+                            <span>Аукцион №{{ tender.id }}</span>
+                        </div>
                         <div class="tender__info-title">
                             {{ tender.name }}
                         </div>
@@ -154,20 +162,28 @@
                         <div class="tender__info-price">
                             {{ $helpers.toPrice(tender.price, { sign: '₽' }) }}
                         </div>
-                        <div class="tender__info-param">
-                            <span>Аукцион №{{ tender.id }}</span>
+
+                        <div 
+                            v-if="tender.date_start" 
+                            class="tender__info-param"
+                        >
+                            <span>Дата публикации:</span> {{ $helpers.formatDate(new Date(tender.date_start), 'DD.MM.YYYY HH:mm') }} МСК
+                        </div>
+                        <div
+                            v-if="tender.date_end" 
+                            class="tender__info-param"
+                        >
+                            <span>Дата окончания:</span> {{ $helpers.formatDate(new Date(tender.date_end), 'DD.MM.YYYY HH:mm') }} МСК
                         </div>
                         <div class="tender__info-param">
-                            <span>Объявлено:</span> {{ $helpers.formatDate(new Date(tender.date_start), 'DD.MM.YYYY HH:mm') }} МСК
+                            <span>Тип аукциона:</span> {{ tender.type_detail }}
                         </div>
-                        <div class="tender__info-param">
-                            <span>Тип аукциона:</span> {{ types[tender.type] }}
-                        </div>
+
                         <div class="tender__info-param">
                             <span>Минимальный шаг ставки:</span> {{ tender.min_step }}%
                         </div>
                         <div class="tender__info-param">
-                            <span>Лоты:</span> {{ tender.lot_count }}
+                            <span>Предложений от поставщиков:</span> {{ tender.unique_offer_count }}
                         </div>
                     </div>
                 </div>
@@ -425,6 +441,15 @@
             },
             updateTenderData() {
                 this.$forceUpdate();
+            },
+            toggleFavorite() {
+                this.tender.favorite = !this.tender.favorite;
+                tenderApi.switchFavoriteTender(this.tender.id).then(res => {
+                    console.log(res);
+                }).catch(err => {
+                    this.$store.dispatch('showError', err);
+                    console.error(err);
+                });
             }
         }
     };

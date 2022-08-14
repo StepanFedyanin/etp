@@ -4,6 +4,7 @@
     flex-direction: column;
     min-height: 100vh;
     background-color: $color-bg;
+    overflow: hidden;
 
     &__block {
         display: flex;
@@ -14,7 +15,7 @@
 
     &__sidebar {
         width: 350px;
-        margin-right: 48px;
+        /*margin-right: 48px;*/
     }
 
     &__main {
@@ -29,7 +30,7 @@
     }
 
     &.m--with-sidebar &__main {
-        width: calc(100% - 380px);
+        width: calc(100% - 350px);
     }
 
     &.m--with-sidebar &__block {

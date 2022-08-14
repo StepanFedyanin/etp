@@ -157,7 +157,14 @@
             }
         },
         mounted() {
-            this.getTenders()
+            if (this.$route.query && this.$route.query.category) {
+                let params = {
+                    category: [this.$route.query.category]
+                }
+                this.startSearch(params)
+            } else {
+                this.getTenders();
+            }
         },
         beforeDestroy() {
         },

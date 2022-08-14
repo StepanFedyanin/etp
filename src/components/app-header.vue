@@ -1,7 +1,7 @@
 <template>
     <div 
         class="header"
-        :class="(!$route.meta.requiresAuth && $route.name !== 'home') ? 'm--seconds' : $route.meta.requiresAuth ? 'm--cabinet' : ''"
+        :class="(!$route.meta.requiresAuth && $route.name !== 'home' && !($route.meta.showSidebarAuth && user && user.id)) ? 'm--seconds' : $route.meta.requiresAuth || ($route.meta.showSidebarAuth && user && user.id) ? 'm--cabinet' : ''"
     >
         <div class="container">
             <div class="header__content">
@@ -120,7 +120,7 @@
             </div>
         </div>
         <div 
-            v-if="!$route.meta.requiresAuth && $route.name !== 'home'"
+            v-if="!$route.meta.requiresAuth && $route.name !== 'home' && !($route.meta.showSidebarAuth && user && user.id)"
             class="header__sub"
         >
             <div class="container">

@@ -22,7 +22,31 @@
             flex-direction: column;
         }
 
+        &-favorite {
+            position: absolute;
+            width: 32px;
+            height: 32px;
+            right: 20px;
+            top: 24px;
+            background-image: svg-load('./assets/img/icons/icon-star.svg', fill=$color-gray-T4);
+            background-size: contain;
+            cursor: pointer;
+
+            &.m--favorite {
+                background-image: svg-load('./assets/img/icons/icon-star.svg', fill=$color-green);
+            }
+
+            @mixin responsive-le-xl {
+                width: 24px;
+                height: 24px;
+                top: 28px;
+                right: 20px;
+            }
+        }
+
         &-left {
+            display: flex;
+            flex-direction: column;
             padding-right: 48px;
             border-right: 1px solid $color-gray-T5;
             width: 70%;
@@ -43,7 +67,8 @@
             font-size: 20px;
             line-height: 24px;
             text-transform: uppercase;
-            margin-bottom: 24px;
+            padding-bottom: 24px;
+            margin-bottom: auto;
         }
 
         &-param {
@@ -356,7 +381,7 @@
     }
 
     &__status {
-        padding: 20px;
+        padding: 30px 20px 6px;
         margin-bottom: 48px;
         @mixin shadow-box;
 
@@ -365,7 +390,7 @@
             font-size: 20px;
             text-transform: uppercase;
             color: $color-gray-T3;
-            margin-bottom: 16px;
+            margin-bottom: 24px;
             span {
                 color: $color-black;
             }
@@ -380,7 +405,7 @@
         }
 
         &-block {
-            margin: 0 0 16px;
+            margin: 0 0 24px;
             width: 100%;
             box-shadow: none;
             padding: 0;

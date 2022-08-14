@@ -1,7 +1,18 @@
 .sidebar {
+    position: relative;
     background: $color-white;
     padding: 50px 25px 30px 60px;
     z-index: 9;
+
+    &:after {
+        content: '';
+        position: absolute;
+        top: 100%;
+        left: 0;
+        right: 0;
+        height: 100%;
+        background: $color-white;
+    }
 
     &__menu {
         &-devider {

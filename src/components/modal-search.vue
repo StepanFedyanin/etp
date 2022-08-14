@@ -166,6 +166,20 @@
                         outerClass: '$reset modal-form__field m--category',
                     }, {
                         $formkit: 'multiselect',
+                        mode: 'single',
+                        name: 'type',
+                        label: 'Тип тендера',
+                        closeOnSelect: false,
+                        options: [
+                            { label: 'Открытый на понижение', value: 'reduction_opened' },
+                            { label: 'Закрытый на понижение', value: 'reduction_closed' },
+                            { label: 'Запрос котировок', value: 'request_quote' },
+                        ],
+                        inputClass: 'modal-form__select',
+                        labelClass: '$reset modal-form__label',
+                        outerClass: '$reset modal-form__field m--type',
+                    }, {
+                        $formkit: 'multiselect',
                         name: 'region',
                         label: 'Выбор региона',
                         options: async () => {
@@ -218,9 +232,9 @@
                         outerClass: '$reset modal-form__field m--inn',
                     }, {
                         $formkit: 'checkbox',
-                        name: 'type',
+                        name: 'owner_type',
                         value: ["all"],
-                        help: 'Показать тендера',
+                        help: 'Показать тендеры',
                         onInput: this.checkType,
                         options: [
                             {
@@ -240,7 +254,7 @@
                         optionClass: 'modal-form__option',
                         helpClass: '$reset modal-form__label',
                         wrapperClass: 'modal-form__radio',
-                        outerClass: '$reset modal-form__field m--type',
+                        outerClass: '$reset modal-form__field m--owner',
                     },
                 ],
             };
@@ -256,16 +270,19 @@
         },
         methods: {
             submitSearchForm(formData) {
+                // С данным переопределением не ищет.
+                /*
                 if (formData.category) {
                     formData.category = formData.category.map(cat => cat.value)
                 }
-                formData.type.map(type => {
+                */
+                formData.owner_type.map(type => {
                     formData[type] = true
                 })
 
                 if (formData.region)
                     formData.region = [ formData.region ]
-                delete formData.type
+                delete formData.owner_type
                 this.$emit('advSearch', formData)
                 this.$emit('hideModal')
             },

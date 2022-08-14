@@ -1,12 +1,12 @@
 <template>
     <div 
         class="app"
-        :class="$route.meta.requiresAuth ? 'm--with-sidebar' : ''"
+        :class="$route.meta.requiresAuth || ($route.meta.showSidebarAuth && user && user.id) ? 'm--with-sidebar' : ''"
     >
         <Header />
         <div class="app__block">
             <Sidebar
-                v-if="$route.meta.requiresAuth"
+                v-if="$route.meta.requiresAuth || ($route.meta.showSidebarAuth && user && user.id)"
             />
             <routerView />
         </div>

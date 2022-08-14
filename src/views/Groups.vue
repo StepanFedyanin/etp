@@ -2,6 +2,12 @@
     <div class="app__main">
         <div class="groups">
             <div class="container">
+                <div 
+                    v-if="user && user.id"
+                    class="groups__title h1"
+                >
+                    Товарные группы
+                </div>
                 <template
                     v-if="showLoaderSending"
                 >
@@ -48,8 +54,12 @@
                                         v-for="category in group.categories"
                                         :key="category.id"
                                         class="group__products-item"
-                                        v-text="category.name"
-                                    />
+                                    >
+                                        <router-link
+                                            :to="{ name: 'tenders', query: { category: category.id } }"
+                                            v-text="category.name"
+                                        />
+                                    </li>
                                 </ul>
                             </Transition>
                             <div
@@ -87,6 +97,11 @@
                 limit: 10,
                 showLoaderSending: false,
             }
+        },
+        computed: {
+            user() {
+                return this.$store.state.user;
+            },
         },
         watch: {
             '$route.query.page': {

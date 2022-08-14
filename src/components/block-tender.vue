@@ -161,7 +161,7 @@
                         class="button button-green"
                         @click="onClickParticipate"
                     >
-                        Участвовать
+                        Подробнее
                     </button>
                 </div>
             </template>
