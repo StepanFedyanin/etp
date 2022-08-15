@@ -99,14 +99,26 @@
             <div class="tenders__item-price">
                 {{ $helpers.toPrice(tender.price, {sign: '₽'}) }}
             </div>
+
+
+            <div 
+                class="tenders__item-param"
+            >
+                <span 
+                    class="tenders__item-param-name"
+                >
+                    Начало приема заявок:
+                </span>
+                {{ $helpers.formatDate(new Date(tender.date_publication), 'DD.MM.YYYY HH:mm') }} МСК
+            </div>
             <div 
                 v-if="tender.date_start" 
                 class="tenders__item-param"
             >
-                <span
+                <span 
                     class="tenders__item-param-name"
                 >
-                    Дата публикации: 
+                    Прием заявок: до
                 </span> 
                 {{ $helpers.formatDate(new Date(tender.date_start), 'DD.MM.YYYY HH:mm') }} МСК
             </div>
@@ -114,14 +126,23 @@
                 v-if="tender.date_end" 
                 class="tenders__item-param"
             >
-                <span
+                <span 
                     class="tenders__item-param-name"
                 >
-                    Дата окончания: 
-                </span>
+                    Этап торгов: до
+                </span> 
                 {{ $helpers.formatDate(new Date(tender.date_end), 'DD.MM.YYYY HH:mm') }} МСК
             </div>
-
+            <div 
+                class="tenders__item-param"
+            >
+                <span 
+                    class="tenders__item-param-name"
+                >
+                    Исполнение договора: до
+                </span> 
+                00.00.2022 00:00 МСК
+            </div>
             <div class="tenders__item-param">
                 <span class="tenders__item-param-name">Тип аукциона:</span> {{ tender.type_detail }}
             </div>

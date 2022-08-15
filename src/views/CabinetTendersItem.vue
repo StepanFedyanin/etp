@@ -162,23 +162,31 @@
                         <div class="tender__info-price">
                             {{ $helpers.toPrice(tender.price, { sign: '₽' }) }}
                         </div>
-
+                        <div 
+                            class="tender__info-param"
+                        >
+                            <span>Начало приема заявок:</span> {{ $helpers.formatDate(new Date(tender.date_publication), 'DD.MM.YYYY HH:mm') }} МСК
+                        </div>
                         <div 
                             v-if="tender.date_start" 
                             class="tender__info-param"
                         >
-                            <span>Дата публикации:</span> {{ $helpers.formatDate(new Date(tender.date_start), 'DD.MM.YYYY HH:mm') }} МСК
+                            <span>Прием заявок: до</span> {{ $helpers.formatDate(new Date(tender.date_start), 'DD.MM.YYYY HH:mm') }} МСК
                         </div>
                         <div
                             v-if="tender.date_end" 
                             class="tender__info-param"
                         >
-                            <span>Дата окончания:</span> {{ $helpers.formatDate(new Date(tender.date_end), 'DD.MM.YYYY HH:mm') }} МСК
+                            <span>Этап торгов: до</span> {{ $helpers.formatDate(new Date(tender.date_end), 'DD.MM.YYYY HH:mm') }} МСК
+                        </div>
+                        <div 
+                            class="tender__info-param"
+                        >
+                            <span>Исполнение договора: до</span> 00.00.2022 00:00 МСК
                         </div>
                         <div class="tender__info-param">
                             <span>Тип аукциона:</span> {{ tender.type_detail }}
                         </div>
-
                         <div class="tender__info-param">
                             <span>Минимальный шаг ставки:</span> {{ tender.min_step }}%
                         </div>
@@ -277,6 +285,14 @@
                     >
                         <div class="tender__contact-title">
                             Контактное лицо
+                            <template
+                                v-if="user.id !== tender.creator && tender.status !== 'closed' && tender.user_participation"
+                            >
+                                <router-link
+                                    :to="{ name: 'chat' }"
+                                    class="tender__contact-chat"
+                                />
+                            </template>
                         </div>
                         <template
                             v-if="tender.contact_person"
@@ -313,13 +329,15 @@
                     v-if="tender.bet_enabled && tender.user_participation && tender.user_participation.status === 'participant'"
                     class="tender__bids"
                 >
-                    <div class="tender__bids-title">
-                        Быстрые ставки
-                    </div>
-                    <div class="tender__bids-block">
+                    <div class="tender__bids-left">
+                        <div class="tender__bids-title">
+                            Быстрые ставки
+                        </div>
                         <div class="tender__bids-info">
                             Минимальный шаг цены - {{ tender.min_step }}%
                         </div>
+                    </div>
+                    <div class="tender__bids-block">
                         <button 
                             class="button button-outline-green m--right"
                             @click="onClickRequest()"
