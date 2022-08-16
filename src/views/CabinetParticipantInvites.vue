@@ -14,9 +14,9 @@
                             <div class="spinner" /> Загрузка данных
                         </div>
                     </template>
-
+                    <!-- <pre>{{ tenders.length}}</pre> -->
                     <template
-                        v-if="tenders"
+                        v-if="tenders && tenders.length > 0"
                     >
                         <blockTender
                             v-for="(tender, index) in tenders"
@@ -24,6 +24,11 @@
                             :tender="tender"
                             :invites="true"
                         />
+                    </template>
+                    <template
+                        v-else
+                    >
+                        У вас нет приглашений 
                     </template>
                 </div>
             </div>

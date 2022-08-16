@@ -1,7 +1,4 @@
 .tender {
-    &__loader {
-    }
-
     &__block {
         position: relative;
         display: flex;
@@ -302,10 +299,6 @@
             }
         }
 
-        &-inner {
-
-        }
-
         &-title {
             font-weight: 700;
             font-size: 20px;
@@ -499,7 +492,7 @@
         width:100%;
     }
     .form__block {
-        margin-right: 20px;
+        margin-right: 24px;
         width: 50%;
         min-width: 300px;
     }
@@ -508,22 +501,35 @@
     }
 }
 .invites {
+    &__list{
+        margin-bottom: 48px;
+    }
     .invite {
         &__item {
-        display: flex;
-        align-items: center;
-        margin-bottom: 30px;
+            @mixin shadow-box;
+            display: flex;
+            align-items: center;
+            padding: 15px 26px;
+        }
+        &__item:not(:last-child){
+            margin-bottom: 24px;
         }
         &__title {
             flex: 1;
             font-weight: 700;
-            font-size: 20px;
+            font-size: 16px;
             line-height: 24px;
+            cursor: pointer;
+            color: $color-green;
+            text-decoration: underline;
+            &:hover{
+                color: $color-green-dark;
+            }
         }
         &__status {
             padding: 15px;
             margin: 0 20px;
-            font-weight: 700;
+            font-weight: 600;
             font-size: 18px;
             line-height: 22px;
             text-transform: uppercase;

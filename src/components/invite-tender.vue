@@ -3,14 +3,16 @@
         <div class="h2">
             Приглашения
         </div>
-        <div 
-            v-for="invite in invites"
-            class="invites__list"
-        >
-            <div class="invite__item">
-                <div class="invite__title">
+        <!-- <pre>{{invites}}</pre> -->
+        <div class="invites__list">
+            <div 
+                v-for="invite in invites"
+                class="invite__item">
+                <div 
+                    class="invite__title"
+                    @click="onClickContragent(invite.organization.id)"
+                >
                     {{ invite.organization.name }}
-                    <!-- <svg>d</svg> -->
                 </div>
                 
                 <div 
@@ -23,7 +25,7 @@
                     v-if="invite.status === 'sent'"
                 >
                     <button 
-                        class="button button-red"
+                        class="button button-outline-red "
                         @click="cancelInvitation(invite.id)"
                     >
                         Отменить
@@ -49,7 +51,7 @@
             type="form"
             data-loading="loading"
             form-class="$reset inviteTender__form form"
-            submit-label="Пригласить участника"
+            submit-label="Отправить приглашение"
             :disabled="loading"
             :loading="loading ? true : undefined"
             :submit-attrs="{
@@ -101,8 +103,9 @@
                                         kpp: org.kpp,
                                         name: org.name,
                                         city: org.city,
-                                        principal_activity: org.principal_activity,
+                                        legal_address: org.legal_address,
                                         value: org.id,
+                                        color_status: org.color_status,
                                     }
                                 })
                             }).catch(err => {
@@ -139,9 +142,12 @@
                 this.showLoaderSending = true;
                 tenderApi.sendInvitationInTender(this.tenderId, data).then(res => {
                     console.log(res);
-                    this.organizations = res;
-                    console.log(this.organizations);
+                    this.invite = res;
+                    console.log(this.invite);
                     this.showLoaderSending = false;
+                    // this.invites.push(res);
+                    // this.invite.status_detail = res.invite.status_detail;
+                    // this.invite.organization.name = res.organization.name;
                 }).catch(err => {
                     node.setErrors(
                         [err.detail],
@@ -184,7 +190,10 @@
                     this.$store.dispatch('showError', err);
                     console.error(err);
                 });
-            }
+            },
+            onClickContragent(id) {
+                this.$router.push({ name: 'contragent', params: { id: id } });
+            },
         }
     }
 </script>

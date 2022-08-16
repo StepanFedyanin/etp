@@ -2,7 +2,7 @@
     <div class="cabinet contragents">
         <div class="container">
             <div class="contragents__title h1">
-                Мои контрагенты
+                Контрагенты
             </div>
             <div class="contragents__block">
                 <div class="contragents__header">

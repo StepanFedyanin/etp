@@ -25,6 +25,7 @@
             <div 
                 v-if="inn"
                 class="multiselect-inn"
+                :class="option.color_status"
             >
                 <div class="multiselect-inn__inner">
                     <div class="multiselect-inn__left">
@@ -42,6 +43,9 @@
                         </div>
                         <div class="multiselect-inn__principal_activity">
                             {{ option.principal_activity }}
+                        </div>
+                        <div class="multiselect-inn__legal_address">
+                            {{ option.legal_address }}
                         </div>
                     </div>
                 </div>
