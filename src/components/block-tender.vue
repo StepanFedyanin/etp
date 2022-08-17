@@ -28,7 +28,6 @@
                         Осталось {{ $helpers.dateRangeToDaysHours(new Date(), new Date(tender.date_end)) }}
                     </template>
                 </div>
-
             </div>
             <router-link
                 :to="{ name: 'tender', params: { id: tender.id } }"
@@ -160,7 +159,7 @@
             <template
                 v-if="invites"
             >
-                <!-- <pre>{{tender.user_invite.status === "sent"}}</pre> -->
+                <!-- <pre>{{tender.user_invite.status }}</pre> -->
                 <div
                     v-if="tender.user_invite.status === 'sent'"
                     class="tenders__item-participate"
@@ -176,6 +175,16 @@
                         @click="onClickRejectInvite"
                     >
                         Отказаться
+                    </button>
+                </div>
+                <div
+                    v-else-if="tender.user_invite.status === 'accepted'"
+                >
+                    <button
+                        class="button button-green"
+                        @click="onClickParticipate"
+                    >
+                        Подробнее
                     </button>
                 </div>
                 <!-- <div
@@ -207,8 +216,8 @@
             <template
                 v-else
             >
+                <!-- v-if="restTime" -->
                 <div
-                    v-if="restTime"
                     class="tenders__item-participate"
                 >
                     <button

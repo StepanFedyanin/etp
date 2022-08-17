@@ -2,7 +2,47 @@
     <div> 
         <!-- <pre>{{tender.user_participation}}</pre><pre>{{tender.status}}</pre> -->
         <div 
-            v-if="!tender.user_participation && tender.status === 'bid_accept'"
+            v-if="!tender.user_participation && tender.status === 'bid_accept' && tender.user_invite.status === 'sent'"
+            class="tender__status"
+        >
+            <div class="tender__status-title">
+                Статус вашей организации: приглашена к участию
+            </div>
+            <div class="tender__status-block">
+                <button 
+                    class="button button-green"
+                    @click="onClickRequestPartipation()"
+                >
+                    Подать заявку
+                </button>
+                <button 
+                    class="button button-red"
+                    @click="onClickRejectInvite()"
+                >
+                    Отказаться
+                </button>
+            </div>
+        </div>
+
+        <div 
+            v-if="!tender.user_participation && tender.status === 'bid_accept' && tender.user_invite.status === 'accepted'"
+            class="tender__status"
+        >
+            <div class="tender__status-title">
+                Статус вашей организации: приглашение принято
+            </div>
+            <div class="tender__status-block">
+                <button 
+                    class="button button-green"
+                    @click="onClickRequestPartipation()"
+                >
+                    Подать заявку
+                </button>
+            </div>
+        </div>
+
+        <div 
+            v-if="!tender.user_participation && tender.status === 'bid_accept' && tender.user_invite.status !== 'sent' && tender.user_invite.status !== 'accepted'"
             class="tender__status"
         >
             <div class="tender__status-title">
@@ -129,6 +169,8 @@
 <script>
     import ModalRequestPartipation from '@/components/modal-request-partipation';
     import { urlPath } from '@/settings'
+    import { tender as tenderApi } from "@/services"
+
     export default {
         components: {
             ModalRequestPartipation
@@ -153,7 +195,13 @@
         },
         methods: {
             onClickRequestPartipation() {
-                this.showRequestPartipationModal = true;  
+                this.showRequestPartipationModal = true;
+                tenderApi.acceptInvitation(this.tender.id).then(res => {
+                    console.log(res);
+                }).catch(err => {
+                    this.$store.dispatch('showError', err);
+                    console.error(err);
+                });
             },
             hideRequestPartipationModal(updateData) {
                 this.showRequestPartipationModal = false;
@@ -161,6 +209,22 @@
                     this.$emit('getTenderData');
                 }
             },
+            onClickAcceptInvite(){
+                tenderApi.acceptInvitation(this.tender.id).then(res => {
+                    console.log(res);
+                }).catch(err => {
+                    this.$store.dispatch('showError', err);
+                    console.error(err);
+                });
+            },
+            onClickRejectInvite(){
+                tenderApi.rejectInvitation(this.tender.id).then(res => {
+                    console.log(res);
+                }).catch(err => {
+                    this.$store.dispatch('showError', err);
+                    console.error(err);
+                });
+            }
         },
     };
 </script>

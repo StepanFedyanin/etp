@@ -205,7 +205,8 @@
                     </div>
                     <div
                         v-if="tender.status === 'bid_accept'" 
-                        class="tender__actions-buttons">
+                        class="tender__actions-buttons"
+                    >
                         <button 
                             class="button button-red"
                             @click.stop="onClickCancelTender"
@@ -365,6 +366,7 @@
                     @getTenderData="getTenderData"
                 />
                 <inviteTender 
+                    v-if="user.id === tender.creator && tender.status === 'bid_accept'"
                     :tender="tender"
                 />
             </template>

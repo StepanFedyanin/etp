@@ -4,7 +4,9 @@
     <div class="cabinet invites">
         <div class="container">
             <div class="invites__content">
-                <div class="h1">Приглашения к участию в тендерах</div>
+                <div class="h1">
+                    Приглашения к участию в тендерах
+                </div>
                 <!-- {{ tenders }} -->
                 <div class="tenders">
                     <template

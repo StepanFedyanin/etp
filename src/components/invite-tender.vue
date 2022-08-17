@@ -22,7 +22,7 @@
                     {{ invite.status_detail }}
                 </div>
                 <template
-                    v-if="invite.status === 'sent'"
+                    v-if="invite.status === 'sent' || invite.status ==='accepted'"
                 >
                     <button 
                         class="button button-outline-red "
@@ -37,7 +37,7 @@
                     <!-- {{invite.organization.id}} -->
                     <button 
                         class="button button-green"
-                        @click="repeatlInvitation(invite.organization.id)"
+                        @click="repeatInvitation(invite.organization.id)"
                     >
                         Повторить
                     </button>
@@ -95,7 +95,7 @@
                         inn: true,
                         minChars: 3,
                         options: async () => {
-                            return await userApi.getOrganizations().then(orgs => {
+                            return await userApi.getOrganizations({limit: 1000}).then(orgs => {
                                 console.log(orgs);
                                 return orgs.results.map((org) => {
                                     return {
@@ -145,6 +145,7 @@
                     this.invite = res;
                     console.log(this.invite);
                     this.showLoaderSending = false;
+                    this.getInvitation();
                     // this.invites.push(res);
                     // this.invite.status_detail = res.invite.status_detail;
                     // this.invite.organization.name = res.organization.name;
@@ -171,20 +172,21 @@
                 tenderApi.cancelInvitation(this.tenderId, invitesId).then(res => {
                     console.log(res);
                     this.invites = res;
+                    this.getInvitation();
                 }).catch(err => {
                     this.showLoaderSending = false;
                     this.$store.dispatch('showError', err);
                     console.error(err);
                 });
             },
-            repeatlInvitation(organizationId) {
+            repeatInvitation(organizationId) {
                 this.organization = { organization: organizationId}
                 tenderApi.sendInvitationInTender(this.tenderId, this.organization).then(res => {
                     console.log(res);
                     this.organizations = res;
                     console.log(this.organizations);
                     this.showLoaderSending = false;
-                    this.invite.status = "sent";
+                    this.getInvitation();
                 }).catch(err => {
                     this.showLoaderSending = false;
                     this.$store.dispatch('showError', err);
