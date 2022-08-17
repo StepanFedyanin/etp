@@ -311,11 +311,18 @@ export default class extends REST {
             throw new RESTError(error, 'Ошибка при отклонении приглашения в тендер');
         })
     }
-    static favoritesTenders(params){
-        return this._get('tender/favorites', {}, params).then((data) => {
+    static getFavoritesTenders(params){
+        return this._get('favorites', {}, params).then((data) => {
             return data;
         }).catch((error) => {
             throw new RESTError(error, 'Ошибка при получении списка избранных тендеров');
+        });
+    }
+    static closeTender(tenderId, params){
+        return this._post(`${tenderId}/close`, {}, params).then((data) => {
+            return data;
+        }).catch((error) => {
+            throw new RESTError(error, 'Ошибка при попытке закрыть тендер');
         });
     }
 }

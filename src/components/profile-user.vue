@@ -21,10 +21,10 @@
         </svg>
         <svg 
             v-if="user.is_active" 
-            class="svg-icon svg-icon__delete"
+            class="svg-icon svg-icon__changePassword"
             @click="onClickEditPassword()"
         >
-            <use xlink:href="../assets/img/icons/icons.svg#delete" />
+            <use xlink:href="../assets/img/icons/icons.svg#changePassword" />
         </svg>
         <div class="profile__table table">
             <div class="table__column">

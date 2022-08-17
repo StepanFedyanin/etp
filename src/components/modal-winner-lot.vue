@@ -89,8 +89,8 @@
                             </div>
                         </div>
                         <FormKit
-                            v-model="formValues"
                             id="form-offer"
+                            v-model="formValues"
                             preserve
                             type="form"
                             data-loading="loading"

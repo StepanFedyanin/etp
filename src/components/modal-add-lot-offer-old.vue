@@ -8,7 +8,7 @@
             class="modal__close" 
             @click="$emit('hideModal')"
         >
-            <span/>
+            <span />
         </button>
         <span class="modal__title">Сделать ставку</span>
         <div class="modal__content">
@@ -107,11 +107,6 @@
                 default() { return {}; }
             },
         },
-        computed: {
-            show() {
-                return this.showModal;
-            },
-        },
         data() {
             return {
                 formData: {
@@ -120,6 +115,11 @@
                     sum: 0
                 },
             };
+        },
+        computed: {
+            show() {
+                return this.showModal;
+            },
         },
         methods: {
             calcLotSum(data, node) {

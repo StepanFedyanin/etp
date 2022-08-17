@@ -470,6 +470,15 @@
                     this.$store.dispatch('showError', err);
                     console.error(err);
                 });
+            },
+            onClickCancelTender(){
+                tenderApi.closeTender(this.tender.id).then(res => {
+                    console.log(res);
+                    this.getTenderData();
+                }).catch(err => {
+                    this.$store.dispatch('showError', err);
+                    console.error(err);
+                });
             }
         }
     };

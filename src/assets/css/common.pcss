@@ -226,20 +226,20 @@ input[type='number'] {
     }
 }
 
-.color-status{
+.color-status {
     width: 10px;
     height: 10px;
     border-radius: 100px;
-    &&.m--color-red{
+    &&.m--color-red {
         background: $color-red;
     }
-    &&.m--color-green{
+    &&.m--color-green {
         background: $color-green;
     }
-    &&.m--color-green-yellow{
+    &&.m--color-green-yellow {
         background: $color-yellow;
     }
-    &&.m--color-yellow{
+    &&.m--color-yellow {
         background: $color-yellow;
     }
 }
@@ -256,69 +256,77 @@ input[type='number'] {
         color: $color-yellow;
     }
 }
-    .svg-icon {
-        height: 24px; 
-        width: 24px;
-        cursor: pointer;
+.svg-icon {
+    height: 24px; 
+    width: 24px;
+    cursor: pointer;
 
-        &&__edit{
-            display: inline-block;
-            margin: 0 20px;
-            fill: $color-green;
-            &:hover {
-                fill: $color-green-dark;
-            }
+    &&__edit {
+        display: inline-block;
+        margin: 0 20px;
+        fill: $color-green;
+        &:hover {
+            fill: $color-green-dark;
         }
-        &&__activate{
-            fill: $color-green;
-            &:hover {
-                fill: $color-green-dark;
-            }
+    }
+    &&__activate {
+        fill: $color-green;
+        &:hover {
+            fill: $color-green-dark;
         }
+    }
 
-        &&__delete{
-            fill: $color-red;
-            &:hover {
-                fill: $color-red-dark;
-            }
+    &&__delete {
+        fill: $color-red;
+        &:hover {
+            fill: $color-red-dark;
         }
+    }
 
-        &&__addPerson{
-            fill: none;
+    &&__addPerson {
+        fill: none;
+        stroke: $color-green;
+        &:hover {
+            stroke: $color-green-dark;
+        }
+    }
+    &&__hammer {
+        fill: none;
+        stroke: $color-gray-T5;
+        &:hover {
             stroke: $color-green;
-            &:hover {
-                stroke: $color-green-dark;
-            }
         }
-        &&__hammer{
-            fill: none;
-            stroke: $color-gray-T5;
-            &:hover {
-                stroke: $color-green;
-            }
-        }
-        &&__briefcase{
-            fill: none;
-            stroke: $color-gray-T5;
-            &:hover {
-                stroke: $color-green;
-            }
-        }
-        &&__crossCircle{
-            fill: none;
-            height: 20px; 
-            width: 20px;
-            stroke: $color-red;
-            &:hover {
-                stroke: $color-red-dark;
-            }
-        }
-        &&__sent{
-            fill: none;
+    }
+    &&__briefcase {
+        fill: none;
+        stroke: $color-gray-T5;
+        &:hover {
             stroke: $color-green;
-            &:hover {
-                stroke: $color-green-dark;
-            }
         }
+    }
+    &&__crossCircle {
+        fill: none;
+        height: 20px; 
+        width: 20px;
+        stroke: $color-red;
+        &:hover {
+            stroke: $color-red-dark;
+        }
+    }
+    &&__sent {
+        fill: none;
+        stroke: $color-green;
+        &:hover {
+            stroke: $color-green-dark;
+        }
+    }
+    &&__changePassword {
+        fill: none;
+        stroke: $color-green;
+        stroke-width: 1.2;
+        &:hover {
+            stroke: $color-green-dark;
+        }
+    }
 
 }

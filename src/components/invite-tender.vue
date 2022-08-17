@@ -7,7 +7,8 @@
         <div class="invites__list">
             <div 
                 v-for="invite in invites"
-                class="invite__item">
+                class="invite__item"
+            >
                 <div 
                     class="invite__title"
                     @click="onClickContragent(invite.organization.id)"
@@ -45,6 +46,7 @@
             </div>
         </div>
         <FormKit
+            id="form-search"
             v-model="formValues"
             name="form-search"
             preserve
@@ -124,7 +126,7 @@
             }
 
         },
-        computed:{
+        computed: {
             tenderId() {
                 return this.tender.id;
             },
@@ -145,10 +147,8 @@
                     this.invite = res;
                     console.log(this.invite);
                     this.showLoaderSending = false;
+                    this.$formkit.reset('form-search');
                     this.getInvitation();
-                    // this.invites.push(res);
-                    // this.invite.status_detail = res.invite.status_detail;
-                    // this.invite.organization.name = res.organization.name;
                 }).catch(err => {
                     node.setErrors(
                         [err.detail],
