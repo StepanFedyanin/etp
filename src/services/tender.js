@@ -46,8 +46,24 @@ export default class extends REST {
         });
     }
 
+    static getCurrentsTenders(params) {
+        return this._post('currents', {}, params).then((data) => {
+            return data;
+        }).catch((error) => {
+            throw new RESTError(error, 'Ошибка при получении список тендеров');
+        });
+    }
+
     static getMyCurrentsTenders(params) {
         return this._post('my_currents', {}, params).then((data) => {
+            return data;
+        }).catch((error) => {
+            throw new RESTError(error, 'Ошибка при получении список тендеров');
+        });
+    }
+
+    static getClosedTenders(params) {
+        return this._post('my_closed', {}, params).then((data) => {
             return data;
         }).catch((error) => {
             throw new RESTError(error, 'Ошибка при получении список тендеров');

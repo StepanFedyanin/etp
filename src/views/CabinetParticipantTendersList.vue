@@ -183,12 +183,11 @@
                 let limit = Number(this.limit)
                 let params = {
                     limit,
-                    offset: this.offset,
-                    participation: 1
+                    offset: this.offset
                 }
                 if (this.status === 'currents') {
                     this.showLoaderSending = true;
-                    api.getMyCurrentsTenders(params).then(tenders => {
+                    api.getCurrentsTenders(params).then(tenders => {
                         this.tenders = tenders
                         this.showLoaderSending = false;
                         console.log(tenders)
@@ -197,7 +196,7 @@
                     })
                 } else if (this.status === 'closed') {
                     this.showLoaderSending = true;
-                    api.getMyClosedTenders(params).then(tenders => {
+                    api.getClosedTenders(params).then(tenders => {
                         this.tenders = tenders
                         this.showLoaderSending = false;
                         console.log(tenders)
