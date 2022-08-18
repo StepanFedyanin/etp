@@ -39,6 +39,7 @@ import CabinetOrganization from '@/views/CabinetOrganization';
 import CabinetOrganizationEdit from '@/views/CabinetOrganizationEdit';
 import cabinetNotifications from '@/views/CabinetNotifications';
 import groups from '@/views/Groups';
+import page404 from '@/views/Page404';
 
 const routes = [
     {
@@ -426,6 +427,15 @@ const routes = [
             title: 'Уведомления',
             breadcrumbs: [],
             requiresAuth: true 
+        },
+        props: true,
+    }, {
+        path: '/:pathMatch(.*)*',
+        name: 'page404',
+        component: page404,
+        meta: { 
+            title: 'Ошибка 404',
+            showSidebarAuth: true,
         },
         props: true,
     }, 

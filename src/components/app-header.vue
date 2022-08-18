@@ -120,7 +120,7 @@
             </div>
         </div>
         <div 
-            v-if="!$route.meta.requiresAuth && $route.name !== 'home' && !($route.meta.showSidebarAuth && user && user.id)"
+            v-if="!$route.meta.requiresAuth && $route.name !== 'home' && $route.name !== 'page404' && !($route.meta.showSidebarAuth && user && user.id)"
             class="header__sub"
         >
             <div class="container">

@@ -1,7 +1,7 @@
 <template>
     <div 
         class="app"
-        :class="$route.meta.requiresAuth || ($route.meta.showSidebarAuth && user && user.id) ? 'm--with-sidebar' : ''"
+        :class="[$route.meta.requiresAuth || ($route.meta.showSidebarAuth && user && user.id) ? 'm--with-sidebar' : '', $route.name === 'page404' ? 'm--page404' : '']"
     >
         <Header />
         <div class="app__block">

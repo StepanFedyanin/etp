@@ -6,11 +6,19 @@
     background-color: $color-bg;
     overflow: hidden;
 
+    &.m--page404 {
+        background-image: url('./assets/img/bg/header_seconds.png');
+    }
+
     &__block {
         display: flex;
         margin: 0 auto;
         /*max-width: 1920px;*/
         width: 100%;
+    }
+
+    &.m--page404 &__block {
+        height: 100%;
     }
 
     &__sidebar {
@@ -26,6 +34,10 @@
 
         &.m--no-padding {
             padding-top: 0;
+        }
+        &[pathmatch] {
+            padding-top: 0;
+            padding-bottom: 0;
         }
     }
 
