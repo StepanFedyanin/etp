@@ -314,11 +314,13 @@
                 default() { return false; }
             },
         },
+        emits: ['getListInvitation'],
         data() {
             return {
                 urlPath,
                 isShowPositions: false,
-                favorite: this.tender.favorite
+                favorite: this.tender.favorite,
+                // inviteStatus: '',
             };
         },
         computed: {
@@ -339,6 +341,9 @@
                 return (rest < 0) ? false : true;
             }
         },
+        created() {
+            // this.getInviteStatus();
+        },
         methods: {
             onClickDraft() {
                 this.$router.push({ name: 'tender-edit', params: { id: this.tender.id } });
@@ -358,6 +363,8 @@
             onClickAcceptInvite(){
                 tenderApi.acceptInvitation(this.tender.id).then(res => {
                     console.log(res);
+                    this.inviteStatus = 'accepted';
+                    this.$emit('getListInvitation');
                 }).catch(err => {
                     this.$store.dispatch('showError', err);
                     console.error(err);
@@ -366,11 +373,23 @@
             onClickRejectInvite(){
                 tenderApi.rejectInvitation(this.tender.id).then(res => {
                     console.log(res);
+                    this.inviteStatus = 'reject';
+                    this.$emit('getListInvitation');
                 }).catch(err => {
                     this.$store.dispatch('showError', err);
                     console.error(err);
                 });
-            }
+            },
+            // getInviteStatus() {
+            //     console.log(this.tender);
+            //     if(this.tender.user_invite.status === 'sent') {
+            //         this.inviteStatus ='sent';
+            //     } else if (this.tender.user_invite.status === 'accepted') {
+            //         this.inviteStatus ='accepted';
+            //     } else {
+            //         this.inviteStatus ='';
+            //     }
+            // }
         },
     };
 </script>

@@ -16,15 +16,16 @@
                             <div class="spinner" /> Загрузка данных
                         </div>
                     </template>
-                    <!-- <pre>{{ tenders.length}}</pre> -->
+                    <!-- <pre>{{ tenders }}</pre> -->
                     <template
-                        v-if="tenders && tenders.length > 0"
+                        v-if="tenders && tenders.length"
                     >
                         <blockTender
                             v-for="(tender, index) in tenders"
                             :key="`tender-${index}`"
                             :tender="tender"
                             :invites="true"
+                            @getListInvitation="getListInvitation"
                         />
                     </template>
                     <template
@@ -63,7 +64,7 @@
             this.getListInvitation();
         },
         methods: {
-            getListInvitation(){
+            getListInvitation() {
                 api.getListInvitation().then(res => {
                     console.log(res);
                     // this.invites = res;
