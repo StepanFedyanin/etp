@@ -32,6 +32,11 @@ const user = {
     token: 'c7d63a2e58d186ae3760a5f7c690293e973c08c4'
 };
 
+const chat = {
+    url: `${urlPath}/chat`,
+    token: 'c7d63a2e58d186ae3760a5f7c690293e973c08c4'
+};
+
 const category = {
     url: `${urlPath}`,
     token: 'c7d63a2e58d186ae3760a5f7c690293e973c08c4'
@@ -228,6 +233,7 @@ export {
     geo,
     logger,
     urlPath,
+    chat,
 
     // mainMenu,
     // accountMenu,
