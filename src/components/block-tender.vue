@@ -154,7 +154,7 @@
                 <span class="tenders__item-param-name">Минимальный шаг ставки:</span> {{ tender.min_step || '?' }}
             </div>
             <div class="tenders__item-param">
-                <span class="tenders__item-param-name">Предложений от поставщиков:</span> {{ tender.unique_offer_count }}
+                <span class="tenders__item-param-name">Участники:</span> {{ tender.unique_offer_count }}
             </div>
             <template
                 v-if="invites"

@@ -44,7 +44,10 @@
                         <div class="partipation__status-subtitle">
                             Решение организатора <span class="m--color-red">Заявка отклонена</span>
                         </div>
-                        <div class="partipation__status-comment">
+                        <div 
+                            v-if="tender.user_participation.creator_comment"
+                            class="partipation__status-comment"
+                        >
                             {{ tender.user_participation.creator_comment }}
                         </div>
                     </div>
@@ -55,7 +58,10 @@
                             Документация
                         </div>
                         <div class="partipation__docs-list">
-                            <div class="partipation__docs-item">
+                            <div 
+                                v-if="formValues.documents && formValues.documents.length"
+                                class="partipation__docs-item"
+                            >
                                 <div class="partipation__docs-cell m--title">
                                     Файл
                                 </div>

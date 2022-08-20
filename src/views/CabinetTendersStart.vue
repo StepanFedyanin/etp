@@ -46,7 +46,7 @@
                     </div>
 
                     <div class="tender-form__title">
-                        Дополнительая информация
+                        Дополнительная информация
                     </div>
                     <div class="tender-form__fieldgroup">
                         <FormKitSchema :schema="tenderAdditionalSchema" />

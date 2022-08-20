@@ -20,7 +20,7 @@ import cabinetCustomerDrafts from '@/views/CabinetCustomerDrafts';
 import cabinetParticipant from '@/views/CabinetParticipant';
 import cabinetParticipantInvites from '@/views/CabinetParticipantInvites';
 import cabinetParticipantTendersList from '@/views/CabinetParticipantTendersList';
-import cabinetCabinetFavorites from '@/views/CabinetFavorites';
+import cabinetTendersFavorites from '@/views/CabinetTendersFavorites';
 import cabinetProfile from '@/views/CabinetProfile';
 import cabinetProfileEdit from '@/views/CabinetProfileEdit';
 import cabinetProfilePassword from '@/views/CabinetProfilePassword';
@@ -356,7 +356,7 @@ const routes = [
     }, {
         path: '/favorites',
         name: 'favorites',
-        component: cabinetCabinetFavorites,
+        component: cabinetTendersFavorites,
         meta: { title: 'Избранные тендеры', requiresAuth: true },
         props: true,
     }, {
@@ -445,7 +445,14 @@ const router = createRouter({
     history: createWebHistory(),
     linkActiveClass: 'is-subactive',
     linkExactActiveClass: 'is-active',
-    routes
+    routes,
+    scrollBehavior(to, from, savedPosition) {
+        if (savedPosition) {
+            return savedPosition
+        } else {
+            return { top: 0 }
+        }
+    },
 });
 
 router.beforeEach((to, from, next) => {

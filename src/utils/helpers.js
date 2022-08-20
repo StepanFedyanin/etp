@@ -104,6 +104,14 @@ const helpers = {
         let string = helpers.stringForNumber(days, ['день', 'дня', 'дней']) + ' ' + helpers.stringForNumber(hours, ['час', 'часа', 'часов']);
         return string;
     },
+    timerToDaysTime(timer) {
+        let limit = new Date(timer).getTime();
+        console.log(limit);
+        let days = Math.floor(Math.abs(limit / (3600 * 24)));
+        let time = Math.abs(limit / 3600 - days * 24);
+        let string = helpers.stringForNumber(days, ['день', 'дня', 'дней']) + ' ' + helpers.toHHMMSS(time);
+        return string;
+    },
 }
 
 export default {

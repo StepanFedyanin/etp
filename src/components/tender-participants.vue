@@ -125,7 +125,6 @@
                             :disabled="loadingConfirm || loadingDeny"
                             :loading="(loadingConfirm || loadingDeny) ? true : undefined"
                         >
-                            <!-- {{ formValues }} -->
                             <div class="partipation__approve-title">
                                 Ваше решение
                             </div>

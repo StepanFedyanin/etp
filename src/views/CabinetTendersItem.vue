@@ -12,10 +12,11 @@
                 v-else-if="tender"
             >
                 <div class="tender__block">
+                    <!-- CARD 1 -->
                     <div class="tender__data">
                         <div 
                             class="tender__data-icon"
-                            :class="[tender.status === 'closed' ? 'm--finish' : 'm--status', tender.publication ? '' : 'm--red']"
+                            :class="[tender.status === 'closed' || tender.status === 'bidding_completed' ? 'm--finish' : 'm--status', tender.publication ? '' : 'm--red']"
                         />
                         <div class="tender__data-inner">
                             <div class="tender__data-title">
@@ -29,34 +30,52 @@
                     <template
                         v-if="tender.publication"
                     >
+                        <!-- CARD 2 -->
                         <div
-                            v-if="tender.status !== 'closed'"
+                            v-if="tender.status === 'bid_accept'"
                             class="tender__data"
                         >
                             <div 
-                                class="tender__data-icon m--timer"
-                                :class="tender.limit.secs > 0 ? 'm--green' : 'm--red'"
+                                class="tender__data-icon m--timer m--green"
                             />
                             <div class="tender__data-inner">
                                 <div class="tender__data-title">
-                                    Осталось времени
+                                    До начала этапа ставок
                                 </div>
                                 <div class="tender__data-info">
-                                    <template
-                                        v-if="tender.limit > 0"
-                                    >
-                                        {{ $helpers.dateRangeToDaysHours(new Date(), new Date(tender.date_end)) }}
-                                    </template>
-                                    <template
-                                        v-else
-                                    >
-                                        —
-                                    </template>
+                                    <Timer 
+                                        :dateEnd="tender.date_start"
+                                        :timerToDaysTime="true"
+                                    />
                                 </div>
                             </div>
                         </div>
                         <div
-                            v-if="tender.status === 'closed'"
+                            v-else-if="tender.status === 'bidding_process'"
+                            class="tender__data"
+                        >
+                            <div 
+                                class="tender__data-icon m--clock m--green"
+                            />
+                            <div class="tender__data-inner">
+                                <div class="tender__data-title">
+                                    Продолжительность
+                                </div>
+                                <div class="tender__data-info">
+                                    <Timer 
+                                        :dateEnd="tender.date_end"
+                                    />
+                                    <span
+                                        v-if="tender.prolong > 0"
+                                        class="m--color-green"
+                                    >
+                                        +{{ tender.prolong / 60 }} мин.
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
+                        <div
+                            v-else-if="tender.status === 'bidding_completed'"
                             class="tender__data"
                         >
                             <div 
@@ -80,31 +99,62 @@
                                 </div>
                             </div>
                         </div>
-                        <div 
-                            v-if="tender.status !== 'closed'"
+                        <div
+                            v-else-if="tender.status === 'closed' || tender.status === 'fulfilment'"
                             class="tender__data"
                         >
-                            <div class="tender__data-icon m--clock" />
+                            <div 
+                                class="tender__data-icon m--winner"
+                            />
                             <div class="tender__data-inner">
                                 <div class="tender__data-title">
-                                    Продолжительность
+                                    Победители
                                 </div>
                                 <div class="tender__data-info">
-                                    <Timer 
-                                        :dateEnd="tender.date_end"
-                                    />
-                                    <!-- {{ $helpers.toHHMMSS(tender.duration) }}  -->
-                                    <span
-                                        v-if="tender.prolong > 0"
-                                        class="m--color-green"
+                                    <template
+                                        v-if="tender.winner_count > 0"
                                     >
-                                        +{{ tender.prolong / 60 }} мин.
-                                    </span>
+                                        {{ tender.winner_count }}
+                                    </template>
+                                    <template
+                                        v-else
+                                    >
+                                        —
+                                    </template>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- CARD 3 -->
+                        <div 
+                            v-if="tender.status === 'bid_accept'"
+                            class="tender__data"
+                        >
+                            <div class="tender__data-icon m--wall-clock" />
+                            <div class="tender__data-inner">
+                                <div class="tender__data-title">
+                                    Дата окончания этапа
+                                </div>
+                                <div class="tender__data-info">
+                                    {{ $helpers.formatDate(new Date(tender.date_start), 'DD.MM.YYYY HH:mm') }}
                                 </div>
                             </div>
                         </div>
                         <div 
-                            v-if="tender.status === 'closed'"
+                            v-else-if="tender.status === 'bidding_process'"
+                            class="tender__data"
+                        >
+                            <div class="tender__data-icon m--wall-clock" />
+                            <div class="tender__data-inner">
+                                <div class="tender__data-title">
+                                    Дата окончания этапа
+                                </div>
+                                <div class="tender__data-info">
+                                    {{ $helpers.formatDate(new Date(tender.date_end), 'DD.MM.YYYY HH:mm') }}
+                                </div>
+                            </div>
+                        </div>
+                        <div 
+                            v-else-if="tender.status === 'bidding_completed'"
                             class="tender__data"
                         >
                             <div class="tender__data-icon m--wall-clock" />
@@ -114,6 +164,20 @@
                                 </div>
                                 <div class="tender__data-info">
                                     {{ $helpers.formatDate(new Date(tender.date_end), 'DD.MM.YYYY HH:mm') }} 
+                                </div>
+                            </div>
+                        </div>                        
+                        <div 
+                            v-else-if="tender.status === 'closed' || tender.status === 'fulfilment'"
+                            class="tender__data"
+                        >
+                            <div class="tender__data-icon m--wall-clock" />
+                            <div class="tender__data-inner">
+                                <div class="tender__data-title">
+                                    Дата завершения
+                                </div>
+                                <div class="tender__data-info">
+                                    {{ $helpers.formatDate(new Date(tender.date_fulfilment), 'DD.MM.YYYY HH:mm') }} 
                                 </div>
                             </div>
                         </div>                        
@@ -191,7 +255,7 @@
                             <span>Минимальный шаг ставки:</span> {{ tender.min_step }}%
                         </div>
                         <div class="tender__info-param">
-                            <span>Предложений от поставщиков:</span> {{ tender.unique_offer_count }}
+                            <span>Участники:</span> {{ tender.unique_offer_count }}
                         </div>
                     </div>
                 </div>
@@ -453,9 +517,12 @@
                     });
                     */
                 }).catch(err => {
-                    //сюда надо будет добавить проверку на статус ошибки, если у пользователя нет доступа к тендеру
                     this.showLoaderSending = false;
-                    this.$store.dispatch('showError', err);
+                    if (err.response && err.response.status === 404) {
+                        this.$router.push({ name: 'page404' });
+                    } else {
+                        this.$store.dispatch('showError', err);
+                    }
                     console.error(err);
                 });
             },

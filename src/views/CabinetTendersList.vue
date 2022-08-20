@@ -45,6 +45,7 @@
                             :total="tenders.count"
                             :limit="Number(limit)"
                             :currentPage="Number($route.query.page || 1)"
+                            :query="$route.query"
                             :url="$route.path"
                         />
                     </div>
@@ -106,6 +107,7 @@
                         :total="tenders.count"
                         :limit="Number(limit)"
                         :currentPage="Number($route.query.page || 1)"
+                        :query="$route.query"
                         :url="$route.path"
                     />
                 </div>
@@ -144,11 +146,10 @@
         },
         watch: {
             limit () {
-                if (this.$route.query.page) {
-                    this.$router.replace({ query: {} })
-                } else {
-                    this.getTenders()
+                if (this.$route.query) {
+                    this.$router.replace({ query: Object.assign({}, this.$route.query, { page: 1 }) })
                 }
+                this.getTenders()
             },
             '$route.query.page': {
                 handler() {
@@ -157,14 +158,7 @@
             }
         },
         mounted() {
-            if (this.$route.query && this.$route.query.category) {
-                let params = {
-                    category: [this.$route.query.category]
-                }
-                this.startSearch(params)
-            } else {
-                this.getTenders();
-            }
+            this.getTenders();
         },
         beforeDestroy() {
         },
@@ -172,11 +166,13 @@
         },
         methods: {
             getTenders() {
-                let limit = Number(this.limit)
-                let params = {
-                    limit,
-                    offset: this.offset
+                //let limit = Number(this.limit)
+                let params = {};
+                if (this.$route.query && this.$route.query.category) {
+                    params.category = [this.$route.query.category];
                 }
+                this.startSearch(params);
+                /*
                 this.showLoaderSending = true;
                 api.getTenders(params).then(tenders => {
                     this.tenders = tenders
@@ -186,6 +182,7 @@
                     this.showLoaderSending = false;
                     console.error(err)
                 })
+                */
             },
             startSearch(formData) {
                 formData.limit = Number(this.limit)

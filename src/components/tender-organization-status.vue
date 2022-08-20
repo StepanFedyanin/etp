@@ -104,7 +104,10 @@
                     </div>
                 </div>
             </div>
-            <div class="tender__status-block m--underline">
+            <div 
+                v-if="tender.user_participation.comment"
+                class="tender__status-block m--underline m--column"
+            >
                 <div class="tender__status-subtitle">
                     Комментарий участника
                 </div>
@@ -112,11 +115,14 @@
                     {{ tender.user_participation.comment }}
                 </div>
             </div>
-            <div class="tender__status-block">
+            <div class="tender__status-block m--column">
                 <div class="tender__status-subtitle">
                     Решение организатора <span class="m--color-red">Заявка отклонена</span>
                 </div>
-                <div class="tender__status-comment">
+                <div
+                    v-if="tender.user_participation.creator_comment" 
+                    class="tender__status-comment"
+                >
                     {{ tender.user_participation.creator_comment }}
                 </div>
             </div>

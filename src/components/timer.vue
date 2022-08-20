@@ -12,6 +12,10 @@
                 type: String,
                 default() { return null; }
             },
+            timerToDaysTime: {
+                type: Boolean,
+                default() { return false; }
+            }
         },
         // emits: {
         // },
@@ -38,16 +42,21 @@
                 // let minutes = new Date(value).getMinutes() ;
                 // let seconds = new Date(value).getSeconds();
 
-                // let days = parseInt(value / 60 / 60 / 24, 10);
-                let hours = parseInt(value / 60 / 60, 10);
+                let days = parseInt(value / 60 / 60 / 24, 10);
+                let hours = this.timerToDaysTime ? parseInt(value / 60 / 60 % 24, 10) : parseInt(value / 60 / 60, 10);
                 let minutes = parseInt(value / 60 % 60, 10);
                 let seconds = parseInt(value % 60, 10);
 
-                hours = hours < 10 ? "0" + hours : hours;
-                minutes = minutes < 10 ? "0" + minutes : minutes;
-                seconds = seconds < 10 ? "0" + seconds : seconds;
+                days = days < 0 ? '0' : hours;
+                hours = hours < 0 ? '00' : hours < 10 ? "0" + hours : hours;
+                minutes = minutes < 0 ? '00' : minutes < 10 ? "0" + minutes : minutes;
+                seconds = seconds < 0 ? '00' : seconds < 10 ? "0" + seconds : seconds;
 
-                this.timerTime = `${hours}:${minutes}:${seconds}`;
+                if (this.timerToDaysTime) {
+                    this.timerTime = `${this.$helpers.stringForNumber(days, ['день', 'дня', 'дней'])} ${hours}:${minutes}:${seconds}`;
+                } else {
+                    this.timerTime = `${hours}:${minutes}:${seconds}`;
+                }
 
                 if (value < 0) {
                     this.stopTimer();

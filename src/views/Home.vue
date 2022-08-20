@@ -300,9 +300,12 @@
                             </button>
                         </div>
                         <div class="needs__button">
-                            <button class="button button-red">
+                            <router-link
+                                :to="{ name: 'registration' }"
+                                class="button button-red"
+                            >
                                 Регистрация
-                            </button>
+                            </router-link>
                         </div>
                         <div class="needs__button">
                             <button class="button button-green">

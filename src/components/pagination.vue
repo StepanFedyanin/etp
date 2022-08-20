@@ -1,7 +1,7 @@
 <template>
     <div class="pagination">
         <router-link
-            :to="{ path: url, query: { page: goPrev } }"
+            :to="{ path: url, query: Object.assign({}, query, { page: goPrev }) }"
             class="pagination__item pagination__item--prev"
             :class="{'m--disabled': isFirstPage}"
             :event="isFirstPage ? '' : 'click'"
@@ -15,7 +15,7 @@
             >
                 <router-link
                     class="pagination__link"
-                    :to="{ path: url, query: { page: page } }"
+                    :to="{ path: url, query: Object.assign({}, query, { page: page }) }"
                 >
                     {{ page }}
                 </router-link>
@@ -23,7 +23,7 @@
         </ul>
         <router-link
             class="pagination__item pagination__item--next"
-            :to="{ path: url, query: { page: goForward } }"
+            :to="{ path: url, query: Object.assign({}, query, { page: goForward }) }"
             :class="{'m--disabled': isLastPage}"
             :event="isLastPage ? '' : 'click'"
         />
@@ -45,6 +45,10 @@
                 type: Number,
                 required: true,
                 default: 1
+            },
+            query: {
+                type: Object,
+                default() { return {} }
             },
             url: {
                 type: String,
