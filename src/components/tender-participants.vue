@@ -14,7 +14,15 @@
             <div class="tender__participants-item-block">
                 <div class="tender__participants-item-name">
                     {{ participant.organization.name }}
+                    <svg 
+                        class="svg-icon svg-icon__message"
+                        @click="startChat(participant.organization.id)"
+                    >
+                        <use xlink:href="../assets/img/icons/icons.svg#message" />
+                    </svg>
                 </div>
+                <!-- <div class="tender__chat"> 
+                </div> -->
                 <div class="tender__participants-item-status">
                     {{ statuses[participant.status] }}
                 </div>
@@ -174,6 +182,8 @@
 
 <script>
     import { tender as tenderApi } from "@/services"
+    import { chat as api } from "@/services"
+
     export default {
         props: {
             tender: {
@@ -231,6 +241,19 @@
                     this.$store.dispatch('showError', err);
                     console.error(err);
                 });
+            },
+            startChat(organizationId) {
+                let params = {
+                    tender: this.tender.id,
+                    organization: organizationId
+                }
+                api.getChatByTenderAndOrganization(params).then(res => {
+                    console.log(res);
+                }).catch(err => {
+                    console.error(err);
+                });
+                
+                this.$router.push({ name: 'chat', params: { id: this.tender.id } });
             }
         },
     };

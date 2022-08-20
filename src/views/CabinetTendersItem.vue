@@ -273,7 +273,7 @@
                     >
                         <button 
                             class="button button-red"
-                            @click.stop="onClickCancelTender"
+                            @click.stop="onClickCloseTender"
                         >
                             Отменить тендер
                         </button>
@@ -290,13 +290,13 @@
                     >
                         <button 
                             class="button button-red"
-                            @click.stop="onClickFinishTender(true)"
+                            @click.stop="onClickCloseTender()"
                         >
                             Завершить досрочно и выбрать победителя
                         </button>
                         <button 
                             class="button button-green"
-                            @click.stop="onClickFinishTender(false)"
+                            @click.stop="onClickCloseTenderWithWinner()"
                         >
                             Завершить досрочно без победителя
                         </button>
@@ -538,7 +538,7 @@
                     console.error(err);
                 });
             },
-            onClickCancelTender(){
+            onClickCloseTender() {
                 tenderApi.closeTender(this.tender.id).then(res => {
                     console.log(res);
                     this.getTenderData();
@@ -546,6 +546,15 @@
                     this.$store.dispatch('showError', err);
                     console.error(err);
                 });
+            },
+            onClickCloseTenderWithWinner() {
+                // tenderApi.closeTender(this.tender.id).then(res => {
+                //     console.log(res);
+                //     this.getTenderData();
+                // }).catch(err => {
+                //     this.$store.dispatch('showError', err);
+                //     console.error(err);
+                // });
             }
         }
     };

@@ -26,10 +26,16 @@
                                 @click.prevent="onSelectRecipient(item)"
                             >
                                 <div class="chat__user-status is-online" />
-                                <div class="chat__user-name">Жуков Николай</div>
+                                <div class="chat__user-name">
+                                    Жуков Николай
+                                </div>
                                 <div class="chat__user-info">
-                                    <div class="chat__user-info-tender">Аукцион №1234567</div>
-                                    <div class="chat__user-info-date">23.05.22 12:34</div>
+                                    <div class="chat__user-info-tender">
+                                        Аукцион №1234567
+                                    </div>
+                                    <div class="chat__user-info-date">
+                                        23.05.22 12:34
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -89,8 +95,7 @@
                                             <div 
                                                 class="chat__messages-item-text"
                                                 v-html="message.message"
-                                            >
-                                            </div>
+                                            />
                                             <div class="chat__messages-item-time">
                                                 {{ $helpers.formatDate(new Date(message.date), 'HH:mm') }}
                                             </div>
@@ -130,7 +135,7 @@
 </template>
 
 <script>
-    //import { tender as api } from "@/services";
+    import { chat as api } from "@/services";
 
     export default {
         components: {
@@ -191,6 +196,17 @@
         },
         methods: {
             getMessages() {
+                api.getChatList().then(res => {
+                    this.ChatList = res;
+                    console.log(this.ChatList);
+                })
+                return this.messagesTemplate;
+            },
+            createMessages() {
+                api.createMessages().then(res => {
+                    this.message = res;
+                    console.log(this.message);
+                })
                 return this.messagesTemplate;
             },
             onResize() {
