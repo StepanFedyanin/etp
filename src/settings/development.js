@@ -83,9 +83,9 @@ const headerMenuUser = [
         role: 'all',
         title: 'Товарные группы'
     }, {
-        name: 'about',
+        name: 'cabinet',
         role: 'all',
-        title: 'О площадке',
+        title: 'Мой кабинет',
     }
 ];
 

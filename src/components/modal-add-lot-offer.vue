@@ -85,9 +85,9 @@
                                     v-model="formValues.min_bid"
                                     type="checkbox"
                                     name="min_bid"
-                                    label="Минимальная ставка"
+                                    :options="['Минимальная ставка']"
                                     outerClass="field--inline"
-                                    @change="setMinBid"
+                                    @input="setMinBid"
                                 />
                             </div>
                             <div 

@@ -47,7 +47,7 @@
                 let minutes = parseInt(value / 60 % 60, 10);
                 let seconds = parseInt(value % 60, 10);
 
-                days = days < 0 ? '0' : hours;
+                days = days < 0 ? '0' : days;
                 hours = hours < 0 ? '00' : hours < 10 ? "0" + hours : hours;
                 minutes = minutes < 0 ? '00' : minutes < 10 ? "0" + minutes : minutes;
                 seconds = seconds < 0 ? '00' : seconds < 10 ? "0" + seconds : seconds;

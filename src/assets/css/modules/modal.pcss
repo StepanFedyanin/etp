@@ -16,7 +16,16 @@
         border-radius: 28px;
         max-height: 90vh;
         max-width: 90vw;
+        min-width: 440px;
         box-shadow: 0px 16px 24px rgba(0, 0, 0, 0.06), 0px 2px 6px rgba(0, 0, 0, 0.04), 0px 0px 1px rgba(0, 0, 0, 0.04);
+
+        @mixin responsive-le-l {
+            min-width: 400px;
+        }
+
+        @mixin responsive-le-m {
+            min-width: 340px;
+        }
 
         &--wide {
             width: 1460px;

@@ -18,18 +18,6 @@
                             >
                         </router-link>
                     </div>
-                    <div class="header__contacts">
-                        <a
-                            :href="$helpers.formatTel(phone)"
-                            class="header__contacts-phone"
-                        >{{ phone }}</a>
-                        <a
-                            :href="`mailto:${email}`"
-                            class="header__contacts-email"
-                        >{{ email }}</a>
-                    </div>
-                </div>
-                <div class="header__right">
                     <ul class="header__menu">
                         <li
                             v-for="(item, key) in menu"
@@ -43,6 +31,26 @@
                             />
                         </li>
                     </ul>
+                </div>
+                <div class="header__right">
+                    <div class="header__contacts">
+                        <a
+                            :href="$helpers.formatTel(phone)"
+                            class="header__contacts-phone"
+                        >{{ phone }}</a>
+                        <a
+                            :href="`mailto:${email}`"
+                            class="header__contacts-email"
+                        >{{ email }}</a>
+                    </div>
+                    <div class="header__timer">
+                        <div class="header__timer-time">
+                            {{ `${currentTime} МСК` }}
+                        </div>
+                        <div class="header__timer-date">
+                            {{ `20.08.2022` }}
+                        </div>
+                    </div>
                     <template
                         v-if="user && user.id"
                     >
@@ -147,6 +155,9 @@
             return {
                 phone: '8 (800) 123-45-67',
                 email: 'info@tugan.ru',
+                timer: null,
+                currentDate: null,
+                currentTime: null,
                 menuUser: userMenu,
                 showPopup: false
             };
@@ -156,8 +167,18 @@
                 return this.$store.state.user;
             },
             menu() {
-                return (this.$store.state.user) ? headerMenuUser : headerMenu;
+                return (this.$store.state.user && this.$store.state.user.id) ? headerMenuUser : headerMenu;
             }
+        },
+        mounted() {
+            this.timer = setInterval(() => {
+                let date = new Date();
+                this.currentTime = date.toLocaleTimeString('ru', { timeZone: 'Europe/Moscow', hour: '2-digit', minute:'2-digit' });
+                this.currentDate = date.toLocaleDateString('ru', { timeZone: 'Europe/Moscow' });
+            }, 1000);
+        },
+        destroyed() {
+            clearTimeout(this.timer);
         },
         methods: {
             onClickPopup() {
