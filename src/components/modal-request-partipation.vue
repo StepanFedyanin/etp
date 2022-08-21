@@ -213,7 +213,7 @@
             if (this.tender.user_participation) {
                 this.formValues = {
                     comment: this.tender.user_participation.comment,
-                    //documents: this.tender.user_participation.documents//.map(item => { return item.id })
+                    documents: this.tender.user_participation.documents || []//.map(item => { return item.id })
                 }
             }
         },
@@ -234,7 +234,7 @@
             uploadFileComplete(event) {
                 for (let file of event.target.files) {
                     file.id = event.target.id
-                    let idx = this.documents.findIndex(f => this.getFileId(f.id) === file.id)
+                    let idx = this.formValues.documents.findIndex(f => this.getFileId(f.id) === file.id)
 
                     const formData = new FormData()
                     formData.append("file", file)
@@ -249,7 +249,7 @@
                     } else {
                         tenderApi.addTenderParticipantDocument(this.tender.id, formData)
                             .then(file => {
-                                this.documents.push(file)
+                                this.formValues.documents.push(file)
                                 // this.defaultTender.documents = this.documents
                                 // console.log(file)
                             }).catch(err => {
@@ -259,11 +259,13 @@
                 }
             },
             onClickRemoveFile(id) {
-                let idx = this.documents.findIndex(f => this.getFileId(f.id) === id)
+                console.log(id, this.formValues.documents);
+                let idx = this.formValues.documents.findIndex(f => this.getFileId(f.id) === id)
                 if (idx >= 0) {
-                    tenderApi.deleteTenderParticipantDocument(this.defaultTender.id, this.documents[idx].id)
+                    console.log(this.tender.id, this.formValues.documents[idx].id);
+                    tenderApi.deleteTenderParticipantDocument(this.tender.id, { id: this.formValues.documents[idx].id })
                         .then(res => {
-                            this.documents.splice(idx, 1)
+                            this.formValues.documents.splice(idx, 1)
                             // this.defaultTender.documents = this.documents
                         }).catch(err => {
                             console.error(err)
@@ -278,21 +280,39 @@
                 this.loading = true;
                 let params = Object.assign({}, this.formValues);
                 console.log(params);
-                tenderApi.addTenderParticipant(this.tender.id, params).then(res => {
-                    this.showLoaderSending = false;
-                    this.loading = false;
-                    this.requestSended = true;
-                    this.updateData = true;
-                    console.log(res);
-                }).catch(err => {
-                    node.setErrors(
-                        [err.detail],
-                    );
-                    this.showLoaderSending = false;
-                    this.loading = false;
-                    this.$store.dispatch('showError', err);
-                    console.error(err);
-                });
+                if (this.tender.user_participation) {
+                    tenderApi.updateTenderParticipant(this.tender.id, params).then(res => {
+                        this.showLoaderSending = false;
+                        this.loading = false;
+                        this.requestSended = true;
+                        this.updateData = true;
+                        console.log(res);
+                    }).catch(err => {
+                        node.setErrors(
+                            [err.detail],
+                        );
+                        this.showLoaderSending = false;
+                        this.loading = false;
+                        this.$store.dispatch('showError', err);
+                        console.error(err);
+                    });
+                } else {
+                    tenderApi.addTenderParticipant(this.tender.id, params).then(res => {
+                        this.showLoaderSending = false;
+                        this.loading = false;
+                        this.requestSended = true;
+                        this.updateData = true;
+                        console.log(res);
+                    }).catch(err => {
+                        node.setErrors(
+                            [err.detail],
+                        );
+                        this.showLoaderSending = false;
+                        this.loading = false;
+                        this.$store.dispatch('showError', err);
+                        console.error(err);
+                    });
+                }
             },
 
         }

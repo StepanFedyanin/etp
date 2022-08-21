@@ -2,7 +2,7 @@
     <div> 
         <!-- <pre>{{tender.user_participation}}</pre><pre>{{tender.status}}</pre> -->
         <div 
-            v-if="!tender.user_participation && tender.status === 'bid_accept' && tender.user_invite.status === 'sent'"
+            v-if="!tender.user_participation && tender.status === 'bid_accept' && tender.user_invite && tender.user_invite.status === 'sent'"
             class="tender__status"
         >
             <div class="tender__status-title">
@@ -25,7 +25,7 @@
         </div>
 
         <div 
-            v-if="!tender.user_participation && tender.status === 'bid_accept' && tender.user_invite.status === 'accepted'"
+            v-else-if="!tender.user_participation && tender.status === 'bid_accept' && tender.user_invite && tender.user_invite.status === 'accepted'"
             class="tender__status"
         >
             <div class="tender__status-title">
@@ -42,7 +42,7 @@
         </div>
 
         <div 
-            v-if="!tender.user_participation && tender.status === 'bid_accept' && tender.user_invite.status !== 'sent' && tender.user_invite.status !== 'accepted'"
+            v-else-if="!tender.user_participation && tender.status === 'bid_accept' && !tender.user_invite"
             class="tender__status"
         >
             <div class="tender__status-title">
@@ -202,12 +202,14 @@
         methods: {
             onClickRequestPartipation() {
                 this.showRequestPartipationModal = true;
-                tenderApi.acceptInvitation(this.tender.id).then(res => {
-                    console.log(res);
-                }).catch(err => {
-                    this.$store.dispatch('showError', err);
-                    console.error(err);
-                });
+                if (this.tender.user_invite) {
+                    tenderApi.acceptInvitation(this.tender.id).then(res => {
+                        console.log(res);
+                    }).catch(err => {
+                        this.$store.dispatch('showError', err);
+                        console.error(err);
+                    });
+                }
             },
             hideRequestPartipationModal(updateData) {
                 this.showRequestPartipationModal = false;
@@ -215,7 +217,7 @@
                     this.$emit('getTenderData');
                 }
             },
-            onClickAcceptInvite(){
+            onClickAcceptInvite() {
                 tenderApi.acceptInvitation(this.tender.id).then(res => {
                     console.log(res);
                 }).catch(err => {
@@ -223,7 +225,7 @@
                     console.error(err);
                 });
             },
-            onClickRejectInvite(){
+            onClickRejectInvite() {
                 tenderApi.rejectInvitation(this.tender.id).then(res => {
                     console.log(res);
                 }).catch(err => {

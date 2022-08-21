@@ -214,6 +214,14 @@ export default class extends REST {
         })
     }
 
+    static updateTenderParticipant(tenderId, params) {
+        return this._post(`${tenderId}/participants/update_participation`, {}, params).then((data) => {
+            return data
+        }).catch((error) => {
+            throw new RESTError(error, 'Ошибка при обновлении заявки на участие в тендере');
+        })
+    }
+
     static getTenderParticipant(tenderId, participantId) {
         return this._get(`${tenderId}/participants/${participantId}`, {}, {}).then((data) => {
             return data
@@ -263,7 +271,7 @@ export default class extends REST {
     }
 
     static deleteTenderParticipantDocument(tenderId, params) {
-        return this._delete(`${tenderId}/participants/remove_document/`, {}, params).then((data) => {
+        return this._delete(`${tenderId}/participants/remove_document`, {}, params).then((data) => {
             return data
         }).catch((error) => {
             throw new RESTError(error, 'Ошибка при удалении документа тендера');
