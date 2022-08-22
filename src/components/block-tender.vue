@@ -151,7 +151,7 @@
             </div>
             -->
             <div class="tenders__item-param">
-                <span class="tenders__item-param-name">Минимальный шаг ставки:</span> {{ tender.min_step || '?' }}
+                <span class="tenders__item-param-name">Минимальный шаг ставки:</span> {{ tender.min_step || '?' }}%
             </div>
             <div class="tenders__item-param">
                 <span class="tenders__item-param-name">Участники:</span> {{ tender.unique_offer_count }}

@@ -59,7 +59,7 @@
                             />
                             <div class="tender__data-inner">
                                 <div class="tender__data-title">
-                                    Продолжительность
+                                    Осталось времени
                                 </div>
                                 <div class="tender__data-info">
                                     <Timer 

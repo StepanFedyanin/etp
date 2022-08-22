@@ -10,23 +10,32 @@
 
     &__field {
         margin-bottom: 16px;
+        width: calc(20% - 30px);
         min-width: 250px;
 
+        @mixin responsive-le-xl {
+            width: calc(25% - 30px);
+        }
+
+        @mixin responsive-le-l {
+            width: calc(33.33% - 30px);
+        }
+
         &.m--inn {
-            flex-basis: 100%;
+            width: calc(60% - 15px);
 
             & .modal-form__input {
-                width: 50%;
+                width: 100%;
             }
         }
         &.m--category {
-            flex-basis: 58%;
+            width: calc(60% - 15px);
         }
         &.m--type {
-            flex-basis: 38%;
+            width: calc(40% - 23px);
         }
         &.m--region {
-            flex-basis: 38%;
+            width: calc(60% - 15px);
         }
         &.m--owner {
             width: 100%;

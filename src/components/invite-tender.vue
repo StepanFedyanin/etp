@@ -1,10 +1,13 @@
 <template>
     <div class="invites">
-        <div class="h2">
+        <div class="invites__title">
             Приглашения
         </div>
         <!-- <pre>{{invites}}</pre> -->
-        <div class="invites__list">
+        <div 
+            v-if="invites.length"
+            class="invites__list"
+        >
             <div 
                 v-for="invite in invites"
                 class="invite__item"
@@ -116,9 +119,9 @@
                         },
                         noOptionsText: '',
                         placeholder: "Введите ИНН",
-                        innerClass: 'modal-form__input',
-                        labelClass: '$reset modal-form__label',
-                        outerClass: '$reset modal-form__field m--inn',
+                        //innerClass: 'modal-form__input',
+                        //labelClass: '$reset modal-form__label',
+                        //outerClass: '$reset modal-form__field m--inn',
                         organization: {},
                     }
 
