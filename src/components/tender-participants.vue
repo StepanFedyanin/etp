@@ -206,7 +206,8 @@
                 },
                 formValues: {},
                 loadingConfirm: false,
-                loadingDeny: false
+                loadingDeny: false,
+                chatData: {},
             }
         },
         computed: {
@@ -242,18 +243,21 @@
                     console.error(err);
                 });
             },
+
             startChat(organizationId) {
                 let params = {
                     tender: this.tender.id,
                     organization: organizationId
                 }
                 api.getChatByTenderAndOrganization(params).then(res => {
-                    console.log(res);
+                    this.chatPartner = res.chat_partner.id;
+                    console.log(this.chatData);
+                    this.$router.push({ name: 'chat', params: { id: this.tender.id, chatData: this.chatPartner } });
                 }).catch(err => {
                     console.error(err);
                 });
-                
-                this.$router.push({ name: 'chat', params: { id: this.tender.id } });
+
+
             }
         },
     };
