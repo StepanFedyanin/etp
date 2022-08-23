@@ -18,7 +18,7 @@
                     </template>
                     <!-- <pre>{{ tenders }}</pre> -->
                     <template
-                        v-if="tenders && tenders.length"
+                        v-else-if="tenders && tenders.length"
                     >
                         <blockTender
                             v-for="(tender, index) in tenders"
@@ -65,10 +65,11 @@
         },
         methods: {
             getListInvitation() {
+                this.showLoaderSending = true;
                 api.getListInvitation().then(res => {
-                    console.log(res);
-                    // this.invites = res;
+                    this.showLoaderSending = false;
                     this.tenders = res;
+                    console.log(res);
                 }).catch(err => {
                     this.showLoaderSending = false;
                     this.$store.dispatch('showError', err);

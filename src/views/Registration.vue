@@ -15,6 +15,7 @@
                             :loading="showLoaderSending"
                             :formData="regData.search"
                             @submitSearchHandler="submitSearchHandler"
+                            @clearSearchResult="clearSearchResult"
                         />
                     </div>
                     <div 
@@ -216,6 +217,9 @@
                     this.$store.dispatch('showError', err);
                     console.error(err);
                 });
+            },
+            clearSearchResult() {
+                this.organizations = [];
             },
             registerCompany(organization, node) {
                 api.addOrganization(organization).then(res => {

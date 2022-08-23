@@ -259,7 +259,7 @@
                         </div>
                     </div>
                 </div>
-
+                {{ tender.creator }} {{ user.id }} {{ tender.status }} {{ tender.publication }}
                 <div 
                     v-if="tender.creator === user.id && tender.status !== 'closed'" 
                     class="tender__actions"
@@ -301,6 +301,41 @@
                             Завершить досрочно без победителя
                         </button>
                     </div>
+                </div>
+                <div 
+                    v-else-if="tender.creator === user.id && !tender.publication" 
+                    class="tender__actions"
+                >
+                    <div class="tender__actions-title">
+                        Действия с тендером
+                    </div>
+                    <div
+                        class="tender__actions-buttons"
+                    >
+                        <button 
+                            class="button button-green"
+                            @click.stop="onClickEditTender"
+                        >
+                            Редактировать
+                        </button>
+                        <button 
+                            class="button button-green"
+                            @click.stop=""
+                        >
+                            Опубликовать
+                        </button>
+                        <button 
+                            class="button button-red"
+                            @click.stop="onClickDeleteTender"
+                        >
+                            Удалить
+                        </button>
+                    </div>
+                    <ModalDeleteTenderConfirm
+                        :tender="tender || {}"
+                        :showModal="showDeleteTenderConfirmModal"
+                        @hideModal="hideDeleteTenderConfirmModal"
+                    />
                 </div>
 
                 <div class="tender__block">
@@ -446,6 +481,7 @@
     import TenderBids from '@/components/tender-bids';
     import Timer from '@/components/timer';
     import inviteTender from '@/components/invite-tender.vue';
+    import ModalDeleteTenderConfirm from '@/components/modal-delete-tender-confirm';
 
     export default {
         components: {
@@ -455,6 +491,7 @@
             TenderBids,
             Timer,
             inviteTender,
+            ModalDeleteTenderConfirm
         },
         props: {
             id: {
@@ -478,6 +515,7 @@
                     bidding_completed: 'Подведение итогов',
                     closed: 'Тендер завершен'
                 },
+                showDeleteTenderConfirmModal: false,
                 showLoaderSending: false,
                 formValues: {},
             }
@@ -555,7 +593,16 @@
                 //     this.$store.dispatch('showError', err);
                 //     console.error(err);
                 // });
-            }
+            },
+            onClickEditTender() {
+                this.$router.push({ name: 'tender-edit', id: this.tender.id });
+            },
+            onClickDeleteTender() {
+                this.showDeleteTenderConfirmModal = true;
+            },
+            hideDeleteTenderConfirmModal() {
+                this.showDeleteTenderConfirmModal = false;
+            },
         }
     };
 </script>

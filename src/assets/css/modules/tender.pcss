@@ -1,4 +1,21 @@
 .tender {
+    &.m--no-padding &__info {
+        padding: 0;
+    }
+
+    &.m--no-background &__info {
+        background: transparent;
+    }
+
+    &.m--no-shadow &__info {
+        box-shadow: none;
+        border-radius: 0;
+    }
+
+    &.m--modal &__info {
+        max-width: 860px;
+    }
+
     &__block {
         position: relative;
         display: flex;

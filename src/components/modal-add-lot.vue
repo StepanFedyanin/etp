@@ -25,7 +25,9 @@
                 :actions="false"
                 @submit="submitAddLotForm"
             >
-                <FormKitSchema :schema="addLotSchema" />
+                <div class="modal-form__block">
+                    <FormKitSchema :schema="addLotSchema" />
+                </div>
                 <div class="modal-form__actions">
                     <button
                         type="button"
@@ -69,53 +71,48 @@
                     }, {
                         $formkit: 'text',
                         name: 'name',
-                        value: "test",
                         label: 'Название лота',
                         placeholder: "Введите название",
                         validation: 'required',
                         inputClass: 'modal-form__input',
                         labelClass: '$reset modal-form__label',
-                        outerClass: '$reset modal-form__field',
+                        outerClass: '$reset modal-form__field m--width-100',
                     }, {
                         $formkit: 'number',
                         name: 'quantity',
-                        value: "10",
                         label: 'Количество',
                         placeholder: "Введите количество",
                         validation: 'required',
                         inputClass: 'modal-form__input',
                         labelClass: '$reset modal-form__label',
-                        outerClass: '$reset modal-form__field',
+                        outerClass: '$reset modal-form__field m--width-100',
                     }, {
                         $formkit: 'text',
                         name: 'unit',
-                        value: "шт",
                         label: 'Единица измерения (например: кг,шт.)',
                         placeholder: "Введите единицу измерения",
                         // validation: 'required',
                         inputClass: 'modal-form__input',
                         labelClass: '$reset modal-form__label',
-                        outerClass: '$reset modal-form__field',
+                        outerClass: '$reset modal-form__field m--width-100',
                     }, {
                         $formkit: 'number',
                         name: 'nds',
-                        value: "10",
                         label: 'Ставка НДС',
                         placeholder: "Установите НДС",
                         validation: 'required',
                         inputClass: 'modal-form__input',
                         labelClass: '$reset modal-form__label',
-                        outerClass: '$reset modal-form__field',
+                        outerClass: '$reset modal-form__field m--width-100',
                     }, {
                         $formkit: 'number',
                         name: 'price',
-                        value: "11",
                         label: 'Цена за единицу, руб',
                         placeholder: "Введите цену за единицу",
                         validation: 'required',
                         inputClass: 'modal-form__input',
                         labelClass: '$reset modal-form__label',
-                        outerClass: '$reset modal-form__field',
+                        outerClass: '$reset modal-form__field m--width-100',
                     },
                 ],
             };
