@@ -52,6 +52,7 @@
                             class="chat__block-down"
                             @click="scrollDown('board')"
                         />
+
                         <div 
                             ref="board"
                             class="chat__board-inner"
@@ -136,9 +137,16 @@
 
 <script>
     import { chat as api } from "@/services";
+    import { number } from "@formkit/inputs";
 
     export default {
         components: {
+        },
+        props: {
+            chatData: {
+                type: number,
+                default() { return 0; }
+            },
         },
         data() {
             return {
@@ -148,7 +156,7 @@
                     board: false
                 },
                 showLoaderSending: false,
-                currentRecipient: null,
+                currentRecipient: this.chatData || null,
                 messages: [],
                 messagesTemplate: [{
                     date: '2022-08-03 13:43:00',
@@ -182,6 +190,13 @@
             }
         },
         computed: {
+            // currentRecipient() {
+            //     if (this.chatData.chat_partner) {
+            //         return this.chatData.chat_partner;
+            //     } else {
+            //         return null
+            //     }
+            // }
         },
         mounted() {
             this.resizeObserver = new ResizeObserver(this.onResize);
@@ -193,6 +208,7 @@
         beforeDestroy() {
         },
         created() {
+            console.log(this.chatData);
         },
         methods: {
             getMessages() {
