@@ -92,7 +92,7 @@
                                     />
                                     <div class="partipation__docs-cell m--file">
                                         <a
-                                            :href="urlPath + file.file"
+                                            :href="file.file"
                                         >
                                             {{ file.name || $helpers.getFilename(file.file) }}
                                         </a>
@@ -176,7 +176,7 @@
 
 <script>
     import { tender as tenderApi } from "@/services"
-    import { urlPath } from '@/settings'
+    //import { urlPath } from '@/settings'
     export default {
         props: {
             showModal: {
@@ -278,9 +278,19 @@
             submitHandler(data, node) {
                 this.showLoaderSending = true;
                 this.loading = true;
-                let params = Object.assign({}, this.formValues);
-                console.log(params);
                 if (this.tender.user_participation) {
+                    console.log(this.formValues);
+                    let documents = [];
+                    this.formValues.documents.forEach(doc => {
+                        documents.push({
+                            id: doc.id,
+                            description: this.formValues[`description_file_${doc.id}`]
+                        });
+                    });
+                    let params = {
+                        id: this.formValues.id,
+                        documents: documents
+                    };
                     tenderApi.updateTenderParticipant(this.tender.id, params).then(res => {
                         this.showLoaderSending = false;
                         this.loading = false;
@@ -297,6 +307,7 @@
                         console.error(err);
                     });
                 } else {
+                    let params = Object.assign({}, this.formValues);
                     tenderApi.addTenderParticipant(this.tender.id, params).then(res => {
                         this.showLoaderSending = false;
                         this.loading = false;

@@ -153,7 +153,16 @@
             <div class="tenders__item-param">
                 <span class="tenders__item-param-name">Минимальный шаг ставки:</span> {{ tender.min_step || '?' }}%
             </div>
-            <div class="tenders__item-param">
+            <div
+                v-if="tender.winner_count > 0" 
+                class="tenders__item-param"
+            >
+                <span class="tenders__item-param-name">Победители:</span> {{ tender.winner_count }}
+            </div>
+            <div 
+                v-else
+                class="tenders__item-param"
+            >
                 <span class="tenders__item-param-name">Участники:</span> {{ tender.unique_offer_count }}
             </div>
             <template

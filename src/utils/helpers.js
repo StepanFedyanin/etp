@@ -112,6 +112,17 @@ const helpers = {
         let string = helpers.stringForNumber(days, ['день', 'дня', 'дней']) + ' ' + helpers.toHHMMSS(time);
         return string;
     },
+    setDocumentTitle(obj) {
+        let title = document.title;
+        console.log(title);
+        if (obj) {
+            Object.keys(obj).map((key) => {
+                console.log(key);
+                title = title.replace(`%${key}%`, obj[key]);
+            });
+            document.title = title;
+        }
+    },
 }
 
 export default {

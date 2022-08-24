@@ -37,7 +37,7 @@
             $route: {
                 immediate: true,
                 handler(to) {
-                    document.title = to.meta.title + ' - Tugan' || 'Tugan';
+                    document.title = to.meta.title + ' | Бизнес-платформа TUGAN' || 'Бизнес-платформа TUGAN';
                 }
             },
         },

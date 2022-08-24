@@ -208,7 +208,7 @@ const routes = [
                 name: 'tender',
                 component: cabinetTendersItem,
                 meta: { 
-                    title: 'Тендер', 
+                    title: `Аукцион №%id%: %name%`, 
                     breadcrumbs: ['tenders'],
                     requiresAuth: true 
                 },

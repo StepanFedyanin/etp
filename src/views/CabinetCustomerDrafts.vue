@@ -49,21 +49,29 @@
                         />
                     </div>
                 </div>
-                <div v-else>
+                <div v-else-if="!showLoaderSending">
                     У вас нет черновиков тендеров.
                 </div>
             </div>
-            <div
-                v-if="tenders && tenders.count"
-                class="tenders"
-            >
-                <blockTender
-                    v-for="(tender, index) in tenders.results"
-                    :key="`tender-${index}`"
-                    :tender="tender"
-                    :drafts="true"
-                />
-            </div>           
+            <div class="tenders">
+                <template
+                    v-if="showLoaderSending"
+                >
+                    <div class="tenders__loader loader">
+                        <div class="spinner" /> Загрузка данных
+                    </div>
+                </template>
+                <template
+                    v-else-if="tenders && tenders.count"
+                >
+                    <blockTender
+                        v-for="(tender, index) in tenders.results"
+                        :key="`tender-${index}`"
+                        :tender="tender"
+                        :drafts="true"
+                    />
+                </template>
+            </div>
         </div>
     </div>
 </template>
@@ -90,6 +98,7 @@
             return {
                 limit: 10,
                 tenders: null,
+                showLoaderSending: false,
             }
         },
         computed: {
@@ -135,10 +144,13 @@
                     limit,
                     offset: this.offset,
                 }
+                this.showLoaderSending = true;
                 api.getDraftList(params).then(tenders => {
                     this.tenders = tenders
+                    this.showLoaderSending = false;
                     console.log(tenders)
                 }).catch(err => {
+                    this.showLoaderSending = false;
                     console.error(err)
                 })
             },
