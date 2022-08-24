@@ -1,4 +1,21 @@
 .tender {
+    &.m--no-padding &__info {
+        padding: 0;
+    }
+
+    &.m--no-background &__info {
+        background: transparent;
+    }
+
+    &.m--no-shadow &__info {
+        box-shadow: none;
+        border-radius: 0;
+    }
+
+    &.m--modal &__info {
+        max-width: 860px;
+    }
+
     &__block {
         position: relative;
         display: flex;
@@ -246,6 +263,15 @@
         margin: 0 1% 24px;
         min-width: 360px;
         @mixin shadow-box;
+
+        &.m--long {
+            width: 37.58%;
+        }
+
+        &.m--short {
+            width: 23.88%;
+            min-width: 290px;
+        }
 
         &-icon {
             position: relative;

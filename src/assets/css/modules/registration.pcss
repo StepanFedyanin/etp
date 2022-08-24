@@ -57,16 +57,19 @@
         }
     }
     &__step1 {
-        .form{
+        .form {
             display:flex;
+            & > .field__comment {
+                display: none;
+            }
         }
-        .form__block{
+        .form__block {
             flex: 1;
             .field {
                 margin-right: 0px;
             }
         }
-        .formkit-actions{
+        .formkit-actions {
             margin-left: 36px;
         }
         .field__input {

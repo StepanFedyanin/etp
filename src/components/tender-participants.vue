@@ -21,8 +21,6 @@
                         <use xlink:href="../assets/img/icons/icons.svg#message" />
                     </svg>
                 </div>
-                <!-- <div class="tender__chat"> 
-                </div> -->
                 <div class="tender__participants-item-status">
                     {{ statuses[participant.status] }}
                 </div>
@@ -92,7 +90,10 @@
                             </div>
                         </div>
                     </div>
-                    <div class="partipation__status m--underline">
+                    <div 
+                        v-if="participant.comment"
+                        class="partipation__status m--underline"
+                    >
                         <div class="partipation__status-title">
                             Комментарий участника
                         </div>
@@ -112,12 +113,19 @@
                             >
                                 Участвует в тендере
                             </span>
+                            <span
+                                v-else
+                            >
+                                {{ statuses[participant.status] }}
+                            </span>
                         </div>
-                        <div class="partipation__status-comment">
+                        <div 
+                            v-if="participant.creator_comment"
+                            class="partipation__status-comment"
+                        >
                             {{ participant.creator_comment }}
                         </div>
                     </div>
-
                     <div 
                         v-if="participant.status === 'sent'"
                         class="partipation__approve"
@@ -197,7 +205,6 @@
         },
         data() {
             return {
-                //participants: [],
                 statuses: {
                     sent: 'Требует рассмотрения',
                     rejected: 'Заявка отклонена',
@@ -243,7 +250,6 @@
                     console.error(err);
                 });
             },
-
             startChat(organizationId) {
                 let params = {
                     tender: this.tender.id,
@@ -257,8 +263,6 @@
                 }).catch(err => {
                     console.error(err);
                 });
-
-
             }
         },
     };

@@ -11,7 +11,7 @@
         @mixin simple-box;
         flex-flow: column;
         margin-bottom: 36px;
-        padding: 22px 13px;
+        padding: 20px;
 
         &-actions {
             display: flex;
@@ -112,6 +112,19 @@
                 background-image: svg-load('assets/img/icons/icon-tooltip.svg');
             }
         }
+    }
+
+    &__lots&__lots {
+        padding-top: 0;
+        
+        .lots__header {
+            margin-left: 0;
+            margin-right: 0;
+        }
+    }
+
+    &__docs&__docs {
+        padding-top: 0;
     }
 
     &__actions {

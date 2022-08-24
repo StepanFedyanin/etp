@@ -1,5 +1,9 @@
 .modal-form {
 
+    &__block {
+        margin-bottom: 32px;
+    }
+
     &__fields {
         display: flex;
         flex-wrap: wrap;
@@ -12,6 +16,10 @@
         margin-bottom: 16px;
         width: calc(20% - 30px);
         min-width: 250px;
+
+        &.m--width-100 {
+            width: 100%;
+        }
 
         @mixin responsive-le-xl {
             width: calc(25% - 30px);

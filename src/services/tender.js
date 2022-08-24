@@ -271,7 +271,7 @@ export default class extends REST {
     }
 
     static deleteTenderParticipantDocument(tenderId, params) {
-        return this._delete(`${tenderId}/participants/remove_document`, {}, params).then((data) => {
+        return this._post(`${tenderId}/participants/remove_document`, {}, params).then((data) => {
             return data
         }).catch((error) => {
             throw new RESTError(error, 'Ошибка при удалении документа тендера');

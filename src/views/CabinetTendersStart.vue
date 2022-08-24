@@ -24,7 +24,7 @@
                     :disabled="showLoaderSending"
                     :loading="showLoaderSending ? true : undefined"
                     :actions="false"
-                    @submit="defaultTender ? updateTender() : createTender()"
+                    @submit="this[handlerSubmit]()"
                 >
                     <div class="tender-form__title">
                         Общие параметры тендера
@@ -76,7 +76,7 @@
                         <div class="tender-form__block">
                             <div
                                 v-if="defaultTender"
-                                class="tenders-form__docs lots m--docs"
+                                class="tender-form__docs lots m--docs"
                             >
                                 <div class="lots__header">
                                     <div class="lots__header-cell m--file">
@@ -255,9 +255,9 @@
                             Отменить
                         </button>
                         <button
-                            type="button"
+                            type="submit"
                             class="button button-green"
-                            @click="defaultTender ? updateTender() : createTender()"
+                            @click="defaultTender ? submitForm('updateTender') : submitForm('createTender')"
                         >
                             Сохранить как черновик
                         </button>
@@ -265,7 +265,7 @@
                             type="button"
                             class="button button-green"
                             :disabled="!defaultTender"
-                            @click="publishTender"
+                            @click="submitForm('publishTender')"
                         >
                             Опубликовать
                         </button>
@@ -310,6 +310,7 @@
                 showLoaderSending: false,
                 showAddLotModal: false,
                 showFileLotModal: false,
+                handlerSubmit: null,
                 tenderMainInfoSchema: [
                     {
                         $formkit: 'hidden',
@@ -603,6 +604,11 @@
         created() {
         },
         methods: {
+            submitForm(handlerSubmit) {
+                this.handlerSubmit = handlerSubmit;
+                console.log(this.handlerSubmit);
+                this.$formkit.submit('tenderForm');
+            },
             publishTender() {
                 this.tenderForm.publication = true
                 this.updateTender()

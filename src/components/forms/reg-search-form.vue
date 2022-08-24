@@ -71,6 +71,16 @@
                 ],
             }
         },
+        watch: {
+            'formValues.inn': {
+                handler() {
+                    if (this.formValues.inn === '') {
+                        console.log('BLA');
+                        this.$emit('clearSearchResult');
+                    }
+                },
+            },
+        },        
         methods: {
             submitHandler(data, node) {
                 this.$emit('submitSearchHandler', this.formValues, node);
