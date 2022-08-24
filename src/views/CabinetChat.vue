@@ -19,22 +19,23 @@
                             class="chat__users-inner"
                         >
                             <div 
-                                v-for="item in 10"
-                                :key="`chat-user-${item}`"
+                                v-for="room in rooms"
+                                :key="`chat-user-${room}`"
                                 class="chat__user"
-                                :class="[currentRecipient === item ? 'is-active' : '']"
-                                @click.prevent="onSelectRecipient(item)"
+                                :class="[currentRecipient === room ? 'is-active' : '']"
+                                @click.prevent="onSelectRecipient(room.id)"
                             >
                                 <div class="chat__user-status is-online" />
                                 <div class="chat__user-name">
-                                    Жуков Николай
+                                    {{ room.chat_partner.last_name }} {{ room.chat_partner.first_name }}
                                 </div>
                                 <div class="chat__user-info">
                                     <div class="chat__user-info-tender">
-                                        Аукцион №1234567
+                                        Аукцион №{{ room.tender.id }}
                                     </div>
                                     <div class="chat__user-info-date">
-                                        23.05.22 12:34
+                                        {{ $helpers.formatDate(new Date( room.last_update ), 'DD.MM.YY HH:mm') }}
+                                        <!-- 23.05.22 12:34 -->
                                     </div>
                                 </div>
                             </div>
@@ -65,48 +66,58 @@
                                         class="tender__info m--column"
                                     >
                                         <div class="tender__info-number">
-                                            Аукцион №1234567
+                                            Аукцион №{{ chatInfo.tender.id }}
                                         </div>
                                         <div class="tender__info-title">
-                                            Поставка инструмента для нужд ООО "Газпром МКС" в 2022 году (для субъектов малого и среднего предпринимательства) Поставка инструмента для нужд ООО "Газпром МКС" в 2022 году (для субъектов малого и среднего предпринимательства) (БАА 22862)
+                                            {{ chatInfo.tender.name }}
                                         </div>
                                         <div class="tender__info-param">
-                                            <span>Организация:</span> <a href="#">ООО «Екатеринбургский Цементный Завод»</a>
+                                            <span>Организация: </span> 
+                                            <router-link
+                                                :to="{ name: 'contragent', params: { id: chatInfo.tender.organization.id } }"
+                                                class="tenders__item-organization"
+                                            >
+                                                {{ chatInfo.tender.organization.name }}
+                                            </router-link>
                                         </div>
                                         <div class="tender__info-param">
-                                            <span>Директор:</span> Жуков Николай Геннадьевич
+                                            <span>Директор:</span> {{ chatInfo.tender.organization.head_name }}
                                         </div>
                                     </div>
                                 </div>
 
+
                                 <div class="chat__messages">
+                                    <!-- <pre>{{ messages }}</pre> -->
                                     <template
-                                        v-for="(message, index) in messages"
+                                        v-for="(message, index) in messages.results"
                                     >
+                                        <!-- <pre>{{ index }}</pre> -->
+                                        <!-- <pre>{{ message }}</pre> -->
+                                        <!-- v-if="index === 0 || new Date(message[index - 1].date_publication).toLocaleDateString('ru') !== new Date(message.date_publication).toLocaleDateString('ru')" -->
                                         <div 
-                                            v-if="index === 0 || new Date(messages[index - 1].date).toLocaleDateString('ru') !== new Date(message.date).toLocaleDateString('ru')"
+                                            v-if="index === 0 "
                                             class="chat__messages-date"
                                         >
-                                            {{ new Date(message.date).toLocaleDateString('ru') }}
+                                            {{ new Date(message.date_publication).toLocaleDateString('ru') }}
                                         </div>
                                         <div
                                             class="chat__messages-item"
-                                            :class="message.recipient ? 'is-recipient' : 'is-your'"
+                                            :class="message.user !== $store._state.data.user.id ? 'is-recipient' : 'is-your'"
                                         >
                                             <div 
                                                 class="chat__messages-item-text"
-                                                v-html="message.message"
+                                                v-html="message.text"
                                             />
                                             <div class="chat__messages-item-time">
-                                                {{ $helpers.formatDate(new Date(message.date), 'HH:mm') }}
+                                                {{ $helpers.formatDate(new Date(message.date_publication), 'HH:mm') }}
                                             </div>
                                         </div>
                                     </template>
                                 </div>
-
                                 <form 
                                     class="chat__board-form form"
-                                    @submit.prevent="onSendMessage"
+                                    @submit.prevent="onSendMessage(chatInfo.id)"
                                 >
                                     <textarea
                                         v-model="form.message"
@@ -136,37 +147,43 @@
 </template>
 
 <script>
-    import { chat as api } from "@/services";
-    import { number } from "@formkit/inputs";
+    import { chat as Chat } from "@/services";
+    import { tender } from "@/settings/development";
+    // import { number } from "@formkit/inputs";
 
     export default {
+        name: "Chat",
         components: {
         },
         props: {
-            chatData: {
-                type: number,
+            id: {
+                type: Number,
                 default() { return 0; }
             },
         },
         data() {
             return {
                 form: {},
+                connection: null,
                 scrollbarVisible: {
                     users: false,
                     board: false
                 },
                 showLoaderSending: false,
-                currentRecipient: this.chatData || null,
+                currentRecipient: null,
+                chatInfo: {},
+                rooms: [],
+                // room: "",
                 messages: [],
                 messagesTemplate: [{
-                    date: '2022-08-03 13:43:00',
+                    date: '2022-08-03 13:49:00',
                     message: 'Добрый день!',
                     recipient: true
                 }, {
-                    date: '2022-08-03 13:44:00',
-                    message: 'Здравствуйте, чем я могу помочь?',
-                    recipient: false
-                }, {
+                    //     date: this.message.date_publication,
+                    //     message: 'Здравствуйте, чем я могу помочь?',
+                    //     recipient: false
+                    // }, {
                     date: '2022-08-03 13:49:00',
                     message: 'Здравствуйте, чем я могу помочь?',
                     recipient: false
@@ -186,15 +203,18 @@
                     date: '2022-08-04 13:14:30',
                     message: 'You could target Firefox browsers and add extra margin to the element being scrolled',
                     recipient: true
-                }]
+                }],
+                limit: 15,
+                offset: 0,
+                chatId: 0
             }
         },
         computed: {
-            // currentRecipient() {
-            //     if (this.chatData.chat_partner) {
-            //         return this.chatData.chat_partner;
+            // currentRoom() {
+            //     if (this.id){
+            //         return this.id;
             //     } else {
-            //         return null
+            //         return null;
             //     }
             // }
         },
@@ -208,23 +228,70 @@
         beforeDestroy() {
         },
         created() {
-            console.log(this.chatData);
+            this.getChatList();
+            if (this.id) {
+                this.chatId = this.id;
+                this.getChat(this.id);
+                this.getMessages(this.id);
+            }
+            // this.currentRoom();
+
+
+            this.getChat(1);
+            this.connection = new Chat();
+
+            this.connection.onEvent('open', () => {
+                console.log('Chat is opened');
+                this.isConnected = true;
+            });
+            this.connection.onEvent('close', (isOK, e) => {
+                if (isOK) {
+                    console.log('Chat is closed');
+                } else {
+                    console.warn(`Chat is closed with code ${e.code}: ${e.reason}`);
+                }
+                this.isConnected = false;
+            });
+            this.connection.onEvent('error', () => {
+                console.error('Chat has received an error');
+            });
+            this.connection.onEvent('message', (data) => {
+                console.log('Chat has received a message', data);
+                this.handleMessage(data);
+            });
+            this.connection.openChat();
+        },
+        destroyed() {
+            this.connection.closeChat();
         },
         methods: {
-            getMessages() {
-                api.getChatList().then(res => {
-                    this.ChatList = res;
-                    console.log(this.ChatList);
-                })
-                return this.messagesTemplate;
+            getChatList() {
+                Chat.getChatList().then(res => {
+                    this.rooms = res;
+                    console.log(this.rooms);
+                }).catch(err => {
+                    console.error(err);
+                });
             },
-            createMessages() {
-                api.createMessages().then(res => {
-                    this.message = res;
-                    console.log(this.message);
-                })
-                return this.messagesTemplate;
+            
+            getChat(room) {
+                Chat.getChat(room).then(res => {
+                    this.chatInfo = res;
+                    console.log(res);
+                }).catch(err => {
+                    console.error(err);
+                });
             },
+
+            getMessages(roomId) {
+                Chat.getMessages(roomId, this.offset, this.limit).then(res => {
+                    this.messages = res;
+                    console.log(res);
+                }).catch(err => {
+                    console.error(err);
+                });
+            },
+
             onResize() {
                 Object.keys(this.scrollbarVisible).forEach(key => {
                     if (this.$refs[key]) {
@@ -253,29 +320,54 @@
                 }
             },
             onSelectRecipient(recipient) {
+                this.getChat(recipient);
+                this.getMessages(recipient);
                 this.currentRecipient = recipient;
-                this.messages = [...this.messagesTemplate];
-                //this.messages = this.getMessages();
+                console.log(recipient);
+                // this.messages = [...this.messagesTemplate];
+                //this.messages = this.getChat();
             },
-            onSendMessage() {
-                console.log(this.form, this.$refs.board.scrollTop, this.$refs.board.scrollHeight);
-                if (this.form.message) {
-                    this.messages.push({
-                        date: new Date(),
-                        message: this.form.message.replace( /(<([^>]+)>)/ig, '').replace(/(?:\r\n|\r|\n)/g, '<br />'),
-                        recipient: false
-                    });
+            // currentRoom() {
+            //     if (this.id){
+            //         return this.currentRecipient = this.id;
+            //     } else {
+            //         return this.currentRecipient = null;
+            //     }
+            // },
+            onSendMessage(room) {
+                let text = {text: this.form.message};
+                console.log(room);
+                Chat.createMessages(room, text).then(res => {
+                    // this.messages = res;
+                    console.log(res);
+                    this.getMessages(room);
                     this.form = {};
-                    this.$nextTick(() => {
-                        console.log(this.form, this.$refs.board.scrollTop, this.$refs.board.scrollHeight);
-                        this.$refs.board.scrollTo(
-                            {
-                                'top': this.$refs.board.scrollHeight,
-                                'behavior': 'smooth'
-                            }
-                        );
-                    });
-                }
+                }).catch(err => {
+                    console.error(err);
+                });
+
+
+
+                console.log(this.form, this.$refs.board.scrollTop, this.$refs.board.scrollHeight);
+                // if (this.form.message) {
+                //     this.messages.results.push({
+                //         date: new Date(),
+                //         message: this.form.message.replace( /(<([^>]+)>)/ig, '').replace(/(?:\r\n|\r|\n)/g, '<br />'),
+                //         recipient: false
+                //     });
+                    
+                this.form = {};
+                this.$nextTick(() => {
+                    console.log(this.form, this.$refs.board.scrollTop, this.$refs.board.scrollHeight);
+                    this.$refs.board.scrollTo(
+                        {
+                            'top': this.$refs.board.scrollHeight,
+                            'behavior': 'smooth'
+                        }
+                    );
+                });
+                // }
+
             }
         }
     };

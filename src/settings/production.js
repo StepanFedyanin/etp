@@ -19,6 +19,17 @@ const serviceUrl = {
 
 let urlPath = `${serviceUrl.url}${serviceUrl.api}`;
 
+const websocket = {
+    url: '/ws/',
+    protocols: []
+};
+
+const chat = {
+    url: `${urlPath}/chat`,
+    wsUrl: `wss://${urlPath}/ws/chat`,
+    wsUrlPush: `${urlPath}/push`
+};
+
 const tender = {
     url: `${urlPath}/tender`,
     token: 'c7d63a2e58d186ae3760a5f7c690293e973c08c4'
@@ -48,6 +59,8 @@ const logger = {
 export {
     ajax,
     cache,
+    chat,
+    websocket,
 
     tender,
     user,
