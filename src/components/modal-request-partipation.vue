@@ -99,11 +99,10 @@
                                     </div>
                                     <div class="partipation__docs-cell">
                                         <FormKit
-                                            :value="file.description"
-                                            class="input"
                                             type="text"
                                             placeholder="Ввести данные"
                                             :name="`description_${getFileId(file.id)}`"
+                                            :value="file.description"
                                             outerClass="$reset"
                                         />
                                     </div>
@@ -157,7 +156,7 @@
                         type="reset"
                         :disabled="showLoaderSending"
                         class="button button-red"
-                        @click="$emit('hideModal')"
+                        @click="$emit('hideModal', updateData)"
                     >
                         Отменить
                     </button>
@@ -191,6 +190,7 @@
         data() {
             return {
                 formValues: {
+                    documents: []
                 },
                 documents: [{
                     id: 1,
@@ -215,6 +215,9 @@
                     comment: this.tender.user_participation.comment,
                     documents: this.tender.user_participation.documents || []//.map(item => { return item.id })
                 }
+                this.formValues.documents.forEach(doc => {
+                    this.formValues[`description_file_${doc.id}`] = doc.description;
+                });
             }
         },
         created() {
@@ -248,8 +251,16 @@
                         return
                     } else {
                         tenderApi.addTenderParticipantDocument(this.tender.id, formData)
-                            .then(file => {
-                                this.formValues.documents.push(file)
+                            .then(participant => {
+                                this.formValues = {
+                                    comment: participant.comment,
+                                    documents: participant.documents || []//.map(item => { return item.id })
+                                }
+                                this.formValues.documents.forEach(doc => {
+                                    this.formValues[`description_file_${doc.id}`] = doc.description;
+                                });
+                                this.updateData = true;
+                                //this.formValues.documents.push(file)
                                 // this.defaultTender.documents = this.documents
                                 // console.log(file)
                             }).catch(err => {
@@ -279,19 +290,18 @@
             submitHandler(data, node) {
                 this.showLoaderSending = true;
                 this.loading = true;
-                if (this.tender.user_participation) {
-                    console.log(this.formValues);
-                    let documents = [];
-                    this.formValues.documents.forEach(doc => {
-                        documents.push({
-                            id: doc.id,
-                            description: this.formValues[`description_file_${doc.id}`]
-                        });
+                let documents = [];
+                this.formValues.documents.forEach(doc => {
+                    documents.push({
+                        id: doc.id,
+                        description: this.formValues[`description_file_${doc.id}`]
                     });
-                    let params = {
-                        id: this.formValues.id,
-                        documents: documents
-                    };
+                });
+                let params = {
+                    id: this.formValues.id,
+                    documents: documents
+                };
+                if (this.tender.user_participation) {
                     tenderApi.updateTenderParticipant(this.tender.id, params).then(res => {
                         this.showLoaderSending = false;
                         this.loading = false;
@@ -308,7 +318,6 @@
                         console.error(err);
                     });
                 } else {
-                    let params = Object.assign({}, this.formValues);
                     tenderApi.addTenderParticipant(this.tender.id, params).then(res => {
                         this.showLoaderSending = false;
                         this.loading = false;

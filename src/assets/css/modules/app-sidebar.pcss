@@ -1,8 +1,14 @@
 .sidebar {
-    position: relative;
+    position: sticky;
+    left: 0;
     background: $color-white;
     padding: 50px 25px 30px 60px;
     z-index: 9;
+
+    @mixin responsive-le-xxl {
+        position: relative;
+        left: auto;
+    }
 
     &:after {
         content: '';

@@ -57,8 +57,9 @@
                         class="tender-form__prepare"
                     >
                         <button
-                            type="submit"
+                            type="button"
                             class="button button-outline-green"
+                            @click="defaultTender ? submitForm('updateTender') : submitForm('createTender')"
                         >
                             Сохранить параметры
                         </button>
