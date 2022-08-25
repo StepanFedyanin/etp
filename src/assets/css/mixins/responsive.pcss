@@ -1,3 +1,9 @@
+@define-mixin responsive-g-xxl {
+    @media (min-width: resolve($document-width-xxl + 1px)) {
+        @mixin-content;
+    }
+}
+
 @define-mixin responsive-xxl {
     @media (min-width: resolve($document-width-xl + 1px)) {
         @mixin-content;

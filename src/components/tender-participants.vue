@@ -85,7 +85,9 @@
                                             {{ file.name || $helpers.getFilename(file.file) }}
                                         </a>
                                     </div>
-                                    <div class="partipation__docs-cell" />
+                                    <div class="partipation__docs-cell">
+                                        {{ file.description }}
+                                    </div>
                                 </div>                            
                             </div>
                         </div>

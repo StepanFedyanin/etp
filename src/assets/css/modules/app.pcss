@@ -50,7 +50,10 @@
     }
 
     &.m--with-sidebar &__block {
-        max-width: 1920px;
+        @mixin responsive-le-xxl {
+            max-width: 1920px;
+            justify-content: flex-end;
+        }
     }
     &__overlay {
         position: fixed;
