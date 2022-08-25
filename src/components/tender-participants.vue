@@ -259,8 +259,9 @@
                 }
                 api.getChatByTenderAndOrganization(params).then(res => {
                     this.chatPartner = res.chat_partner.id;
-                    console.log(this.chatData);
-                    this.$router.push({ name: 'chat', params: { id: this.tender.id, chatData: this.chatPartner } });
+                    console.log(res);
+                    this.$router.push({ name: 'chat', params: { id: res.id } });
+                    // this.$router.push({ name: 'chat', params: { id: this.tender.id, organization: this.tender.organization.id, chatData: this.chatPartner } });
                 }).catch(err => {
                     console.error(err);
                 });

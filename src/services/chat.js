@@ -1,10 +1,35 @@
 import { chat as settings } from '@/settings';
 import { REST, RESTError } from './rest';
-
+import WS from '@/utils/websocket';
+import store from "@/store/store";
 
 export default class extends REST {
     static get settings() {
         return settings;
+    }
+
+    get ws() {
+        if (!this.__ws) {
+            this.__ws = new WS({
+                url: `${this.settings.wsUrl}/${store.state.id}/`,
+            });
+        }
+        return this.__ws;
+    }
+    openChat() {
+        this.ws.open();
+    }
+    closeChat(code, messages) {
+        this.ws.close(code, messages);
+    }
+    onEvent(event, handler) {
+        this.ws.on(event, handler);
+    }
+    offEvent(event, handler) {
+        this.ws.off(event, handler);
+    }
+    sendMessage(data) {
+        this.ws.send(data);
     }
 
     static getChatList(params){
@@ -35,11 +60,15 @@ export default class extends REST {
             throw new RESTError(error, 'Ошибка при удалении чата');
         });
     }
-    static getMessages(room, params){
-        return this._get(`chats/${room}/messages`, {}, params).then((data) => {
+    static getMessages(room, offset, limit){
+        let data = {
+            'offset': offset,
+            'limit': limit
+        }
+        return this._get(`chats/${room}/messages`, {}, data).then((data) => {
             return data;
         }).catch((error) => {
-            throw new RESTError(error, 'Ошибка при получении последних сообщений');
+            throw new RESTError(error, 'Ошибка при получении сообщений чата');
         });
     }
     static createMessages(room, params){

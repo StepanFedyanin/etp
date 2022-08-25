@@ -5,7 +5,7 @@
     >
         <div class="tenders__item-left">
             <router-link
-                :to="{ name: 'tender', params: { id: this.tender.id } }"
+                :to="{ name: 'tender', params: { id: tender.id } }"
                 class="tenders__item-title"
             >
                 {{ tender.name }}
@@ -56,9 +56,7 @@
             <div class="tenders__item-param">
                 <span class="tenders__item-param-name">Лоты:</span> {{ tender.lot_count }}
             </div>
-
         </div>
-
     </div>
 </template>
 <script>

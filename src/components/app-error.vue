@@ -26,19 +26,20 @@
             <template
                 v-else
             >
-                <p class="m--color-red">{{ error }}</p>
+                <p class="m--color-red">
+                    {{ error }}
+                </p>
             </template>
         </div>
         <div
             v-if="footer"
             class="modal__footer"
-        >
-        </div>
+        />
     </vue-final-modal>
 </template>
 
 <script>
-    import { logger } from '@/services';
+    // import { logger } from '@/services';
     export default {
         components: {
         },
@@ -73,7 +74,7 @@
         methods: {
             reportError() {
                 if (this.error) {
-                    logger.report(this.error);
+                    // logger.report(this.error);
                     this.hideError();
                 }
             },
