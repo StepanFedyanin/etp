@@ -4,14 +4,23 @@ import WS from '@/utils/websocket';
 import store from "@/store/store";
 
 export default class extends REST {
+    constructor(chatId) {
+        super();
+        this.chatId = chatId;
+    }
+
     static get settings() {
+        return settings;
+    }
+    get settings() {
+
         return settings;
     }
 
     get ws() {
         if (!this.__ws) {
             this.__ws = new WS({
-                url: `${this.settings.wsUrl}/${store.state.id}/`,
+                url: `${this.settings.wsUrl}/${this.chatId}/`,
             });
         }
         return this.__ws;

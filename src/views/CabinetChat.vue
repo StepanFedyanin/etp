@@ -105,7 +105,9 @@
                                             v-if="index === 0 "
                                             class="chat__messages-date"
                                         >
-                                            {{ new Date(message.date_publication).toLocaleDateString('ru') }}
+                                            <!-- {{ new Date(message.date_publication).toLocaleDateString('ru') }} -->
+                                            {{ $helpers.formatDate(new Date(message.date_publication), 'DD.MM.YY') }}
+                                            <!-- {{ message.date_publication }} -->
                                         </div>
                                         <div
                                             class="chat__messages-item"
@@ -263,29 +265,9 @@
             // this.currentRoom();
 
 
-            this.getChat(this.chatId);
-            this.connection = new Chat();
+            // this.getChat(this.chatId);
 
-            this.connection.onEvent('open', () => {
-                console.log('Chat is opened');
-                this.isConnected = true;
-            });
-            this.connection.onEvent('close', (isOK, e) => {
-                if (isOK) {
-                    console.log('Chat is closed');
-                } else {
-                    console.warn(`Chat is closed with code ${e.code}: ${e.reason}`);
-                }
-                this.isConnected = false;
-            });
-            this.connection.onEvent('error', () => {
-                console.error('Chat has received an error');
-            });
-            this.connection.onEvent('message', (data) => {
-                console.log('Chat has received a message', data);
-                this.handleMessage(data);
-            });
-            this.connection.openChat();
+
         },
         destroyed() {
             this.connection.closeChat();
@@ -379,7 +361,7 @@
                 Chat.createMessages(room, text).then(res => {
                     // this.messages = res;
                     console.log(res);
-                    this.getMessages(room);
+                    // this.getMessages(room);
                     this.form = {};
                 }).catch(err => {
                     console.error(err);
@@ -388,24 +370,27 @@
 
 
                 console.log(this.form, this.$refs.board.scrollTop, this.$refs.board.scrollHeight);
-                // if (this.form.message) {
-                //     this.messages.results.push({
-                //         date: new Date(),
-                //         message: this.form.message.replace( /(<([^>]+)>)/ig, '').replace(/(?:\r\n|\r|\n)/g, '<br />'),
-                //         recipient: false
-                //     });
+                if (this.form.message) {
+                    let date = this.$helpers.formatDate(new Date(), 'HH:mm');
+                    console.log(date);
+                    console.log(this.messages.results);
+                    this.messages.results.push({
+                        date_publication: new Date(),
+                        text: this.form.message.replace( /(<([^>]+)>)/ig, '').replace(/(?:\r\n|\r|\n)/g, '<br />'),
+                        recipient: false
+                    });
                     
-                this.form = {};
-                this.$nextTick(() => {
-                    console.log(this.form, this.$refs.board.scrollTop, this.$refs.board.scrollHeight);
-                    this.$refs.board.scrollTo(
-                        {
-                            'top': this.$refs.board.scrollHeight,
-                            'behavior': 'smooth'
-                        }
-                    );
-                });
-                // }
+                    this.form = {};
+                    this.$nextTick(() => {
+                        console.log(this.form, this.$refs.board.scrollTop, this.$refs.board.scrollHeight);
+                        this.$refs.board.scrollTo(
+                            {
+                                'top': this.$refs.board.scrollHeight,
+                                'behavior': 'smooth'
+                            }
+                        );
+                    });
+                }
 
             },
             clearChat() {
@@ -416,6 +401,30 @@
             },
             linkToTenders(){
                 this.$router.push({ name: 'tenders'});
+            },
+            connectionChat(){
+                this.connection = new Chat(this.chatId);
+
+                this.connection.onEvent('open', () => {
+                    console.log('Chat is opened');
+                    this.isConnected = true;
+                });
+                this.connection.onEvent('close', (isOK, e) => {
+                    if (isOK) {
+                        console.log('Chat is closed');
+                    } else {
+                        console.warn(`Chat is closed with code ${e.code}: ${e.reason}`);
+                    }
+                    this.isConnected = false;
+                });
+                this.connection.onEvent('error', () => {
+                    console.error('Chat has received an error');
+                });
+                this.connection.onEvent('message', (data) => {
+                    console.log('Chat has received a message', data);
+                    this.handleMessage(data);
+                });
+                this.connection.openChat();
             }
         }
     };

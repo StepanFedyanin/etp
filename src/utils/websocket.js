@@ -9,7 +9,7 @@ export default class {
     }
     get socket() {
         if (!this.__socket) {
-            this.__socket = new WebSocket(this.url, this.protocols);
+            this.__socket = new WebSocket(this.url);
 
             this.__socket.onopen = (e) => {
                 this.trigger('open', e);
