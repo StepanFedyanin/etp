@@ -68,7 +68,7 @@
                         {{ lot.unit }}
                     </div>
                     <div class="lots__item-cell">
-                        {{ lot.nds }}
+                        {{ lot.nds_detail }}
                     </div>
                     <div class="lots__item-cell">
                         {{ $helpers.toPrice(lot.price, { sign: '₽', pointer: ',' }) }}

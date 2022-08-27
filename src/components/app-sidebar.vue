@@ -19,7 +19,7 @@
                         :key="key"
                         :to="{ name: item.name }"
                         custom
-                        v-slot="{ href, navigate, isActive }"
+                        v-slot="{ href, isActive }"
                     >
                         <div 
                             :class="menuOpenedItems[item.name] ? 'is-opened' : ''"
@@ -29,8 +29,7 @@
                                 :href="href"
                                 :class="[isActive && 'is-active', `m--icon-${item.icon}`]"
                                 class="sidebar__menu-link"
-                                @click="navigate"
-                                @click.prevent="onClickMenuItem(item.name)"
+                                @click.prevent="onClickMenuItem(item)"
                             >
                                 {{ item.title }}
                                 <div
@@ -86,11 +85,14 @@
             };
         },
         methods: {
-            onClickMenuItem(name) {
-                if (!this.menuOpenedItems[name]) {
-                    this.menuOpenedItems[name] = 1;
+            onClickMenuItem(item) {
+                if (!this.menuOpenedItems[item.name]) {
+                    this.menuOpenedItems[item.name] = 1;
                 } else {
-                    delete this.menuOpenedItems[name];
+                    delete this.menuOpenedItems[item.name];
+                }
+                if (!item.items) {
+                    this.$router.push({ name: item.name });
                 }
             }
         }

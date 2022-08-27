@@ -6,6 +6,13 @@
         <div class="container">
             <div class="header__content">
                 <div class="header__left">
+                    <a 
+                        href="#"
+                        class="header__burger"
+                        :class="showSidebar ? 'is-active' : ''"
+                        @click="onClickBurger"
+                    />
+
                     <div class="header__logo">
                         <router-link
                             :to="{ name: user && user.id ? 'cabinet' : 'home' }"
@@ -48,7 +55,7 @@
                             {{ `${currentTime} МСК` }}
                         </div>
                         <div class="header__timer-date">
-                            {{ `20.08.2022` }}
+                            {{ currentDate }}
                         </div>
                     </div>
                     <template
@@ -151,6 +158,12 @@
 
     export default {
         name: 'Header',
+        props: {
+            showSidebar: {
+                type: Boolean,
+                default() { return false; }
+            },
+        },
         data() {
             return {
                 phone: '8 (800) 123-45-67',
@@ -159,7 +172,7 @@
                 currentDate: null,
                 currentTime: null,
                 menuUser: userMenu,
-                showPopup: false
+                showPopup: false,
             };
         },
         computed: {
@@ -183,6 +196,9 @@
         methods: {
             onClickPopup() {
                 this.showPopup = !this.showPopup;
+            },
+            onClickBurger() {
+                this.$emit('showSidebar', !this.showSidebar);
             },
             onClickPopupItem() {
                 this.showPopup = false;

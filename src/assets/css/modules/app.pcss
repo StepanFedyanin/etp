@@ -15,6 +15,7 @@
     }
 
     &__block {
+        position: relative;
         display: flex;
         margin: 0 auto;
         /*max-width: 1920px;*/
@@ -28,6 +29,9 @@
     &__sidebar {
         width: 350px;
         /*margin-right: 48px;*/
+        @mixin responsive-le-xs {
+            width: 100%;
+        }
     }
 
     &__main {
@@ -47,6 +51,10 @@
 
     &.m--with-sidebar &__main {
         width: calc(100% - 350px);
+
+        @mixin responsive-le-m {
+            width: 100%;
+        }
     }
 
     &.m--with-sidebar &__block {

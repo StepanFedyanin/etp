@@ -233,16 +233,6 @@ const routes = [
                     requiresAuth: true 
                 },
                 props: true,
-            }, {
-                path: 'start',
-                name: 'tender-start',
-                component: cabinetTendersStart,
-                meta: { 
-                    title: 'Объявить тендер', 
-                    breadcrumbs: ['tenders'],
-                    requiresAuth: true 
-                },
-                props: true,
             }, 
         ]
     }, {
@@ -258,6 +248,16 @@ const routes = [
         children: [
             
             {
+                path: 'start',
+                name: 'tender-start',
+                component: cabinetTendersStart,
+                meta: { 
+                    title: 'Объявить тендер', 
+                    breadcrumbs: ['tenders'],
+                    requiresAuth: true 
+                },
+                props: true,
+            }, {
                 path: 'drafts',
                 name: 'customer-drafts',
                 component: cabinetCustomerDrafts,

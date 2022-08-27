@@ -3,10 +3,14 @@
         class="app"
         :class="[$route.meta.requiresAuth || ($route.meta.showSidebarAuth && user && user.id) ? 'm--with-sidebar' : '', $route.name === 'page404' ? 'm--page404' : '']"
     >
-        <Header />
+        <Header
+            :showSidebar="showSidebarBlock"
+            @showSidebar="showSidebar"
+        />
         <div class="app__block">
             <Sidebar
                 v-if="$route.meta.requiresAuth || ($route.meta.showSidebarAuth && user && user.id)"
+                :class="showSidebarBlock ? 'is-show-sidebar' : ''"
             />
             <routerView />
         </div>
@@ -28,16 +32,28 @@
             Footer,
             Sidebar
         },
+        data() {
+            return {
+                showSidebarBlock: false,
+            };
+        },
         computed: {
             user() {
                 return this.$store.state.user;
             }
         },
         watch: {
-            $route: {
+            '$route': {
                 immediate: true,
                 handler(to) {
                     document.title = to.meta.title + ' | Бизнес-платформа TUGAN' || 'Бизнес-платформа TUGAN';
+                }
+            },
+            '$route.name': {
+                immediate: true,
+                handler(to) {
+                    this.showSidebarBlock = false;
+                    console.log('BLA');
                 }
             },
         },
@@ -51,6 +67,11 @@
             console.error('Local error', err.message, vm, info);
             this.$store.dispatch('showError', { err });
             return false;
+        },
+        methods: {
+            showSidebar(show) {
+                this.showSidebarBlock = show;
+            }
         }
     };
 </script>

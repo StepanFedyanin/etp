@@ -96,11 +96,27 @@
                         labelClass: '$reset modal-form__label',
                         outerClass: '$reset modal-form__field m--width-100',
                     }, {
-                        $formkit: 'number',
+                        $formkit: 'multiselect',
                         name: 'nds',
                         label: 'Ставка НДС',
                         placeholder: "Установите НДС",
                         validation: 'required',
+                        options: [{
+                            label: 'Нет НДС',
+                            value: -1
+                        }, {
+                            label: '0%',
+                            value: 0
+                        }, {
+                            label: '10%',
+                            value: 10
+                        }, {
+                            label: '18%',
+                            value: 18
+                        }, {
+                            label: '20%',
+                            value: 20
+                        }],
                         inputClass: 'modal-form__input',
                         labelClass: '$reset modal-form__label',
                         outerClass: '$reset modal-form__field m--width-100',

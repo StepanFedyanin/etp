@@ -14,8 +14,12 @@
         font-size: 14px;
     }
 
-    &:hover,
-    &.is-active {
+    @mixin responsive-le-xs {
+        font-size: 12px;
+    }
+
+    a&:hover,
+    a&.is-active {
         color: $color-green !important;
         text-decoration: underline;
     }
@@ -29,7 +33,7 @@
     top: 0px;
     box-sizing: border-box;
     gap: 10px;
-    z-index: 10;
+    z-index: 30;
     &:before {
         content: '';
         position: absolute;
@@ -57,10 +61,15 @@
         background: none;
     }
     &__content {
+        position: relative;
         display: flex;
         justify-content: space-between;
         padding: 15px 0;
         height: 100px;
+
+        @mixin responsive-le-s {
+            flex-direction: column-reverse;
+        }
     }
 
     &__left,
@@ -79,6 +88,13 @@
         @mixin responsive-le-xl {
             gap: 24px;
         }
+
+        @mixin responsive-le-s {
+            flex-direction: column;
+            gap: 0;
+            height: 100%;
+            justify-content: space-around;
+        }
     }
 
     &__right {
@@ -86,6 +102,55 @@
 
         @mixin responsive-le-xl {
             gap: 24px;
+        }
+
+        @mixin responsive-le-s {
+            position: absolute;
+            top: 15px;
+            right: 0;
+            gap: 0;
+        }
+
+        @mixin responsive-le-xs {
+            top: 18px;
+        }
+    }
+
+    &__burger {
+        display: none;
+        width: 54px;
+        height: 54px;
+        background-color: $color-red;
+        -webkit-mask-position: center;
+        mask-position: center;
+        -webkit-mask-repeat: no-repeat;
+        mask-repeat: no-repeat;
+        -webkit-mask-size: contain;
+        mask-size: contain;
+        -webkit-mask-image: url('./assets/img/icons/icon-burger.svg');
+        mask-image: url('./assets/img/icons/icon-burger.svg');
+
+        &:hover,
+        &.is-active {
+            background-color: $color-green;
+        }
+
+        @mixin responsive-le-m {
+            display: block;
+        }
+
+        @mixin responsive-le-s {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 45px;
+            height: 45px;
+        }
+
+        @mixin responsive-le-xs {
+            top: 3px;
+            width: 38px;
+            height: 38px;
         }
     }
 
@@ -100,13 +165,31 @@
             width: 180px;
         }
 
+        @mixin responsive-le-s {
+            margin-right: auto;
+        }
+
+        @mixin responsive-le-xs {
+            width: 154px;
+        }
+
         &-link,
         &-img {
             width: 100%;
         }
     }
 
+    &.m--cabinet &__logo {
+        @mixin responsive-le-s {
+            margin-left: auto;
+        }
+    }
+
     &__contacts {
+        @mixin responsive-le-m {
+            display: none;
+        }
+
         &-phone {
             @mixin header-link;
             margin-bottom: 8px;
@@ -129,19 +212,25 @@
 
     &__timer {
         text-align: right;
+
+        @mixin responsive-le-m {
+            display: none;
+        }
+
         &-time,
         &-date {
             position: relative;
             display: block;
             padding-right: 32px;
+
             &:before {
                 content: '';
                 position: absolute;
                 top: 50%;
                 right: 0;
-                margin-top: -12px;
-                width: 24px;
-                height: 24px;
+                margin-top: -10px;
+                width: 20px;
+                height: 20px;
             }
         }
 
@@ -150,6 +239,7 @@
             margin-bottom: 8px;
             &:before {
                 background: url('./assets/img/icons/icon-timer-time.svg') 50% 50% no-repeat;
+                background-size: 100% 100%;
             }
         }
 
@@ -157,6 +247,7 @@
             @mixin header-link;
             &:before {
                 background: url('./assets/img/icons/icon-timer-date.svg') 50% 50% no-repeat;
+                background-size: 100% 100%;
             }
         }
     }
@@ -175,17 +266,30 @@
         display: flex;
         gap: 24px;
         padding: 0;
-        margin: 0;
+        margin: 0 12px 0 0;
         list-style: none;
 
         @mixin responsive-le-l {
             gap: 12px;
         }
 
+        @mixin responsive-le-s {
+            width: 100%;
+            justify-content: left;
+        }
+
         &-item {
-            margin: 0 12px;
+            margin: 0;
             display: flex;
             align-items: center;
+            
+            @mixin responsive-le-s {
+                margin: 0;
+            }
+
+            @mixin responsive-le-xs {
+                text-align: center;
+            }
         }
 
         &-link {
@@ -194,9 +298,13 @@
     }
 
     &.m--cabinet &__menu {
-
         &-link {
             color: $color-black;
+        }
+
+        @mixin responsive-le-s {
+            width: 100%;
+            justify-content: center;
         }
     }
 
@@ -232,6 +340,16 @@
         &:hover,
         &.is-active {
             background-color: $color-green;
+        }
+
+        @mixin responsive-le-s {
+            width: 45px;
+            height: 45px;
+        }
+
+        @mixin responsive-le-xs {
+            width: 38px;
+            height: 38px;
         }
     }
 
@@ -276,6 +394,14 @@
         border-radius: 28px;
         width: 100%;
         max-width: 450px;
+
+        @mixin responsive-le-m {
+            width: 450px;
+        }
+
+        @mixin responsive-le-xs {
+            width: 90vw;
+        }
 
         &-title {
             position: relative;
