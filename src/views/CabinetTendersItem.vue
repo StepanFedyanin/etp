@@ -545,7 +545,7 @@
                     this.tender = res;
                     let duration = new Date(this.tender.date_end) - new Date(this.tender.date_start);
                     this.tender.duration = Math.ceil(duration / 1000);
-                    let limit = (new Date(this.tender.date_end) - new Date()) / 1000;
+                    // let limit = (new Date(this.tender.date_end) - new Date()) / 1000;
                     this.tender.limit = (new Date(this.tender.date_end) - new Date()) / 1000;
                     console.log(res);
                     if (this.user.id === this.tender.creator) {

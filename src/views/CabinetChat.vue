@@ -2,7 +2,10 @@
     <div class="app__main">
         <div class="cabinet chat">
             <div class="container">
-                <div class="chat__block">
+                <!-- <pre>{{chatId }}</pre> -->
+                <div 
+                    v-if="chatId || rooms.length"
+                    class="chat__block">
                     <div class="chat__users">
                         <div
                             v-show="scrollbarVisible['users']"
@@ -18,13 +21,15 @@
                             ref="users"
                             class="chat__users-inner"
                         >
+                            <!-- :class="[currentRecipient === room ? 'is-active' : '']" -->
                             <div 
-                                v-for="room in rooms"
+                                v-for="room in sortedChats"
                                 :key="`chat-user-${room}`"
                                 class="chat__user"
-                                :class="[currentRecipient === room ? 'is-active' : '']"
-                                @click.prevent="onSelectRecipient(room.id)"
+                                :class="{'is-active': isActive(room.id)}"
+                                @click.prevent="onSelectRecipient(room.id, room)"
                             >
+                                <!-- <pre>{{room}}</pre> -->
                                 <div class="chat__user-status is-online" />
                                 <div class="chat__user-name">
                                     {{ room.chat_partner.last_name }} {{ room.chat_partner.first_name }}
@@ -59,12 +64,13 @@
                             class="chat__board-inner"
                         >
                             <template
-                                v-if="currentRecipient"
+                                v-if="chatInfo.id"
                             >
                                 <div class="chat__board-tender tender">
                                     <div
                                         class="tender__info m--column"
                                     >
+                                        <!-- <pre>{{chatInfo}}</pre> -->
                                         <div class="tender__info-number">
                                             Аукцион №{{ chatInfo.tender.id }}
                                         </div>
@@ -99,7 +105,9 @@
                                             v-if="index === 0 "
                                             class="chat__messages-date"
                                         >
-                                            {{ new Date(message.date_publication).toLocaleDateString('ru') }}
+                                            <!-- {{ new Date(message.date_publication).toLocaleDateString('ru') }} -->
+                                            {{ $helpers.formatDate(new Date(message.date_publication), 'DD.MM.YY') }}
+                                            <!-- {{ message.date_publication }} -->
                                         </div>
                                         <div
                                             class="chat__messages-item"
@@ -135,11 +143,30 @@
                                 v-else
                             >
                                 <div class="chat__board-alert">
-                                    Выберите собеседния для общения.
+                                    Выберите собеседника для общения.
                                 </div>
                             </template>
                         </div>
                     </div>
+                </div>
+                <div
+                    v-else
+                    class="chat__board-empty"
+                >
+                    <div class="h1">
+                        Добро пожаловать в чат!
+                    </div>
+                    <p>
+                        Здесь вы можете общаться с другими участниками тендеров.<br>
+                        <b>Организатор тендера</b> может начать чат с любым из участников.<br>
+                        <b>Участник тендера</b> может начать чат с организатором.
+                    </p>
+                    <button 
+                        class="button button-outline-green"
+                        @click="linkToTenders"
+                    >
+                        Перейти к тендерам
+                    </button>
                 </div>
             </div>
         </div>
@@ -148,7 +175,7 @@
 
 <script>
     import { chat as Chat } from "@/services";
-    import { tender } from "@/settings/development";
+    // import { tender } from "@/settings/development";
     // import { number } from "@formkit/inputs";
 
     export default {
@@ -156,13 +183,14 @@
         components: {
         },
         props: {
-            id: {
+            chatId: {
                 type: Number,
                 default() { return 0; }
             },
         },
         data() {
             return {
+                chat: null,
                 form: {},
                 connection: null,
                 scrollbarVisible: {
@@ -206,17 +234,18 @@
                 }],
                 limit: 15,
                 offset: 0,
-                chatId: 0
+                // chatId: 0
             }
         },
         computed: {
-            // currentRoom() {
-            //     if (this.id){
-            //         return this.id;
-            //     } else {
-            //         return null;
-            //     }
-            // }
+            sortedChats: function() {
+                return [...this.rooms].sort((a, b) => {
+                    if (!a.last_update || !b.last_update) {
+                        return !a.last_update ? 1 : !b.last_update ? -1 : 0;
+                    }
+                    return (a.last_update > b.last_update) ? -1 : ((a.last_update > b.last_update) ? 1 : 0);
+                });
+            },
         },
         mounted() {
             this.resizeObserver = new ResizeObserver(this.onResize);
@@ -229,42 +258,24 @@
         },
         created() {
             this.getChatList();
-            if (this.id) {
-                this.chatId = this.id;
-                this.getChat(this.id);
-                this.getMessages(this.id);
+            if (this.chatId) {
+                this.getChat(this.chatId);
+                this.getMessages(this.chatId);
             }
             // this.currentRoom();
 
 
-            this.getChat(1);
-            this.connection = new Chat();
+            // this.getChat(this.chatId);
 
-            this.connection.onEvent('open', () => {
-                console.log('Chat is opened');
-                this.isConnected = true;
-            });
-            this.connection.onEvent('close', (isOK, e) => {
-                if (isOK) {
-                    console.log('Chat is closed');
-                } else {
-                    console.warn(`Chat is closed with code ${e.code}: ${e.reason}`);
-                }
-                this.isConnected = false;
-            });
-            this.connection.onEvent('error', () => {
-                console.error('Chat has received an error');
-            });
-            this.connection.onEvent('message', (data) => {
-                console.log('Chat has received a message', data);
-                this.handleMessage(data);
-            });
-            this.connection.openChat();
+
         },
         destroyed() {
             this.connection.closeChat();
         },
         methods: {
+            isActive(roomId) {
+                return roomId === this.chat;
+            },
             getChatList() {
                 Chat.getChatList().then(res => {
                     this.rooms = res;
@@ -274,8 +285,8 @@
                 });
             },
             
-            getChat(room) {
-                Chat.getChat(room).then(res => {
+            getChat(chatId) {
+                Chat.getChat(chatId).then(res => {
                     this.chatInfo = res;
                     console.log(res);
                 }).catch(err => {
@@ -283,8 +294,8 @@
                 });
             },
 
-            getMessages(roomId) {
-                Chat.getMessages(roomId, this.offset, this.limit).then(res => {
+            getMessages(chatId) {
+                Chat.getMessages(chatId, this.offset, this.limit).then(res => {
                     this.messages = res;
                     console.log(res);
                 }).catch(err => {
@@ -319,11 +330,21 @@
                     )
                 }
             },
-            onSelectRecipient(recipient) {
-                this.getChat(recipient);
-                this.getMessages(recipient);
-                this.currentRecipient = recipient;
-                console.log(recipient);
+            onSelectRecipient(chatId) {
+                if (this.chat !== chatId) {
+                    this.chat = chatId;
+                    this.clearChat(chatId);
+                    this.getMessages(chatId);
+                    this.getChat(chatId);
+                }
+                // if (item) {
+                //     this.windowActive = true;
+                //     // this.collocutorName = this.getCollocutorName(item);
+                // }
+                // this.getChat(chatId);
+                this.getMessages(chatId);
+                this.currentRecipient = chatId;
+                console.log(chatId);
                 // this.messages = [...this.messagesTemplate];
                 //this.messages = this.getChat();
             },
@@ -340,7 +361,7 @@
                 Chat.createMessages(room, text).then(res => {
                     // this.messages = res;
                     console.log(res);
-                    this.getMessages(room);
+                    // this.getMessages(room);
                     this.form = {};
                 }).catch(err => {
                     console.error(err);
@@ -349,25 +370,61 @@
 
 
                 console.log(this.form, this.$refs.board.scrollTop, this.$refs.board.scrollHeight);
-                // if (this.form.message) {
-                //     this.messages.results.push({
-                //         date: new Date(),
-                //         message: this.form.message.replace( /(<([^>]+)>)/ig, '').replace(/(?:\r\n|\r|\n)/g, '<br />'),
-                //         recipient: false
-                //     });
+                if (this.form.message) {
+                    let date = this.$helpers.formatDate(new Date(), 'HH:mm');
+                    console.log(date);
+                    console.log(this.messages.results);
+                    this.messages.results.push({
+                        date_publication: new Date(),
+                        text: this.form.message.replace( /(<([^>]+)>)/ig, '').replace(/(?:\r\n|\r|\n)/g, '<br />'),
+                        recipient: false
+                    });
                     
-                this.form = {};
-                this.$nextTick(() => {
-                    console.log(this.form, this.$refs.board.scrollTop, this.$refs.board.scrollHeight);
-                    this.$refs.board.scrollTo(
-                        {
-                            'top': this.$refs.board.scrollHeight,
-                            'behavior': 'smooth'
-                        }
-                    );
-                });
-                // }
+                    this.form = {};
+                    this.$nextTick(() => {
+                        console.log(this.form, this.$refs.board.scrollTop, this.$refs.board.scrollHeight);
+                        this.$refs.board.scrollTo(
+                            {
+                                'top': this.$refs.board.scrollHeight,
+                                'behavior': 'smooth'
+                            }
+                        );
+                    });
+                }
 
+            },
+            clearChat() {
+                this.offset = 0;
+                this.chat_messages = [];
+                this.chatEmpty = true;
+                this.canScroll = true
+            },
+            linkToTenders(){
+                this.$router.push({ name: 'tenders'});
+            },
+            connectionChat(){
+                this.connection = new Chat(this.chatId);
+
+                this.connection.onEvent('open', () => {
+                    console.log('Chat is opened');
+                    this.isConnected = true;
+                });
+                this.connection.onEvent('close', (isOK, e) => {
+                    if (isOK) {
+                        console.log('Chat is closed');
+                    } else {
+                        console.warn(`Chat is closed with code ${e.code}: ${e.reason}`);
+                    }
+                    this.isConnected = false;
+                });
+                this.connection.onEvent('error', () => {
+                    console.error('Chat has received an error');
+                });
+                this.connection.onEvent('message', (data) => {
+                    console.log('Chat has received a message', data);
+                    this.handleMessage(data);
+                });
+                this.connection.openChat();
             }
         }
     };

@@ -277,6 +277,7 @@
                     tenderApi.deleteTenderParticipantDocument(this.tender.id, { id: this.formValues.documents[idx].id })
                         .then(res => {
                             this.formValues.documents.splice(idx, 1)
+                            console.log(res);
                             // this.defaultTender.documents = this.documents
                         }).catch(err => {
                             console.error(err)

@@ -9,7 +9,7 @@ export default class {
     get ws() {
         if (!this.__ws) {
             this.__ws = new WS({
-                url: `${this.settings.wsUrlPush}/${store.state.id}/`,
+                url: `${this.settings.wsUrlPush}/${store.state.user.id}/`,
             });
         }
         return this.__ws;

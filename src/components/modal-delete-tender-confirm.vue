@@ -81,7 +81,7 @@
 </template>
 
 <script>
-    import { tender as tenderApi } from "@/services"
+    // import { tender as tenderApi } from "@/services"
     export default {
         props: {
             showModal: {
@@ -111,7 +111,7 @@
             },
         },
         methods: {
-            submitHandler(data, node) {
+            submitHandler() {
                 this.showLoaderSending = true;
                 this.loading = true;
                 let params = {};
