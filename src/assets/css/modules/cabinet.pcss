@@ -1,21 +1,27 @@
 .cabinet{
     /* margin: 36px 49px; */
-    &__block{
+    &__block {
         @mixin shadow-box;
         padding: 25px 20px 35px 20px;
     }
-    &__start{
+    &__start {
         display: grid;
         /* grid-template-columns: repeat(3, 1fr); */
         gap: 36px;
-        grid-template-columns: repeat(auto-fill, minmax(360px, 1fr));
+        grid-template-columns: repeat(auto-fill, minmax(345px, 1fr));
     }
-    &__block-item{
+    &__block-item {
         @mixin shadow-box;
         padding: 25px 20px 35px 20px;
         display: flex;
         flex-direction: column;
-        max-width: 460px;
+        /*max-width: 460px;*/
+
+        @mixin responsive-le-s {
+            /*max-width: none;*/
+            width: 100%;
+        }
+
         .button:active:not(:disabled){
             padding: 13px 8px 12px 8px;
         }

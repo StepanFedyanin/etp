@@ -89,6 +89,9 @@
                                     <div class="auction__item-title">
                                         {{ item.name }}
                                     </div>
+                                    <div class="auction__item-price m--mobile">
+                                        {{ $helpers.toPrice(item.price, {sign: '₽'}) }}
+                                    </div>
                                     <div class="auction__item-description">
                                         {{ item.description }}
                                     </div>
@@ -109,7 +112,7 @@
                                     </div>
                                 </div>
                                 <div class="auction__item-right">
-                                    <div class="tenders__item-price">
+                                    <div class="auction__item-price">
                                         {{ $helpers.toPrice(item.price, {sign: '₽'}) }}
                                     </div>
                                     <div class="auction__item-prop">

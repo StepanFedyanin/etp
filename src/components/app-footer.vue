@@ -23,7 +23,7 @@
                     </router-link>
                     <a
                         href="//flexites.org"
-                        class="footer__link"
+                        class="footer__link m--developer"
                         target="_blank"
                     >
                         Создание сайта - Flexites

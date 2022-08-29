@@ -35,6 +35,15 @@
         }
     }
 
+    &__inner {
+        margin: 0 20px;
+
+        @mixin responsive-le-m {
+            overflow-y: auto;
+            @mixin scrollbar $color-shadow, $color-green, 10px;
+        }
+    }
+
     &__header,
     &__item {
         display: grid;
@@ -132,7 +141,7 @@
     &__header {
         font-weight: 700;
         color: $color-red;
-        margin: 0 20px 12px;
+        margin: 0 0 12px;
 
         &-cell {
             padding: 12px 0;
@@ -161,7 +170,7 @@
     }
 
     &__item {
-        margin: 0 20px 16px;
+        margin: 0 0 16px;
 
         &:nth-child(2n) {
             background: $color-bg;
