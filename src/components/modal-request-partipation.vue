@@ -106,12 +106,12 @@
                                             outerClass="$reset"
                                         />
                                     </div>
-                                    <div class="partipation__docs-cell m--edit">
+                                    <!--div class="partipation__docs-cell m--edit">
                                         <div
                                             class="partipation__docs-edit"
                                             @click="onClickUploadFile(getFileId(file.id))"
                                         />
-                                    </div>
+                                    </div-->
                                     <div class="partipation__docs-cell m--delete">
                                         <div
                                             class="partipation__docs-delete"
@@ -299,7 +299,8 @@
                 });
                 let params = {
                     id: this.formValues.id,
-                    documents: documents
+                    documents: documents,
+                    comment: this.formValues.comment,
                 };
                 if (this.tender.user_participation) {
                     tenderApi.updateTenderParticipant(this.tender.id, params).then(res => {

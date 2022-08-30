@@ -2,7 +2,7 @@
     margin-top: auto;
     padding: 30px 0;
     background: $color-white;
-    z-index: 10;
+    z-index: 20;
 
     &__content {
         display: flex;
@@ -13,6 +13,11 @@
 
         @mixin responsive-le-m {
             gap: 40px;
+        }
+
+        @mixin responsive-le-s {
+            gap: 0;
+            flex-direction: column-reverse;
         }
     }
 
@@ -25,6 +30,11 @@
 
         @mixin responsive-le-m {
             gap: 20px;
+        }
+
+        @mixin responsive-le-s {
+            gap: 0;
+            flex-direction: column;
         }
     }
 
@@ -55,9 +65,18 @@
         color: $color-gray-T1;
         margin-bottom: 16px;
         text-decoration: none;
+
         &:hover,
         &.is-active {
             color: $color-green;
+        }
+
+        @mixin responsive-le-s {
+            display: inline-block;
+            margin-right: 16px;
+            &.m--developer {
+                display: block;
+            }
         }
     }
 }

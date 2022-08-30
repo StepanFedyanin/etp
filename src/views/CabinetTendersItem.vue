@@ -203,6 +203,9 @@
                         <div class="tender__info-title">
                             {{ tender.name }}
                         </div>
+                        <div class="tender__info-price m--mobile">
+                            {{ $helpers.toPrice(tender.price, { sign: '₽' }) }}
+                        </div>
                         <div class="tender__info-param">
                             <span>Заказчик:</span> <a href="#">{{ tender.organization.name }}</a>
                         </div>

@@ -35,6 +35,9 @@
             >
                 {{ tender.name }}
             </router-link>
+            <div class="tenders__item-price m--mobile">
+                {{ $helpers.toPrice(tender.price, {sign: '₽'}) }}
+            </div>
             <div class="tenders__item-param">
                 <span class="tenders__item-param-name">Заказчик: </span> 
                 <a href="#">{{ tender.organization && tender.organization.full_name ? tender.organization.full_name : '(())' }}</a>
@@ -98,8 +101,6 @@
             <div class="tenders__item-price">
                 {{ $helpers.toPrice(tender.price, {sign: '₽'}) }}
             </div>
-
-
             <div 
                 class="tenders__item-param"
             >
@@ -248,13 +249,13 @@
                     №
                 </div>
                 <div class="lots__header-cell m--name">
-                    Описание
+                    Лот
                 </div>
                 <div class="lots__header-cell m--nums">
-                    Кол/во
+                    Кол-во
                 </div>
                 <div class="lots__header-cell m--unit">
-                    ед.изм
+                    Ед. изм
                 </div>
             </div>
             <div class="lots__list">

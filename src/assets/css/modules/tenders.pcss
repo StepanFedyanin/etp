@@ -34,6 +34,14 @@
             padding-right: 48px;
             border-right: 1px solid $color-gray-T5;
             width: 65%;
+            @mixin responsive-le-m {
+                width: 100%;
+                border-right: none;
+                padding-right: 0;
+                padding-bottom: 24px;
+                margin-bottom: 16px;
+                border-bottom: 1px solid $color-gray-T5;
+            }
         }
 
         &-right {
@@ -46,7 +54,9 @@
             }
 
             @mixin responsive-le-m {
-                padding-right: 20px;
+                padding-right: 0;
+                padding-left: 0;
+                width: 100%;
             }
         }
 
@@ -55,19 +65,27 @@
             display: flex;
             flex-wrap: wrap;
             margin-bottom: 16px;
+
+            @mixin responsive-le-m {
+                margin-right: 32px;
+            }
+
             &-name {
                 color: $color-gray-T3;
                 margin-right: 48px;
             }
+
             &-status {
                 text-transform: uppercase;
                 font-weight: 400;
                 margin-right: 8px;
+
                 &.m--devider:after {
                     content: '|';
                     margin: 0 0 0 8px;
                 }
             }
+
             &-timer {
                 font-weight: 700;
                 text-transform: uppercase;
@@ -111,6 +129,10 @@
             font-size: 34px;
             line-height: 40px;
 
+            &.m--mobile {
+                display: none;
+            }
+
             @mixin responsive-le-xl {
                 font-size: 30px;
             }
@@ -118,10 +140,22 @@
             @mixin responsive-le-l {
                 font-size: 26px;
             }
+
+            @mixin responsive-le-l {
+                display: none;
+
+                &.m--mobile {
+                    display: block;
+                }
+            }            
         }
 
         &-docs {
             max-width: 700px;
+
+            @mixin responsive-le-m {
+                max-width: none;
+            }
 
             &__title {
                 font-weight: 700;
@@ -136,6 +170,11 @@
                 grid-template-columns: 50% 50%;
                 grid-template-areas: 'A B';
                 gap: 12px;
+                @mixin responsive-le-s {
+                    grid-template-columns: 100%;
+                    grid-template-areas: 'A' 'B';
+                    gap: 0;
+                }
 
                 &.m--title {
                     font-weight: 400;
@@ -161,12 +200,23 @@
                         font-size: 16px;
                         color: $color-black;
                         word-break: break-all;
+
+                        @mixin responsive-le-s {
+                            font-size: 14px;
+                            color: $color-gray-T3;
+                        }
                     }
                 }
             }
 
             &__cell {
                 padding-bottom: 12px;
+                @mixin responsive-le-s {
+                    padding-bottom: 0;
+                    &:last-child {
+                        padding-bottom: 12px;
+                    }
+                }
             }
 
         }
@@ -190,6 +240,10 @@
         &-lots {
             width: 100%;
             /* margin-top: 40px; */
+            @mixin responsive-le-m {
+                overflow-y: auto;
+                @mixin scrollbar $color-shadow, $color-green, 10px;
+            }
         }
 
         &-toggle {
@@ -201,6 +255,12 @@
             margin-top: 14px;
         }
 
+        @mixin responsive-le-m {
+            &-participate button {
+                margin-left: auto;
+                margin-right: auto;
+            }
+        }
     }
 
     &__more {
@@ -220,9 +280,21 @@
         justify-content: space-between;
         align-items: center;
 
+        @mixin responsive-le-s {
+            flex-direction: column;
+
+            &-left {
+                margin-bottom: 16px;
+            }
+        }
+
         &-right {
             display: flex;
             align-items: center;
+
+            @mixin responsive-le-xs {
+                flex-direction: column;
+            }
         }
 
         &-count {
@@ -239,6 +311,11 @@
             display: flex;
             align-items: center;
             margin-right: 20px;
+
+            @mixin responsive-le-xs {
+                margin-right: 0;
+                margin-bottom: 16px;
+            }
 
             & span {
                 white-space: nowrap;

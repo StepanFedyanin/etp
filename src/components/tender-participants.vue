@@ -7,7 +7,7 @@
             Список участников
         </div>
         <div
-            v-for="participant in participants" 
+            v-for="(participant, index) in participants" 
             :key="`participant-${participant.id}`"
             class="tender__participants-item"
         >
@@ -80,7 +80,7 @@
                                 >
                                     <div class="partipation__docs-cell m--file">
                                         <a
-                                            :href="urlPath + file.file"
+                                            :href="file.file"
                                         >
                                             {{ file.name || $helpers.getFilename(file.file) }}
                                         </a>
@@ -133,7 +133,7 @@
                         class="partipation__approve"
                     >
                         <FormKit
-                            v-model="formValues"
+                            v-model="formValues[index]"
                             name="form-approve"
                             preserve
                             type="form"
@@ -148,7 +148,6 @@
                             </div>
                             <div class="partipation__approve-block">
                                 <FormKit
-                                    v-model="formValues.creator_comment"
                                     type="textarea"
                                     name="creator_comment"
                                     label=""
@@ -213,7 +212,8 @@
                     participant: 'Участник',
                     winner: 'Победитель',
                 },
-                formValues: {},
+                formValues: this.participants,
+                formFields: ['creator_comment'],
                 loadingConfirm: false,
                 loadingDeny: false,
                 chatData: {},
@@ -228,7 +228,11 @@
         methods: {
             confirmPartipation(participantId) {
                 this.loadingConfirm = true;
-                let params = this.formValues;
+                let fields = this.formValues.filter(p => { return p.id === participantId ? true : false })[0];
+                let params = {};
+                this.formFields.forEach(field => {
+                    params[field] = fields[field];
+                });
                 tenderApi.confirmTenderParticipant(this.tender.id, participantId, params).then(res => {
                     this.loadingConfirm = false;
                     console.log(res);
@@ -241,7 +245,11 @@
             },
             denyPartipation(participantId) {
                 this.loadingDeny = true;
-                let params = this.formValues;
+                let fields = this.formValues.filter(p => { return p.id === participantId ? true : false })[0];
+                let params = {};
+                this.formFields.forEach(field => {
+                    params[field] = fields[field];
+                });
                 tenderApi.denyTenderParticipant(this.tender.id, participantId, params).then(res => {
                     this.loadingDeny = false;
                     console.log(res);

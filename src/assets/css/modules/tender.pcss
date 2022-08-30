@@ -21,7 +21,8 @@
         display: flex;
         justify-content: space-between;
         flex-wrap: wrap;
-        margin: 0 -1% 24px;
+        margin: 0 0 24px;
+        gap: 1%;
     }
 
     &__info {
@@ -64,16 +65,38 @@
             padding-right: 48px;
             border-right: 1px solid $color-gray-T5;
             width: 65%;
+
+            @mixin responsive-le-m {
+                width: 100%;
+                border-right: none;
+                padding-right: 0;
+                margin-bottom: 16px;
+                border-bottom: 1px solid $color-gray-T5;
+            }
         }
 
         &-right {
             padding-left: 20px;
             width: 35%;
+
+            @mixin responsive-le-l {
+                padding-right: 30px;
+            }
+
+            @mixin responsive-le-m {
+                padding-right: 0;
+                padding-left: 0;
+                width: 100%;
+            }
         }
 
         &-number {
             color: $color-gray-T3;
             margin-bottom: 16px;
+
+            @mixin responsive-le-m {
+                margin-right: 32px;
+            }
         }
 
         &-title {
@@ -83,6 +106,10 @@
             text-transform: uppercase;
             padding-bottom: 24px;
             margin-bottom: auto;
+
+            @mixin responsive-le-m {
+                margin-bottom: 0;
+            }
         }
 
         &-param {
@@ -106,11 +133,32 @@
             font-weight: 700;
             font-size: 34px;
             line-height: 40px;
+
+            &.m--mobile {
+                display: none;
+            }
+
+            @mixin responsive-le-xl {
+                font-size: 30px;
+            }
+
+            @mixin responsive-le-l {
+                font-size: 26px;
+            }
+
+            @mixin responsive-le-m {
+                display: none;
+
+                &.m--mobile {
+                    display: block;
+                    margin-bottom: auto;
+                }
+            }            
         }
     }       
 
     &__actions {
-        padding: 30px;
+        padding: 30px 30px 14px;
         margin: 0 0 48px;
         @mixin shadow-box;
 
@@ -124,9 +172,15 @@
 
         &-buttons {
             display: flex;
+            flex-wrap: wrap;
 
             .button {
                 margin-right: 24px;
+                margin-bottom: 16px;
+
+                @mixin responsive-le-xs {
+                    margin-right: 0;
+                }
             }
         }
     }
@@ -134,7 +188,7 @@
     &__docs {
         width: 60%;
         padding: 20px;
-        margin: 0 1% 24px;
+        margin: 0 0 24px;
         flex-direction: column;
         @mixin shadow-box;
 
@@ -160,6 +214,12 @@
             grid-template-areas: 'A B';
             gap: 12px;
 
+            @mixin responsive-le-s {
+                grid-template-columns: 100%;
+                grid-template-areas: 'A' 'B';
+                gap: 0;
+            }
+
             &.m--width-25-75 {
                 grid-template-columns: 25% 75%;
             }
@@ -175,6 +235,12 @@
 
         &-cell {
             padding-bottom: 12px;
+            @mixin responsive-le-s {
+                padding-bottom: 0;
+                &:last-child {
+                    padding-bottom: 12px;
+                }
+            }
 
             &.m--title {
                 font-weight: 400;
@@ -190,6 +256,18 @@
 
                 &:hover {
                     text-decoration: none;
+                }
+
+                & div {
+                    font-weight: 400;
+                    font-size: 16px;
+                    color: $color-black;
+                    word-break: break-all;
+
+                    @mixin responsive-le-s {
+                        font-size: 14px;
+                        color: $color-gray-T3;
+                    }
                 }
             }
 
@@ -258,10 +336,10 @@
     &__data {
         position: relative;
         display: flex;
-        width: 31.33%;
+        width: 32.33%;
         padding: 36px 24px;
-        margin: 0 1% 24px;
-        min-width: 360px;
+        margin: 0 0 24px;
+        min-width: 300px;
         @mixin shadow-box;
 
         &.m--long {
@@ -271,6 +349,14 @@
         &.m--short {
             width: 23.88%;
             min-width: 290px;
+        }
+
+        @mixin responsive-le-l {
+            width: 49%;
+        }
+
+        @mixin responsive-le-s {
+            width: 100%;
         }
 
         &-icon {
@@ -336,6 +422,10 @@
             margin-bottom: 8px;
             hyphens: auto;
             word-break: break-word;
+            @mixin responsive-le-xl {
+                font-size: 18px;
+                line-height: 22px;
+            }
         }
         &-info {
             font-weight: 700;
@@ -344,6 +434,10 @@
             text-transform: uppercase;
             hyphens: auto;
             word-break: break-word;
+            @mixin responsive-le-xl {
+                font-size: 20px;
+                line-height: 28px;
+            }
         }
     }
 
@@ -530,14 +624,29 @@
 }
 .inviteTender__form {
     display: flex;
-    .modal-form__field .modal-form__input{
+
+    @mixin responsive-le-s {
+        flex-direction: column;
+    }
+
+    .modal-form__field .modal-form__input {
         width:100%;
     }
+
     .form__block {
         margin-right: 24px;
         width: 50%;
         min-width: 300px;
+
+        @mixin responsive-le-s {
+            width: 100%;
+
+            .field {
+                margin-right: 0;
+            }
+        }
     }
+
     .multiselect-dropdown {
         transform: translateY(-46px);
     }
