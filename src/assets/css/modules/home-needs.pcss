@@ -5,6 +5,11 @@
     &__blocks {
         @mixin simple-box-list;
         gap: 45px;
+
+        @mixin responsive-le-xs {
+            padding-left: 0;
+            padding-right: 0;
+        }
     }
 
     &__block {

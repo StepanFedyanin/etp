@@ -6,6 +6,9 @@
     &__form {
         .form__block {
             max-width: 50%;
+            @mixin responsive-le-m {
+                max-width: none;
+            }
         }
         &-submit {
             padding-top: 45px;

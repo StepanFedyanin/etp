@@ -29,8 +29,20 @@
             width: calc(33.33% - 30px);
         }
 
+        @mixin responsive-le-m {
+            width: calc(50% - 15px);
+        }
+            
+        @mixin responsive-le-xs {
+            width: 100%;
+        }
+    
         &.m--inn {
             width: calc(60% - 15px);
+
+            @mixin responsive-le-m {
+                width: 100%;
+            }
 
             & .modal-form__input {
                 width: 100%;
@@ -38,12 +50,27 @@
         }
         &.m--category {
             width: calc(60% - 15px);
+            @mixin responsive-le-m {
+                width: 100%;
+            }
         }
         &.m--type {
             width: calc(40% - 23px);
+            @mixin responsive-le-m {
+                width: calc(50% - 15px);
+            }
+            @mixin responsive-le-s {
+                width: 100%;
+            }
         }
         &.m--region {
             width: calc(60% - 15px);
+            @mixin responsive-le-m {
+                width: calc(50% - 15px);
+            }
+            @mixin responsive-le-s {
+                width: 100%;
+            }
         }
         &.m--owner {
             width: 100%;
