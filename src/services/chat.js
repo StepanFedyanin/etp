@@ -80,7 +80,8 @@ export default class extends REST {
             throw new RESTError(error, 'Ошибка при получении сообщений чата');
         });
     }
-    static createMessages(room, params){
+    static createMessages(room, params) {
+        console.log(room, params)
         return this._post(`chats/${room}/messages`, {}, params).then((data) => {
             return data;
         }).catch((error) => {

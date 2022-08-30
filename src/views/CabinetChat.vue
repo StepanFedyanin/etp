@@ -5,7 +5,8 @@
                 <!-- <pre>{{chatId }}</pre> -->
                 <div 
                     v-if="chatId || rooms.length"
-                    class="chat__block">
+                    class="chat__block"
+                >
                     <div class="chat__users">
                         <div
                             v-show="scrollbarVisible['users']"
@@ -58,21 +59,20 @@
                             class="chat__block-down"
                             @click="scrollDown('board')"
                         />
-
-                        <div 
+                        <div
                             ref="board"
                             class="chat__board-inner"
                         >
+                            <!-- <pre>{{chatInfo}}</pre> -->
                             <template
-                                v-if="chatInfo.id"
+                                v-if="chatInfo"
                             >
                                 <div class="chat__board-tender tender">
                                     <div
                                         class="tender__info m--column"
                                     >
-                                        <!-- <pre>{{chatInfo}}</pre> -->
                                         <div class="tender__info-number">
-                                            Аукцион №{{ chatInfo.tender.id }}
+                                            Аукцион №{{ chatInfo.tender && chatInfo.tender.id }}
                                         </div>
                                         <div class="tender__info-title">
                                             {{ chatInfo.tender.name }}
@@ -93,23 +93,24 @@
                                 </div>
 
 
-                                <div class="chat__messages">
-                                    <!-- <pre>{{ messages }}</pre> -->
+                                <div 
+                                    ref="area"
+                                    class="chat__messages"
+                                    @wheel="scroll"
+                                >
                                     <template
-                                        v-for="(message, index) in messages.results"
+                                        v-for="(message) in messages"
                                     >
-                                        <!-- <pre>{{ index }}</pre> -->
-                                        <!-- <pre>{{ message }}</pre> -->
                                         <!-- v-if="index === 0 || new Date(message[index - 1].date_publication).toLocaleDateString('ru') !== new Date(message.date_publication).toLocaleDateString('ru')" -->
                                         <div 
-                                            v-if="index === 0 "
+                                            v-if="message.type === 'time' "
                                             class="chat__messages-date"
                                         >
                                             <!-- {{ new Date(message.date_publication).toLocaleDateString('ru') }} -->
-                                            {{ $helpers.formatDate(new Date(message.date_publication), 'DD.MM.YY') }}
-                                            <!-- {{ message.date_publication }} -->
+                                            {{ $helpers.formatDate(new Date(message.date), 'DD.MM.YY') }}
                                         </div>
                                         <div
+                                            v-else
                                             class="chat__messages-item"
                                             :class="message.user !== $store._state.data.user.id ? 'is-recipient' : 'is-your'"
                                         >
@@ -118,6 +119,7 @@
                                                 v-html="message.text"
                                             />
                                             <div class="chat__messages-item-time">
+                                                <!-- {{ message.date_publication }} -->
                                                 {{ $helpers.formatDate(new Date(message.date_publication), 'HH:mm') }}
                                             </div>
                                         </div>
@@ -125,16 +127,18 @@
                                 </div>
                                 <form 
                                     class="chat__board-form form"
-                                    @submit.prevent="onSendMessage(chatInfo.id)"
+                                    @submit.prevent="onSendMessage(chatInfo.id, form.message)"
                                 >
                                     <textarea
                                         v-model="form.message"
                                         name="message"
                                         placeholder="Ввести данные"
                                         class="chat__board-form-message"
+                                        @keydown.enter.exact.prevent
+                                        @keyup.enter.exact="onSendMessage(chatInfo.id, form.message)"
                                     />
                                     <button
-                                        type="sunmit"
+                                        type="submit"
                                         class="chat__board-form-button"
                                     />
                                 </form>
@@ -149,8 +153,15 @@
                         </div>
                     </div>
                 </div>
+                <template
+                    v-if="showLoaderSending"
+                >
+                    <div class="tenders__loader loader">
+                        <div class="spinner" /> Загрузка данных
+                    </div>
+                </template>
                 <div
-                    v-else
+                    v-if="!showLoaderSending && !chatId && !rooms.length"
                     class="chat__board-empty"
                 >
                     <div class="h1">
@@ -177,6 +188,7 @@
     import { chat as Chat } from "@/services";
     // import { tender } from "@/settings/development";
     // import { number } from "@formkit/inputs";
+    import _find from 'lodash/find';
 
     export default {
         name: "Chat",
@@ -191,47 +203,20 @@
         data() {
             return {
                 chat: null,
+                chat_messages: [],
                 form: {},
                 connection: null,
+                myId: parseInt(this.$store.state.id),
                 scrollbarVisible: {
                     users: false,
                     board: false
                 },
                 showLoaderSending: false,
                 currentRecipient: null,
-                chatInfo: {},
+                // chatInfo: {},
                 rooms: [],
                 // room: "",
-                messages: [],
-                messagesTemplate: [{
-                    date: '2022-08-03 13:49:00',
-                    message: 'Добрый день!',
-                    recipient: true
-                }, {
-                    //     date: this.message.date_publication,
-                    //     message: 'Здравствуйте, чем я могу помочь?',
-                    //     recipient: false
-                    // }, {
-                    date: '2022-08-03 13:49:00',
-                    message: 'Здравствуйте, чем я могу помочь?',
-                    recipient: false
-                }, {
-                    date: '2022-08-03 15:23:00',
-                    message: 'Хотел бы уточнить вопрос по документам. Есть время меня проконсультировать?',
-                    recipient: true
-                }, {
-                    date: '2022-08-03 17:44:00',
-                    message: 'I`m not a fan of creating additional DOM elements to work around displaying issues, however it seems to help to split up the element into two elements like:',
-                    recipient: false
-                }, {
-                    date: '2022-08-04 10:55:00',
-                    message: 'Perhaps there are technical differences between what`s really going on, but I find this pretty effective.',
-                    recipient: true
-                }, {
-                    date: '2022-08-04 13:14:30',
-                    message: 'You could target Firefox browsers and add extra margin to the element being scrolled',
-                    recipient: true
-                }],
+                // messages: [],
                 limit: 15,
                 offset: 0,
                 // chatId: 0
@@ -246,6 +231,42 @@
                     return (a.last_update > b.last_update) ? -1 : ((a.last_update > b.last_update) ? 1 : 0);
                 });
             },
+            messages: function () {
+                let items = [...this.chat_messages];
+                let length = items.length
+                let date;
+                for (let i = 0; i < length; i++) {
+                    let message = items[i];
+                    if (i === 0 || this.dateDiff(date, message.date_publication) > 0) {
+                        items.splice(i, 0, {
+                            type: 'time',
+                            date: message.date_publication
+                        });
+                        i++;
+                        length++;
+                        date = message.date_publication;
+                    }
+                }
+                return items;
+            },
+            chatInfo: function() {
+                if (this.chat) {
+                    return _find(this.rooms, { id: this.chat });
+                }
+                return undefined
+                
+            }
+        },
+        watch: {
+            'chat': function (newVal, oldVal) {
+                if (!oldVal && newVal > 0) {
+                    this.$nextTick(() => {
+                        const el = this.$refs.area;
+                        this.addSwipeListener(el);
+                        
+                    });
+                }
+            }
         },
         mounted() {
             this.resizeObserver = new ResizeObserver(this.onResize);
@@ -254,19 +275,17 @@
                 this.resizeObserver.observe(this.$refs['board']);
             }
         },
-        beforeDestroy() {
-        },
         created() {
-            this.getChatList();
+            this.fetchChats(this.chatId);
             if (this.chatId) {
-                this.getChat(this.chatId);
-                this.getMessages(this.chatId);
+                this.onSelectRecipient(this.chatId);
+                // this.connectionChat();
+                // this.getChat(this.chatId);
+                // this.getMessages(this.chatId);
             }
             // this.currentRoom();
-
-
             // this.getChat(this.chatId);
-
+            // ЗАСУНУТЬ ПРИ ВЫБОРЕ ЧАТА))
 
         },
         destroyed() {
@@ -274,34 +293,88 @@
         },
         methods: {
             isActive(roomId) {
-                return roomId === this.chat;
+                // console.log(roomId, this.chat)
+                return this.chat && roomId === this.chat;
             },
-            getChatList() {
+            dateDiff(oldDate, newDate) {
+                let msPerDay = 8.64e7;
+                let oldAsDate = new Date(oldDate);
+                let newAsDate = new Date(newDate);
+                oldAsDate.setHours(12,0,0);
+                newAsDate.setHours(12,0,0);
+                return Math.round( (newAsDate - oldAsDate) / msPerDay );
+            },
+            fetchChats(chatId) {
+                this.showLoaderSending = true;
                 Chat.getChatList().then(res => {
                     this.rooms = res;
-                    console.log(this.rooms);
+                    if (chatId) {
+                        this.onSelectRecipient(chatId, this.findChat(chatId));
+                    }
+                    this.showLoaderSending = false;
                 }).catch(err => {
                     console.error(err);
+                    this.showLoaderSending = false;
                 });
             },
-            
-            getChat(chatId) {
-                Chat.getChat(chatId).then(res => {
-                    this.chatInfo = res;
-                    console.log(res);
-                }).catch(err => {
-                    console.error(err);
-                });
-            },
-
-            getMessages(chatId) {
+            appendMessages(chatId) {
+                this.isLoading = true;
                 Chat.getMessages(chatId, this.offset, this.limit).then(res => {
-                    this.messages = res;
-                    console.log(res);
+                    this.chat_messages = res.results.reverse().concat(this.chat_messages);
+                    this.canScroll = res.count > this.offset;
+                    this.chatEmpty = res.count === 0;
+
+                    const el = this.$refs.area;
+                    const scrollHeight = el.scrollHeight;
+                    this.$nextTick(() => {
+                        this.fetchChats();
+                        this.offset += this.limit;
+                        el.scrollTop = el.scrollHeight - scrollHeight;
+                        this.isLoading = false;
+                    });
                 }).catch(err => {
                     console.error(err);
+                    this.isLoading = false;
                 });
             },
+            // getChatList() {
+            //     this.showLoaderSending = true;
+            //     Chat.getChatList().then(res => {
+            //         this.rooms = res;
+
+            //         this.showLoaderSending = false;
+            //     }).catch(err => {
+            //         console.error(err);
+            //         this.showLoaderSending = false;
+            //     });
+            // },
+            
+            // getChat(chatId) {
+            //     this.showLoaderSending = true;
+            //     Chat.getChat(chatId).then(res => {
+            //         this.chatInfo = res;
+            //         console.log(res);
+            //         this.showLoaderSending = false;
+            //         if (chatId) {
+            //             this.onSelectRecipient(chatId, this.findChat(chatId));
+            //         }
+            //     }).catch(err => {
+            //         console.error(err);
+            //         this.showLoaderSending = false;
+            //     });
+            // },
+
+            // getMessages(chatId) {
+            //     this.showLoaderSending = true;
+            //     Chat.getMessages(chatId, this.offset, this.limit).then(res => {
+            //         this.messages = res;
+            //         console.log(res);
+            //         this.showLoaderSending = false;
+            //     }).catch(err => {
+            //         console.error(err);
+            //         this.showLoaderSending = false;
+            //     });
+            // },
 
             onResize() {
                 Object.keys(this.scrollbarVisible).forEach(key => {
@@ -330,80 +403,108 @@
                     )
                 }
             },
-            onSelectRecipient(chatId) {
-                if (this.chat !== chatId) {
-                    this.chat = chatId;
-                    this.clearChat(chatId);
-                    this.getMessages(chatId);
-                    this.getChat(chatId);
-                }
-                // if (item) {
-                //     this.windowActive = true;
-                //     // this.collocutorName = this.getCollocutorName(item);
-                // }
-                // this.getChat(chatId);
-                this.getMessages(chatId);
-                this.currentRecipient = chatId;
-                console.log(chatId);
-                // this.messages = [...this.messagesTemplate];
-                //this.messages = this.getChat();
+            isMine(id) {
+                return id === this.myId;
             },
-            // currentRoom() {
-            //     if (this.id){
-            //         return this.currentRecipient = this.id;
-            //     } else {
-            //         return this.currentRecipient = null;
-            //     }
-            // },
-            onSendMessage(room) {
-                let text = {text: this.form.message};
-                console.log(room);
-                Chat.createMessages(room, text).then(res => {
-                    // this.messages = res;
-                    console.log(res);
-                    // this.getMessages(room);
+            onSelectRecipient(chatId, item) {
+                if (chatId && this.chat !== Number(chatId)) {
+                    this.chat = Number(chatId);
+                    // this.getChat(chatId);
+                    this.clearChat(chatId);
+                    this.connectionChat()
+                    // this.getMessages(chatId);
+                    this.appendMessages(chatId);
+                    
+                }
+
+            },
+            onSendMessage(room, text) {
+                // console.log(text);
+                // if (text) {
+                //     this.chatEmpty = false;
+                //     this.message = '';
+                //     let message = {
+                //         "text": text,
+                //         "author": this.myId,
+                //         "room": this.chat,
+                //     }
+                Chat.createMessages(room, {'text': text}).then(res => {
+                    this.fetchChats();
                     this.form = {};
                 }).catch(err => {
                     console.error(err);
                 });
-
-
-
-                console.log(this.form, this.$refs.board.scrollTop, this.$refs.board.scrollHeight);
-                if (this.form.message) {
-                    let date = this.$helpers.formatDate(new Date(), 'HH:mm');
-                    console.log(date);
-                    console.log(this.messages.results);
-                    this.messages.results.push({
-                        date_publication: new Date(),
-                        text: this.form.message.replace( /(<([^>]+)>)/ig, '').replace(/(?:\r\n|\r|\n)/g, '<br />'),
-                        recipient: false
-                    });
-                    
-                    this.form = {};
-                    this.$nextTick(() => {
-                        console.log(this.form, this.$refs.board.scrollTop, this.$refs.board.scrollHeight);
-                        this.$refs.board.scrollTo(
-                            {
-                                'top': this.$refs.board.scrollHeight,
-                                'behavior': 'smooth'
-                            }
-                        );
-                    });
-                }
-
+                // }
             },
+            // onSendMessage2(room) {
+            //     let text = {text: this.form.message};
+            //     console.log(room);
+            //     Chat.createMessages(room, text).then(res => {
+            //         // this.messages = res;
+            //         // this.getMessages(room);
+            //         this.form = {};
+            //     }).catch(err => {
+            //         console.error(err);
+            //     });
+            // console.log(this.form, this.$refs.board.scrollTop, this.$refs.board.scrollHeight);
+            // if (this.form.message) {
+            //     let date = this.$helpers.formatDate(new Date(), 'HH:mm');
+            //     this.messages.results.push({
+            //         date_publication: new Date(),
+            //         text: this.form.message.replace( /(<([^>]+)>)/ig, '').replace(/(?:\r\n|\r|\n)/g, '<br />'),
+            //         recipient: false
+            //     });
+                
+            //     this.form = {};
+            //     this.$nextTick(() => {
+            //         console.log(this.form, this.$refs.board.scrollTop, this.$refs.board.scrollHeight);
+            //         this.$refs.board.scrollTo(
+            //             {
+            //                 'top': this.$refs.board.scrollHeight,
+            //                 'behavior': 'smooth'
+            //             }
+            //         );
+            //     });
+            // }
+            // },
             clearChat() {
                 this.offset = 0;
                 this.chat_messages = [];
                 this.chatEmpty = true;
-                this.canScroll = true
+                this.canScroll = true;
+                if (this.connection) {
+                    this.connection.closeChat();
+                }
             },
-            linkToTenders(){
+            linkToTenders() {
                 this.$router.push({ name: 'tenders'});
             },
-            connectionChat(){
-                this.connection = new Chat(this.chatId);
+            handleMessage(msg) {
+                if (msg.room === this.chat) {
+                    msg.seen = true;
+                    // console.log(msg);
+                    this.chat_messages.push(msg);
+                    this.offset++;
+                    // if (msg.user !== this.$store.state.user.id) {
+                    //     this.connection.sendMessage({
+                    //         room: this.chat,
+                    //         id: msg.id,
+                    //     })
+                    // }
+                    const el = this.$refs.area;
+                    this.$nextTick(() => {
+                        el.scrollTop = el.scrollHeight;
+                    });
+                } else {
+                    this.fetchChats();
+                }
+            },
+            findChat(id) {
+                return _find(this.rooms, { id });
+            },
+            connectionChat() {
+                this.connection = new Chat(this.chat);
+                // this.connection = new Chat(this.$store.state.user.id);
 
                 this.connection.onEvent('open', () => {
                     console.log('Chat is opened');
@@ -425,7 +526,44 @@
                     this.handleMessage(data);
                 });
                 this.connection.openChat();
-            }
+            },
+            addSwipeListener(el) {
+                el.addEventListener('touchstart', (event) => {
+                    this.touchStartX = event.changedTouches[0].screenX;
+                    this.touchStartY = event.changedTouches[0].screenY;
+                }, false);
+
+                el.addEventListener('touchend', (event) => {
+                    this.touchEndX = event.changedTouches[0].screenX;
+                    this.touchEndY = event.changedTouches[0].screenY;
+                    this.handleSwipe(this.touchStartX, this.touchStartY, this.touchEndX, this.touchEndY);
+                }, false);
+            },
+            handleSwipe(touchStartX, touchStartY, touchEndX, touchEndY) {
+                let x = touchEndX - touchStartX;
+                let y = touchEndY - touchStartY;
+                let xy = Math.abs(x / y);
+                let yx = Math.abs(y / x);
+
+                if (Math.abs(x) > this.swipeThreshold || Math.abs(y) > this.swipeThreshold) {
+                    if (yx <= this.swipeLimit) {
+                        if (x > 0) {
+                            this.closeWindow(0)
+                        }
+                    }
+                    if (xy <= this.swipeLimit) {
+                        if (y > 0) {
+                            this.bottomSwipe()
+                        }
+                    }
+                }
+            },
+            bottomSwipe() {
+                const el = this.$refs.area;
+                if (el.scrollTop === 0 && this.isLoading === false && this.canScroll) {
+                    this.appendMessages(this.chat);
+                }
+            },
         }
     };
 </script>
