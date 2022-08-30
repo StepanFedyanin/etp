@@ -11,6 +11,9 @@
     &__form {
         .form__block {
             max-width: 50%;
+            @mixin responsive-le-s {
+                max-width: none;
+            }
         }
 
         &-submit {
@@ -58,7 +61,10 @@
     }
     &__step1 {
         .form {
-            display:flex;
+            display: flex;
+            @mixin responsive-le-s {
+                flex-direction: column;
+            }
             & > .field__comment {
                 display: none;
             }

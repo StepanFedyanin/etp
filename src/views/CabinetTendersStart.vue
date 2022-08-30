@@ -504,7 +504,29 @@
                         value: this.$helpers.formatDate(new Date(new Date().getTime() + 10 * 86400000), 'YYYY-MM-DDTHH:mm'),
                         min: this.$helpers.formatDate(new Date(new Date().getTime() + 2 * 86400000), 'YYYY-MM-DDTHH:mm'),
                         label: 'Дата завершения торгов и выбор победителя',
-                        help: 'Укажите дату и время начала окончания тендера и объявления победителя',
+                        help: 'Укажите дату и время окончания тендера и объявления предварительных победителей',
+                        validation: 'required',
+                        __raw__sectionsSchema: {
+                            prefix: {
+                                $el: 'div',
+                                attrs: {
+                                    class: 'tender-form__prefix',
+                                },
+                                children: '$help',
+                            },
+                        },
+                        inputClass: 'tender-form__input',
+                        helpClass: 'tender-form__hidden',
+                        labelClass: 'tender-form__label',
+                        outerClass: 'tender-form__field m--half',
+                        messageClass: 'tender-form__message',
+                    }, {
+                        $formkit: 'datetime-local',
+                        name: 'date_fulfilment',
+                        value: this.$helpers.formatDate(new Date(new Date().getTime() + 15 * 86400000), 'YYYY-MM-DDTHH:mm'),
+                        min: this.$helpers.formatDate(new Date(new Date().getTime() + 4 * 86400000), 'YYYY-MM-DDTHH:mm'),
+                        label: 'Дата исполнения обязательств по договору',
+                        help: 'Укажите дату, до которой должны быть исполнены все обязательства по тендеру',
                         validation: 'required',
                         __raw__sectionsSchema: {
                             prefix: {

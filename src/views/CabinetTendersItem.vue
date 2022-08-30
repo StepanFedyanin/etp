@@ -214,9 +214,7 @@
                             <template
                                 v-for="(category, index) in tender.category_detail"
                             >
-                                <!-- <pre>{{ index }}</pre>
-                                <pre>{{ tender.category.length }}</pre> -->
-                                {{ category.name }}<span v-if="tender.category.length > 0 && index != (tender.category.length - 1)">, </span>
+                                {{ category.name }}<span v-if="tender.category.length > 0 && index != (tender.category.length - 1)">; </span>
                             </template>
                         </div>
                         <div class="tender__info-param">
@@ -253,7 +251,7 @@
                         <div 
                             class="tender__info-param"
                         >
-                            <span>Исполнение договора: до</span> 00.00.2022 00:00 МСК
+                            <span>Исполнение договора: до</span> {{ $helpers.formatDate(new Date(tender.date_fulfilment), 'DD.MM.YYYY HH:mm') }} МСК
                         </div>
                         <div class="tender__info-param">
                             <span>Тип аукциона:</span> {{ tender.type_detail }}

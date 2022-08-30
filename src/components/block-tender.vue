@@ -49,8 +49,7 @@
                     :key="category.id"
                     class="tenders__item-param-value"
                 >
-                    {{ category.name }}
-                    <span v-if="idx != Object.keys(tender.category).length - 1">, </span>
+                    {{ category.name }}<span v-if="idx != Object.keys(tender.category).length - 1">; </span>
                 </span>
             </div>
             <div
@@ -141,7 +140,7 @@
                 >
                     Исполнение договора: до
                 </span> 
-                00.00.2022 00:00 МСК
+                {{ $helpers.formatDate(new Date(tender.date_fulfilment), 'DD.MM.YYYY HH:mm') }} МСК
             </div>
             <div class="tenders__item-param">
                 <span class="tenders__item-param-name">Тип аукциона:</span> {{ tender.type_detail }}
