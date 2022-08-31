@@ -13,7 +13,7 @@
                 >
                     <div class="tenders__pagination-left">
                         <div class="tenders__pagination-count">
-                            Отобрано по параметрам: <span>{{ tenders.count }}</span>
+                            Найдено: <span>{{ tenders.count }}</span>
                         </div>
                     </div>
                     <div class="tenders__pagination-right">

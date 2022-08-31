@@ -3,6 +3,10 @@
         display: flex;
         gap: 37px;
         align-items: center;
+        @mixin responsive-le-s {
+            flex-direction: column;
+            gap: 24px;
+        }
 
         &-group {
             display: flex;
@@ -19,6 +23,12 @@
                 font-size: 16px;
                 filter: drop-shadow(0 0 0 $color-white);
                 text-transform: none;
+                @mixin responsive-le-l {
+                    font-size: 0;
+                    width: 44px;
+                    padding-left: 5px;
+                    padding-right: 5px;
+                }
             }
         }
 
@@ -32,8 +42,17 @@
         }
 
         &-submit {
+            @mixin responsive-le-s {
+                width: 100%;
+            }
             & button {
                 width: 250px;
+                @mixin responsive-le-l {
+                    width: 160px;
+                }
+                @mixin responsive-le-s {
+                    width: 100%;
+                }
             }
         }
     }

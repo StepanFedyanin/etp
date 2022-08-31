@@ -216,6 +216,9 @@
                     &:last-child {
                         padding-bottom: 12px;
                     }
+                    &.m--title {
+                        display: none;
+                    }
                 }
             }
 
@@ -281,10 +284,10 @@
         align-items: center;
 
         @mixin responsive-le-s {
-            flex-direction: column;
+            /*flex-direction: column;*/
 
             &-left {
-                margin-bottom: 16px;
+                /*margin-bottom: 16px;*/
             }
         }
 
@@ -292,7 +295,7 @@
             display: flex;
             align-items: center;
 
-            @mixin responsive-le-xs {
+            @mixin responsive-le-s {
                 flex-direction: column;
             }
         }
@@ -312,7 +315,8 @@
             align-items: center;
             margin-right: 20px;
 
-            @mixin responsive-le-xs {
+            @mixin responsive-le-s {
+                display: none;
                 margin-right: 0;
                 margin-bottom: 16px;
             }

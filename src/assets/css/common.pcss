@@ -216,6 +216,9 @@ input[type='number'] {
             background-size: 16px 14px;
             margin-right: 14px;
             background-image: svg-load('assets/img/icons/icon-filter.svg', fill=$color-green);
+            @mixin responsive-le-l {
+                margin-right: 0;
+            }
         }
         
         &:hover {
