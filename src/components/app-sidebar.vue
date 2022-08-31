@@ -17,9 +17,9 @@
                 >
                     <router-link
                         :key="key"
+                        v-slot="{ href, isActive }"
                         :to="{ name: item.name }"
                         custom
-                        v-slot="{ href, isActive }"
                     >
                         <div 
                             :class="menuOpenedItems[item.name] ? 'is-opened' : ''"
@@ -32,6 +32,11 @@
                                 @click.prevent="onClickMenuItem(item)"
                             >
                                 {{ item.title }}
+                                <template
+                                    v-if="item.name === 'chat'"
+                                >
+                                    <div class="sidebar__menu-count">{{ roomUnreadCount }}</div>
+                                </template>
                                 <div
                                     v-if="item.items"
                                     class="sidebar__menu-item-arrow"
@@ -48,9 +53,9 @@
                                         <router-link
                                             v-for="(sitem, key) in item.items"
                                             :key="key"
+                                            v-slot="{ href, navigate, isActive }"
                                             :to="{ name: sitem.name }"
                                             custom
-                                            v-slot="{ href, navigate, isActive }"
                                         >
                                             <div class="sidebar__menu-subitem">
                                                 <a 
@@ -76,13 +81,32 @@
 
 <script>
     import { sidebarMenu } from '@/settings';
+    import { push as Push } from '@/services';
+
     export default {
         name: 'Sidebar',
         data() {
             return {
                 menu: sidebarMenu,
-                menuOpenedItems: {}
+                menuOpenedItems: {},
+                push: undefined,
+                roomUnreadCount: 0
             };
+        },
+        watch: {
+            '$route' (value) {
+                // this.getCount()
+                if (this.hasNotification && value.name === 'notifications') {
+                    this.hasNotification = false;
+                }
+                // this.close();
+            }
+        },
+        mounted() {
+            this.connectToPushWS()
+        },
+        destroyed() {
+            this.push.closePush();
         },
         methods: {
             onClickMenuItem(item) {
@@ -94,7 +118,50 @@
                 if (!item.items) {
                     this.$router.push({ name: item.name });
                 }
-            }
+            },
+            connectToPushWS() {
+                console.log("Starting connection to WebSocket Server")
+                this.push = new Push();
+                this.push.onEvent('open', (res) => {
+                    console.log('Push is active', res);
+                    this.isConnected = true;
+                    // this.getCount()
+                });
+                this.push.onEvent('close', (isOK, e) => {
+                    if (isOK) {
+                        console.log('Chat is closed');
+                    } else {
+                        console.warn(`Chat is closed with code ${e.code}: ${e.reason}`, e);
+                    }
+                    this.isConnected = false;
+                });
+                this.push.onEvent('error', (e) => {
+                    console.error('Chat has received an error', e);
+                });
+                this.push.onEvent('message', (data) => {
+                    console.log('Chat has received a message', data);
+                    this.handlePush(data);
+                });
+
+                this.push.openPush();
+            },
+            handlePush(event) {
+                let route_path = this.$route.path
+                switch(event.push_reason) {
+                // case 'notification':
+                //     if (!route_path.includes('notification')) {
+                //         this.hasNotification = true;
+                //     }
+                //     break;
+                case 'chat_update':
+                    this.roomUnreadCount = event.unread_room_count
+                    break;
+                case 'initial_info':
+                    this.roomUnreadCount = event.unread_room_count;
+                    break;
+                }
+            },
+
         }
     };
 </script>

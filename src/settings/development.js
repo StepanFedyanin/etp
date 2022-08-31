@@ -48,6 +48,11 @@ const chat = {
     token: 'c7d63a2e58d186ae3760a5f7c690293e973c08c4'
 };
 
+const push = {
+    url: `${urlPath}/push`,
+    token: 'c7d63a2e58d186ae3760a5f7c690293e973c08c4'
+};
+
 const category = {
     url: `${urlPath}`,
     token: 'c7d63a2e58d186ae3760a5f7c690293e973c08c4'
@@ -245,6 +250,7 @@ export {
     logger,
     urlPath,
     chat,
+    push,
     websocket,
 
     // mainMenu,
