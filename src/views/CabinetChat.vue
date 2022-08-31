@@ -61,6 +61,7 @@
                         <div
                             ref="board"
                             class="chat__board-inner"
+                            @wheel="scroll"
                         >
                             <template
                                 v-if="chatInfo"
@@ -92,7 +93,7 @@
                                 <div 
                                     ref="area"
                                     class="chat__messages"
-                                    @wheel="scroll"
+                                   
                                 >
                                     <template
                                         v-for="(message) in messages"
@@ -325,16 +326,16 @@
                     this.canScroll = res.count > this.offset;
                     this.chatEmpty = res.count === 0;
 
-                    const el = this.$refs.area;
+                    const el = this.$refs.board;
                     const scrollHeight = el.scrollHeight;
-                    console.log(scrollHeight)
-                    this.$nextTick(() => {
+                    console.log(el.scrollHeight);
+                    this.$nextTick((scrollHeight) => {
                         this.fetchChats();
                         this.offset += this.limit;
-                        console.log(this.$refs)
-                        console.log(el.scrollTop, el.scrollHeight)
+                        console.log(this.$refs);
+                        console.log(el.scrollTop, el.scrollHeight);
 
-                        el.scrollTop = el.scrollHeight
+                        el.scrollTop = el.scrollHeight;
                         // el.scrollTop = el.scrollHeight - scrollHeight;
                         console.log(el.scrollTop, el.scrollHeight)
                         this.isLoading = false;
@@ -354,7 +355,7 @@
             },
             scroll: function (el) {
                 let delta = Math.max(-1, Math.min(1, (el.wheelDelta || -el.detail)));
-                console.log(el);
+                console.log(delta);
                 if (el.target.scrollTop === 0 && delta === 1 && this.isLoading === false && this.canScroll) {
                     this.appendMessages(this.chat);
                 }
@@ -435,10 +436,10 @@
                             id: msg.id,
                         })
                     }
-                    const el = this.$refs.area;
-                    console.log("sevds");
-                    console.log(this.$refs);
-                    // console.log(el);bt
+                    const el = this.$refs.board;
+                    
+                    console.log(el);
+                    // console.log(el);
                     this.$nextTick(() => {
                         console.log(el);
                         el.scrollTop = el.scrollHeight;
