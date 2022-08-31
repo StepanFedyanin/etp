@@ -31,7 +31,10 @@
                                 @click.prevent="onSelectRecipient(room.id, room)"
                             >
                                 <!-- <pre>{{room}}</pre> -->
-                                <div class="chat__user-status is-online" />
+                                <div 
+                                    class="chat__user-status" 
+                                    :class="[room.seen ? activeClass : 'is-unread']"
+                                />
                                 <div class="chat__user-name">
                                     {{ room.chat_partner.last_name }} {{ room.chat_partner.first_name }}
                                 </div>
@@ -211,6 +214,7 @@
                     users: false,
                     board: false
                 },
+                canScroll: true,
                 showLoaderSending: false,
                 currentRecipient: null,
                 // chatInfo: {},
@@ -220,6 +224,10 @@
                 limit: 15,
                 offset: 0,
                 // chatId: 0
+                touchStartX: 0,
+                touchStartY: 0,
+                touchEndX: 0,
+                touchEndY: 0
             }
         },
         computed: {
@@ -262,6 +270,7 @@
                 if (!oldVal && newVal > 0) {
                     this.$nextTick(() => {
                         const el = this.$refs.area;
+                        console.log(el);
                         this.addSwipeListener(el);
                         
                     });
@@ -278,6 +287,7 @@
         created() {
             this.fetchChats(this.chatId);
             if (this.chatId) {
+                // ЗАСУНУТЬ ПРИ ВЫБОРЕ ЧАТА))
                 this.onSelectRecipient(this.chatId);
                 // this.connectionChat();
                 // this.getChat(this.chatId);
@@ -285,7 +295,6 @@
             }
             // this.currentRoom();
             // this.getChat(this.chatId);
-            // ЗАСУНУТЬ ПРИ ВЫБОРЕ ЧАТА))
 
         },
         destroyed() {
@@ -320,6 +329,7 @@
             appendMessages(chatId) {
                 this.isLoading = true;
                 Chat.getMessages(chatId, this.offset, this.limit).then(res => {
+                    console.log(res.results);
                     this.chat_messages = res.results.reverse().concat(this.chat_messages);
                     this.canScroll = res.count > this.offset;
                     this.chatEmpty = res.count === 0;
@@ -337,44 +347,6 @@
                     this.isLoading = false;
                 });
             },
-            // getChatList() {
-            //     this.showLoaderSending = true;
-            //     Chat.getChatList().then(res => {
-            //         this.rooms = res;
-
-            //         this.showLoaderSending = false;
-            //     }).catch(err => {
-            //         console.error(err);
-            //         this.showLoaderSending = false;
-            //     });
-            // },
-            
-            // getChat(chatId) {
-            //     this.showLoaderSending = true;
-            //     Chat.getChat(chatId).then(res => {
-            //         this.chatInfo = res;
-            //         console.log(res);
-            //         this.showLoaderSending = false;
-            //         if (chatId) {
-            //             this.onSelectRecipient(chatId, this.findChat(chatId));
-            //         }
-            //     }).catch(err => {
-            //         console.error(err);
-            //         this.showLoaderSending = false;
-            //     });
-            // },
-
-            // getMessages(chatId) {
-            //     this.showLoaderSending = true;
-            //     Chat.getMessages(chatId, this.offset, this.limit).then(res => {
-            //         this.messages = res;
-            //         console.log(res);
-            //         this.showLoaderSending = false;
-            //     }).catch(err => {
-            //         console.error(err);
-            //         this.showLoaderSending = false;
-            //     });
-            // },
 
             onResize() {
                 Object.keys(this.scrollbarVisible).forEach(key => {
@@ -382,6 +354,12 @@
                         this.scrollbarVisible[key] = this.$refs[key].scrollHeight > this.$refs[key].clientHeight;
                     }
                 });
+            },
+            scroll: function (el) {
+                let delta = Math.max(-1, Math.min(1, (el.wheelDelta || -el.detail)));
+                if (el.target.scrollTop === 0 && delta === 1 && this.isLoading === false && this.canScroll) {
+                    this.appendMessages(this.chat);
+                }
             },
             scrollUp(target) {
                 if (this.$refs[target]) {
@@ -436,37 +414,6 @@
                 });
                 // }
             },
-            // onSendMessage2(room) {
-            //     let text = {text: this.form.message};
-            //     console.log(room);
-            //     Chat.createMessages(room, text).then(res => {
-            //         // this.messages = res;
-            //         // this.getMessages(room);
-            //         this.form = {};
-            //     }).catch(err => {
-            //         console.error(err);
-            //     });
-            // console.log(this.form, this.$refs.board.scrollTop, this.$refs.board.scrollHeight);
-            // if (this.form.message) {
-            //     let date = this.$helpers.formatDate(new Date(), 'HH:mm');
-            //     this.messages.results.push({
-            //         date_publication: new Date(),
-            //         text: this.form.message.replace( /(<([^>]+)>)/ig, '').replace(/(?:\r\n|\r|\n)/g, '<br />'),
-            //         recipient: false
-            //     });
-                
-            //     this.form = {};
-            //     this.$nextTick(() => {
-            //         console.log(this.form, this.$refs.board.scrollTop, this.$refs.board.scrollHeight);
-            //         this.$refs.board.scrollTo(
-            //             {
-            //                 'top': this.$refs.board.scrollHeight,
-            //                 'behavior': 'smooth'
-            //             }
-            //         );
-            //     });
-            // }
-            // },
             clearChat() {
                 this.offset = 0;
                 this.chat_messages = [];
@@ -482,17 +429,20 @@
             handleMessage(msg) {
                 if (msg.room === this.chat) {
                     msg.seen = true;
-                    // console.log(msg);
                     this.chat_messages.push(msg);
                     this.offset++;
-                    // if (msg.user !== this.$store.state.user.id) {
-                    //     this.connection.sendMessage({
-                    //         room: this.chat,
-                    //         id: msg.id,
-                    //     })
-                    // }
+                    if (msg.user !== this.$store.state.user.id) {
+                        this.connection.sendMessage({
+                            room: this.chat,
+                            id: msg.id,
+                        })
+                    }
                     const el = this.$refs.area;
+                    console.log("sevds");
+                    console.log(this.$refs);
+                    console.log(el);
                     this.$nextTick(() => {
+                        console.log(el.scrollTop);
                         el.scrollTop = el.scrollHeight;
                     });
                 } else {
