@@ -33,7 +33,7 @@
                             >
                                 {{ item.title }}
                                 <template
-                                    v-if="item.name === 'chat'"
+                                    v-if="item.name === 'chat' && roomUnreadCount !== 0"
                                 >
                                     <div class="sidebar__menu-count">{{ roomUnreadCount }}</div>
                                 </template>

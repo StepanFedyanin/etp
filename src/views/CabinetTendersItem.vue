@@ -401,9 +401,10 @@
                             <template
                                 v-if="user.id !== tender.creator && tender.status !== 'closed' && tender.user_participation"
                             >
-                                <router-link
-                                    :to="{ name: 'chat' }"
+                                <!-- {{tender.organization.id}} -->
+                                <div
                                     class="tender__contact-chat"
+                                    @click="startChat(tender.organization.id)"
                                 />
                             </template>
                         </div>
@@ -495,6 +496,7 @@
     import Timer from '@/components/timer';
     import inviteTender from '@/components/invite-tender.vue';
     import ModalDeleteTenderConfirm from '@/components/modal-delete-tender-confirm';
+    import { chat as Chat } from "@/services"
 
     export default {
         components: {
@@ -619,6 +621,20 @@
             hideDeleteTenderConfirmModal() {
                 this.showDeleteTenderConfirmModal = false;
             },
+            startChat(organizationId) {
+                let params = {
+                    tender: this.tender.id,
+                    organization: organizationId
+                }
+                console.log(organizationId);
+                Chat.getChatByTenderAndOrganization(params).then(res => {
+                    // this.chatPartner = res.chat_partner.id;
+                    console.log(res);
+                    this.$router.push({ name: 'chat', params: { chatId: res.id } });
+                }).catch(err => {
+                    console.error(err);
+                });
+            }
         }
     };
 </script>

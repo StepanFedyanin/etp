@@ -30,7 +30,7 @@
                             >
                                 <div 
                                     class="chat__user-status" 
-                                    :class="[room.seen ? activeClass : 'is-unread']"
+                                    :class="[room.seen ? '' : 'is-unread']"
                                 />
                                 <div class="chat__user-name">
                                     {{ room.chat_partner.last_name }} {{ room.chat_partner.first_name }}
@@ -48,7 +48,7 @@
                     </div>
 
                     <div class="chat__board">
-                        <div
+                        <!-- <div
                             v-show="scrollbarVisible['board']"
                             class="chat__block-up"
                             @click="scrollUp('board')"
@@ -57,7 +57,7 @@
                             v-show="scrollbarVisible['board']"
                             class="chat__block-down"
                             @click="scrollDown('board')"
-                        />
+                        /> -->
                         <div
                             ref="board"
                             class="chat__board-inner"
@@ -93,7 +93,6 @@
                                 <div 
                                     ref="area"
                                     class="chat__messages"
-                                   
                                 >
                                     <template
                                         v-for="(message) in messages"
@@ -261,8 +260,7 @@
             'chat': function (newVal, oldVal) {
                 if (!oldVal && newVal > 0) {
                     this.$nextTick(() => {
-                        const el = this.$refs.area;
-                        console.log(el);
+                        const el = this.$refs.board;
                         this.addSwipeListener(el);
                         
                     });
@@ -290,7 +288,13 @@
 
         },
         destroyed() {
-            this.connection.closeChat();
+            // this.connection.closeChat();
+            this.clearChat(this.chatId);
+        },
+        beforeDestroy() {
+            if (this.connection) {
+                this.connection.closeChat();
+            }
         },
         methods: {
             isActive(roomId) {
@@ -306,6 +310,7 @@
                 return Math.round( (newAsDate - oldAsDate) / msPerDay );
             },
             fetchChats(chatId) {
+                console.log(chatId, this.chatId)
                 this.showLoaderSending = true;
                 Chat.getChatList().then(res => {
                     this.rooms = res;
@@ -321,7 +326,6 @@
             appendMessages(chatId) {
                 this.isLoading = true;
                 Chat.getMessages(chatId, this.offset, this.limit).then(res => {
-                    console.log(res.results);
                     this.chat_messages = res.results.reverse().concat(this.chat_messages);
                     this.canScroll = res.count > this.offset;
                     this.chatEmpty = res.count === 0;
@@ -332,12 +336,7 @@
                     this.$nextTick((scrollHeight) => {
                         this.fetchChats();
                         this.offset += this.limit;
-                        console.log(this.$refs);
-                        console.log(el.scrollTop, el.scrollHeight);
-
                         el.scrollTop = el.scrollHeight;
-                        // el.scrollTop = el.scrollHeight - scrollHeight;
-                        console.log(el.scrollTop, el.scrollHeight)
                         this.isLoading = false;
                     });
                 }).catch(err => {
@@ -355,7 +354,7 @@
             },
             scroll: function (el) {
                 let delta = Math.max(-1, Math.min(1, (el.wheelDelta || -el.detail)));
-                console.log(delta);
+                // console.log(delta);
                 if (el.target.scrollTop === 0 && delta === 1 && this.isLoading === false && this.canScroll) {
                     this.appendMessages(this.chat);
                 }
@@ -385,7 +384,7 @@
                 if (chatId && this.chat !== Number(chatId)) {
                     this.chat = Number(chatId);
                     // this.getChat(chatId);
-                    this.clearChat();
+                    this.clearChat(chatId);
                     this.connectionChat()
                     // this.getMessages(chatId);
                     this.appendMessages(chatId);   
@@ -412,6 +411,9 @@
 
                 // }
             },
+            closeWindow() {
+                this.windowActive = false;
+            },
             clearChat() {
                 this.offset = 0;
                 this.chat_messages = [];
@@ -437,11 +439,7 @@
                         })
                     }
                     const el = this.$refs.board;
-                    
-                    console.log(el);
-                    // console.log(el);
                     this.$nextTick(() => {
-                        console.log(el);
                         el.scrollTop = el.scrollHeight;
                     });
                 } else {
@@ -508,7 +506,7 @@
                 }
             },
             bottomSwipe() {
-                const el = this.$refs.area;
+                const el = this.$refs.board;
                 if (el.scrollTop === 0 && this.isLoading === false && this.canScroll) {
                     this.appendMessages(this.chat);
                 }
