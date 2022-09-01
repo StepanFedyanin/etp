@@ -218,7 +218,7 @@
                 rooms: [],
                 // room: "",
                 // messages: [],
-                limit: 15,
+                limit: 8,
                 offset: 0,
                 // chatId: 0
                 touchStartX: 0,
