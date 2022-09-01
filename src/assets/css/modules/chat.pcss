@@ -19,7 +19,7 @@
     &__block {
         position: relative;
         display: flex;
-        height: 90vh;
+        height: calc(100vh - 196px);
 
         &-up,
         &-down {
@@ -143,6 +143,15 @@
             scroll-margin: 10px;
         }
 
+        &-tender {
+            .tender__info-title {
+                padding-bottom: 16px;
+            }
+            .tender__info-param:last-child {
+                margin-bottom: 0;
+            }
+        }
+
         &-form {
             position: sticky !important;
             bottom: 0;
@@ -150,21 +159,21 @@
 
             &-message {
                 overflow: hidden;
-                padding: 16px 16px 42px;
+                padding: 16px 70px 16px 16px;
                 box-shadow: none;
                 filter: drop-shadow(0px 2px 6px rgba(0, 0, 0, 0.04)) drop-shadow(0px 0px 1px rgba(0, 0, 0, 0.04));
             }
 
             &-button {
                 position: absolute;
-                bottom: 0;
-                right: 0;
+                top: 50%;
+                right: 16px;
                 width: 48px;
                 height: 48px;
                 background: url('./assets/img/icons/icon-send.svg') 50% 50% no-repeat;
                 background-size: 100%;
                 padding: 0;
-                margin: 0;
+                margin: -24px 0 0;
                 border: none;
                 cursor: pointer;
             }

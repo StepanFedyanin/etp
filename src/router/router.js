@@ -416,7 +416,8 @@ const routes = [
         meta: { 
             title: 'Чат', 
             breadcrumbs: [],
-            requiresAuth: true 
+            requiresAuth: true,
+            appClass: 'm--h-100 m--no-footer'
         },
         props: true,
     }, {
