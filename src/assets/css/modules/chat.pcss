@@ -71,9 +71,11 @@
 
             @mixin scrollbar $color-shadow, $color-green, 10px;
 
+            /*
             &::-webkit-scrollbar-track {
                 margin: 20px 0;
             }
+            */
         }
     }
     
@@ -86,6 +88,9 @@
         background: $color-white;
         border-radius: 28px;
         cursor: pointer;
+        &:last-child {
+            margin-bottom: 0;
+        }
         &:hover,
         &.is-active {
             background: $color-green-opacity20;
@@ -136,11 +141,13 @@
 
             @mixin scrollbar $color-shadow, $color-green, 10px;
 
+            /*
             &::-webkit-scrollbar-track {
                 margin: 20px 0;
             }
 
             scroll-margin: 10px;
+            */
         }
 
         &-tender {
