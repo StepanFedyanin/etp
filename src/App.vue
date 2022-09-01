@@ -51,9 +51,8 @@
             },
             '$route.name': {
                 immediate: true,
-                handler(to) {
+                handler() {
                     this.showSidebarBlock = false;
-                    console.log('BLA');
                 }
             },
         },
