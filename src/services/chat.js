@@ -20,7 +20,7 @@ export default class extends REST {
     get ws() {
         if (!this.__ws) {
             this.__ws = new WS({
-                url: `${this.settings.wsUrl}/${this.chatId}/`,
+                url: `${this.settings.wsUrl}/${store.state.user.id}/`,
             });
         }
         return this.__ws;

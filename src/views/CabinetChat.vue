@@ -70,12 +70,18 @@
                                     <div
                                         class="tender__info m--column"
                                     >
-                                        <div class="tender__info-number">
+                                        <!-- <div class="tender__info-number">
                                             Аукцион №{{ chatInfo.tender && chatInfo.tender.id }}
-                                        </div>
-                                        <div class="tender__info-title">
+                                        </div> -->
+                                        <router-link
+                                            :to="{ name: 'tender', params: { id: chatInfo.tender.id } }"
+                                            class="tender__info-title"
+                                        >
                                             {{ chatInfo.tender.name }}
-                                        </div>
+                                        </router-link>
+                                        <!-- <div class="tender__info-title">
+                                            {{ chatInfo.tender.name }}
+                                        </div> -->
                                         <div class="tender__info-param">
                                             <span>Организация: </span> 
                                             <router-link
@@ -125,7 +131,7 @@
                                     <textarea
                                         v-model="form.message"
                                         name="message"
-                                        placeholder="Ввести данные"
+                                        placeholder="Напишите сообщение"
                                         class="chat__board-form-message"
                                         @keydown.enter.exact.prevent
                                         @keyup.enter.exact="onSendMessage(chatInfo.id, form.message)"
@@ -276,10 +282,10 @@
         },
         created() {
             this.fetchChats(this.chatId);
+            this.connectionChat();
             if (this.chatId) {
                 // ЗАСУНУТЬ ПРИ ВЫБОРЕ ЧАТА))
                 this.onSelectRecipient(this.chatId);
-                // this.connectionChat();
                 // this.getChat(this.chatId);
                 // this.getMessages(this.chatId);
             }
@@ -288,8 +294,8 @@
 
         },
         destroyed() {
-            // this.connection.closeChat();
-            this.clearChat(this.chatId);
+            this.connection.closeChat();
+            // this.clearChat(this.chatId);
         },
         beforeDestroy() {
             if (this.connection) {
@@ -329,8 +335,8 @@
                     this.chat_messages = res.results.reverse().concat(this.chat_messages);
                     this.canScroll = res.count > this.offset;
                     const el = this.$refs.board;
-                    const scrollHeight = el.scrollHeight;
-                    console.log(el.scrollHeight);
+                    // const scrollHeight = el.scrollHeight;
+                    // console.log(el.scrollHeight);
                     this.$nextTick(() => {
                         this.fetchChats();
                         this.offset += this.limit;
@@ -352,12 +358,13 @@
             },
             scroll: function (el) {
                 let delta = Math.max(-1, Math.min(1, (el.wheelDelta || -el.detail)));
-                // console.log(el.target.scrollTop);
                 // console.log(delta);
                 // console.log(this.isLoading);
                 console.log(this.canScroll);
                 console.log(el);
                 const board = this.$refs.board;
+                console.log(el.target.scrollTop);
+                console.log(board.scrollTop);
 
                 // if (el.target.scrollTop === 0 && delta === 1 && this.isLoading === false && this.canScroll) {
                 // if (board.scrollTop === 0 && delta === 1 && this.isLoading === false && this.canScroll) {
@@ -391,7 +398,7 @@
                     this.chat = Number(chatId);
                     // this.getChat(chatId);
                     this.clearChat(chatId);
-                    this.connectionChat()
+                    // this.connectionChat()
                     // this.getMessages(chatId);
                     this.appendMessages(chatId);   
                 }
@@ -425,10 +432,10 @@
                 this.chat_messages = [];
                 this.chatEmpty = true;
                 this.canScroll = true;
-                console.log(this.connection);
-                if (this.connection) {
-                    this.connection.closeChat();
-                }
+                // console.log(this.connection);
+                // if (this.connection) {
+                //     this.connection.closeChat();
+                // }
             },
             linkToTenders() {
                 this.$router.push({ name: 'tenders'});
@@ -456,7 +463,7 @@
                 return _find(this.rooms, { id });
             },
             connectionChat() {
-                this.connection = new Chat(this.chat);
+                this.connection = new Chat();
                 // this.connection = new Chat(this.$store.state.user.id);
 
                 this.connection.onEvent('open', () => {

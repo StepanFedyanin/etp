@@ -159,6 +159,9 @@
                 case 'initial_info':
                     this.roomUnreadCount = event.unread_room_count;
                     break;
+                case 'chat_read':
+                    this.roomUnreadCount = event.unread_room_count;
+                    break;
                 }
             },
 
