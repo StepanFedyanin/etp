@@ -624,6 +624,34 @@
             white-space: nowrap;
         }
     }
+    &__related {
+        margin-bottom: 48px;
+        &-link {
+            font-weight: 700;
+            color: $color-green;
+            cursor: pointer;
+        }
+        &-title {
+            font-weight: 700;
+            font-size: 20px;
+            line-height: 24px;
+            text-transform: uppercase;
+            color: $color-gray-T3;
+            margin-bottom: 20px;
+        }
+        &-item {
+            display: grid;
+            grid-template-columns: auto auto auto auto;
+            grid-template-areas: 'A B C D';
+            grid-gap: 12px;
+            align-items: center;
+            margin-bottom: 16px;
+        }
+        &-block {
+            @mixin shadow-box;
+            padding: 20px;
+        }
+    }
 }
 .inviteTender__form {
     display: flex;

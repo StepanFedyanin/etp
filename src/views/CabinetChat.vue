@@ -2,13 +2,12 @@
     <div class="app__main">
         <div class="cabinet chat">
             <div class="container">
-                <!-- <pre>{{chatId }}</pre> -->
                 <div 
                     v-if="chatId || rooms.length"
                     class="chat__block"
                 >
                     <div class="chat__users">
-                        <div
+                        <!-- <div
                             v-show="scrollbarVisible['users']"
                             class="chat__block-up"
                             @click="scrollUp('users')"
@@ -17,12 +16,11 @@
                             v-show="scrollbarVisible['users']"
                             class="chat__block-down"
                             @click="scrollDown('users')"
-                        />
+                        /> -->
                         <div 
                             ref="users"
                             class="chat__users-inner"
                         >
-                            <!-- :class="[currentRecipient === room ? 'is-active' : '']" -->
                             <div 
                                 v-for="room in sortedChats"
                                 :key="`chat-user-${room}`"
@@ -30,10 +28,9 @@
                                 :class="{'is-active': isActive(room.id)}"
                                 @click.prevent="onSelectRecipient(room.id, room)"
                             >
-                                <!-- <pre>{{room}}</pre> -->
                                 <div 
                                     class="chat__user-status" 
-                                    :class="[room.seen ? activeClass : 'is-unread']"
+                                    :class="[room.seen ? '' : 'is-unread']"
                                 />
                                 <div class="chat__user-name">
                                     {{ room.chat_partner.last_name }} {{ room.chat_partner.first_name }}
@@ -44,7 +41,6 @@
                                     </div>
                                     <div class="chat__user-info-date">
                                         {{ $helpers.formatDate(new Date( room.last_update ), 'DD.MM.YY HH:mm') }}
-                                        <!-- 23.05.22 12:34 -->
                                     </div>
                                 </div>
                             </div>
@@ -52,7 +48,7 @@
                     </div>
 
                     <div class="chat__board">
-                        <div
+                        <!-- <div
                             v-show="scrollbarVisible['board']"
                             class="chat__block-up"
                             @click="scrollUp('board')"
@@ -61,12 +57,12 @@
                             v-show="scrollbarVisible['board']"
                             class="chat__block-down"
                             @click="scrollDown('board')"
-                        />
+                        /> -->
                         <div
                             ref="board"
                             class="chat__board-inner"
+                            @wheel="scroll"
                         >
-                            <!-- <pre>{{chatInfo}}</pre> -->
                             <template
                                 v-if="chatInfo"
                             >
@@ -94,22 +90,17 @@
                                         </div>
                                     </div>
                                 </div>
-
-
+                                <!-- ref="area" -->
                                 <div 
-                                    ref="area"
                                     class="chat__messages"
-                                    @wheel="scroll"
                                 >
                                     <template
                                         v-for="(message) in messages"
                                     >
-                                        <!-- v-if="index === 0 || new Date(message[index - 1].date_publication).toLocaleDateString('ru') !== new Date(message.date_publication).toLocaleDateString('ru')" -->
                                         <div 
                                             v-if="message.type === 'time' "
                                             class="chat__messages-date"
                                         >
-                                            <!-- {{ new Date(message.date_publication).toLocaleDateString('ru') }} -->
                                             {{ $helpers.formatDate(new Date(message.date), 'DD.MM.YY') }}
                                         </div>
                                         <div
@@ -122,7 +113,6 @@
                                                 v-html="message.text"
                                             />
                                             <div class="chat__messages-item-time">
-                                                <!-- {{ message.date_publication }} -->
                                                 {{ $helpers.formatDate(new Date(message.date_publication), 'HH:mm') }}
                                             </div>
                                         </div>
@@ -157,7 +147,7 @@
                     </div>
                 </div>
                 <template
-                    v-if="showLoaderSending"
+                    v-if="showLoaderSending && sortedChats && sortedChats.length === 0"
                 >
                     <div class="tenders__loader loader">
                         <div class="spinner" /> Загрузка данных
@@ -217,6 +207,7 @@
                 canScroll: true,
                 showLoaderSending: false,
                 currentRecipient: null,
+                isLoading: false,
                 // chatInfo: {},
                 rooms: [],
                 // room: "",
@@ -269,8 +260,7 @@
             'chat': function (newVal, oldVal) {
                 if (!oldVal && newVal > 0) {
                     this.$nextTick(() => {
-                        const el = this.$refs.area;
-                        console.log(el);
+                        const el = this.$refs.board;
                         this.addSwipeListener(el);
                         
                     });
@@ -298,7 +288,13 @@
 
         },
         destroyed() {
-            this.connection.closeChat();
+            // this.connection.closeChat();
+            this.clearChat(this.chatId);
+        },
+        beforeDestroy() {
+            if (this.connection) {
+                this.connection.closeChat();
+            }
         },
         methods: {
             isActive(roomId) {
@@ -314,6 +310,7 @@
                 return Math.round( (newAsDate - oldAsDate) / msPerDay );
             },
             fetchChats(chatId) {
+                console.log(chatId, this.chatId);
                 this.showLoaderSending = true;
                 Chat.getChatList().then(res => {
                     this.rooms = res;
@@ -329,17 +326,15 @@
             appendMessages(chatId) {
                 this.isLoading = true;
                 Chat.getMessages(chatId, this.offset, this.limit).then(res => {
-                    console.log(res.results);
                     this.chat_messages = res.results.reverse().concat(this.chat_messages);
                     this.canScroll = res.count > this.offset;
-                    this.chatEmpty = res.count === 0;
-
-                    const el = this.$refs.area;
+                    const el = this.$refs.board;
                     const scrollHeight = el.scrollHeight;
+                    console.log(el.scrollHeight);
                     this.$nextTick(() => {
                         this.fetchChats();
                         this.offset += this.limit;
-                        el.scrollTop = el.scrollHeight - scrollHeight;
+                        el.scrollTop = el.scrollHeight;
                         this.isLoading = false;
                     });
                 }).catch(err => {
@@ -357,44 +352,49 @@
             },
             scroll: function (el) {
                 let delta = Math.max(-1, Math.min(1, (el.wheelDelta || -el.detail)));
-                if (el.target.scrollTop === 0 && delta === 1 && this.isLoading === false && this.canScroll) {
+                // console.log(el.target.scrollTop);
+                // console.log(delta);
+                // console.log(this.isLoading);
+                console.log(this.canScroll);
+                console.log(el);
+                const board = this.$refs.board;
+
+                // if (el.target.scrollTop === 0 && delta === 1 && this.isLoading === false && this.canScroll) {
+                // if (board.scrollTop === 0 && delta === 1 && this.isLoading === false && this.canScroll) {
+                if (board.scrollTop === 0 && delta === 1 && this.isoLading === false && this.canScroll) {
                     this.appendMessages(this.chat);
                 }
             },
-            scrollUp(target) {
-                if (this.$refs[target]) {
-                    this.$refs[target].scrollTo(
-                        {
-                            'top': this.$refs[target].scrollTop - 240,
-                            'behavior': 'smooth'
-                        }
-                    )
-                }
-            },
-            scrollDown(target) {
-                if (this.$refs[target]) {
-                    this.$refs[target].scrollTo(
-                        {
-                            'top': this.$refs[target].scrollTop + 240,
-                            'behavior': 'smooth'
-                        }
-                    )
-                }
-            },
-            isMine(id) {
-                return id === this.myId;
-            },
-            onSelectRecipient(chatId, item) {
+            // scrollUp(target) {
+            //     if (this.$refs[target]) {
+            //         this.$refs[target].scrollTo(
+            //             {image.png
+            //                 'top': this.$refs[target].scrollTop - 240,
+            //                 'behavior': 'smooth'
+            //             }
+            //         )
+            //     }
+            // },
+            // scrollDown(target) {
+            //     if (this.$refs[target]) {
+            //         this.$refs[target].scrollTo(
+            //             {
+            //                 'top': this.$refs[target].scrollTop + 240,
+            //                 'behavior': 'smooth'
+            //             }
+            //         )
+            //     }
+            // },
+
+            onSelectRecipient(chatId) {
                 if (chatId && this.chat !== Number(chatId)) {
                     this.chat = Number(chatId);
                     // this.getChat(chatId);
                     this.clearChat(chatId);
                     this.connectionChat()
                     // this.getMessages(chatId);
-                    this.appendMessages(chatId);
-                    
+                    this.appendMessages(chatId);   
                 }
-
             },
             onSendMessage(room, text) {
                 // console.log(text);
@@ -406,19 +406,26 @@
                 //         "author": this.myId,
                 //         "room": this.chat,
                 //     }
-                Chat.createMessages(room, {'text': text}).then(res => {
-                    this.fetchChats();
-                    this.form = {};
-                }).catch(err => {
-                    console.error(err);
-                });
+                if (text) {
+                    Chat.createMessages(room, {'text': text}).then(() => {
+                        this.fetchChats();
+                        this.form = {};
+                    }).catch(err => {
+                        console.error(err);
+                    });
+                }
+
                 // }
+            },
+            closeWindow() {
+                this.windowActive = false;
             },
             clearChat() {
                 this.offset = 0;
                 this.chat_messages = [];
                 this.chatEmpty = true;
                 this.canScroll = true;
+                console.log(this.connection);
                 if (this.connection) {
                     this.connection.closeChat();
                 }
@@ -437,12 +444,8 @@
                             id: msg.id,
                         })
                     }
-                    const el = this.$refs.area;
-                    console.log("sevds");
-                    console.log(this.$refs);
-                    console.log(el);
+                    const el = this.$refs.board;
                     this.$nextTick(() => {
-                        console.log(el.scrollTop);
                         el.scrollTop = el.scrollHeight;
                     });
                 } else {
@@ -509,7 +512,7 @@
                 }
             },
             bottomSwipe() {
-                const el = this.$refs.area;
+                const el = this.$refs.board;
                 if (el.scrollTop === 0 && this.isLoading === false && this.canScroll) {
                     this.appendMessages(this.chat);
                 }

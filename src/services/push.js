@@ -1,5 +1,5 @@
 import WS from '@/utils/websocket';
-import { chat as settings } from '@/settings';
+import { push as settings } from '@/settings';
 import store from '@/store/store';
 
 export default class {
@@ -9,15 +9,15 @@ export default class {
     get ws() {
         if (!this.__ws) {
             this.__ws = new WS({
-                url: `${this.settings.wsUrlPush}/${store.state.user.id}/`,
+                url: `${this.settings.url}/${store.state.user.id}/`,
             });
         }
         return this.__ws;
     }
-    openChat() {
+    openPush() {
         this.ws.open();
     }
-    closeChat(code, messages) {
+    closePush(code, messages) {
         this.ws.close(code, messages);
     }
     onEvent(event, handler) {
