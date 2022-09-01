@@ -90,8 +90,8 @@
                                         </div>
                                     </div>
                                 </div>
+                                <!-- ref="area" -->
                                 <div 
-                                    ref="area"
                                     class="chat__messages"
                                 >
                                     <template
@@ -310,7 +310,7 @@
                 return Math.round( (newAsDate - oldAsDate) / msPerDay );
             },
             fetchChats(chatId) {
-                console.log(chatId, this.chatId)
+                console.log(chatId, this.chatId);
                 this.showLoaderSending = true;
                 Chat.getChatList().then(res => {
                     this.rooms = res;
@@ -328,12 +328,10 @@
                 Chat.getMessages(chatId, this.offset, this.limit).then(res => {
                     this.chat_messages = res.results.reverse().concat(this.chat_messages);
                     this.canScroll = res.count > this.offset;
-                    this.chatEmpty = res.count === 0;
-
                     const el = this.$refs.board;
                     const scrollHeight = el.scrollHeight;
                     console.log(el.scrollHeight);
-                    this.$nextTick((scrollHeight) => {
+                    this.$nextTick(() => {
                         this.fetchChats();
                         this.offset += this.limit;
                         el.scrollTop = el.scrollHeight;
@@ -354,15 +352,23 @@
             },
             scroll: function (el) {
                 let delta = Math.max(-1, Math.min(1, (el.wheelDelta || -el.detail)));
+                // console.log(el.target.scrollTop);
                 // console.log(delta);
-                if (el.target.scrollTop === 0 && delta === 1 && this.isLoading === false && this.canScroll) {
+                // console.log(this.isLoading);
+                console.log(this.canScroll);
+                console.log(el);
+                const board = this.$refs.board;
+
+                // if (el.target.scrollTop === 0 && delta === 1 && this.isLoading === false && this.canScroll) {
+                // if (board.scrollTop === 0 && delta === 1 && this.isLoading === false && this.canScroll) {
+                if (board.scrollTop === 0 && delta === 1 && this.isoLading === false && this.canScroll) {
                     this.appendMessages(this.chat);
                 }
             },
             // scrollUp(target) {
             //     if (this.$refs[target]) {
             //         this.$refs[target].scrollTo(
-            //             {
+            //             {image.png
             //                 'top': this.$refs[target].scrollTop - 240,
             //                 'behavior': 'smooth'
             //             }
