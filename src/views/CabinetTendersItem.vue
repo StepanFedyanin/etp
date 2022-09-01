@@ -428,6 +428,10 @@
                         </template>
                     </div>
                 </div>
+                <RelatedTenders
+                    v-if="tender.status === 'fulfilment'"
+                    :tender="tender"
+                />
                 <TenderOrganizationStatus
                     v-if="user.id !== tender.creator"
                     :tender="tender"
@@ -497,6 +501,7 @@
     import inviteTender from '@/components/invite-tender.vue';
     import ModalDeleteTenderConfirm from '@/components/modal-delete-tender-confirm';
     import { chat as Chat } from "@/services"
+    import RelatedTenders from '@/components/relatedTenders.vue';
 
     export default {
         components: {
@@ -506,7 +511,8 @@
             TenderBids,
             Timer,
             inviteTender,
-            ModalDeleteTenderConfirm
+            ModalDeleteTenderConfirm,
+            RelatedTenders
         },
         props: {
             id: {

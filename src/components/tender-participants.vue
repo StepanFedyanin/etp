@@ -266,7 +266,7 @@
                     organization: organizationId
                 }
                 api.getChatByTenderAndOrganization(params).then(res => {
-                    this.chatPartner = res.chat_partner.id;
+                    // this.chatPartner = res.chat_partner.id;
                     console.log(res);
                     this.$router.push({ name: 'chat', params: { chatId: res.id } });
                 }).catch(err => {
