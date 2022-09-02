@@ -187,14 +187,10 @@
 
 <script>
     import { chat as Chat } from "@/services";
-    // import { tender } from "@/settings/development";
-    // import { number } from "@formkit/inputs";
     import _find from 'lodash/find';
 
     export default {
         name: "Chat",
-        components: {
-        },
         props: {
             chatId: {
                 type: Number,
@@ -207,22 +203,17 @@
                 chat_messages: [],
                 form: {},
                 connection: null,
-                myId: parseInt(this.$store.state.id),
                 scrollbarVisible: {
                     users: false,
                     board: false
                 },
-                canScroll: true,
+                canScroll: false,
                 showLoaderSending: false,
                 currentRecipient: null,
                 isLoading: false,
-                // chatInfo: {},
                 rooms: [],
-                // room: "",
-                // messages: [],
                 limit: 8,
                 offset: 0,
-                // chatId: 0
                 touchStartX: 0,
                 touchStartY: 0,
                 touchEndX: 0,
@@ -261,7 +252,6 @@
                     return _find(this.rooms, { id: this.chat });
                 }
                 return undefined
-                
             }
         },
         watch: {
@@ -283,30 +273,16 @@
             }
         },
         created() {
-            this.fetchChats(this.chatId);
             this.connectionChat();
-            if (this.chatId) {
-                // ЗАСУНУТЬ ПРИ ВЫБОРЕ ЧАТА))
-                this.onSelectRecipient(this.chatId);
-                // this.getChat(this.chatId);
-                // this.getMessages(this.chatId);
-            }
-            // this.currentRoom();
-            // this.getChat(this.chatId);
-
+            this.fetchChats(this.chatId);
         },
-        destroyed() {
-            this.connection.closeChat();
-            // this.clearChat(this.chatId);
-        },
-        beforeDestroy() {
+        beforeUnmount() {
             if (this.connection) {
                 this.connection.closeChat();
             }
         },
         methods: {
             isActive(roomId) {
-                // console.log(roomId, this.chat)
                 return this.chat && roomId === this.chat;
             },
             dateDiff(oldDate, newDate) {
@@ -318,7 +294,6 @@
                 return Math.round( (newAsDate - oldAsDate) / msPerDay );
             },
             fetchChats(chatId) {
-                console.log(chatId, this.chatId);
                 this.showLoaderSending = true;
                 Chat.getChatList().then(res => {
                     this.rooms = res;
@@ -337,12 +312,10 @@
                     this.chat_messages = res.results.reverse().concat(this.chat_messages);
                     this.canScroll = res.count > this.offset;
                     const el = this.$refs.board;
-                    // const scrollHeight = el.scrollHeight;
-                    // console.log(el.scrollHeight);
+                    const scrollHeight = el.scrollHeight;
                     this.$nextTick(() => {
-                        this.fetchChats();
+                        el.scrollTop = el.scrollHeight - scrollHeight;
                         this.offset += this.limit;
-                        el.scrollTop = el.scrollHeight;
                         this.isLoading = false;
                     });
                 }).catch(err => {
@@ -350,7 +323,6 @@
                     this.isLoading = false;
                 });
             },
-
             onResize() {
                 Object.keys(this.scrollbarVisible).forEach(key => {
                     if (this.$refs[key]) {
@@ -360,17 +332,8 @@
             },
             scroll: function (el) {
                 let delta = Math.max(-1, Math.min(1, (el.wheelDelta || -el.detail)));
-                // console.log(delta);
-                // console.log(this.isLoading);
-                console.log(this.canScroll);
-                console.log(el);
                 const board = this.$refs.board;
-                console.log(el.target.scrollTop);
-                console.log(board.scrollTop);
-
-                // if (el.target.scrollTop === 0 && delta === 1 && this.isLoading === false && this.canScroll) {
-                // if (board.scrollTop === 0 && delta === 1 && this.isLoading === false && this.canScroll) {
-                if (board.scrollTop === 0 && delta === 1 && this.isoLading === false && this.canScroll) {
+                if (board.scrollTop === 0 && delta === 1 && this.isLoading === false && this.canScroll) {
                     this.appendMessages(this.chat);
                 }
             },
@@ -394,27 +357,14 @@
             //         )
             //     }
             // },
-
             onSelectRecipient(chatId) {
                 if (chatId && this.chat !== Number(chatId)) {
                     this.chat = Number(chatId);
-                    // this.getChat(chatId);
-                    this.clearChat(chatId);
-                    // this.connectionChat()
-                    // this.getMessages(chatId);
+                    this.clearChat();
                     this.appendMessages(chatId);   
                 }
             },
             onSendMessage(room, text) {
-                // console.log(text);
-                // if (text) {
-                //     this.chatEmpty = false;
-                //     this.message = '';
-                //     let message = {
-                //         "text": text,
-                //         "author": this.myId,
-                //         "room": this.chat,
-                //     }
                 if (text) {
                     Chat.createMessages(room, {'text': text}).then(() => {
                         this.fetchChats();
@@ -423,8 +373,6 @@
                         console.error(err);
                     });
                 }
-
-                // }
             },
             closeWindow() {
                 this.windowActive = false;
@@ -432,12 +380,7 @@
             clearChat() {
                 this.offset = 0;
                 this.chat_messages = [];
-                this.chatEmpty = true;
                 this.canScroll = true;
-                // console.log(this.connection);
-                // if (this.connection) {
-                //     this.connection.closeChat();
-                // }
             },
             linkToTenders() {
                 this.$router.push({ name: 'tenders'});
@@ -465,12 +408,13 @@
                 return _find(this.rooms, { id });
             },
             connectionChat() {
+                if (this.connection) {
+                    this.connection.closeChat();
+                }
                 this.connection = new Chat();
-                // this.connection = new Chat(this.$store.state.user.id);
 
                 this.connection.onEvent('open', () => {
                     console.log('Chat is opened');
-                    this.isConnected = true;
                 });
                 this.connection.onEvent('close', (isOK, e) => {
                     if (isOK) {
@@ -478,7 +422,6 @@
                     } else {
                         console.warn(`Chat is closed with code ${e.code}: ${e.reason}`);
                     }
-                    this.isConnected = false;
                 });
                 this.connection.onEvent('error', () => {
                     console.error('Chat has received an error');
