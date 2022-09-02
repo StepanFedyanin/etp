@@ -111,15 +111,17 @@
                                         </div>
                                         <div
                                             v-else
-                                            class="chat__messages-item"
-                                            :class="message.user !== $store._state.data.user.id ? 'is-recipient' : 'is-your'"
+                                            class="chat__messages-item "
+                                            :class="[{'is-unread': !message.seen}, message.user !== $store._state.data.user.id ? 'is-recipient' : 'is-your']"
                                         >
-                                            <div 
-                                                class="chat__messages-item-text"
-                                                v-html="message.text"
-                                            />
-                                            <div class="chat__messages-item-time">
-                                                {{ $helpers.formatDate(new Date(message.date_publication), 'HH:mm') }}
+                                            <div class="chat__messages-item-inner">
+                                                <div 
+                                                    class="chat__messages-item-text"
+                                                    v-html="message.text"
+                                                />
+                                                <div class="chat__messages-item-time">
+                                                    {{ $helpers.formatDate(new Date(message.date_publication), 'HH:mm') }}
+                                                </div>
                                             </div>
                                         </div>
                                     </template>

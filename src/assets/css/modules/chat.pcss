@@ -205,22 +205,45 @@
             position: relative;
             display: flex;
             flex-direction: column;
-            padding: 8px 16px;
-            border-radius: 20px;
+            /* padding: 8px 16px; */
+            /* border-radius: 20px; */
             margin-bottom: 16px;
+            &-inner {
+                /* position: relative; */
+                padding: 8px 16px;
+                display: flex;
+                flex-direction: column;
+                border-radius: 20px;
+                border-top-left-radius: 0;
+                margin-right: auto;
+            }
+            &.is-your &-inner  {
+                background: $color-white;
+            }
+            &.is-recipient &-inner {
+                background: $color-green-opacity20;
+                margin-right: auto;
+            }
+
             &.is-your {
                 max-width: 80%;
-                background: $color-white;
+                /* background: $color-white; */
                 border-top-right-radius: 0;
                 margin-left: auto;
                 align-items: flex-end;
             }
             &.is-recipient {
-                background: $color-green-opacity20;
+                /* background: $color-green-opacity20; */
                 border-top-left-radius: 0;
-                margin-right: auto;
+                /* margin-right: auto; */
                 align-items: flex-start;
             }
+            &.is-recipient.is-unread {
+                background: $color-green-opacity20;
+                border-top-left-radius: 0;
+                border-radius: 20px;
+            }
+
             &-text {
                 font-weight: 400;
                 font-size: 16px;
