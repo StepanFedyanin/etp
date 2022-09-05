@@ -54,6 +54,13 @@
     &__submit {
         display: flex;
         justify-content: center;
+        @mixin responsive-xxs {
+            flex-direction: column;
+            align-items: center;
+        }
+        .button {
+            margin-bottom: 24px;
+        }
     }
     &[loading="true"] [data-type="submit"] .button[type="submit"]:before,
     &[loading="true"] .button.m--loading:before {

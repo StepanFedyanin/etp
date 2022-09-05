@@ -1,5 +1,9 @@
 .persons {
     position: relative;
+    @mixin responsive-le-m {
+        overflow-x: auto;
+        @mixin scrollbar $color-shadow, $color-green, 10px;
+    }
 
     &__item {
         padding: 8px 0;
@@ -11,6 +15,9 @@
         /*grid-template-areas: 'A B C D';*/
         gap: 10px;
         word-break: break-word;
+        @mixin responsive-le-s {
+            min-width: 780px;
+        }
 
         &.m--header {
             padding: 0 0 16px;

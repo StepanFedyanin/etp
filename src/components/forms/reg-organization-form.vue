@@ -1,13 +1,13 @@
 <template>
     <FormKit
         v-model="formValues"
+        id="form-organization"
         name="form-organization"
-        preserve
         type="form"
         data-loading="loading"
         form-class="$reset registration__form form"
         :actions="false"
-        :disabled="loading || formData.created ? false : true"
+        :disabled="loading"
         :loading="loading ? true : undefined"
         @submit="submitHandler"
     >
@@ -17,7 +17,7 @@
             />
         </div>
         <div 
-            class="form__submit auth__form-submit" 
+            class="form__submit" 
             data-type="submit"
         >
             <button
@@ -56,6 +56,7 @@
         data() {
             return {
                 formValues: this.formData,
+                addressMatches: false,
                 schema: [
                     {
                         $formkit: 'text',
@@ -128,10 +129,18 @@
                         outerClass: 'field--inline'
                     }, {
                         $formkit: 'text',
+                        id: 'address',
                         name: 'actual_address',
-                        disabled: this.formData.created ? false : true,
+                        disabled: this.addressMatches,
                         label: 'Фактический адрес организации',
-                        outerClass: 'field--inline'
+                        outerClass: 'field--inline',
+                    }, {
+                        $formkit: 'checkbox',
+                        id: 'address_matches',
+                        name: 'address_matches',
+                        //disabled: this.formData.created ? false : true,
+                        label: 'Совпадает с юридическим',
+                        outerClass: 'm--offset'
                     }, {
                         $formkit: "hidden",
                         name: 'city',
@@ -151,14 +160,14 @@
                     }, {
                         $formkit: this.formData.owner_type == "ip" ? "hidden" : "text",
                         name: 'capital',
-                        label: 'Сумма уставного капитала',
+                        label: 'Сумма уставного капитала, ₽',
                         disabled: true,
                         outerClass: 'field--inline'
                     }, {
                         $formkit: 'text',
                         name: 'principal_activity',
                         disabled: true,
-                        label: 'Основной виде деятельности (ОКВЭД)',
+                        label: 'Основной вид деятельности (ОКВЭД)',
                         outerClass: 'field--inline'
                     }, {
                         $formkit: "hidden",
@@ -209,6 +218,16 @@
                         ],
                     }, 
                 ],
+            }
+        },
+        watch: {
+            'formValues.address_matches': {
+                handler() {
+                    this.addressMatches = this.formValues.address_matches;
+                    const node = this.$formkit.get('address');
+                    node.props.disabled = this.addressMatches;
+                    this.formValues.actual_address = this.formValues.legal_address;
+                },
             }
         },
         methods: {

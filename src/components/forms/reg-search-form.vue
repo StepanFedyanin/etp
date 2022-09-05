@@ -44,6 +44,9 @@
                         name: 'inn',
                         placeholder: 'Ваш ИНН',
                         validation: [['required'], ['matches', /^(\d{10}|\d{12})$/]],
+                        validationMessages: {
+                            matches: 'Пожалуйста, укажите ИНН вашей организации: 10 цифр для юридических лиц и 12 цифр для ИП',
+                        },
                         maska: { mask: ['##########', '############'] },
                         outerClass: 'field--required'
                     }, 

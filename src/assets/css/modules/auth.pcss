@@ -6,7 +6,13 @@
     &__form {
         .form__block {
             max-width: 50%;
+            @mixin responsive-le-l {
+                max-width: 70%;
+            }
             @mixin responsive-le-m {
+                max-width: 80%;
+            }
+            @mixin responsive-le-s {
                 max-width: none;
             }
         }

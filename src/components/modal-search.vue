@@ -84,12 +84,14 @@
                             }, {
                                 label: 'Тендер завершен',
                                 value: 'closed'
+                            /*
                             }, {
                                 label: 'Есть победитель',
                                 value: 'closed'
                             }, {
                                 label: 'Нет победителя',
                                 value: 'closed'
+                            */
                             }
                         ],
                         inputClass: 'modal-form__select',

@@ -5,6 +5,14 @@
     padding-bottom: 24px;
     margin-bottom: 8px;
 
+    &&.m--offset {
+        margin-right: 0;
+        margin-bottom: 0;
+        display: grid;
+        grid-template-columns: repeat(8, 1fr);
+        grid-column-gap: 16px;
+    }
+
     &--type_hidden {
         display: none;
     }
@@ -16,12 +24,30 @@
         height: 100%;
     }
 
+    &&.m--offset &__inner {
+        flex-direction: row;
+        align-items: center;
+        margin-top: 0;
+        grid-column: 4/8;
+        @mixin responsive-le-xs {
+            grid-column: 1/9;
+        }
+    }
+
     &__label {
         display: block;
         margin: 0 0 8px 8px;
         color: $color-gray-T2;
         font-size: 18px;
         font-weight: 500;
+    }
+
+    &&.m--offset &__input {
+        margin-top: 0;
+    }
+
+    &&.m--offset &__label {
+        margin-bottom: 0;
     }
 
 /*
@@ -161,7 +187,7 @@
         right: 0;
         left: 0;
         bottom: -20px;
-        font-size: 10px;
+        font-size: 14px;
         font-weight: 400;
         padding-top: 8px;
         color: $color-gray-T3;
@@ -201,10 +227,17 @@
         grid-column: 1/4;
         align-self: center;
         margin: 0;
+        @mixin responsive-le-xs {
+            grid-column: 1/9;
+            margin-bottom: 4px;
+        }
     }
 
     &--inline &__input {
         grid-column: 4/9;
+        @mixin responsive-le-xs {
+            grid-column: 1/9;
+        }
     }
 
     &--inline &__option &__input,

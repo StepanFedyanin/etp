@@ -596,6 +596,7 @@
             }
         },
         watch: {
+            /*
             '$route.params.id': {
                 immediate: true,
                 handler() {
@@ -621,8 +622,29 @@
                     }
                 }
             }
+            */
         },
         mounted() {
+            let id = this.$route.params.id
+            if (id) { // редактирование тендера
+                //this.showLoaderSending = true;
+                tenderApi.getTender(id).then(tender => {
+                    this.defaultTender = tender
+                    // console.log(tender)
+                    this.setTender()
+                    this.showLoaderSending = false;
+                }).catch(err => {
+                    this.showLoaderSending = false;
+                    console.error(err)
+                })
+            } else {
+                if (this.defaultTender) {
+                    this.defaultTender = null
+                    this.resetFormTender()
+                    this.documents = []
+                    this.lots = []
+                }
+            }
         },
         created() {
         },

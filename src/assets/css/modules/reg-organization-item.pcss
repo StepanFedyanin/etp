@@ -4,7 +4,10 @@
     &&:not(:last-child){
         margin-bottom: 36px;
     }
-    .organization__box{
+    @mixin responsive-le-s {
+        flex-direction: column;
+    }
+    .organization__box {
         position: relative;
         flex: 1;
         display: flex;
@@ -13,6 +16,20 @@
         max-width: 50%;
         background-color: #ffffff;
         box-shadow: 0px 16px 24px #e5e5e5;
+        @mixin responsive-le-l {
+            max-width: 70%;
+        }
+        @mixin responsive-le-m {
+            max-width: 80%;
+        }
+        @mixin responsive-le-s {
+            max-width: none;
+            width: 100%;
+            margin-bottom: 24px;
+        }
+        @mixin responsive-xxs {
+            flex-direction: column;
+        }
         &:before{
             content: "";
             position: absolute;
@@ -55,11 +72,21 @@
     }
     button{
         margin-left: 36px;
+        @mixin responsive-le-s {
+            margin-left: 0;
+        }
     }
-    .organization__options{
-        &:nth-child(2){
-            padding-left:8px;
-            border-left:1px solid $color-gray;
+    .organization__options {
+        &:nth-child(2) {
+            padding-left: 8px;
+            border-left: 1px solid $color-gray;
+            @mixin responsive-xxs {
+                padding-left: 0;
+                padding-top: 8px;
+                margin-top: 8px;
+                border-left: none;
+                border-top: 1px solid $color-gray;
+            }
         }
         .option {
             display: flex;

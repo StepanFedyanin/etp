@@ -13,7 +13,7 @@
         { name: 'actual_address', type: 'text', label: 'Фактический адрес организации', required: true },
         { name: 'okpo', type: 'text', label: 'ОКПО', required: true },
         { name: 'capital', type: 'text', label: 'Сумма уставного капитала', required: true },
-        { name: 'principal_activity', type: 'text', label: 'Основной виде деятельности (ОКВЭД)' },
+        { name: 'principal_activity', type: 'text', label: 'Основной вид деятельности (ОКВЭД)' },
     ];
 
     const fieldsets = [

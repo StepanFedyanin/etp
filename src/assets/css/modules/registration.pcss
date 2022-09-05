@@ -11,9 +11,19 @@
     &__form {
         .form__block {
             max-width: 50%;
+            @mixin responsive-le-l {
+                max-width: 70%;
+            }
+            @mixin responsive-le-m {
+                max-width: 80%;
+            }
             @mixin responsive-le-s {
                 max-width: none;
             }
+        }
+
+        @mixin responsive-le-s {
+            flex-direction: column;
         }
 
         &-submit {
@@ -32,7 +42,13 @@
         display: grid;
         grid-template-columns: 50% auto;
         grid-gap: 36px;
-
+        justify-content: flex-start;
+        @mixin responsive-le-s {
+            grid-template-columns: 100%;
+        }
+        .organization__box {
+            max-width: none;
+        }
     }
     &__organization {
         position: relative;
@@ -75,8 +91,21 @@
                 margin-right: 0px;
             }
         }
+        .field__comment {
+            left: 0;
+        }
         .formkit-actions {
             margin-left: 36px;
+            .button {
+                margin-right: 0;
+            }
+            @mixin responsive-le-s {
+                margin-left: 0;
+                .button {
+                    margin-right: 0;
+                    margin-bottom: 36px;
+                }
+            }
         }
         .field__input {
             max-width: inherit;
@@ -99,10 +128,16 @@
             padding-bottom: 10px;
             font-weight: 400;
         }
+        @mixin responsive-le-s {
+            max-width: none;
+        }
     }
     &__type-organization {
         display: grid;
         grid-template-columns: 1fr 1fr;
+        @mixin responsive-le-xs {
+            grid-template-columns: 1fr;
+        }
         .field[data-type=checkbox] .field__inner {
             flex-direction: row;
             .field__label{

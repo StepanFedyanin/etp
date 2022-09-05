@@ -139,7 +139,7 @@
                                     Дата окончания этапа
                                 </div>
                                 <div class="tender__data-info">
-                                    {{ $helpers.formatDate(new Date(tender.date_start), 'DD.MM.YYYY HH:mm') }}
+                                    {{ $helpers.formatDate(new Date(tender.date_start), 'DD.MM.YYYY HH:mm') }} МСК
                                 </div>
                             </div>
                         </div>
@@ -153,7 +153,7 @@
                                     Дата окончания этапа
                                 </div>
                                 <div class="tender__data-info">
-                                    {{ $helpers.formatDate(new Date(tender.date_end), 'DD.MM.YYYY HH:mm') }}
+                                    {{ $helpers.formatDate(new Date(tender.date_end), 'DD.MM.YYYY HH:mm') }} МСК
                                 </div>
                             </div>
                         </div>
@@ -167,7 +167,7 @@
                                     Дата завершения
                                 </div>
                                 <div class="tender__data-info">
-                                    {{ $helpers.formatDate(new Date(tender.date_end), 'DD.MM.YYYY HH:mm') }} 
+                                    {{ $helpers.formatDate(new Date(tender.date_end), 'DD.MM.YYYY HH:mm') }} МСК
                                 </div>
                             </div>
                         </div>                        
@@ -181,7 +181,7 @@
                                     Дата завершения
                                 </div>
                                 <div class="tender__data-info">
-                                    {{ $helpers.formatDate(new Date(tender.date_fulfilment), 'DD.MM.YYYY HH:mm') }} 
+                                    {{ $helpers.formatDate(new Date(tender.date_fulfilment), 'DD.MM.YYYY HH:mm') }} МСК 
                                 </div>
                             </div>
                         </div>                        
