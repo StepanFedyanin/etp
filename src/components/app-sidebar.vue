@@ -65,6 +65,11 @@
                                                     @click="navigate"
                                                 >
                                                     {{ sitem.title }}
+                                                    <template
+                                                        v-if="sitem.name === 'participant-invites' && invitesCount !== 0"
+                                                    >
+                                                        <div class="sidebar__menu-count">{{ invitesCount }}</div>
+                                                    </template>
                                                 </a>
                                             </div>
                                         </router-link>
@@ -90,7 +95,8 @@
                 menu: sidebarMenu,
                 menuOpenedItems: {},
                 push: undefined,
-                roomUnreadCount: 0
+                roomUnreadCount: 0,
+                invitesCount: 0
             };
         },
         watch: {
@@ -146,7 +152,8 @@
                 this.push.openPush();
             },
             handlePush(event) {
-                let route_path = this.$route.path
+                this.invitesCount = event.invites_count;
+                // let route_path = this.$route.path
                 switch(event.push_reason) {
                 // case 'notification':
                 //     if (!route_path.includes('notification')) {
@@ -154,9 +161,12 @@
                 //     }
                 //     break;
                 case 'chat_update':
-                    this.roomUnreadCount = event.unread_room_count
+                    this.roomUnreadCount = event.unread_room_count;
                     break;
                 case 'initial_info':
+                    this.roomUnreadCount = event.unread_room_count;
+                    break;
+                case 'chat_read':
                     this.roomUnreadCount = event.unread_room_count;
                     break;
                 }
