@@ -341,7 +341,7 @@
             },
             lots() {
                 if (this.tender.lots.length)
-                    return this.tender.lots.filter(lot => lot.publication)
+                    return this.tender.lots //.filter(lot => lot.publication)
                 
                 return false
             },
