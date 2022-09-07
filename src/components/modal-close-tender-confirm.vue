@@ -10,7 +10,7 @@
         >
             <span />
         </button>
-        <span class="modal__title">Удаление тендера</span>
+        <span class="modal__title">Завершение тендера с текущими победителями</span>
         <div 
             class="modal__content"
         >
@@ -20,12 +20,12 @@
                         Аукцион №{{ tender.id }}. {{ tender.name }}
                     </div>
                     <div
-                        v-if="deleteSended"
+                        v-if="closeSended"
                         class="form m--width-100"
                     >
                         <div class="form__block m--flex">
                             <div class="form__block-title m--center m--with-icon">
-                                <span class="m--ok">Ваш тендер успешно удален!</span>
+                                <span class="m--ok">Ваш тендер успешно закрыт!</span>
                             </div>
                         </div>
                         <div 
@@ -57,7 +57,11 @@
                     >
                         <div class="form__block m--flex">
                             <div class="form__block-title m--center">
-                                Вы действительно хотите удалить тендер?
+                                Вы действительно хотите завершить тендер?
+                            </div>
+                            <div class="form__block-content text content m--center">
+                                <p>Вы можете проверить список победителей и в случае необходимости изменить победителя по каждому лоту.</p>
+                                <p>После завершения тендера смена победителей будет невозможна.</p>
                             </div>
                         </div>
                         <div 
@@ -65,12 +69,20 @@
                             data-type="submit"
                         >
                             <button
+                                type="reset"
+                                :disabled="showLoaderSending"
+                                class="button button-red m--small"
+                                @click="$emit('hideModal', false)"
+                            >
+                                Вернуться и изменить победителей
+                            </button>
+                            <button
                                 type="submit"
                                 :disabled="showLoaderSending"
-                                class="button button-green"
+                                class="button button-green m--small"
                                 @click="submitForm"
                             >
-                                Подтвердить
+                                Завершить тендер
                             </button>
                         </div>
                     </FormKit>
@@ -114,10 +126,10 @@
             submitHandler() {
                 this.showLoaderSending = true;
                 this.loading = true;
-                tenderApi.deleteDraft(this.tender.id).then(res => {
+                tenderApi.closeWithAcceptWinnersTender(this.tender.id).then(res => {
                     this.showLoaderSending = false;
                     this.loading = false;
-                    this.deleteSended = true;
+                    this.closeSended = true;
                     this.updateData = true;
                     console.log(res);
                 }).catch(err => {

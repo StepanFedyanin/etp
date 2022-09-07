@@ -14,6 +14,14 @@ export default class extends REST {
         });
     }
 
+    static deleteDraft(tenderId){
+        return this._delete(`drafts/${tenderId}/delete`, {}, {}).then((data) => {
+            return data;
+        }).catch((error) => {
+            throw new RESTError(error, 'Ошибка при попытке удаления черновика');
+        });
+    }
+
     static getTenderList() {
         return this._get('list', {}).then((data) => {
             return data;
@@ -328,6 +336,13 @@ export default class extends REST {
     }
     static closeTender(tenderId, params){
         return this._post(`${tenderId}/close`, {}, params).then((data) => {
+            return data;
+        }).catch((error) => {
+            throw new RESTError(error, 'Ошибка при попытке закрыть тендер');
+        });
+    }
+    static closeWithAcceptWinnersTender(tenderId){
+        return this._post(`${tenderId}/accept_winners`, {}, {}).then((data) => {
             return data;
         }).catch((error) => {
             throw new RESTError(error, 'Ошибка при попытке закрыть тендер');

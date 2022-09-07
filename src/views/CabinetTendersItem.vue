@@ -274,7 +274,7 @@
                     </div>
                 </div>
                 <div 
-                    v-if="tender.creator === user.id && tender.status !== 'closed' && tender.status !== 'fulfilment'" 
+                    v-if="tender.creator === user.id && tender.publication && tender.status !== 'closed' && tender.status !== 'fulfilment'" 
                     class="tender__actions"
                 >
                     <div class="tender__actions-title">
@@ -286,7 +286,7 @@
                     >
                         <button 
                             class="button button-red"
-                            @click.stop="onClickCloseTender"
+                            @click.stop="onClickCloseTender(false)"
                         >
                             Отменить тендер
                         </button>
@@ -303,16 +303,32 @@
                     >
                         <button 
                             class="button button-red"
-                            @click.stop="onClickCloseTender()"
+                            @click.stop="onClickCloseTender(true)"
                         >
                             Завершить досрочно и выбрать победителя
                         </button>
                         <button 
                             class="button button-green"
-                            @click.stop="onClickCloseTenderWithWinner()"
+                            @click.stop="onClickCloseTender(false)"
                         >
                             Завершить досрочно без победителя
                         </button>
+                    </div>
+                    <div
+                        v-else-if="tender.status === 'bidding_completed'" 
+                        class="tender__actions-buttons"
+                    >
+                        <button 
+                            class="button button-green"
+                            @click.stop="onClickCloseTenderWithWinner()"
+                        >
+                            Завершить тендер
+                        </button>
+                        <ModalCloseTenderConfirm
+                            :tender="tender || {}"
+                            :showModal="showCloseTenderConfirmModal"
+                            @hideModal="hideCloseTenderConfirmModal"
+                        />
                     </div>
                 </div>
                 <div 
@@ -499,6 +515,7 @@
     import TenderBids from '@/components/tender-bids';
     import Timer from '@/components/timer';
     import inviteTender from '@/components/invite-tender.vue';
+    import ModalCloseTenderConfirm from '@/components/modal-close-tender-confirm';
     import ModalDeleteTenderConfirm from '@/components/modal-delete-tender-confirm';
     import { chat as Chat } from "@/services"
     import RelatedTenders from '@/components/relatedTenders.vue';
@@ -511,6 +528,7 @@
             TenderBids,
             Timer,
             inviteTender,
+            ModalCloseTenderConfirm,
             ModalDeleteTenderConfirm,
             RelatedTenders
         },
@@ -536,6 +554,7 @@
                     bidding_completed: 'Подведение итогов',
                     closed: 'Тендер завершен'
                 },
+                showCloseTenderConfirmModal: false,
                 showDeleteTenderConfirmModal: false,
                 showLoaderSending: false,
                 formValues: {},
@@ -600,8 +619,8 @@
                     console.error(err);
                 });
             },
-            onClickCloseTender() {
-                tenderApi.closeTender(this.tender.id).then(res => {
+            onClickCloseTender(setWinner) {
+                tenderApi.closeTender(this.tender.id, { set_winner: setWinner }).then(res => {
                     console.log(res);
                     this.getTenderData();
                 }).catch(err => {
@@ -610,13 +629,7 @@
                 });
             },
             onClickCloseTenderWithWinner() {
-                // tenderApi.closeTender(this.tender.id).then(res => {
-                //     console.log(res);
-                //     this.getTenderData();
-                // }).catch(err => {
-                //     this.$store.dispatch('showError', err);
-                //     console.error(err);
-                // });
+                this.showCloseTenderConfirmModal = true;
             },
             onClickEditTender() {
                 this.$router.push({ name: 'tender-edit', id: this.tender.id });
@@ -624,8 +637,17 @@
             onClickDeleteTender() {
                 this.showDeleteTenderConfirmModal = true;
             },
-            hideDeleteTenderConfirmModal() {
+            hideCloseTenderConfirmModal(updateData=false) {
+                this.showCloseTenderConfirmModal = false;
+                if (updateData) {
+                    this.getTenderData();
+                }
+            },
+            hideDeleteTenderConfirmModal(updateData=false) {
                 this.showDeleteTenderConfirmModal = false;
+                if (updateData) {
+                    this.$router.push({ name: 'customer-drafts' });
+                }
             },
             startChat(organizationId) {
                 let params = {

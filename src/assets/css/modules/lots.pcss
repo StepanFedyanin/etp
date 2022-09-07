@@ -37,11 +37,8 @@
 
     &__inner {
         margin: 0 20px;
-
-        @mixin responsive-le-m {
-            overflow-y: auto;
-            @mixin scrollbar $color-shadow, $color-green, 10px;
-        }
+        overflow-y: auto;
+        @mixin scrollbar $color-shadow, $color-green, 10px;
     }
 
     &__header,

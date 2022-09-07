@@ -1,7 +1,10 @@
 <template>
-    <div class="tender__related">
+    <div 
+        v-if="(tender.related_parent_tender && tender.related_parent_tender.length) || (tender.related_tenders && tender.related_tenders.length)"
+        class="tender__related"
+    >
         <template
-            v-if="tender.related_parent_tender"
+            v-if="tender.related_parent_tender && tender.related_parent_tender.length"
         >
             <div class="tender__related-title">
                 Основной тендер
@@ -26,7 +29,7 @@
             </div>
         </template>
         <template
-            v-if="tender.related_tenders"
+            v-if="tender.related_tenders && tender.related_tenders.length"
         >
             <div class="tender__related-title">
                 Связанные тендеры
