@@ -123,6 +123,9 @@ const helpers = {
             document.title = title;
         }
     },
+    curDateMSK() {
+        return parse(new Date().toLocaleString('ru', { timeZone: 'Europe/Moscow' }), 'DD.MM.YYYY, HH:mm:ss');
+    }
 }
 
 export default {

@@ -21,29 +21,36 @@
     }
     &__search {
         margin-bottom: 35px;
+        padding: 0 30px;
+    }
+    &__loader {
+        padding: 0 0 20px;
     }
 
     &__list {
         position: relative;
-        margin-left: -20px;
+        /*margin-left: -20px;*/
+
+        &-loader {
+            padding: 0 30px 20px;
+        }
 
         &-inner {
-            @mixin simple-box-list;
+            /*@mixin simple-box-list;*/
     
-            max-height: 700px;
-            overflow-y: auto;
-            overflow-x: visible;
-            padding: 0 20px 0 20px;
-            gap: 24px;
-
-            @mixin scrollbar $color-shadow, $color-green, 10px;
-
-            &::-webkit-scrollbar-track {
-                margin: 20px 0;
-            }
+            /*padding: 0;*/
+            padding: 0 30px 20px;
 
             &.is-scrollbar {
+                max-height: 700px;
+                overflow-y: auto;
+                overflow-x: visible;
                 padding: 0 50px 0 20px;
+                @mixin scrollbar $color-shadow, $color-green, 10px;
+
+                &::-webkit-scrollbar-track {
+                    margin: 20px 0;
+                }
             }
         }
 

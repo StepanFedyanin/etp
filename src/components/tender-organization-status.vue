@@ -147,7 +147,7 @@
                 Статус вашей организации: <span class="m--color-green">Победитель (предварительно)</span>
             </div>
             <div 
-                v-else-if="tender.status === 'closed'"
+                v-else-if="tender.status === 'closed' || tender.status === 'fulfilment'"
                 class="tender__status-title"
             >
                 Статус вашей организации: <span class="m--color-green">Победитель</span>

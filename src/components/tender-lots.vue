@@ -170,16 +170,6 @@
                                     —
                                 </template>
                             </div>
-                            <div 
-                                v-if="user.id === tender.creator"
-                                class="lots__item-cell m--edit"
-                            >
-                                <a
-                                    href="#"
-                                    class="lots__item-edit"
-                                    @click.prevent="onClickWinnerLotModal(lot)"
-                                />
-                            </div>
                         </template>
                     </div>
                 </div>

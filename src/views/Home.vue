@@ -47,25 +47,48 @@
                 ref="auction"
                 class="auction"
             >
-                <div class="container">
-                    <div class="h1 auction__title">
-                        Проведено 3 500 торгов на 22.03.2022
-                    </div>
-                    <div class="h4 auction__subtitle">
-                        В категориях: Автомобильное оборудование, Канцелярские
-                        принадлежности для офиса, Органические удобрения, Услуги
-                        грузоперевозок и 12 других
-                    </div>
+                <div class="container m--1460">
                     <div class="auction__search">
+                        <div class="h1 auction__title">
+                            Новые тендеры в категориях:
+                        </div>
+                        <template
+                            v-if="showLoaderGroups"
+                        >
+                            <div class="auction__loader loader">
+                                <div class="spinner" /> Загрузка групп
+                            </div>
+                        </template>
+                        <template
+                            v-else-if="groups && groups.count"
+                        >
+                            <div class="h4 auction__subtitle">
+                                <span
+                                    v-for="idx in 5"
+                                    :key="`group-${idx}`"
+                                >
+                                    <router-link
+                                        :to="{ name: 'groups' }"
+                                        v-text="groups.results[idx - 1].name"
+                                    />,
+                                </span>
+                                и
+                                <router-link
+                                    :to="{ name: 'groups' }"
+                                >
+                                    {{ groups.count - 5 }} других категориях.
+                                </router-link>
+                            </div>
+                        </template>
                         <Search
                             @startSearch="startSearch"
                         />
                     </div>
                     <div
                         class="auction__list"
-                        :class="{ 'is-scrollbar': scrollbarVisible }"
+                        :class="{ '_is-scrollbar' : scrollbarVisible }"
                     >
-                        <div
+                        <!--div
                             v-show="scrollbarVisible"
                             class="auction__list-up"
                             @click="scrollUp"
@@ -74,70 +97,90 @@
                             v-show="scrollbarVisible"
                             class="auction__list-down"
                             @click="scrollDown"
-                        />
-                        <div
-                            v-if="tenderList && tenderList.count"
-                            ref="list"
-                            class="auction__list-inner"
+                        /-->
+                        <template
+                            v-if="showLoaderTenders"
+                        >
+                            <div class="auction__list-loader loader">
+                                <div class="spinner" /> Загрузка данных
+                            </div>
+                        </template>
+                        <template
+                            v-else-if="tenderList && tenderList.count"
                         >
                             <div
-                                v-for="item in tenderList.results"
-                                :key="item.id"
-                                class="auction__item"
+                                ref="list"
+                                class="auction__list-inner tenders"
                             >
-                                <div class="auction__item-left">
-                                    <div class="auction__item-title">
-                                        {{ item.name }}
-                                    </div>
-                                    <div class="auction__item-price m--mobile">
-                                        {{ $helpers.toPrice(item.price, {sign: '₽'}) }}
-                                    </div>
-                                    <div class="auction__item-description">
-                                        {{ item.description }}
-                                    </div>
-                                    <div class="auction__item-foot">
-                                        <div class="auction__item-status">
-                                            {{ item.status }}
+                                <blockTenderHome
+                                    v-for="(tender, index) in tenderList.results"
+                                    :key="`tender-${index}`"
+                                    :tender="tender"
+                                />
+                                <!--
+                                <div
+                                    v-for="item in tenderList.results"
+                                    :key="item.id"
+                                    class="auction__item"
+                                >
+                                    <div class="auction__item-left">
+                                        <div class="auction__item-title">
+                                            {{ item.name }}
                                         </div>
-                                        <div
-                                            class="auction__item-button"
-                                        >
-                                            <button
-                                                class="button button-green"
-                                                @click="$router.push({ name: 'tender', params: { id: item.id } });"
+                                        <div class="auction__item-price m--mobile">
+                                            {{ $helpers.toPrice(item.price, {sign: '₽'}) }}
+                                        </div>
+                                        <div class="auction__item-description">
+                                            {{ item.description }}
+                                        </div>
+                                        <div class="auction__item-foot">
+                                            <div class="auction__item-status">
+                                                {{ item.status }}
+                                            </div>
+                                            <div
+                                                class="auction__item-button"
                                             >
-                                                Участвовать
-                                            </button>
+                                                <button
+                                                    class="button button-green"
+                                                    @click="$router.push({ name: 'tender', params: { id: item.id } });"
+                                                >
+                                                    Участвовать
+                                                </button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="auction__item-right">
+                                        <div class="auction__item-price">
+                                            {{ $helpers.toPrice(item.price, {sign: '₽'}) }}
+                                        </div>
+                                        <div class="auction__item-prop">
+                                            Тип аукциона: {{ item.type }}
+                                        </div>
+                                        <div class="auction__item-prop">
+                                            Лоты: {{ item.lot_count }}
+                                        </div>
+                                        <div class="auction__item-prop">
+                                            Категории:
+                                            <span
+                                                v-for="(category, idx) in item.category"
+                                                :key="category.id"
+                                            >
+                                                {{ category.name }}
+                                                <span v-if="idx != Object.keys(item.category).length - 1">, </span>
+                                            </span>
                                         </div>
                                     </div>
                                 </div>
-                                <div class="auction__item-right">
-                                    <div class="auction__item-price">
-                                        {{ $helpers.toPrice(item.price, {sign: '₽'}) }}
-                                    </div>
-                                    <div class="auction__item-prop">
-                                        Тип аукциона: {{ item.type }}
-                                    </div>
-                                    <div class="auction__item-prop">
-                                        Лоты: {{ item.lot_count }}
-                                    </div>
-                                    <div class="auction__item-prop">
-                                        Категории:
-                                        <span
-                                            v-for="(category, idx) in item.category"
-                                            :key="category.id"
-                                        >
-                                            {{ category.name }}
-                                            <span v-if="idx != Object.keys(item.category).length - 1">, </span>
-                                        </span>
-                                    </div>
-                                </div>
+                                -->
                             </div>
-                        </div>
+                        </template>
                     </div>
                 </div>
             </div>
-            <div class="features">
+            <div 
+                v-if="showFeatures"
+                class="features"
+            >
                 <div class="container">
                     <div class="h1 features__title">
                         Бизнес для своих
@@ -195,9 +238,94 @@
                     </div>
                 </div>
             </div>
+            <div class="container m--1460 capabilities">
+                <div class="h1">
+                    Бизнес для своих
+                </div>
+                <div class="capabilities__content content">
+                    <p>Мы создаем полноценную социальную платформу для малого и среднего бизнеса, основанную на взаимопомощи и качественных поставках друг другу.</p>
+                </div>
+                <div 
+                    class="capabilities__block"
+                >
+                    <div class="capabilities__item">
+                        <div class="capabilities__item-title">
+                            Участвуйте в тендерах
+                        </div>
+                        <div class="capabilities__item-description">
+                            <ul>
+                                <li>ознакомьтесь с тендерами и запросами котировок, проходящими прямо сейчас;</li>
+                                <li>воспользуйтесь фильтром по региону поставки, товарным группам и другим параметрам;</li>
+                                <li>подавайте заявки на участие и побеждайте!</li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="capabilities__item">
+                        <div class="capabilities__item-title">
+                            Проводите тендеры
+                        </div>
+                        <div class="capabilities__item-description">
+                            <ul>
+                                <li>объявите собственный тендер или запрос котировок;</li>
+                                <li>пригласите к участию бизнес-партнеров, уже знакомых вам, и принимайте заявки от новых проверенных контрагентов;</li>
+                                <li>организуйте связанный тендер, чтобы купить все необходимое для исполнения обязательств.</li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="capabilities__item">
+                        <div class="capabilities__item-title">
+                            Контролируйте исполнение обязательств
+                        </div>
+                        <div class="capabilities__item-description">
+                            <ul>
+                                <li>устанавливайте четкий срок исполнения обязательств по тендеру;</li>
+                                <li>следите за победителями ваших тендеров и за их закупками;</li>
+                                <li>все возникшие вопросы и трудности решайте в собственных чатах тендера.</li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="capabilities__item">
+                        <div class="capabilities__item-title">
+                            Приглашайте своих партнеров
+                        </div>
+                        <div class="capabilities__item-description">
+                            <ul>
+                                <li>пригласите на площадку тех, с кем ваша компания уже торгует;</li>
+                                <li>сделайте ваш процесс закупок более прозрачным и удобным;</li>
+                                <li>укрепляйте связи с проверенными партнерами.</li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="capabilities__item">
+                        <div class="capabilities__item-title">
+                            Обретайте новые связи
+                        </div>
+                        <div class="capabilities__item-description">
+                            <ul>
+                                <li>ознакомьтесь со списком организаций, зарегистрированных на площадке;</li>
+                                <li>узнайте, какие тендеры проводит организация, а в каких — участвует;</li>
+                                <li>пригласите интересных контрагентов к участию в ваших тендерах.</li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="capabilities__item">
+                        <div class="capabilities__item-title">
+                            Будьте на равных
+                        </div>
+                        <div class="capabilities__item-description">
+                            <ul>
+                                <li>регистрация, участие в тендерах, создание тендеров — сейчас бесплатно для всех;</li>
+                                <li>единые равные условия для всех поставщиков, главное для нас — ваша добросовестность;</li>
+                                <li>стандартная проверка безопасности — как на всех подобных площадках.</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>            
             <div class="needs">
-                <div class="container">
+                <div class="container m--1460">
                     <div class="needs__blocks">
+                        <!--
                         <div class="needs__block">
                             <div class="needs__block-left">
                                 <div class="needs__block-title">
@@ -295,7 +423,29 @@
                                 </ul>
                             </div>
                         </div>
+                        -->
+                        <div class="needs__block">
+                            <div class="needs__block-left">
+                                <div class="needs__block-title">
+                                    Присоединяйтесь
+                                </div>
+                                <div class="needs__block-description">
+                                    Если возникнут трудности или вопросы - обратитесь за консультацией по телефону 8 (800) 123-45-67.
+                                </div>
+                            </div>
+                            <div class="needs__block-right">
+                                <div class="needs__block-button">
+                                    <router-link
+                                        :to="{ name: 'registration' }"
+                                        class="button button-green m--big"
+                                    >
+                                        Регистрация
+                                    </router-link>
+                                </div>
+                            </div>
+                        </div>
                     </div>
+                    <!--
                     <div class="needs__buttons">
                         <div class="needs__button">
                             <button class="button button-red">
@@ -316,6 +466,7 @@
                             </button>
                         </div>
                     </div>
+                    -->
                 </div>
             </div>
         </div>
@@ -323,24 +474,26 @@
 </template>
 
 <script>
-    import { tender } from "@/services";
-    // import Header from '../components/app-header.vue';
-    //import Footer from '../components/app-footer.vue';
+    import { category, tender } from "@/services";
     import Search from '../components/app-search.vue';
+    import BlockTenderHome from '../components/block-tender-home.vue';
 
     export default {
         name: 'Home',
         components: {
-            //Header,
-            //Footer,
             Search,
+            BlockTenderHome
         },
         data() {
             return {
-                limit: 10,
+                groups: null,
+                showLoaderGroups: false,
+                limit: 5,
                 tenderList: null,
+                showLoaderTenders: false,
                 resizeObserver: null,
                 scrollbarVisible: false,
+                showFeatures: false
             };
         },
         computed: {
@@ -350,18 +503,17 @@
             }
         },
         mounted () {
+            /*
             if (this.$refs.auction) {
                 this.resizeObserver = new ResizeObserver(this.onResize)
                 this.resizeObserver.observe(this.$refs.auction)
             }
-
-            tender.getTenderList().then(tenders => {
-                this.tenderList = tenders
-            }).catch(err => {
-                console.error(err)
-            })
+            */
+            this.getGroups();
+            this.getTenders();
         },
         methods: {
+            /*
             scrollUp() {
                 if (this.$refs.list) {
                     this.$refs.list.scrollTo(
@@ -387,6 +539,7 @@
                     this.scrollbarVisible = this.$refs.list.scrollHeight > this.$refs.list.clientHeight
                 }
             },
+            */
             startSearch(formData) {
                 formData.limit = Number(this.limit)
                 formData.offset = this.offset
@@ -398,6 +551,33 @@
                     }).catch(err => {
                         console.error(err)
                     })
+            },
+            getTenders() {
+                let params = {
+                    limit: this.limit,
+                    offset: 0,
+                }
+                this.showLoaderTenders = true;
+                tender.getTenderList(params).then(tenders => {
+                    this.showLoaderTenders = false;
+                    this.tenderList = tenders
+                }).catch(err => {
+                    this.showLoaderTenders = false;
+                    console.error(err)
+                })
+            },
+            getGroups() {
+                let params = {
+                }
+                this.showLoaderGroups = true;
+                category.getCategoryList(params).then(res => {
+                    this.groups = res
+                    this.showLoaderGroups = false;
+                    // console.log(res)
+                }).catch(err => {
+                    this.showLoaderGroups = false;
+                    console.error(err)
+                })
             }
         },
     };

@@ -349,11 +349,27 @@
 
         &.m--long {
             width: 37.58%;
+
+            @mixin responsive-le-l {
+                width: 49%;
+            }
+
+            @mixin responsive-le-s {
+                width: 100%;
+            }
         }
 
         &.m--short {
             width: 23.88%;
             min-width: 290px;
+
+            @mixin responsive-le-l {
+                width: 49%;
+            }
+
+            @mixin responsive-le-s {
+                width: 100%;
+            }
         }
 
         @mixin responsive-le-l {

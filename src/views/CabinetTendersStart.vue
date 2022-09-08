@@ -38,7 +38,7 @@
                     <div class="tender-form__title">
                         Дата и время проведения тендера
                         <div class="tender-form__prefix">
-                            При публикации начинается прием документов и регистрация новых участников.
+                            При публикации начинается прием документов и регистрация новых участников. Время московское.
                         </div>
                     </div>
                     <div class="tender-form__fieldgroup">
@@ -479,8 +479,8 @@
                         $formkit: 'datetime-local',
                         mode: 'dateTime',
                         name: 'date_start',
-                        value: this.$helpers.formatDate(new Date(new Date().getTime() + 5 * 86400000), 'YYYY-MM-DDTHH:mm'),
-                        min: this.$helpers.formatDate(new Date(new Date().getTime() + 86400000), 'YYYY-MM-DDTHH:mm'),
+                        value: this.$helpers.formatDate(new Date(new Date(this.$helpers.curDateMSK()).getTime() + 5 * 86400000), 'YYYY-MM-DDTHH:mm'),
+                        min: this.$helpers.formatDate(new Date(new Date(this.$helpers.curDateMSK()).getTime() + 86400000), 'YYYY-MM-DDTHH:mm'),
                         label: 'Дата начала этапа торгов',
                         help: 'Укажите дату и время начала начала торгов (новые участники не регистрируются)',
                         validation: 'required',
@@ -501,8 +501,8 @@
                     }, {
                         $formkit: 'datetime-local',
                         name: 'date_end',
-                        value: this.$helpers.formatDate(new Date(new Date().getTime() + 10 * 86400000), 'YYYY-MM-DDTHH:mm'),
-                        min: this.$helpers.formatDate(new Date(new Date().getTime() + 2 * 86400000), 'YYYY-MM-DDTHH:mm'),
+                        value: this.$helpers.formatDate(new Date(new Date(this.$helpers.curDateMSK()).getTime() + 10 * 86400000), 'YYYY-MM-DDTHH:mm'),
+                        min: this.$helpers.formatDate(new Date(new Date(this.$helpers.curDateMSK()).getTime() + 2 * 86400000), 'YYYY-MM-DDTHH:mm'),
                         label: 'Дата завершения торгов и выбор победителя',
                         help: 'Укажите дату и время окончания тендера и объявления предварительных победителей',
                         validation: 'required',
@@ -523,8 +523,8 @@
                     }, {
                         $formkit: 'datetime-local',
                         name: 'date_fulfilment',
-                        value: this.$helpers.formatDate(new Date(new Date().getTime() + 15 * 86400000), 'YYYY-MM-DDTHH:mm'),
-                        min: this.$helpers.formatDate(new Date(new Date().getTime() + 4 * 86400000), 'YYYY-MM-DDTHH:mm'),
+                        value: this.$helpers.formatDate(new Date(new Date(this.$helpers.curDateMSK()).getTime() + 15 * 86400000), 'YYYY-MM-DDTHH:mm'),
+                        min: this.$helpers.formatDate(new Date(new Date(this.$helpers.curDateMSK()).getTime() + 4 * 86400000), 'YYYY-MM-DDTHH:mm'),
                         label: 'Дата исполнения обязательств по договору',
                         help: 'Укажите дату, до которой должны быть исполнены все обязательства по тендеру',
                         validation: 'required',

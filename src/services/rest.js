@@ -1,4 +1,5 @@
 import ajax from '@/utils/ajax';
+import router from '@/router/router';
 import store from "@/store/store";
 
 class RESTError extends Error {
@@ -15,10 +16,17 @@ class RESTError extends Error {
             this[k] = params[k];
         }
 
-        if (typeof Error.captureStackTrace === 'function') {
-            Error.captureStackTrace(this, this.constructor);
-        } else { 
-            this.stack = (new Error(header)).stack; 
+        if (this.response && this.response.status === 401) {
+            store.dispatch('deathUser');
+            //store.dispatch('clearToken');
+            //store.dispatch('showError', 'Доступ запрещен!');
+            router.push({ name: 'auth' });
+        } else {
+            if (typeof Error.captureStackTrace === 'function') {
+                Error.captureStackTrace(this, this.constructor);
+            } else { 
+                this.stack = (new Error(header)).stack; 
+            }
         }
     }
 }
