@@ -32,7 +32,7 @@ const websocket = {
 
 const chat = {
     url: `${urlPath}/chat`,
-    wsUrl: `ws://${urlPath}/ws/chat`
+    wsUrl: `wss://${urlPath}/ws/chat`
 };
 
 const push = {
