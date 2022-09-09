@@ -8,7 +8,7 @@
     }
 
     &__header {
-        padding: 0 45px 0 30px;
+        padding: 0 15px;
 
         &-cell {
             font-weight: 700;
@@ -32,23 +32,29 @@
         }
     }
     &__list {
-        /* padding: 12px 0; */
+        padding: 12px 15px;
         margin-bottom: 24px;
         overflow: hidden;
         @mixin shadow-box;
+
+        &-inner {
+            overflow-x: auto;
+            @mixin scrollbar $color-shadow, $color-green, 10px;
+        }
     }
 
     &__item {
         position: relative;
-        padding: 24px 45px 24px 30px;
+        padding: 24px 15px;
         cursor: pointer;
+        min-width: 780px;
 
         &:after {
             content: '';
             position: absolute;
             bottom: 0;
-            left: 30px;
-            right: 45px;
+            left: 15px;
+            right: 15px;
             border-bottom: 1px solid $color-gray-T5;
         }
 

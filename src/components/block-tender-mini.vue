@@ -10,6 +10,9 @@
             >
                 {{ tender.name }}
             </router-link>
+            <div class="tenders__item-price m--mobile">
+                {{ $helpers.toPrice(tender.price, {sign: '₽'}) }}
+            </div>
             <!-- <div class="tenders__item-param">
                 <span class="tenders__item-param-name">Заказчик: </span> 
                 <a href="#">{{ tender.organization && tender.organization.full_name ? tender.organization.full_name : '(())' }}</a>
