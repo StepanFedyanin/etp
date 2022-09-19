@@ -131,14 +131,15 @@
                         $formkit: 'text',
                         id: 'address',
                         name: 'actual_address',
-                        disabled: this.addressMatches,
+                        //disabled: this.addressMatches,
+                        disabled: !this.addressMatches && this.formData.created ? false : true,
                         label: 'Фактический адрес организации',
                         outerClass: 'field--inline',
                     }, {
                         $formkit: 'checkbox',
                         id: 'address_matches',
                         name: 'address_matches',
-                        //disabled: this.formData.created ? false : true,
+                        disabled: this.formData.created ? false : true,
                         label: 'Совпадает с юридическим',
                         outerClass: 'm--offset'
                     }, {

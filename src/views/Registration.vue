@@ -20,7 +20,7 @@
                     </div>
                     <div 
                         class="registration__item-wrapper"
-                        :class="[colorStatusRed ? 'withAlert' : '']"
+                        :class="[organizations.length === 1 && colorStatusRed ? 'withAlert' : '']"
                     >
                         <div 
                             v-if="organizations.length != 0"
@@ -44,7 +44,7 @@
                             </template>
                         </div>
                         <div
-                            v-if="colorStatusRed"
+                            v-if="organizations.length === 1 && colorStatusRed"
                             class="registration__alert alert"
                         >
                             <p class="alert__title">
@@ -60,7 +60,7 @@
                     </div>
                 </div>
                 <div
-                    v-if="stepRegistration === 2"
+                    v-if="stepRegistration === 2 && organization"
                 >
                     <div class="registration__title h2">
                         Сведения об организации
@@ -146,7 +146,7 @@
                 organizations: [],
                 // colorStatus: false,
                 colorStatusRed2: false,
-                // organization: {},
+                organization: null,
             };
         },
         computed: {
@@ -159,9 +159,14 @@
         created() {
         },
         mounted() {
-            console.log(!this.regData.organization.created);
-            if (this.stepRegistration === 2 && this.regData.organization.created === false) {
-                this.regFormReadOnly = true;
+            //console.log(!this.regData.organization.created);
+            if (this.stepRegistration === 2) {
+                if (this.regData.organization.created === false) {
+                    this.regFormReadOnly = true;
+                }
+                if (!this.organization) {
+                    this.prevStep();
+                }
             }
         },
         methods: {
@@ -173,6 +178,7 @@
                     this.regData.person = {};
                 } else if (this.stepRegistration === 2) {
                     this.regData.person = {};
+                    this.organization = this.regData.organization;
                     if (!this.regData.organization.created) {
                         this.regFormReadOnly = true;
                     }

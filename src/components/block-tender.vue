@@ -13,21 +13,34 @@
                 <div class="tenders__item-top-name">
                     Аукцион №{{ tender.id }}
                 </div>
-                <div 
-                    class="tenders__item-top-status"
-                    :class="restTime ? 'm--devider' : ''"
+                <template
+                    v-if="tender.publication"
                 >
-                    {{ tender.status_detail || tender.status }}
-                </div>
-                <div
-                    class="tenders__item-top-timer"
-                >
-                    <template
-                        v-if="restTime"
+                    <div 
+                        class="tenders__item-top-status"
+                        :class="restTime ? 'm--devider' : ''"
                     >
-                        Осталось {{ $helpers.dateRangeToDaysHours(new Date(), new Date(tender.date_end)) }}
-                    </template>
-                </div>
+                        {{ tender.status_detail || tender.status }}
+                    </div>
+                    <div
+                        class="tenders__item-top-timer"
+                    >
+                        <template
+                            v-if="restTime"
+                        >
+                            Осталось {{ $helpers.dateRangeToDaysHours(new Date(), new Date(tender.date_end)) }}
+                        </template>
+                    </div>
+                </template>
+                <template
+                    v-else
+                >
+                    <div 
+                        class="tenders__item-top-status"
+                    >
+                        Черновик
+                    </div>
+                </template>
             </div>
             <router-link
                 :to="{ name: 'tender', params: { id: tender.id } }"
@@ -38,9 +51,16 @@
             <div class="tenders__item-price m--mobile">
                 {{ $helpers.toPrice(tender.price, {sign: '₽'}) }}
             </div>
-            <div class="tenders__item-param">
+            <div 
+                v-if="tender.organization"
+                class="tenders__item-param"
+            >
                 <span class="tenders__item-param-name">Заказчик: </span> 
-                <a href="#">{{ tender.organization && tender.organization.full_name ? tender.organization.full_name : '(())' }}</a>
+                <router-link
+                    :to="{ name: 'contragent', params: { id: tender.organization.id } }"
+                >
+                    {{ tender.organization.full_name ? tender.organization.full_name : '-' }}
+                </router-link>
             </div>
             <div class="tenders__item-param">
                 <span class="tenders__item-param-name">Категории: </span>
@@ -150,8 +170,11 @@
                 <span class="tenders__item-param-name">Лоты:</span> {{ tender.lot_count }}
             </div>
             -->
-            <div class="tenders__item-param">
-                <span class="tenders__item-param-name">Минимальный шаг ставки:</span> {{ tender.min_step || '?' }}%
+            <div 
+                v-if="tender.kind === 'tender'"
+                class="tenders__item-param"
+            >
+                <span class="tenders__item-param-name">Минимальный шаг ставки:</span> {{ tender.min_step }}%
             </div>
             <div
                 v-if="tender.winner_count > 0" 

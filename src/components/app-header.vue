@@ -167,7 +167,7 @@
         data() {
             return {
                 phone: '8 (800) 123-45-67',
-                email: 'info@tugan.ru',
+                email: 'info@etptugan.ru',
                 timer: null,
                 currentDate: null,
                 currentTime: null,

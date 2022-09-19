@@ -94,6 +94,22 @@ export default class extends REST {
         });
     }
 
+    static getOrganizationRelatedTenders() {
+        return this._get(`organizations/related_tenders`, {}, {}).then((data) => {
+            return data;
+        }).catch((error) => {
+            throw new RESTError(error, 'Не удалось получить связанные тендеры');
+        });
+    }
+
+    static getOrganizationRelatedLots(params) {
+        return this._get(`organizations/related_lots`, {}, params).then((data) => {
+            return data;
+        }).catch((error) => {
+            throw new RESTError(error, 'Не удалось получить лоты связанного тендера');
+        });
+    }
+
     static addOrganization(params) {
         return this._post(`organizations`, {}, params).then((data) => {
             return data;

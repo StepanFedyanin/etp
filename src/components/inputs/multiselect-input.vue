@@ -59,12 +59,30 @@
                     <div class="multiselect-bet__price">{{ $helpers.toPrice(option.price || 0, { sign: '₽', pointer: ',' }) }}</div>
                 </div>
             </div>
+            <div 
+                v-else-if="tender"
+                class="multiselect-tender"
+            >
+                <div class="multiselect-tender__inner">
+                    <div class="multiselect-tender__number">№{{ option.value }}</div>
+                    <div class="multiselect-tender__name">{{ option.label }}</div>
+                </div>
+            </div>
+            <div 
+                v-else-if="lot"
+                class="multiselect-lot"
+            >
+                <div class="multiselect-lot__inner">
+                    <div class="multiselect-lot__number">№{{ option.num }}</div>
+                    <div class="multiselect-lot__name">{{ option.label }}</div>
+                </div>
+            </div>
         </template>
     </Multiselect>
 </template>
 
 <script setup>
-    import { defineProps, ref, onUpdated } from 'vue';
+    import { defineProps, ref, onUpdated, computed } from 'vue';
     import Multiselect from '@vueform/multiselect';
     const props = defineProps({
         context: {
@@ -89,13 +107,25 @@
     const object = props.context.attrs.resolveOnLoad !== undefined ? true : false;
     const inn = props.context.attrs.inn !== undefined ? true : false;
     const bet = props.context.attrs.bet !== undefined ? true : false;
+    const tender = props.context.attrs.tender !== undefined ? true : false;
+    const lot = props.context.attrs.lot !== undefined ? true : false;
     // let vModelValue = reactive({})
+
+    // const optionsComuted = computed(() => {
+    //     return options;
+    // });
 
     function handleOpen(select$) {
         console.log('handleOpen')
         if (props.context.attrs.bet) {
             multiselect._value.refreshOptions();
         }
+        /*
+        if (props.context.attrs.lot) {
+            multiselect._value.clear();
+            multiselect._value.refreshOptions();
+        }
+        */
     }
 
     function handleSelect(value, select$) {

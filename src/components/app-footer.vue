@@ -83,9 +83,9 @@
         data() {
             return {
                 phone: '8 (800) 123-45-67',
-                email: 'info@tugan.ru',
+                email: 'info@etptugan.ru',
                 phoneSupport: '8 (800) 765-43-21',
-                emailSupport: 'help@tugan.ru',
+                emailSupport: 'help@etptugan.ru',
             };
         },
         computed: {

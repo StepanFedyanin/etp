@@ -11,7 +11,10 @@
             <span />
         </button>
         <span class="modal__title" />
-        <div class="modal__content">
+        <div
+            v-if="loaded"
+            class="modal__content"
+        >
             <FormKit
                 v-model="searchForm"
                 name="search-form"
@@ -62,6 +65,7 @@
         },
         data() {
             return {
+                loaded: false,
                 searchForm: null,
                 showLoaderSending: false,
                 searchFormSchema: [
@@ -267,6 +271,14 @@
             },
         },
         watch: {
+            'showModal': {
+                immediate: true,
+                handler() {
+                    if (!this.loaded) {
+                        this.loaded = this.showModal;
+                    }
+                }
+            }
         },
         mounted() {
         },

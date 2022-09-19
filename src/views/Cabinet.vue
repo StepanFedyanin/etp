@@ -8,13 +8,13 @@
                 </div>
                 <div 
                     v-if="user && user.id"
-                    class="cabinet__start"
+                    class="cabinet__block"
                 >
-                    <div class="cabinet__block cabinet__block-item">
-                        <div class="block__title">
+                    <div class="cabinet__block-item">
+                        <div class="cabinet__block-item-title">
                             Поиск тендеров
                         </div>
-                        <div class="block__description">
+                        <div class="cabinet__block-item-description">
                             <ul>
                                 <li>ознакомьтесь с тендерами и запросами котировок, проходящими прямо сейчас;</li>
                                 <li>воспользуйтесь фильтром по региону поставки, товарным группам и другим параметрам;</li>
@@ -22,7 +22,7 @@
                             </ul>
                         </div>
                         <a
-                            class="block__link"
+                            class="cabinet__block-item-link"
                             href="#"
                         >Инструкция по поиску тендера</a>
                         <div 
@@ -33,11 +33,11 @@
                         </div>
                     </div>
 
-                    <div class="cabinet__block cabinet__block-item">
-                        <div class="block__title">
+                    <div class="cabinet__block-item">
+                        <div class="cabinet__block-item-title">
                             Создание тендера
                         </div>
-                        <div class="block__description">
+                        <div class="cabinet__block-item-description">
                             <ul>
                                 <li>объявите собственный тендер или запрос котировок;</li>
                                 <li>пригласите к участию бизнес-партнеров, уже знакомых вам;</li>
@@ -45,7 +45,7 @@
                             </ul>
                         </div>
                         <a
-                            class="block__link"
+                            class="cabinet__block-item-link"
                             href="#"
                         >Инструкция по созданию тендера</a>
                         <div 
@@ -55,11 +55,11 @@
                             организовать тендер
                         </div>
                     </div>
-                    <div class="cabinet__block cabinet__block-item">
-                        <div class="block__title">
+                    <div class="cabinet__block-item">
+                        <div class="cabinet__block-item-title">
                             Список контрагентов
                         </div>
-                        <div class="block__description">
+                        <div class="cabinet__block-item-description">
                             <ul>
                                 <li>ознакомьтесь со списком организаций, зарегистрированных на площадке;</li>
                                 <li>узнайте, какие тендеры проводит организация, а в каких - участвует;</li>
@@ -73,25 +73,25 @@
                             Найти бизнес-партнеров
                         </div>
                     </div>
-                    <div class="cabinet__block cabinet__block-item">
-                        <div class="block__title">
+                    <div class="cabinet__block-item">
+                        <div class="cabinet__block-item-title">
                             Мой профиль
                         </div>
-                        <div class="block__description">
+                        <div class="cabinet__block-item-description">
                             <span>{{ user.first_name }} {{ user.patronymic }}</span>
                             <p class="block__subtitle">
                                 {{ user.last_name }}
                             </p>
                             <span>{{ user.post }}</span>
-                            <p class="block__subtitle">
+                            <p class="cabinet__block-item-subtitle">
                                 {{ user.organization.name ? user.organization.name : user.organization.full_name }}
                             </p>
                             <span>Телефон (контактный):</span>
-                            <p class="block__subtitle">
+                            <p class="cabinet__block-item-subtitle">
                                 {{ user.phone ? user.phone : "—" }}
                             </p>
                             <span>Email (контактный):</span>
-                            <p class="block__subtitle">
+                            <p class="cabinet__block-item-subtitle">
                                 {{ user.contact_email ? user.contact_email : "—" }}
                             </p>
                         </div>
@@ -102,22 +102,22 @@
                             Подробнее
                         </div>
                     </div>
-                    <div class="cabinet__block cabinet__block-item">
-                        <div class="block__title">
+                    <div class="cabinet__block-item">
+                        <div class="cabinet__block-item-title">
                             Моя организация
                         </div>
-                        <div class="block__description">
-                            <p class="block__subtitle">
+                        <div class="cabinet__block-item-description">
+                            <p class="cabinet__block-item-subtitle">
                                 {{ userOrganizationName }}{{ userOrganizationFilial }} 
                             </p>
-                            <p class="block__subtitle">
+                            <p class="cabinet__block-item-subtitle">
                                 ИНН: {{ userOrganization.inn }}
                             </p>
-                            <p class="block__subtitle">
+                            <p class="cabinet__block-item-subtitle">
                                 КПП: {{ userOrganization.kpp ? userOrganization.kpp : "—" }}
                             </p>
                             <span>Руководитель организации</span>
-                            <p class="block__subtitle">
+                            <p class="cabinet__block-item-subtitle">
                                 {{ userOrganization.head_name }}
                             </p>
                         </div>
@@ -128,12 +128,12 @@
                             Подробнее
                         </div>
                     </div>
-                    <div class="cabinet__block cabinet__block-item">
-                        <div class="block__title">
+                    <div class="cabinet__block-item">
+                        <div class="cabinet__block-item-title">
                             Пригласить партнеров
                         </div>
-                        <div class="block__description">
-                            <p class="block__subtitle">
+                        <div class="cabinet__block-item-description">
+                            <p class="cabinet__block-item-subtitle">
                                 Упростите собственный процесс закупок
                             </p>
                             <ul>

@@ -20,7 +20,7 @@
                     >
                         <use xlink:href="../assets/img/icons/icons.svg#edit" />
                     </svg>
-                    <div class="cabinet__block">
+                    <div class="cabinet__organization">
                         <blockOrganization 
                             :organization="organization"
                         />
@@ -36,7 +36,7 @@
                 >
                     <use xlink:href="../assets/img/icons/icons.svg#addPerson" />
                 </svg>
-                <div class="cabinet__block cabinet__persons">
+                <div class="cabinet__persons">
                     <blockPersons 
                         :user="profile"
                         :persons="persons"

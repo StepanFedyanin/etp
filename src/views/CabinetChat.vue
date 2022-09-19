@@ -327,6 +327,10 @@
                     const scrollHeight = el.scrollHeight;
                     this.$nextTick(() => {
                         el.scrollTop = el.scrollHeight - scrollHeight;
+                        // el.scrollTo({ 
+                        //     top: scrollHeight, 
+                        //     behavior: 'smooth'
+                        // });
                         this.offset += this.limit;
                         this.isLoading = false;
                     });
@@ -410,7 +414,11 @@
                     }
                     const el = this.$refs.board;
                     this.$nextTick(() => {
-                        el.scrollTop = el.scrollHeight;
+                        // el.scrollTop = el.scrollHeight;
+                        el.scrollTo({ 
+                            top: el.scrollHeight, 
+                            behavior: 'smooth'
+                        });
                     });
                 } else {
                     this.fetchChats();

@@ -30,6 +30,7 @@ import cabinetTenders from '@/views/CabinetTenders';
 import cabinetTendersList from '@/views/CabinetTendersList';
 import cabinetTendersItem from '@/views/CabinetTendersItem';
 import cabinetTendersStart from '@/views/CabinetTendersStart';
+import cabinetTendersStartForm from '@/views/CabinetTendersStartForm';
 import cabinetTendersEnd from '@/views/CabinetTendersEnd';
 import cabinetContragents from '@/views/CabinetContragents';
 import cabinetContragentsList from '@/views/CabinetContragentsList';
@@ -216,7 +217,7 @@ const routes = [
             }, {
                 path: ':id/edit',
                 name: 'tender-edit',
-                component: cabinetTendersStart,
+                component: cabinetTendersStartForm,
                 meta: { 
                     title: 'Редактирование тендера',
                     breadcrumbs: ['tenders'],
@@ -257,6 +258,36 @@ const routes = [
                     requiresAuth: true 
                 },
                 props: true,
+            }, {
+                path: 'start-tender',
+                name: 'start-tender',
+                component: cabinetTendersStartForm,
+                meta: { 
+                    title: 'Объявить тендер', 
+                    breadcrumbs: ['tenders', 'tenders-start'],
+                    requiresAuth: true 
+                },
+                props: { type: 0 },
+            }, {
+                path: 'start-price',
+                name: 'start-price',
+                component: cabinetTendersStartForm,
+                meta: { 
+                    title: 'Объявить запрос цен без исполнения договора', 
+                    breadcrumbs: ['tenders', 'tenders-start'],
+                    requiresAuth: true 
+                },
+                props: { type: 1 },
+            }, {
+                path: 'start-price-fulfilment',
+                name: 'start-price-fulfilment',
+                component: cabinetTendersStartForm,
+                meta: { 
+                    title: 'Объявить запрос цен с исполнением договора', 
+                    breadcrumbs: ['tenders', 'tenders-start'],
+                    requiresAuth: true 
+                },
+                props: { type: 2 },
             }, {
                 path: 'drafts',
                 name: 'customer-drafts',
