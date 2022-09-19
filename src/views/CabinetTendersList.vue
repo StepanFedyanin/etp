@@ -68,6 +68,11 @@
                         :tender="tender"
                     />
                 </template>
+                <template
+                    v-else
+                >
+                    По Вашему запросу ничего не найдено.                    
+                </template>
             </div>
             <div
                 v-if="!showLoaderSending && tenders && tenders.count"

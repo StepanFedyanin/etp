@@ -207,7 +207,12 @@
                             {{ $helpers.toPrice(tender.price, { sign: '₽' }) }}
                         </div>
                         <div class="tender__info-param">
-                            <span>Заказчик:</span> <a href="#">{{ tender.organization.name }}</a>
+                            <span>Заказчик: </span> 
+                            <router-link
+                                :to="{ name: 'contragent', params: { id: tender.organization.id } }"
+                            >
+                                {{ tender.organization.name }}
+                            </router-link>
                         </div>
                         <div class="tender__info-param">
                             <span>Категории: </span> 
@@ -256,7 +261,10 @@
                         <div class="tender__info-param">
                             <span>Тип аукциона:</span> {{ tender.type_detail }}
                         </div>
-                        <div class="tender__info-param">
+                        <div 
+                            v-if="tender.kind === 'tender'"
+                            class="tender__info-param"
+                        >
                             <span>Минимальный шаг ставки:</span> {{ tender.min_step }}%
                         </div>
                         <div

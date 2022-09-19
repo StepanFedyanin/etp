@@ -39,6 +39,7 @@ const helpers = {
         if (!params) {
             params = {};
         }
+        value = value * 1;
         let kop = Math.floor((Math.abs(value - Math.floor(value)) + 0.005) * 100);
         if (kop < 10) {
             kop = '0' + kop;
