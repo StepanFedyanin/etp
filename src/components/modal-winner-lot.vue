@@ -89,6 +89,7 @@
                             </div>
                         </div>
                         <FormKit
+                            v-if="show"
                             id="form-offer"
                             v-model="formValues"
                             preserve

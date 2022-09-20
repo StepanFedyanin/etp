@@ -1,10 +1,8 @@
 <template>
     <div class="tender-start">
         <div class="container">
-            {{ this.tenderForm }}
-            {{ this.relatedTenders }}
             <div class="tender-start__title h1">
-                {{ $route.params.id ? 'Редактирование тендера' : 'Создание тендера' }} {{ type }}
+                {{ $route.params.id ? 'Редактирование тендера' : 'Создание тендера' }}
             </div>
             <template
                 v-if="showLoaderSending"
@@ -107,7 +105,7 @@
                         </div>
                         <div class="tender-form__block">
                             <div
-                                v-if="defaultTender"
+                                v-if="defaultTender && documents && documents.length"
                                 class="tender-form__docs lots m--docs"
                             >
                                 <div class="lots__header">
@@ -192,7 +190,7 @@
                         </div>
                         <div class="tender-form__block">
                             <div
-                                v-if="defaultTender"
+                                v-if="defaultTender && lots && lots.length"
                                 class="tender-form__lots lots m--tender-start"
                             >
                                 <div class="lots__header">
@@ -296,7 +294,7 @@
                         <button
                             type="button"
                             class="button button-green"
-                            :disabled="!defaultTender"
+                            :disabled="!defaultTender || !lots.length"
                             @click="submitForm('publishTender')"
                         >
                             Опубликовать
@@ -346,6 +344,7 @@
                 lotModalData: null,
                 tenderForm: {},
                 relatedTenders: [],
+                setRelatedLots: false,
                 refreshRelatedLots: false,
                 showLoaderSending: false,
                 showAddLotModal: false,
@@ -618,7 +617,7 @@
                         max: '2099-12-31T23:59',
                         label: 'Дата начала этапа торгов',
                         help: 'Укажите дату и время начала начала торгов (новые участники не регистрируются)',
-                        validation: 'required|date_before:2100-01-01',
+                        validation: `required|date_after:${this.$helpers.formatDate(new Date(new Date(this.$helpers.curDateMSK()).getTime() + 86400000), 'YYYY-MM-DDTHH:mm')}|date_before:2100-01-01`,
                         __raw__sectionsSchema: {
                             prefix: {
                                 $el: 'div',
@@ -641,7 +640,7 @@
                         max: '2099-12-31T23:59',
                         label: 'Дата завершения торгов и выбор победителя',
                         help: 'Укажите дату и время окончания тендера и объявления предварительных победителей',
-                        validation: 'required|date_before:2100-01-01',
+                        validation: `required|date_after:${this.$helpers.formatDate(new Date(new Date(this.$helpers.curDateMSK()).getTime() + 2 * 86400000), 'YYYY-MM-DDTHH:mm')}|date_before:2100-01-01`,
                         __raw__sectionsSchema: {
                             prefix: {
                                 $el: 'div',
@@ -665,7 +664,7 @@
                         max: '2099-12-31T23:59',
                         label: 'Дата исполнения обязательств по договору',
                         help: 'Укажите дату, до которой должны быть исполнены все обязательства по тендеру',
-                        validation: 'required|date_before:2100-01-01',
+                        validation: `required|date_after:${this.$helpers.formatDate(new Date(new Date(this.$helpers.curDateMSK()).getTime() + 4 * 86400000), 'YYYY-MM-DDTHH:mm')}|date_before:2100-01-01`,
                         __raw__sectionsSchema: {
                             prefix: {
                                 $el: 'div',
@@ -742,6 +741,16 @@
                     this.tenderForm.related_lot = null;
                     this.$nextTick(() => {
                         this.refreshRelatedLots = false;
+                        if (this.setRelatedLots && typeof this.tenderForm.related_tender !== 'object') {
+                            this.tenderForm.related_lot = {
+                                fromParent: true,
+                                value: {
+                                    label: this.defaultTender.related_parent_tender.lot.name,
+                                    value: this.defaultTender.related_parent_tender.lot.id
+                                }
+                            };
+                            this.setRelatedLots = false;
+                        }
                     });
                     const node = this.$formkit.get('date_fulfilment');
                     if (node) {
@@ -765,11 +774,11 @@
         mounted() {
             let id = this.$route.params.id
             if (id) { // редактирование тендера
-                //this.showLoaderSending = true;
+                this.showLoaderSending = true;
                 tenderApi.getTender(id).then(tender => {
-                    this.defaultTender = tender
+                    this.defaultTender = tender;
                     // console.log(tender)
-                    this.setTender()
+                    this.setTender();
                     this.showLoaderSending = false;
                 }).catch(err => {
                     this.showLoaderSending = false;
@@ -850,6 +859,7 @@
                         //alert('Тендер обновлён')
                         this.$router.push({ name: 'tender', params: { id: tender.id } })
                     }).catch(err => {
+                        this.$store.dispatch('showError', err);
                         console.error(err)
                     })
             },
@@ -999,6 +1009,8 @@
                 this.lots = this.defaultTender.lots
                 this.documents = this.defaultTender.documents
                 this.tenderForm.id = this.defaultTender.id
+                this.tenderForm.kind = this.defaultTender.kind
+                this.tenderForm.fulfilment = this.defaultTender.fulfilment
                 this.tenderForm.name = this.defaultTender.name
                 this.tenderForm.min_step = {
                     fromParent: true,
@@ -1029,24 +1041,40 @@
                 this.tenderForm.date_start = this.defaultTender.date_start.slice(0,16)
                 this.tenderForm.date_end = this.defaultTender.date_end.slice(0,16)
                 this.tenderForm.date_fulfilment = this.defaultTender.date_fulfilment.slice(0,16)
-                this.tenderForm.description = this.defaultTender.description
+                this.tenderForm.description = this.defaultTender.description;
                 if (this.defaultTender.related_parent_tender) {
-                    this.tenderForm.add_related = true;
+                    this.setRelatedLots = true;
                     this.tenderForm.related_tender = {
                         fromParent: true,
                         value: {
                             label: this.defaultTender.related_parent_tender.name,
                             value: this.defaultTender.related_parent_tender.id
                         }
-                    }
+                    };
+                    this.tenderForm.add_related = true;
+                    
+                    this.$nextTick(() => {
+                        this.tenderForm.related_lot = {
+                            fromParent: true,
+                            value: {
+                                label: this.defaultTender.related_parent_tender.lot.name,
+                                value: this.defaultTender.related_parent_tender.lot.id
+                            }
+                        };
+                    });
+                    
                 }
 
-                if (this.defaultTender.kind === 'price_request') {
-                    const node_step = this.$formkit.get('min_step');
-                    node_step.props.validation = null;
-                    node_step.props.disabled = true;
-                    node_step.props.outerClass = 'm--hidden';
-                }
+                this.$nextTick(() => {
+                    if (this.defaultTender.kind === 'price_request') {
+                        const node_step = this.$formkit.get('min_step');
+                        node_step.props.validation = null;
+                        node_step.props.disabled = true;
+                        node_step.props.outerClass = 'm--hidden';
+                        node_step.props.type = 'text';
+                        this.tenderForm.min_step = 0;
+                    }
+                });
             },
             prepareTender() {
                 let tender = {}

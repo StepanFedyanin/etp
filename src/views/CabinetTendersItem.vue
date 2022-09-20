@@ -357,6 +357,7 @@
                         </button>
                         <button 
                             class="button button-green"
+                            :disabled="tender.lots && tender.lots.length ? false : true"
                             @click.stop=""
                         >
                             Опубликовать
@@ -468,7 +469,7 @@
                     @getTenderData="getTenderData"
                 />
                 <div 
-                    v-if="tender.bet_enabled && tender.user_participation && tender.user_participation.status === 'participant'"
+                    v-if="tender.bet_enabled && tender.user_participation && tender.kind === 'tender' && tender.user_participation.status === 'participant'"
                     class="tender__bids"
                 >
                     <div class="tender__bids-left">
@@ -482,13 +483,15 @@
                     <div class="tender__bids-block">
                         <button 
                             class="button button-outline-green m--right"
-                            @click="onClickRequest()"
+                            :disabled="sendingBets"
+                            @click="onClickRapidBets('loss')"
                         >
                             По проигрывающим лотам
                         </button>
                         <button 
                             class="button button-outline-green"
-                            @click="onClickRequest()"
+                            :disabled="sendingBets"
+                            @click="onClickRapidBets('all')"
                         >
                             По всем лотам
                         </button>
@@ -562,6 +565,7 @@
                     bidding_completed: 'Подведение итогов',
                     closed: 'Тендер завершен'
                 },
+                sendingBets: false,
                 showCloseTenderConfirmModal: false,
                 showDeleteTenderConfirmModal: false,
                 showLoaderSending: false,
@@ -612,6 +616,18 @@
                     } else {
                         this.$store.dispatch('showError', err);
                     }
+                    console.error(err);
+                });
+            },
+            onClickRapidBets(type) {
+                this.sendingBets = true;
+                tenderApi.addTenderLotRapidBet(this.tender.id, { type: type }).then(res => {
+                    this.sendingBets = false;
+                    console.log(res);
+                    this.getTenderData();
+                }).catch(err => {
+                    this.sendingBets = false;
+                    this.$store.dispatch('showError', err);
                     console.error(err);
                 });
             },

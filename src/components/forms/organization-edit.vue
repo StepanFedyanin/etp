@@ -7,7 +7,6 @@
             preserve
             type="form"
             data-loading="loading"
-            :value="formData"
             form-class="$reset organization-edit__form form__edit"
             :actions="false"
             :disabled="loading"
@@ -67,20 +66,20 @@
         },
         data() {
             return {
-                formData: undefined,
-                formValues: this.formData,
+                formValues: this.organization,
+                addressMatches: false,
                 schema: [
                     {
                         $formkit: 'text',
                         name: 'inn',
                         label: 'ИНН',
-                        placeholder: "0002013922",
+                        placeholder: '0002013922',
                         disabled: true,
-                        validation: 'required|matches:/^(d{10}|d{12})$/',
+                        validation: 'required',
                         outerClass: 'field--required'
                         // maska: { mask: ['##########', '############'] },
                     }, {
-                        $formkit: 'text',
+                        $formkit: this.organization.owner_type === 'ip' ? 'hidden' : 'text',
                         name: 'kpp',
                         label: 'КПП',
                         placeholder: 'Ваш КПП',
@@ -94,7 +93,7 @@
                         label: 'ОГРН',
                         placeholder: '1116602000140',
                         disabled: true,
-                        validation: [['matches', /^\d{13}$/]],
+                        validation: 'required',
                         outerClass: 'field--required',
                         // maska: { mask: '#############' },
                     },{
@@ -131,12 +130,20 @@
                         placeholder: 'Свердловская обл., г. Артемовский, ул. Дзержинского, Д. 1, К. Д, 623784',
                         disabled: true,
                         outerClass: 'field--required',
-                    },{
+                    }, {
                         $formkit: 'text',
+                        id: 'address',
                         name: 'actual_address',
+                        disabled: !this.addressMatches ? false : true,
                         label: 'Фактический адрес',
                         placeholder: 'Свердловская обл., г. Артемовский, ул. Дзержинского, Д. 1, К. Д, 623784',
+                    }, {
+                        $formkit: 'checkbox',
+                        id: 'address_matches',
+                        name: 'address_matches',
                         disabled: false,
+                        label: 'Совпадает с юридическим',
+                        outerClass: 'm--single-checkbox'
                     },{
                         $formkit: 'text',
                         name: 'okpo',
@@ -147,7 +154,7 @@
                         outerClass: 'field--required',
                         // maska: { mask: ['########', '##########']},
                     },{
-                        $formkit: 'text',
+                        $formkit: this.organization.owner_type === 'ip' ? 'hidden' : 'text',
                         name: 'capital',
                         label: 'Сумма уставного капитала',
                         validation: 'required|number',
@@ -176,8 +183,20 @@
                 ],
             };
         },
-        created() {
-            this.formData = this.organization
+        watch: {
+            'formValues.address_matches': {
+                handler() {
+                    this.addressMatches = this.formValues.address_matches;
+                    const node = this.$formkit.get('address');
+                    node.props.disabled = this.addressMatches;
+                    this.formValues.actual_address = this.formValues.legal_address;
+                },
+            }
+        },
+        mounted() {
+            if (this.formValues.actual_address === this.formValues.legal_address) {
+                this.formValues.address_matches = true;
+            }
         },
         methods: {
             onClickCancel() {
@@ -195,10 +214,7 @@
                     // this.showLoaderSending = false;
                     this.$store.dispatch('showError', err);
                     console.error(err);
-                    // this.$store.dispatch('showError', err);
-                    // console.error(err);
                 });
-                // alert(`Submitted ${formData.last_name} successfully!`)
             },
         }
     };

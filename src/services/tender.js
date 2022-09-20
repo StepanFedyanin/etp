@@ -198,6 +198,14 @@ export default class extends REST {
         })
     }
 
+    static addTenderLotRapidBet(tenderId, params) {
+        return this._post(`${tenderId}/lots/rapid_bets`, {}, params).then((data) => {
+            return data
+        }).catch((error) => {
+            throw new RESTError(error, 'Ошибка при добавлении быстрых ставок');
+        })
+    }
+
     static getTenderLotUsers(tenderId, lotId) {
         return this._get(`${tenderId}/lots/${lotId}/played_users`, {}, {}).then((data) => {
             return data

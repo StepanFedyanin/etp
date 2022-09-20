@@ -41,6 +41,24 @@ const confFormKit = {
             options: '$reset field__options',
             option: '$reset field__option',
             decorator: '$reset field__decorator'
+        },
+    },
+    messages: {
+        ru: {
+            validation: {
+                date_after({ name, args }) {
+                    if (Array.isArray(args) && args.length) {
+                        return `${name} должна быть позже ${date(args[0])}`;
+                    }
+                    return `${name} должна быть в будущем.`;
+                },
+                date_before({ name, args }) {
+                    if (Array.isArray(args) && args.length) {
+                        return `${name} должна быть раньше ${date(args[0])}`;
+                    }
+                    return `${name} должна быть в прошлом.`;
+                },
+            }
         }
     },
     inputs: {
@@ -62,3 +80,13 @@ const confFormKit = {
 app.use(plugin, defaultConfig(confFormKit));
 
 app.mount('#app');
+
+function date(date) {
+    const dateTime = typeof date === 'string' ? new Date(Date.parse(date)) : date;
+    if (!(dateTime instanceof Date)) {
+        return '(unknown)';
+    }
+    return new Intl.DateTimeFormat(undefined, {
+        dateStyle: 'medium',
+    }).format(dateTime);
+}
