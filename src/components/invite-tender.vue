@@ -107,7 +107,7 @@
                                         label: org.inn,
                                         kpp: org.kpp,
                                         name: org.name,
-                                        city: org.city,
+                                        // city: org.city,
                                         legal_address: org.legal_address,
                                         value: org.id,
                                         color_status: org.color_status,
@@ -122,6 +122,7 @@
                         //innerClass: 'modal-form__input',
                         //labelClass: '$reset modal-form__label',
                         //outerClass: '$reset modal-form__field m--inn',
+                        outerClass: 'inviteTender__multiselect',
                         organization: {},
                     }
 
