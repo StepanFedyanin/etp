@@ -173,39 +173,16 @@
                     }, {
                         $formkit: 'multiselect',
                         mode: 'single',
-                        name: 'type',
+                        name: 'kind',
                         label: 'Тип тендера',
                         closeOnSelect: false,
                         options: [
-                            { label: 'Открытый на понижение', value: 'reduction_opened' },
-                            { label: 'Закрытый на понижение', value: 'reduction_closed' },
-                            { label: 'Запрос котировок', value: 'request_quote' },
+                            { label: 'Тендер на понижение', value: 'tender' },
+                            { label: 'Запрос цен', value: 'price_request' },
                         ],
                         inputClass: 'modal-form__select',
                         labelClass: '$reset modal-form__label',
                         outerClass: '$reset modal-form__field m--type',
-                    }, {
-                        $formkit: 'multiselect',
-                        name: 'region',
-                        label: 'Выбор региона',
-                        options: async () => {
-                            return await geoApi.getRegions({ limit: 100 })
-                                .then(regions => {
-                                    if (regions) {
-                                        let options = regions.map( region => {
-                                            return { label: region.name, value: region.id }
-                                        })
-                                        return options
-                                    } else {
-                                        console.log('No getRegions data')
-                                    }
-                                }).catch(err => {
-                                    console.error(err)
-                                })
-                        },
-                        inputClass: 'modal-form__select',
-                        labelClass: '$reset modal-form__label',
-                        outerClass: '$reset modal-form__field m--region',
                     }, {
                         $formkit: 'multiselect',
                         name: 'creator',
@@ -236,6 +213,41 @@
                         innerClass: 'modal-form__input',
                         labelClass: '$reset modal-form__label',
                         outerClass: '$reset modal-form__field m--inn',
+                    }, {
+                        $formkit: 'multiselect',
+                        mode: 'single',
+                        name: 'type',
+                        label: 'Доступ к тендеру',
+                        closeOnSelect: false,
+                        options: [
+                            { label: 'Открытый', value: 'reduction_opened' },
+                            { label: 'Закрытый', value: 'reduction_closed' },
+                        ],
+                        inputClass: 'modal-form__select',
+                        labelClass: '$reset modal-form__label',
+                        outerClass: '$reset modal-form__field m--type',
+                    }, {
+                        $formkit: 'multiselect',
+                        name: 'region',
+                        label: 'Выбор региона',
+                        options: async () => {
+                            return await geoApi.getRegions({ limit: 100 })
+                                .then(regions => {
+                                    if (regions) {
+                                        let options = regions.map( region => {
+                                            return { label: region.name, value: region.id }
+                                        })
+                                        return options
+                                    } else {
+                                        console.log('No getRegions data')
+                                    }
+                                }).catch(err => {
+                                    console.error(err)
+                                })
+                        },
+                        inputClass: 'modal-form__select',
+                        labelClass: '$reset modal-form__label',
+                        outerClass: '$reset modal-form__field m--region',
                     }, {
                         $formkit: 'checkbox',
                         name: 'owner_type',

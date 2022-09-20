@@ -46,7 +46,7 @@
                 {{ $helpers.toPrice(tender.price, {sign: '₽'}) }}
             </div>
             <div class="tenders__item-param">
-                <span class="tenders__item-param-name">Аукцион №{{ tender.id }}</span>
+                <span class="tenders__item-param-name">{{ tender.kind_detail }} №{{ tender.id }}</span>
             </div>
             <!-- <div class="tenders__item-param">
                 <span

@@ -198,7 +198,7 @@
                     />
                     <div class="tender__info-left">
                         <div class="tender__info-number">
-                            <span>Аукцион №{{ tender.id }}</span>
+                            <span>{{ tender.kind_detail }} №{{ tender.id }}</span>
                         </div>
                         <div class="tender__info-title">
                             {{ tender.name }}

@@ -6,7 +6,7 @@
         <div class="tenders__item-left">
             <div class="tenders__item-top">
                 <div class="tenders__item-top-name">
-                    Аукцион №{{ tender.id }}
+                    {{ tender.kind_detail }} №{{ tender.id }}
                 </div>
             </div>
             <router-link

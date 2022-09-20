@@ -9,10 +9,10 @@
             @click="toggleFavorite"
         />
         <div class="tenders__item-left">
+            <div class="tenders__item-name">
+                {{ tender.kind_detail }} №{{ tender.id }}
+            </div>
             <div class="tenders__item-top">
-                <div class="tenders__item-top-name">
-                    Аукцион №{{ tender.id }}
-                </div>
                 <template
                     v-if="tender.publication"
                 >
