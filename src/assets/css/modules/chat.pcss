@@ -3,6 +3,7 @@
     width: 100%;
 
     &__board-empty{
+        /* margin: 0 auto; */
         max-width: 740px;
         background: white;
         border-radius: 28px;
@@ -140,6 +141,10 @@
             padding: 0 15px 0 30px;
 
             @mixin scrollbar $color-shadow, $color-green, 10px;
+
+            .chat__board-empty{
+                margin: 0 auto;
+            }
 
             /*
             &::-webkit-scrollbar-track {
