@@ -125,6 +125,7 @@
             </template>
         </div>
         <ModalAddLotOffer
+            v-if="showAddLotOfferModal"
             :tender="tender || {}"
             :lot="lot || {}"
             :showModal="showAddLotOfferModal"
@@ -182,12 +183,11 @@
                 let bets = [...this.lots];
                 bets = bets.sort((a, b) => {
                     if (this.currentSorting === 'participate') {
-                        if (a.user_price > b.user_price)
+                        if (a.user_price)
                             return -1;
-                        if (a.user_price < b.user_price)
+                        if (!a.user_price)
                             return 1;
-                        return 0;
-                    }
+                        return 0;                    }
                     if (this.currentSorting === 'lot_number') {
                         if (a.num < b.num)
                             return -1;

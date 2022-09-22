@@ -87,7 +87,6 @@
                                     name="min_bid"
                                     :options="['Минимальная ставка']"
                                     outerClass="field--inline"
-                                    @input="setMinBid"
                                 />
                             </div>
                             <div 
@@ -140,7 +139,7 @@
             return {
                 formValues: {
                     price: null,
-                    min_bid: null
+                    min_bid: []
                 },
                 loading: false,
                 showLoaderSending: false,
@@ -148,21 +147,31 @@
                 updateData: false,
             };
         },
+        watch: {
+            'formValues.min_bid': {
+                immediate: true,
+                handler() {
+                    this.setMinBid();
+                }
+            }
+        },
         computed: {
             show() {
                 return this.showModal;
             },
         },
+        mounted() {
+        },
         methods: {
             setMinBid(data, node) {
-                console.log(this.formData);
-                this.formValues.price = this.lot.min_price;
+                if (this.formValues.min_bid.length) {
+                    this.formValues.price = this.lot.min_price;
+                }
             },
             submitHandler(data, node) {
                 this.showLoaderSending = true;
                 this.loading = true;
                 let params = Object.assign({}, this.formValues);
-                console.log(params);
                 tenderApi.addTenderLotBet(this.tender.id, this.lot.id, params).then(res => {
                     this.showLoaderSending = false;
                     this.loading = false;

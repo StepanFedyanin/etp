@@ -1,6 +1,8 @@
 <template>
     <div class="tender__lots">
-        <div class="tender__lots-title">Лоты</div>
+        <div class="tender__lots-title">
+            Лоты
+        </div>
         <div 
             class="lots"
             :class="(tender.status === 'bidding_process' && user.id === tender.creator) ? 'm--process' : (tender.status === 'closed' || tender.status === 'bidding_completed' || tender.status === 'fulfilment') ? 'm--finished' : '' "
@@ -177,9 +179,9 @@
                 </div>
             </div>
             <ModalWinnerLot
-                v-if="lot"
+                v-if="lotWinner"
                 :tender="tender"
-                :lot="lot"
+                :lot="lotWinner"
                 :showModal="showWinnerLotModal"
                 @hideModal="hideWinnerLotModal"
             />
@@ -206,27 +208,27 @@
         data() {
             return {
                 user: this.$store.state.user,
-                lot: null,
+                lotWinner: null,
                 showWinnerLotModal: false,
             }
         },
         computed: {
         },
         mounted() {
-            console.log('MOUNTED', this.lot);
+            //console.log('MOUNTED', this.lot);
         },
         created() {
         },
         methods: {
             onClickWinnerLotModal(lot) {
                 console.log('onClickWinnerLotModal');
-                this.lot = lot;
+                this.lotWinner = lot;
                 this.showWinnerLotModal = true;
             },
             hideWinnerLotModal(updateData) {
                 this.showWinnerLotModal = false;
                 if (updateData) {
-                    this.lot = null;
+                    this.lotWinner = null;
                     this.$emit('getTenderData');
                 }
             },
