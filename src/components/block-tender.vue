@@ -23,10 +23,16 @@
                         {{ tender.status_detail || tender.status }}
                     </div>
                     <div
+                        v-if="restTime"
                         class="tenders__item-top-timer"
                     >
                         <template
-                            v-if="restTime"
+                            v-if="tender.status === 'bid_accept'"
+                        >
+                            Осталось {{ $helpers.dateRangeToDaysHours(new Date(), new Date(tender.date_start)) }}
+                        </template>
+                        <template
+                            v-else
                         >
                             Осталось {{ $helpers.dateRangeToDaysHours(new Date(), new Date(tender.date_end)) }}
                         </template>

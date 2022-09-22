@@ -2,7 +2,21 @@
     <div class="tender-start">
         <div class="container">
             <div class="tender-start__title h1">
-                {{ $route.params.id ? 'Редактирование тендера' : 'Создание тендера' }}
+                <template
+                    v-if="type === 0"
+                >
+                    Тендер на понижение 
+                </template>
+                <template
+                    v-else-if="type === 1"
+                >
+                    Запрос цен без исполнения договора 
+                </template>
+                <template
+                    v-else-if="type === 2"
+                >
+                    Запрос цен с исполнением договора 
+                </template>
             </div>
             <template
                 v-if="showLoaderSending"
@@ -120,13 +134,6 @@
                                     ref="documents"
                                     class="lots__list"
                                 >
-                                    <FormKit
-                                        id="draft_file"
-                                        name="draft_file"
-                                        type="file"
-                                        outerClass="$reset field--type_hidden"
-                                        @change="uploadFileComplete"
-                                    />
                                     <div
                                         v-for="(file, idx) in documents"
                                         :key="idx"
@@ -173,6 +180,13 @@
                                     </div>
                                 </div>
                             </div>
+                            <FormKit
+                                id="draft_file"
+                                name="draft_file"
+                                type="file"
+                                outerClass="$reset field--type_hidden"
+                                @change="uploadFileComplete"
+                            />
                             <button
                                 type="button"
                                 class="button button-outline-green"
@@ -424,12 +438,12 @@
                     }, {
                         $formkit: 'multiselect',
                         name: 'type',
-                        label: 'Тип тендера',
-                        help: 'Выберите тип проводимого тендера',
+                        label: 'Доступ к тендеру',
+                        help: 'Открытый — свободный доступ; закрытый — только по приглашениям',
                         validation: 'required',
                         options: [
-                            { label: 'Открытый на понижение', value: 'reduction_opened' },
-                            { label: 'Закрытый на понижение', value: 'reduction_closed' },
+                            { label: 'Открытый', value: 'reduction_opened' },
+                            { label: 'Закрытый', value: 'reduction_closed' },
                         ],
                         __raw__sectionsSchema: {
                             prefix: {
@@ -785,6 +799,10 @@
                     console.error(err)
                 })
             } else {
+                this.tenderForm.type = {
+                    fromParent: true,
+                    value: 'reduction_opened'
+                }
                 if (this.defaultTender) {
                     this.defaultTender = null
                     this.resetFormTender()
@@ -874,7 +892,7 @@
                 }
                 this.tenderForm.type = {
                     fromParent: true,
-                    value: null
+                    value: 'reduction_opened'
                 }
                 this.tenderForm.region = {
                     fromParent: true,
