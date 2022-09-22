@@ -50,7 +50,7 @@
                     </div>
 
                     <template
-                        v-if="this.tenderForm.fulfilment"
+                        v-if="tenderForm.fulfilment && relatedTenders.length"
                     >
                         <div class="tender-form__title">
                             Связанный тендер
@@ -832,7 +832,7 @@
                 node_step.props.outerClass = 'm--hidden';
             }
             userApi.getOrganizationRelatedTenders().then(tenders => {
-                //this.relatedTenders = tenders;
+                this.relatedTenders = tenders;
                 if (!tenders.length) {
                     const node = this.$formkit.get('add_related');
                     node.props.disabled = true;

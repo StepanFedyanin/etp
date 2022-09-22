@@ -3,7 +3,7 @@
         <div class="tender__lots-title">Лоты</div>
         <div 
             class="lots"
-            :class="(tender.status === 'bidding_process' && user.id === tender.creator) ? 'm--process' : (tender.status === 'closed' || tender.status === 'bidding_completed') ? 'm--finished' : '' "
+            :class="(tender.status === 'bidding_process' && user.id === tender.creator) ? 'm--process' : (tender.status === 'closed' || tender.status === 'bidding_completed' || tender.status === 'fulfilment') ? 'm--finished' : '' "
         >
             <div class="lots__inner">
                 <div class="lots__inner-block">
@@ -40,7 +40,7 @@
                             </div>
                         </template>
                         <template
-                            v-if="tender.status === 'closed' || tender.status === 'bidding_completed'"
+                            v-if="tender.status === 'closed' || tender.status === 'bidding_completed' || tender.status === 'fulfilment'"
                         >
                             <div class="lots__header-cell m--sum">
                                 Победитель
@@ -145,7 +145,7 @@
                                 </div>
                             </template>
                             <template
-                                v-else-if="tender.status === 'closed'"
+                                v-else-if="tender.status === 'closed' || tender.status === 'fulfilment'"
                             >
                                 <div class="lots__item-cell">
                                     <template

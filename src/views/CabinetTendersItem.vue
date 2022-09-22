@@ -510,7 +510,7 @@
                     @getTenderData="getTenderData"
                 />
                 <inviteTender 
-                    v-if="user.id === tender.creator && tender.status === 'bid_accept'"
+                    v-if="user.id === tender.creator && tender.status === 'bid_accept' && tender.publication"
                     :tender="tender"
                 />
             </template>
