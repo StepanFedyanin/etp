@@ -122,13 +122,13 @@
                         label: 'ФИО бухгалтера организации',
                         outerClass: 'field--inline'
                     }, {
-                        $formkit: 'text',
+                        $formkit: 'textarea',
                         name: 'legal_address',
                         disabled: true,
                         label: 'Юридический адрес организации',
                         outerClass: 'field--inline'
                     }, {
-                        $formkit: 'text',
+                        $formkit: 'textarea',
                         id: 'address',
                         name: 'actual_address',
                         //disabled: this.addressMatches,

@@ -124,14 +124,14 @@
                         placeholder: 'Иванова Любовь Ивановна',
                         disabled: false,
                     },{
-                        $formkit: 'text',
+                        $formkit: 'textarea',
                         name: 'legal_address',
                         label: 'Юридический адрес',
                         placeholder: 'Свердловская обл., г. Артемовский, ул. Дзержинского, Д. 1, К. Д, 623784',
                         disabled: true,
                         outerClass: 'field--required',
                     }, {
-                        $formkit: 'text',
+                        $formkit: 'textarea',
                         id: 'address',
                         name: 'actual_address',
                         disabled: !this.addressMatches ? false : true,

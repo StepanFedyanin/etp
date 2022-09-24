@@ -10,9 +10,20 @@
                     <h1 class="h1">
                         Сотрудник организации
                     </h1>
-                    <ProfileUser
-                        :user="profile"
-                    />
+                    <template
+                        v-if="showLoaderSending"
+                    >
+                        <div class="cabinet__loader loader">
+                            <div class="spinner" /> Загрузка данных
+                        </div>
+                    </template>
+                    <template
+                        v-else
+                    >
+                        <ProfileUser
+                            :user="profile"
+                        />
+                    </template>
                 </div>
             </div>
         </div>
@@ -20,46 +31,37 @@
 </template>
 
 <script>
-    // import Breadcrumbs from '@/components/app-breadcrumbs';
-    import ProfileUser from '@/components/profile-user.vue';
     import { user as api } from "@/services";
+    import ProfileUser from '@/components/profile-user.vue';
 
     export default {
         components: {
-            // Breadcrumbs,
             ProfileUser,
         },
         data() {
             return {
-                profile: undefined,
-                contragents: [],
-                contragent: {
-                    id: 1,
-                    name: 'ООО “Флексайтс”',
-                    city: 'г. Челябинск',
-                    activity: 'Разработка компьютерного программного обеспечения',
-                    customer: '113',
-                    member: '45'
-                },
+                profile: {},
                 organization: {},
-                persons: [],
-                tenders: [],
+                showLoaderSending: false,
             }
         },
         mounted() {
-        },
-        beforeDestroy() {
-        },
-        created() {
+            this.showLoaderSending = true;
             api.getMyProfile().then(res => {
                 this.profile = res;
                 this.$store.dispatch('setUser', res);
                 if(this.organization) {
                     this.organization = res.organization;
                 }
+                this.showLoaderSending = false;
             }).catch(err => {
+                this.showLoaderSending = false;
                 console.error(err);
             });
+        },
+        beforeDestroy() {
+        },
+        created() {
         },
         methods: {
             onClickEditOrganization() {

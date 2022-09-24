@@ -126,15 +126,14 @@
             },
             updateUserProfile(formData, node) {
                 api.updateProfile(formData).then(res => {
+                    this.$router.go(-1);
                     console.log(res);
                 }).catch(err => {
                     node.setErrors(
-                        [err.detail],
+                        err.response.data
                     );
-                    this.$store.dispatch('showError', err);
-                    console.error(err);
+                    //this.$store.dispatch('showError', err);
                 });
-                this.$router.go(-1);
             },
 
         },

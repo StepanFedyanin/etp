@@ -320,6 +320,7 @@
                     }
                 }).catch(err => {
                     console.log(err)
+                    /*
                     node.setErrors(
                         [err.detail || ''],
                         {
@@ -327,8 +328,12 @@
                             login: ''
                         }
                     );
+                    */
+                    node.setErrors(
+                        err.response.data
+                    );
                     this.showLoaderSending = false;
-                    this.$store.dispatch('showError', err);
+                    //this.$store.dispatch('showError', err);
                     console.error(err);
                 });
             },

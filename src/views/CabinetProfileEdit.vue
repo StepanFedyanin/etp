@@ -10,10 +10,21 @@
                     <h2 class="profile-edit__subtitle h2">
                         Изменить данные моего профиля
                     </h2>
-                    <ProfileEdit
-                        v-if="profile"
-                        :item="profile"
-                    />
+                    <template
+                        v-if="showLoaderSending"
+                    >
+                        <div class="cabinet__loader loader">
+                            <div class="spinner" /> Загрузка данных
+                        </div>
+                    </template>
+                    <template
+                        v-else
+                    >
+                        <ProfileEdit
+                            v-if="profile"
+                            :item="profile"
+                        />
+                    </template>
                 </div>
             </div>
         </div>
@@ -21,13 +32,11 @@
 </template>
 
 <script>
-    // import Breadcrumbs from '@/components/app-breadcrumbs';
     import ProfileEdit from '@/components/forms/profile-edit.vue';
     import { user as api } from "@/services";
 
     export default {
         components: {
-            // Breadcrumbs,
             ProfileEdit,
         },
         data() {
@@ -35,15 +44,19 @@
                 profile: undefined,
                 organization: {},
                 item: [],
+                showLoaderSending: false,
             }
         },
         created() {
+            this.showLoaderSending = true;
             api.getMyProfile().then(res => {
                 this.profile = res;
                 if(this.organization){
                     this.organization = res.organization;
                 }
+                this.showLoaderSending = false;
             }).catch(err => {
+                this.showLoaderSending = false;
                 console.error(err);
             });
         },

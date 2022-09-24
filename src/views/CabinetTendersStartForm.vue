@@ -835,7 +835,9 @@
                 this.relatedTenders = tenders;
                 if (!tenders.length) {
                     const node = this.$formkit.get('add_related');
-                    node.props.disabled = true;
+                    if (node) {
+                        node.props.disabled = true;
+                    }
                 }
             }).catch(err => {
                 console.error(err)

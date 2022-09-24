@@ -180,7 +180,7 @@
                     console.log(res);
                 }).catch(err => {
                     node.setErrors(
-                        [err.detail],
+                        err.response.data
                     );
                     this.showLoaderSending = false;
                     this.loading = false;

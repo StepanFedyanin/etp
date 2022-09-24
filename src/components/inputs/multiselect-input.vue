@@ -141,6 +141,7 @@
     }
 
     onUpdated(() => {
+        console.log('onUpdated');
         let v = props.context._value
         if (v && v.fromParent) {
             multiselect._value.clear()
@@ -155,6 +156,5 @@
                 multiselect._value.select(v.value)
             }
         }
-        console.log('onUpdated');
     })
 </script>

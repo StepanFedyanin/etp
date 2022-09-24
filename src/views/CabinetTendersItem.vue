@@ -458,7 +458,7 @@
                     :tender="tender"
                 />
                 <TenderOrganizationStatus
-                    v-if="user.id !== tender.creator"
+                    v-if="user.id !== tender.creator  && user.organization.id !== tender.organization.id"
                     :tender="tender"
                     @getTenderData="getTenderData"
                 />

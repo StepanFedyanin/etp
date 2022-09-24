@@ -108,6 +108,8 @@
                         $formkit: 'text',
                         name: 'phone',
                         label: 'Телефон (контактный)',
+                        placeholder: "x-xxx-xxx-xxxx",
+                        validationVisibility: 'dirty',
                         outerClass: 'field--inline'
                     }
                 ],

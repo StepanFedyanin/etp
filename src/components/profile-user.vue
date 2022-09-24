@@ -28,17 +28,6 @@
         </svg>
         <div class="profile__table table">
             <div class="table__column">
-                <!-- <div
-                    v-for="(value, name) in user"
-                    class="table__item"
-                >
-                    <div class="table__label">
-                        {{ name }}
-                    </div>
-                    <div class="table__value">
-                        {{ value }}
-                    </div>
-                </div> -->
                 <div class="table__item">
                     <div class="table__label">
                         Email (логин):
@@ -96,7 +85,6 @@
                         Телефон (контактный):
                     </div>
                     <div class="table__value">
-                        <!-- {{ $helpers.formatTel(user.phone) }} -->
                         {{ user.phone ? user.phone : '-' }}
                     </div>
                 </div>
@@ -128,16 +116,6 @@
                     return {} 
                 }
             },
-            // userItem: {
-            //     type: Object,
-            //     default() { 
-            //         return {} 
-            //     }
-            // },
-            // id: {
-            //     type: Number,
-            //     default() { return null; }
-            // },
         },
         data() {
             return {
@@ -145,12 +123,10 @@
             };
         },
         created() {
-            console.log(this)
         },
         methods: {
             onClickEditProfile() {
                 this.$router.push({ name: 'profile-edit'});
-                // this.$router.push({ name: 'profile-edit-user', params: { id: id } });
             },
             onClickEditPassword() {
                 this.$router.push({ name: 'profile-edit-password'});
