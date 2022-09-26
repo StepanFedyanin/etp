@@ -90,6 +90,7 @@
         },
         data() {
             return {
+                user: this.$store.state.user,
                 formValues: this.formData,
                 invites: {} ,
                 // invite: {},
@@ -103,14 +104,16 @@
                             return await userApi.getOrganizations({limit: 1000}).then(orgs => {
                                 console.log(orgs);
                                 return orgs.results.map((org) => {
-                                    return {
-                                        label: org.inn,
-                                        kpp: org.kpp,
-                                        name: org.name,
-                                        // city: org.city,
-                                        legal_address: org.legal_address,
-                                        value: org.id,
-                                        color_status: org.color_status,
+                                    if (this.user.organization.id !== org.id) {
+                                        return {
+                                            label: org.inn,
+                                            kpp: org.kpp,
+                                            name: org.name,
+                                            // city: org.city,
+                                            legal_address: org.legal_address,
+                                            value: org.id,
+                                            color_status: org.color_status,
+                                        }
                                     }
                                 })
                             }).catch(err => {

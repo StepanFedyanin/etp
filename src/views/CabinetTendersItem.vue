@@ -300,7 +300,7 @@
                         </button>
                         <button 
                             class="button button-green"
-                            @click.stop=""
+                            @click.stop="this.$refs.invite.scrollIntoView({ behavior: 'smooth' })"
                         >
                             Отправить приглашение
                         </button>
@@ -511,6 +511,7 @@
                 />
                 <inviteTender 
                     v-if="user.id === tender.creator && tender.status === 'bid_accept' && tender.publication"
+                    ref="invite"
                     :tender="tender"
                 />
             </template>
