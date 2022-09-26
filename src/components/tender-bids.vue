@@ -105,7 +105,7 @@
                             </span>
                         </div>
                         <a
-                            v-if="lot.user_price"
+                            v-if="lot.user_price && lot.user_price === lot.last_price"
                             href="#"
                             class="lots__item-cancel"
                             @click.prevent="onClickCancelLotOffer(lot)"
