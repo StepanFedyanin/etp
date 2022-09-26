@@ -103,7 +103,7 @@
                         options: async () => {
                             return await userApi.getOrganizations({limit: 1000}).then(orgs => {
                                 console.log(orgs);
-                                return orgs.results.map((org) => {
+                                return orgs.results.filter((org) => {
                                     if (this.user.organization.id !== org.id) {
                                         return {
                                             label: org.inn,

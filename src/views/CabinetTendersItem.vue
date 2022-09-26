@@ -300,7 +300,7 @@
                         </button>
                         <button 
                             class="button button-green"
-                            @click.stop="this.$refs.invite.scrollIntoView({ behavior: 'smooth' })"
+                            @click.stop="this.$refs['invite'].scrollIntoView({ behavior: 'smooth' })"
                         >
                             Отправить приглашение
                         </button>
