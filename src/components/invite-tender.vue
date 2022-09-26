@@ -102,20 +102,23 @@
                         minChars: 3,
                         options: async () => {
                             return await userApi.getOrganizations({limit: 1000}).then(orgs => {
-                                console.log(orgs);
-                                return orgs.results.filter((org) => {
-                                    if (this.user.organization.id !== org.id) {
-                                        return {
-                                            label: org.inn,
-                                            kpp: org.kpp,
-                                            name: org.name,
-                                            // city: org.city,
-                                            legal_address: org.legal_address,
-                                            value: org.id,
-                                            color_status: org.color_status,
-                                        }
+                                let items = orgs.results.filter((org) => {
+                                    if (this.user.organization.id === org.id) {
+                                        return false;
                                     }
+                                    return true;
                                 })
+                                return items.map((org) => {
+                                    return {
+                                        label: org.inn,
+                                        kpp: org.kpp,
+                                        name: org.name,
+                                        // city: org.city,
+                                        legal_address: org.legal_address,
+                                        value: org.id,
+                                        color_status: org.color_status,
+                                    }
+                                });
                             }).catch(err => {
                                 console.error(err);
                             })

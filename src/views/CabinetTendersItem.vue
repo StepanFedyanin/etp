@@ -300,7 +300,7 @@
                         </button>
                         <button 
                             class="button button-green"
-                            @click.stop="this.$refs['invite'].scrollIntoView({ behavior: 'smooth' })"
+                            @click.stop="onClickInviteTender()"
                         >
                             Отправить приглашение
                         </button>
@@ -458,7 +458,7 @@
                     :tender="tender"
                 />
                 <TenderOrganizationStatus
-                    v-if="user.id !== tender.creator  && user.organization.id !== tender.organization.id"
+                    v-if="user.id !== tender.creator && user.organization.id !== tender.organization.id"
                     :tender="tender"
                     @getTenderData="getTenderData"
                 />
@@ -509,11 +509,15 @@
                     :participants="participants"
                     @getTenderData="getTenderData"
                 />
-                <inviteTender 
-                    v-if="user.id === tender.creator && tender.status === 'bid_accept' && tender.publication"
-                    ref="invite"
-                    :tender="tender"
-                />
+                <div
+                    id="inviteTender"
+                    ref="inviteTender"
+                >
+                    <inviteTender 
+                        v-if="user.id === tender.creator && tender.status === 'bid_accept' && tender.publication"
+                        :tender="tender"
+                    />
+                </div>
             </template>
         </div>
     </div>
@@ -661,6 +665,14 @@
             },
             onClickDeleteTender() {
                 this.showDeleteTenderConfirmModal = true;
+            },
+            onClickInviteTender() {
+                /*
+                const el = this.$refs.inviteTender;
+                if (el) {
+                    el.scrollIntoView({ behavior: "smooth" });
+                }
+                */
             },
             hideCloseTenderConfirmModal(updateData=false) {
                 this.showCloseTenderConfirmModal = false;
