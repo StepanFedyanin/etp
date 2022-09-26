@@ -298,12 +298,6 @@
                         >
                             Отменить тендер
                         </button>
-                        <button 
-                            class="button button-green"
-                            @click.stop="onClickInviteTender()"
-                        >
-                            Отправить приглашение
-                        </button>
                     </div>
                     <div
                         v-else-if="tender.status === 'bidding_process'" 
@@ -469,7 +463,7 @@
                     @getTenderData="getTenderData"
                 />
                 <div 
-                    v-if="tender.bet_enabled && tender.user_participation && tender.kind === 'tender' && tender.user_participation.status === 'participant'"
+                    v-if="tender.bet_enabled && tender.user_participation && tender.kind === 'tender' && tender.user_participation.status === 'participant' && tender.user_participation.contact_person.id === user.id"
                     class="tender__bids"
                 >
                     <div class="tender__bids-left">
@@ -509,15 +503,10 @@
                     :participants="participants"
                     @getTenderData="getTenderData"
                 />
-                <div
-                    id="inviteTender"
-                    ref="inviteTender"
-                >
-                    <inviteTender 
-                        v-if="user.id === tender.creator && tender.status === 'bid_accept' && tender.publication"
-                        :tender="tender"
-                    />
-                </div>
+                <inviteTender 
+                    v-if="user.id === tender.creator && tender.status === 'bid_accept' && tender.publication"
+                    :tender="tender"
+                />
             </template>
         </div>
     </div>
@@ -666,14 +655,14 @@
             onClickDeleteTender() {
                 this.showDeleteTenderConfirmModal = true;
             },
+            /*
             onClickInviteTender() {
-                /*
                 const el = this.$refs.inviteTender;
                 if (el) {
                     el.scrollIntoView({ behavior: "smooth" });
                 }
-                */
             },
+            */
             hideCloseTenderConfirmModal(updateData=false) {
                 this.showCloseTenderConfirmModal = false;
                 if (updateData) {

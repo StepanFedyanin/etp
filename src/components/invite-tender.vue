@@ -91,7 +91,7 @@
         data() {
             return {
                 user: this.$store.state.user,
-                formValues: this.formData,
+                formValues: {},
                 invites: {} ,
                 // invite: {},
                 schema: [
@@ -157,9 +157,12 @@
                     this.invite = res;
                     console.log(this.invite);
                     this.showLoaderSending = false;
-                    this.$formkit.reset('form-search');
                     this.getInvitation();
+                    this.formValues = {};
+                    this.$formkit.reset('form-search');
                 }).catch(err => {
+                    this.formValues = {};
+                    this.$formkit.reset('form-search');
                     node.setErrors(
                         [err.detail],
                     );

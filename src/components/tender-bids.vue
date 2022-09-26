@@ -113,7 +113,10 @@
                             Отменить последнюю ставку
                         </a>
                     </div>
-                    <div class="lots__item-buttons">
+                    <div 
+                        v-if="tender.user_participation.contact_person.id === user.id"
+                        class="lots__item-buttons"
+                    >
                         <button 
                             class="button button-outline-green"
                             @click.prevent="onClickAddLotOffer(lot)"
@@ -127,7 +130,7 @@
         <ModalAddLotOffer
             v-if="showAddLotOfferModal"
             :tender="tender || {}"
-            :lot="lot || {}"
+            :lotId="lot.id"
             :showModal="showAddLotOfferModal"
             @hideModal="hideAddLotOfferModal"
         />
@@ -161,6 +164,7 @@
         data() {
             return {
                 //bets: this.lots || [],
+                user: this.$store.state.user,
                 filters: {
                     all: 'Показать все',
                     participate: 'Участвую',

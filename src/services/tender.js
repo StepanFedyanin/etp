@@ -158,6 +158,14 @@ export default class extends REST {
         })
     }
 
+    static getTenderLot(tender_id, lot_id) {
+        return this._get(`${tender_id}/lots/${lot_id}`, {}).then((data) => {
+            return data
+        }).catch((error) => {
+            throw new RESTError(error, 'Ошибка при получении лота тендера');
+        })
+    }
+
     static addTenderLot(id, params) {
         return this._post(`${id}/add_lot`, {}, params).then((data) => {
             return data
