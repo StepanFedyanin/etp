@@ -134,7 +134,7 @@
                 >
                     Начало приема заявок:
                 </span>
-                {{ $helpers.formatDate(new Date(tender.date_publication), 'DD.MM.YYYY HH:mm') }} МСК
+                {{ $helpers.formatDate(new Date(tender.date_publication), 'DD.MM.YYYY HH:mm', 'Europe/Moscow') }} МСК
             </div>
             <div 
                 v-if="tender.date_start" 
@@ -145,7 +145,7 @@
                 >
                     Прием заявок: до
                 </span> 
-                {{ $helpers.formatDate(new Date(tender.date_start), 'DD.MM.YYYY HH:mm') }} МСК
+                {{ $helpers.formatDate(new Date(tender.date_start), 'DD.MM.YYYY HH:mm', 'Europe/Moscow') }} МСК
             </div>
             <div
                 v-if="tender.date_end" 
@@ -156,7 +156,7 @@
                 >
                     Этап торгов: до
                 </span> 
-                {{ $helpers.formatDate(new Date(tender.date_end), 'DD.MM.YYYY HH:mm') }} МСК
+                {{ $helpers.formatDate(new Date(tender.date_end), 'DD.MM.YYYY HH:mm', 'Europe/Moscow') }} МСК
             </div>
             <div 
                 class="tenders__item-param"
@@ -166,7 +166,7 @@
                 >
                     Исполнение договора: до
                 </span> 
-                {{ $helpers.formatDate(new Date(tender.date_fulfilment), 'DD.MM.YYYY HH:mm') }} МСК
+                {{ $helpers.formatDate(new Date(tender.date_fulfilment), 'DD.MM.YYYY HH:mm', 'Europe/Moscow') }} МСК
             </div>
             <div class="tenders__item-param">
                 <span class="tenders__item-param-name">Тип аукциона:</span> {{ tender.type_detail }}
@@ -192,7 +192,7 @@
                 v-else
                 class="tenders__item-param"
             >
-                <span class="tenders__item-param-name">Участники:</span> {{ tender.unique_offer_count }}
+                <span class="tenders__item-param-name">Участники:</span> {{ tender.participant_count }}
             </div>
             <template
                 v-if="invites"

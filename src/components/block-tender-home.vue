@@ -55,7 +55,7 @@
                 >
                     Начало приема заявок:
                 </span>
-                {{ $helpers.formatDate(new Date(tender.date_publication), 'DD.MM.YYYY HH:mm') }} МСК
+                {{ $helpers.formatDate(new Date(tender.date_publication), 'DD.MM.YYYY HH:mm', 'Europe/Moscow') }} МСК
             </div>
             <div 
                 v-if="tender.date_start" 
@@ -66,7 +66,7 @@
                 >
                     Прием заявок: до
                 </span> 
-                {{ $helpers.formatDate(new Date(tender.date_start), 'DD.MM.YYYY HH:mm') }} МСК
+                {{ $helpers.formatDate(new Date(tender.date_start), 'DD.MM.YYYY HH:mm', 'Europe/Moscow') }} МСК
             </div>
             <div
                 v-if="tender.date_end" 
@@ -77,7 +77,7 @@
                 >
                     Этап торгов: до
                 </span> 
-                {{ $helpers.formatDate(new Date(tender.date_end), 'DD.MM.YYYY HH:mm') }} МСК
+                {{ $helpers.formatDate(new Date(tender.date_end), 'DD.MM.YYYY HH:mm', 'Europe/Moscow') }} МСК
             </div>
             <div 
                 v-if="tender.date_fulfilment"
@@ -88,7 +88,7 @@
                 >
                     Исполнение договора: до
                 </span> 
-                {{ $helpers.formatDate(new Date(tender.date_fulfilment), 'DD.MM.YYYY HH:mm') }} МСК
+                {{ $helpers.formatDate(new Date(tender.date_fulfilment), 'DD.MM.YYYY HH:mm', 'Europe/Moscow') }} МСК
             </div>
             <button
                 class="button button-green"

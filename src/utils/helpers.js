@@ -6,7 +6,10 @@ const helpers = {
     parseDate: (value, template) => {
         return (value && value.length === template.length) ? parse(value, template) : new Date(null);
     },
-    formatDate: (value, template) => {
+    formatDate: (value, template, timezone) => {
+        if (timezone) {
+            value = new Date(value.toLocaleString('EN-en', { timeZone: timezone }))
+        }
         return value ? format(value, template) : '';
     },
     toHHMMSS: (value) => {

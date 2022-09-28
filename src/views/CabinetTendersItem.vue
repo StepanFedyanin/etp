@@ -139,7 +139,7 @@
                                     Дата окончания этапа
                                 </div>
                                 <div class="tender__data-info">
-                                    {{ $helpers.formatDate(new Date(tender.date_start), 'DD.MM.YYYY HH:mm') }} МСК
+                                    {{ $helpers.formatDate(new Date(tender.date_start), 'DD.MM.YYYY HH:mm', 'Europe/Moscow') }} МСК
                                 </div>
                             </div>
                         </div>
@@ -153,7 +153,7 @@
                                     Дата окончания этапа
                                 </div>
                                 <div class="tender__data-info">
-                                    {{ $helpers.formatDate(new Date(tender.date_end), 'DD.MM.YYYY HH:mm') }} МСК
+                                    {{ $helpers.formatDate(new Date(tender.date_end), 'DD.MM.YYYY HH:mm', 'Europe/Moscow') }} МСК
                                 </div>
                             </div>
                         </div>
@@ -167,7 +167,7 @@
                                     Дата завершения
                                 </div>
                                 <div class="tender__data-info">
-                                    {{ $helpers.formatDate(new Date(tender.date_end), 'DD.MM.YYYY HH:mm') }} МСК
+                                    {{ $helpers.formatDate(new Date(tender.date_end), 'DD.MM.YYYY HH:mm', 'Europe/Moscow') }} МСК
                                 </div>
                             </div>
                         </div>                        
@@ -181,7 +181,7 @@
                                     Дата завершения
                                 </div>
                                 <div class="tender__data-info">
-                                    {{ $helpers.formatDate(new Date(tender.date_fulfilment), 'DD.MM.YYYY HH:mm') }} МСК 
+                                    {{ $helpers.formatDate(new Date(tender.date_fulfilment), 'DD.MM.YYYY HH:mm', 'Europe/Moscow') }} МСК 
                                 </div>
                             </div>
                         </div>                        
@@ -239,24 +239,24 @@
                         <div 
                             class="tender__info-param"
                         >
-                            <span>Начало приема заявок:</span> {{ $helpers.formatDate(new Date(tender.date_publication), 'DD.MM.YYYY HH:mm') }} МСК
+                            <span>Начало приема заявок:</span> {{ $helpers.formatDate(new Date(tender.date_publication), 'DD.MM.YYYY HH:mm', 'Europe/Moscow') }} МСК
                         </div>
                         <div 
                             v-if="tender.date_start" 
                             class="tender__info-param"
                         >
-                            <span>Прием заявок: до</span> {{ $helpers.formatDate(new Date(tender.date_start), 'DD.MM.YYYY HH:mm') }} МСК
+                            <span>Прием заявок: до</span> {{ $helpers.formatDate(new Date(tender.date_start), 'DD.MM.YYYY HH:mm', 'Europe/Moscow') }} МСК
                         </div>
                         <div
                             v-if="tender.date_end" 
                             class="tender__info-param"
                         >
-                            <span>Этап торгов: до</span> {{ $helpers.formatDate(new Date(tender.date_end), 'DD.MM.YYYY HH:mm') }} МСК
+                            <span>Этап торгов: до</span> {{ $helpers.formatDate(new Date(tender.date_end), 'DD.MM.YYYY HH:mm', 'Europe/Moscow') }} МСК
                         </div>
                         <div 
                             class="tender__info-param"
                         >
-                            <span>Исполнение договора: до</span> {{ $helpers.formatDate(new Date(tender.date_fulfilment), 'DD.MM.YYYY HH:mm') }} МСК
+                            <span>Исполнение договора: до</span> {{ $helpers.formatDate(new Date(tender.date_fulfilment), 'DD.MM.YYYY HH:mm', 'Europe/Moscow') }} МСК
                         </div>
                         <div class="tender__info-param">
                             <span>Тип аукциона:</span> {{ tender.type_detail }}
@@ -277,7 +277,7 @@
                             v-else 
                             class="tender__info-param"
                         >
-                            <span>Участники:</span> {{ tender.unique_offer_count }}
+                            <span>Участники:</span> {{ tender.participant_count }}
                         </div>
                     </div>
                 </div>

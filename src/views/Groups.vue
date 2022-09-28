@@ -36,7 +36,7 @@
                                     <span 
                                         v-if="group.last_bidding"
                                         class="group__info-red"
-                                    >{{ $helpers.formatDate(new Date(group.last_bidding), 'DD.MM.YYYY HH:mm') }} МСК
+                                    >{{ $helpers.formatDate(new Date(group.last_bidding), 'DD.MM.YYYY HH:mm', 'Europe/Moscow') }} МСК
                                     </span>
                                     <span
                                         v-else
