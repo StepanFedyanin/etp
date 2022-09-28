@@ -59,6 +59,7 @@
                                             :to="{ name: 'tenders', query: { category: category.id } }"
                                             v-text="category.name"
                                         />
+                                        <span>{{ category.bidding_count ? `(${category.bidding_count})` : '' }}</span>
                                     </li>
                                 </ul>
                             </Transition>
