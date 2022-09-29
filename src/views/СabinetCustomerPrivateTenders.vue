@@ -1,6 +1,4 @@
 <template>
-    <!-- <div class="app__main"> -->
-    <!-- <Breadcrumbs /> -->
     <div class="cabinet private-tenders">
         <div class="container">
             <div class="private-tenders__content">
@@ -35,17 +33,14 @@
             </div>
         </div>
     </div>
-    <!-- </div> -->
 </template>
 
 <script>
-    // import Breadcrumbs from '@/components/app-breadcrumbs.vue';
     import { tender as tenderApi } from "@/services"
     import blockTender from '@/components/block-tender.vue';
 
     export default {
         components: {
-            // Breadcrumbs
             blockTender
         },
         data() {

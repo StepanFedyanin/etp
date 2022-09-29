@@ -83,12 +83,9 @@
 </template>
 
 <script>
-    // import Header from '../components/app-header.vue';
-
     export default {
         name: 'Rules',
         components: {
-            //Header,
         },
         data() {
             return {

@@ -1,6 +1,5 @@
 <template>
     <div class="app__main">
-        <!-- <Breadcrumbs /> -->
         <div class="cabinet">
             <div class="container">
                 <div class="organization-edit">
@@ -21,13 +20,11 @@
 </template>
 
 <script>
-    // import Breadcrumbs from '@/components/app-breadcrumbs';
     import OrganizationEdit from '@/components/forms/organization-edit.vue';
     import { user as api } from "@/services";
 
     export default {
         components: {
-            // Breadcrumbs,
             OrganizationEdit
         },
         data() {

@@ -125,7 +125,6 @@
                 api.getCategoryList(params).then(res => {
                     this.groups = res
                     this.showLoaderSending = false;
-                    // console.log(res)
                 }).catch(err => {
                     this.showLoaderSending = false;
                     console.error(err)

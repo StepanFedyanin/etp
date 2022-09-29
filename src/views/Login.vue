@@ -20,27 +20,6 @@
                 >
                     <div class="form__block">
                         <FormKitSchema :schema="authForm" />
-                        <!--
-                        <FormKit
-                            type="text"
-                            name="email"
-                            label="Ваш E-mail"
-                            placeholder="jane@example.com"
-                            validation="required|email"
-                            outerClass="field--inline"
-                        />
-                        <FormKit
-                            type="password"
-                            name="password"
-                            label="Пароль"
-                            validation="required|length:5"
-                            :validation-messages="{
-                                length: 'Минимальная длинна пароля 5 символов',
-                            }"
-                            placeholder="Введите пароль"
-                            outerClass="field--inline"
-                        />
-                        -->
                     </div>
                 </FormKit>
             </div>
@@ -50,13 +29,8 @@
 
 <script>
     import { user as api } from "@/services";
-    //import { TextField, EmailField } from '@asigloo/vue-dynamic-forms';
-    //import Field from "@/components/field";
-    //import InputMask from "inputmask";
-
     export default {
         components: {
-            //Field
         },
         data() {
             return {
@@ -93,7 +67,6 @@
                 let params = this.formData;
                 this.showLoaderSending = true;
                 api.obtainToken(params).then(res => {
-                    console.log(res);
                     if (res.access && res.refresh) {
                         this.$store.dispatch('setToken', res);
                         api.getMyProfile().then(res => {

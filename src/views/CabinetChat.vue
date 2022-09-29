@@ -37,7 +37,7 @@
                                 </div>
                                 <div class="chat__user-info">
                                     <div class="chat__user-info-tender">
-                                        Аукцион №{{ room.tender.id }}
+                                        {{ room.tender.kind_detail }} №{{ room.tender.id }}
                                     </div>
                                     <div class="chat__user-info-date">
                                         {{ $helpers.formatDate(new Date( room.last_update ), 'DD.MM.YY HH:mm') }}

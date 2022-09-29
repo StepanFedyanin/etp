@@ -17,7 +17,7 @@
             <div class="tender m--no-padding m--no-background m--no-shadow m--modal">
                 <div class="tender__info">
                     <div class="tender__info-title">
-                        Аукцион №{{ tender.id }}. {{ tender.name }}
+                        {{ tender.kind_detail }} №{{ tender.id }}. {{ tender.name }}
                     </div>
                     <div
                         v-if="deleteSended"
