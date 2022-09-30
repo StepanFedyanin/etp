@@ -8,6 +8,7 @@
         :multipleLabel="multipleLabel"
         :searchable="searchable"
         :minChars="minChars"
+        :canDeselect="canDeselect"
         :groups="groups"
         :groupSelect="groupSelect"
         :class="context.classes.multiselect"
@@ -95,6 +96,7 @@
     //console.log('Options', options);
     const multiselect = ref(null)
     const mode = props.context.mode || 'single';
+    const canDeselect = mode === 'single' ? false : true;
     const searchable = props.context.searchable || false;
     const minChars = props.context.attrs.minChars;
     const searchChange = props.context.attrs["search-change"] || handleSearchChange;

@@ -4,6 +4,7 @@
         name="form-person"
         preserve
         type="form"
+        autocomplete="off"
         data-loading="lading"
         form-class="$reset registration__form form form-edit"
         :actions="false"
