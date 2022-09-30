@@ -72,7 +72,7 @@ const confFormKit = {
             props: ['options', 'placeholder', 'mode', 'searchable'],
         }),
         maska: createInput(maskaInput, {
-            props: ['maska', 'placeholder'],
+            props: ['maska', 'placeholder', 'disabled', 'readonly'],
         }),
     },
 };

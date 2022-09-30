@@ -81,8 +81,11 @@
                                         Минимальная ставка: <span>{{ $helpers.toPrice(lot.min_price || 0, { sign: '₽', pointer: ',' }) }}</span> (шаг цены - <span>{{ tender.min_step }} %</span>)
                                     </div>
                                     <FormKit
+                                        v-if="!refreshInput"
                                         v-model="formValues.price"
+                                        id="price"
                                         :maska="{ mask: '#*D##', tokens: { 'D': { pattern: /\./ }}}"
+                                        :disabled="this.formValues.min_bid.length ? true : false"
                                         type="maska"
                                         name="price"
                                         label=""
@@ -153,6 +156,7 @@
                     price: null,
                     min_bid: []
                 },
+                refreshInput: false,
                 loading: false,
                 showLoaderSending: false,
                 betSended: false,
@@ -180,6 +184,10 @@
                 if (this.formValues.min_bid.length) {
                     this.formValues.price = this.lot.min_price.toFixed(2);
                 }
+                this.refreshInput = true;
+                this.$nextTick(() => {
+                    this.refreshInput = false;
+                });
             },
             submitHandler(data, node) {
                 this.showLoaderSending = true;
