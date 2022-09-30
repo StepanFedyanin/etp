@@ -478,7 +478,7 @@
                         <button 
                             class="button button-outline-green m--right"
                             :disabled="sendingBets"
-                            @click="onClickRapidBets('loss')"
+                            @click="onClickRapidBets('lose')"
                         >
                             По проигрывающим лотам
                         </button>
