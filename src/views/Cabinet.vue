@@ -21,10 +21,14 @@
                                 <li>участвуйте и побеждайте!</li>
                             </ul>
                         </div>
+                        <!--
                         <a
                             class="cabinet__block-item-link"
                             href="#"
-                        >Инструкция по поиску тендера</a>
+                        >
+                            Инструкция по поиску тендера
+                        </a>
+                        -->
                         <div 
                             class="button button-green" 
                             @click="onClickTenders"
@@ -44,10 +48,14 @@
                                 <li>принимайте заявки от новых проверенных контрагентов.</li>
                             </ul>
                         </div>
+                        <!--
                         <a
                             class="cabinet__block-item-link"
                             href="#"
-                        >Инструкция по созданию тендера</a>
+                        >
+                            Инструкция по созданию тендера
+                        </a>
+                        -->
                         <div 
                             class="button button-green" 
                             @click="onClickAddTender"

@@ -114,7 +114,7 @@
                                     type="reset"
                                     :disabled="showLoaderSending"
                                     class="button button-red"
-                                    @click="$emit('hideModal')"
+                                    @click="$emit('hideModal', updateData)"
                                 >
                                     Отменить
                                 </button>
@@ -154,8 +154,7 @@
         },
         data() {
             return {
-                formValues: {
-                },
+                formValues: {},
                 loading: false,
                 showLoaderSending: false,
                 betSended: false,
@@ -199,6 +198,7 @@
                 return this.showModal;
             },
         },
+        /*
         watch: {
             'lot': {
                 immediate: true,
@@ -206,6 +206,10 @@
                     this.formValues = {};
                 }
             }
+        },
+        */
+        mounted() {
+            this.formValues = {};
         },
         methods: {
             submitHandler(data, node) {

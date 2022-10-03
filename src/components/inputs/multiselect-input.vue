@@ -120,6 +120,7 @@
     function handleOpen(select$) {
         console.log('handleOpen')
         if (props.context.attrs.bet) {
+            multiselect._value.clear();
             multiselect._value.refreshOptions();
         }
         /*
