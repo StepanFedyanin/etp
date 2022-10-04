@@ -1,7 +1,7 @@
 <template>
     <div class="tender__lots lots m--tender">
         <div class="tender__lots-title">
-            Ставки
+            {{ tender.kind === 'tender' ? 'Ставки' : 'Предложения' }}
         </div>
         <div class="lots__filter">
             <div class="lots__filter-block">
@@ -52,18 +52,31 @@
                         <template
                             v-else
                         >
-                            <div 
-                                v-if="lot.user_price > lot.last_price"
-                                class="lots__item-status m--color-red"
+                            <template
+                                v-if="tender.kind === 'tender'"
                             >
-                                Ставка проигрывает
-                            </div>
-                            <div 
+                                <div 
+                                    v-if="lot.user_price > lot.last_price"
+                                    class="lots__item-status m--color-red"
+                                >
+                                    Ставка проигрывает
+                                </div>
+                                <div 
+                                    v-else
+                                    class="lots__item-status m--color-green"
+                                >
+                                    Ставка выигрывает
+                                </div>
+                            </template>
+                            <template
                                 v-else
-                                class="lots__item-status m--color-green"
                             >
-                                Ставка выигрывает
-                            </div>
+                                <div 
+                                    class="lots__item-status m--color-green"
+                                >
+                                    Вы участвуете
+                                </div>
+                            </template>
                         </template>
                     </div>
                     <div class="lots__item-name">
@@ -78,7 +91,10 @@
                             Начальная цена:
                             <span>{{ $helpers.toPrice(lot.price * lot.quantity, { sign: '₽' }) }}</span>
                         </div>
-                        <div class="lots__item-param">
+                        <div 
+                            v-if="tender.kind === 'tender'"
+                            class="lots__item-param"
+                        >
                             Лучшая ставка:
                             <span
                                 v-if="lot.last_price"
@@ -92,7 +108,7 @@
                             </span>
                         </div>
                         <div class="lots__item-param">
-                            Ваша ставка:
+                            {{ tender.kind === 'tender' ? 'Ваша ставка:' : 'ваше предложение:' }}
                             <span
                                 v-if="lot.user_price"
                             >
@@ -104,25 +120,55 @@
                                 —
                             </span>
                         </div>
-                        <a
-                            v-if="lot.user_price && lot.user_price === lot.last_price"
-                            href="#"
-                            class="lots__item-cancel"
-                            @click.prevent="onClickCancelLotOffer(lot)"
+                        <template
+                            v-if="tender.kind === 'tender'"
                         >
-                            Отменить последнюю ставку
-                        </a>
+                            <a
+                                v-if="lot.user_price && lot.user_price === lot.last_price"
+                                href="#"
+                                class="lots__item-cancel"
+                                @click.prevent="onClickCancelLotOffer(lot)"
+                            >
+                                Отменить последнюю ставку
+                            </a>
+                        </template>
+                        <template
+                            v-else
+                        >
+                            <a
+                                v-if="lot.user_price"
+                                href="#"
+                                class="lots__item-cancel"
+                                @click.prevent="onClickCancelLotOffer(lot)"
+                            >
+                                Отменить предложение
+                            </a>
+                        </template>
                     </div>
                     <div 
                         v-if="tender.user_participation.contact_person.id === user.id"
                         class="lots__item-buttons"
                     >
-                        <button 
-                            class="button button-outline-green"
-                            @click.prevent="onClickAddLotOffer(lot)"
+                        <template
+                            v-if="tender.kind === 'tender'"
                         >
-                            Сделать ставку
-                        </button>
+                            <button 
+                                class="button button-outline-green"
+                                @click.prevent="onClickAddLotOffer(lot)"
+                            >
+                                Сделать ставку
+                            </button>
+                        </template>
+                        <template
+                            v-else
+                        >
+                            <button 
+                                class="button button-outline-green"
+                                @click.prevent="onClickAddLotOffer(lot)"
+                            >
+                                {{ lot.user_price ? 'Изменить предложение' : 'Сделать предложение' }}
+                            </button>
+                        </template>
                     </div>
                 </div>
             </template>

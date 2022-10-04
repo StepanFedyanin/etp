@@ -10,7 +10,9 @@
         >
             <span />
         </button>
-        <span class="modal__title">Отмена ставки</span>
+        <span class="modal__title">
+            {{ tender.kind === 'tender' ? 'Отмена ставки' : 'Отмена предложения' }}
+        </span>
         <div 
             class="modal__content"
         >
@@ -27,30 +29,60 @@
                             <div class="offers__item-param">
                                 Начальная цена <span>{{ $helpers.toPrice(lot.price * lot.quantity || 0, { sign: '₽', pointer: ',' }) }}</span>
                             </div>
-                            <div class="offers__item-param">
-                                Лучшая ставка 
-                                <span
-                                    v-if="lot.last_price"
-                                >
-                                    {{ $helpers.toPrice(lot.last_price || 0, { sign: '₽', pointer: ',' }) }}
-                                </span>
-                                <span
-                                    v-else
-                                >
-                                    —
-                                </span>
-                            </div>
-                            <div class="offers__item-param">
-                                Текущее снижение <span>{{ $helpers.toPrice((100 - 100 * (lot.last_price || (lot.price * lot.quantity)) / (lot.price  * lot.quantity)), { sign: '%', pointer: ',' }) }}</span>
-                            </div>
+                            <template
+                                v-if="tender.kind === 'tender'"
+                            >
+                                <div class="offers__item-param">
+                                    Лучшая ставка 
+                                    <span
+                                        v-if="lot.last_price"
+                                    >
+                                        {{ $helpers.toPrice(lot.last_price || 0, { sign: '₽', pointer: ',' }) }}
+                                    </span>
+                                    <span
+                                        v-else
+                                    >
+                                        —
+                                    </span>
+                                </div>
+                                <div class="offers__item-param">
+                                    Текущее снижение <span>{{ $helpers.toPrice((100 - 100 * (lot.last_price || (lot.price * lot.quantity)) / (lot.price  * lot.quantity)), { sign: '%', pointer: ',' }) }}</span>
+                                </div>
+                            </template>
+                            <template
+                                v-else
+                            >
+                                <div class="offers__item-param">
+                                    Ваше предложение
+                                    <span
+                                        v-if="lot.user_price"
+                                    >
+                                        {{ $helpers.toPrice(lot.user_price || 0, { sign: '₽', pointer: ',' }) }}
+                                    </span>
+                                    <span
+                                        v-else
+                                    >
+                                        —
+                                    </span>
+                                </div>
+                            </template>
                         </div>
                         <div
                             v-if="betSended"
                             class="offers__item-form form"
                         >
                             <div class="form__block m--flex">
-                                <div class="form__block-title m--center m--with-icon">
+                                <div 
+                                    v-if="tender.kind === 'tender'"
+                                    class="form__block-title m--center m--with-icon"
+                                >
                                     <span class="m--ok">Ваша ставка успешно отменена!</span>
+                                </div>
+                                <div 
+                                    v-else
+                                    class="form__block-title m--center m--with-icon"
+                                >
+                                    <span class="m--ok">Ваше предложение отменено!</span>
                                 </div>
                             </div>
                             <div 
@@ -81,8 +113,17 @@
                             @submit="submitHandler"
                         >
                             <div class="form__block m--flex">
-                                <div class="form__block-title m--center">
+                                <div 
+                                    v-if="tender.kind === 'tender'"
+                                    class="form__block-title m--center"
+                                >
                                     Вы действительно хотите отменить последнюю ставку?
+                                </div>
+                                <div 
+                                    v-else
+                                    class="form__block-title m--center"
+                                >
+                                    Вы действительно хотите отменить предложение?
                                 </div>
                             </div>
                             <div 

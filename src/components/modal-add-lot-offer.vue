@@ -10,12 +10,14 @@
         >
             <span />
         </button>
-        <span class="modal__title">Сделать ставку</span>
+        <span class="modal__title">
+            {{ tender.kind === 'tender' ? 'Сделать ставку' : lot.user_price ? 'Изменить предложение' : 'Сделать предложение'  }}
+        </span>
         <div
             v-if="betSended"
             class="modal__content"
         >
-            Ваша ставка отправлена.
+            {{ tender.kind === 'tender' ? 'Ваша ставка отправлена.' : 'Ваше предложение отправлено.' }}
         </div>
         <div 
             v-else
@@ -44,22 +46,43 @@
                                 <div class="offers__item-param">
                                     Начальная цена <span>{{ $helpers.toPrice(lot.price * lot.quantity || 0, { sign: '₽', pointer: ',' }) }}</span>
                                 </div>
-                                <div class="offers__item-param">
-                                    Лучшая ставка 
-                                    <span
-                                        v-if="lot.last_price"
-                                    >
-                                        {{ $helpers.toPrice(lot.last_price || 0, { sign: '₽', pointer: ',' }) }}
-                                    </span>
-                                    <span
-                                        v-else
-                                    >
-                                        —
-                                    </span>
-                                </div>
-                                <div class="offers__item-param">
-                                    Текущее снижение <span>{{ $helpers.toPrice((100 - 100 * (lot.last_price || (lot.price * lot.quantity)) / (lot.price * lot.quantity)), { sign: '%', pointer: ',' }) }}</span>
-                                </div>
+                                <template
+                                    v-if="tender.kind === 'tender'"
+                                >
+                                    <div class="offers__item-param">
+                                        Лучшая ставка 
+                                        <span
+                                            v-if="lot.last_price"
+                                        >
+                                            {{ $helpers.toPrice(lot.last_price || 0, { sign: '₽', pointer: ',' }) }}
+                                        </span>
+                                        <span
+                                            v-else
+                                        >
+                                            —
+                                        </span>
+                                    </div>
+                                    <div class="offers__item-param">
+                                        Текущее снижение <span>{{ $helpers.toPrice((100 - 100 * (lot.last_price || (lot.price * lot.quantity)) / (lot.price * lot.quantity)), { sign: '%', pointer: ',' }) }}</span>
+                                    </div>
+                                </template>
+                                <template
+                                    v-else
+                                >
+                                    <div class="offers__item-param">
+                                        Ваше предложение
+                                        <span
+                                            v-if="lot.user_price"
+                                        >
+                                            {{ $helpers.toPrice(lot.user_price || 0, { sign: '₽', pointer: ',' }) }}
+                                        </span>
+                                        <span
+                                            v-else
+                                        >
+                                            —
+                                        </span>
+                                    </div>
+                                </template>
                             </div>
                             <FormKit
                                 v-model="formValues"
@@ -77,8 +100,14 @@
                                     <div class="form__block-title offers__item-form-title">
                                         Ваше предложение
                                     </div>
-                                    <div class="offers__item-form-info">
-                                        Минимальная ставка: <span>{{ $helpers.toPrice(lot.min_price || 0, { sign: '₽', pointer: ',' }) }}</span> (шаг цены - <span>{{ tender.min_step }} %</span>)
+                                    <div 
+                                        class="offers__item-form-info"
+                                    >
+                                        <template
+                                            v-if="tender.kind === 'tender'"
+                                        >
+                                            Минимальная ставка: <span>{{ $helpers.toPrice(lot.min_price || 0, { sign: '₽', pointer: ',' }) }}</span> (шаг цены - <span>{{ tender.min_step }} %</span>)
+                                        </template>
                                     </div>
                                     <FormKit
                                         v-if="!refreshInput"
@@ -90,11 +119,13 @@
                                         name="price"
                                         label=""
                                         placeholder="Ваша ставка"
-                                        :validation="`required|number|not:0|between:0,${lot.min_price}`"
+                                        :validation="`required|number|not:0|between:0,${tender.kind === 'tender' ? lot.min_price : '999999999999'}`"
                                         validation-visibility="submit"
                                         validation-label="ставка"
+                                        outerClass="m--100"
                                     />
                                     <FormKit
+                                        v-if="tender.kind === 'tender'"
                                         v-model="formValues.min_bid"
                                         type="checkbox"
                                         name="min_bid"
@@ -120,7 +151,7 @@
                                         class="button button-green"
                                         @click="submitForm"
                                     >
-                                        Сделать ставку
+                                        {{ tender.kind === 'tender' ? 'Сделать ставку' : lot.user_price ? 'Изменить предложение' : 'сделать предложение' }}
                                     </button>
                                 </div>
                             </FormKit>

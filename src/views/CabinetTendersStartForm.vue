@@ -494,6 +494,7 @@
                         helpClass: 'tender-form__hidden',
                         labelClass: 'tender-form__label',
                         outerClass: 'tender-form__field m--half',
+                    /*
                     }, {
                         $formkit: 'multiselect',
                         name: 'supervisor',
@@ -524,6 +525,11 @@
                         helpClass: 'tender-form__hidden',
                         labelClass: 'tender-form__label',
                         outerClass: 'tender-form__field m--half',
+                    */
+                    }, {
+                        $formkit: 'hidden',
+                        name: 'supervisor',
+                        value: Number(this.$store.state.user.id)
                     },
                 ],
                 tenderRelatedSchema: [
@@ -900,10 +906,12 @@
                     fromParent: true,
                     value: null
                 }
+                /*
                 this.tenderForm.supervisor = {
                     fromParent: true,
                     value: null
                 }
+                */
                 this.tenderForm.date_start = null
                 this.tenderForm.date_end = null
                 this.tenderForm.description = null
@@ -1051,6 +1059,7 @@
                         value: this.defaultTender.region
                     }
                 }
+                /*
                 this.tenderForm.supervisor = {
                     fromParent: true,
                     value: {
@@ -1058,6 +1067,8 @@
                         value: this.defaultTender.supervisor
                     }
                 }
+                */
+                this.tenderForm.supervisor = this.defaultTender.supervisor;
                 this.tenderForm.date_start = this.defaultTender.date_start.slice(0,16)
                 this.tenderForm.date_end = this.defaultTender.date_end.slice(0,16)
                 this.tenderForm.date_fulfilment = this.defaultTender.date_fulfilment.slice(0,16)
