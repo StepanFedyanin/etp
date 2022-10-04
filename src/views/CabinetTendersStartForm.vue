@@ -279,14 +279,14 @@
                                 >
                                     Добавить лот
                                 </button>
-                                <button
+                                <!--button
                                     type="button"
                                     :disabled="!defaultTender"
                                     class="button button-outline-green"
                                     @click="onClickShowFileLotModal"
                                 >
                                     Загрузить из файла
-                                </button>
+                                </button-->
                             </div>
                         </div>
                     </div>

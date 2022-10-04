@@ -20,7 +20,7 @@
 
     a&:hover,
     a&.is-active {
-        color: $color-green !important;
+        color: $color-white !important;
         text-decoration: underline;
     }
 }
@@ -207,10 +207,18 @@
     &.m--cabinet &__contacts {
         &-phone {
             color: $color-black;
+            &:hover,
+            &.is-active {
+                color: $color-green !important;
+            }
         }
 
         &-email {
             color: $color-black;
+            &:hover,
+            &.is-active {
+                color: $color-green !important;
+            }
         }
     }
 
@@ -306,6 +314,10 @@
     &.m--cabinet &__menu {
         &-link {
             color: $color-black;
+            &:hover,
+            &.is-active {
+                color: $color-green !important;
+            }
         }
 
         @mixin responsive-le-s {

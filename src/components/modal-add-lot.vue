@@ -123,8 +123,9 @@
                         labelClass: '$reset modal-form__label',
                         outerClass: '$reset modal-form__field m--width-100',
                     }, {
-                        $formkit: 'number',
+                        $formkit: 'maska',
                         name: 'price',
+                        maska: { mask: '#*D##', tokens: { 'D': { pattern: /\./ }}},
                         label: 'Цена за единицу, руб',
                         placeholder: "Введите цену за единицу",
                         validation: 'required',
