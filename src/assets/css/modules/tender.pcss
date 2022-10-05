@@ -238,6 +238,8 @@
 
         &-cell {
             padding-bottom: 12px;
+            word-wrap: break-word;
+
             @mixin responsive-le-s {
                 padding-bottom: 0;
                 &:last-child {
@@ -305,10 +307,12 @@
             align-items: center;
             font-weight: 700;
             font-size: 20px;
+            line-height: 24px;
             text-transform: uppercase;
             color: $color-black;
             margin-bottom: 16px;
         }
+        /*
         &-chat {
             cursor: pointer;
             position: relative;
@@ -326,6 +330,39 @@
             -webkit-mask-image: url('./assets/img/icons/icon-chat.svg');
             mask-image: url('./assets/img/icons/icon-chat.svg');
         }
+        */
+        &-chat {
+            position: relative;
+            display: block;
+            margin-left: 16px;
+            padding-left: 26px;
+            font-weight: 500;
+            font-size: 20px;
+            line-height: 24px;
+            text-transform: uppercase;
+            color: $color-gray-T3;
+            cursor: pointer;
+            align-self: self-start;
+            &:before {
+                content: '';
+                position: absolute;
+                width: 24px;
+                height: 24px;
+                left: 0;
+                top: 0;
+                background-image: svg-load('./assets/img/icons/icon-chat.svg', fill=$color-green);
+                background-size: contain;
+            }
+            &:after {
+                content: '';
+                position: absolute;
+                left: -8px;
+                top: -8px;
+                bottom: -8px;
+                right: -8px;
+            }
+        }
+
         &-param {
             margin-bottom: 16px;
             font-weight: 400;
@@ -505,6 +542,9 @@
                 font-weight: 700;
                 color: $color-green;
                 align-self: center;
+                span {
+                    padding-right: 16px;
+                }
             }
             &-status {
                 font-weight: 600;
@@ -518,6 +558,35 @@
                 @mixin show-hide-mode-toggler;
                 padding-top: 0;
                 justify-content: flex-end;
+            }
+            &-chat {
+                position: relative;
+                display: inline-block;
+                padding-left: 26px;
+                font-weight: 500;
+                font-size: 20px;
+                line-height: 24px;
+                text-transform: uppercase;
+                color: $color-gray-T3;
+                cursor: pointer;
+                &:before {
+                    content: '';
+                    position: absolute;
+                    width: 24px;
+                    height: 24px;
+                    left: 0;
+                    top: 0;
+                    background-image: svg-load('./assets/img/icons/icon-chat.svg', fill=$color-green);
+                    background-size: contain;
+                }
+                &:after {
+                    content: '';
+                    position: absolute;
+                    left: -8px;
+                    top: -8px;
+                    bottom: -8px;
+                    right: -8px;
+                }
             }
         }
         .svg-icon__message {

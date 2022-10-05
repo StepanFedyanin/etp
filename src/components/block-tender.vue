@@ -9,44 +9,46 @@
             @click="toggleFavorite"
         />
         <div class="tenders__item-left">
-            <div class="tenders__item-name">
-                {{ tender.kind_detail }} №{{ tender.id }}
-            </div>
             <div class="tenders__item-top">
-                <template
-                    v-if="tender.publication"
-                >
-                    <div 
-                        class="tenders__item-top-status"
-                        :class="restTime ? 'm--devider' : ''"
+                <div class="tenders__item-name">
+                    {{ tender.kind_detail }} №{{ tender.id }}
+                </div>
+                <div class="tenders__item-top-right">
+                    <template
+                        v-if="tender.publication"
                     >
-                        {{ tender.status_detail || tender.status }}
-                    </div>
-                    <div
-                        v-if="restTime"
-                        class="tenders__item-top-timer"
-                    >
-                        <template
-                            v-if="tender.status === 'bid_accept'"
+                        <div 
+                            class="tenders__item-top-status"
+                            :class="restTime ? 'm--devider' : ''"
                         >
-                            Осталось {{ $helpers.dateRangeToDaysHours(new Date(), new Date(tender.date_start)) }}
-                        </template>
-                        <template
-                            v-else
+                            {{ tender.status_detail || tender.status }}
+                        </div>
+                        <div
+                            v-if="restTime"
+                            class="tenders__item-top-timer"
                         >
-                            Осталось {{ $helpers.dateRangeToDaysHours(new Date(), new Date(tender.date_end)) }}
-                        </template>
-                    </div>
-                </template>
-                <template
-                    v-else
-                >
-                    <div 
-                        class="tenders__item-top-status"
+                            <template
+                                v-if="tender.status === 'bid_accept'"
+                            >
+                                ({{ $helpers.dateRangeToDaysHours(new Date(), new Date(tender.date_start)) }})
+                            </template>
+                            <template
+                                v-else
+                            >
+                                ({{ $helpers.dateRangeToDaysHours(new Date(), new Date(tender.date_end)) }})
+                            </template>
+                        </div>
+                    </template>
+                    <template
+                        v-else
                     >
-                        Черновик
-                    </div>
-                </template>
+                        <div 
+                            class="tenders__item-top-status"
+                        >
+                            Черновик
+                        </div>
+                    </template>
+                </div>
             </div>
             <router-link
                 :to="{ name: 'tender', params: { id: tender.id } }"

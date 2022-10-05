@@ -13,13 +13,15 @@
         >
             <div class="tender__participants-item-block">
                 <div class="tender__participants-item-name">
-                    {{ participant.organization.name }}
-                    <svg 
-                        class="svg-icon svg-icon__message"
+                    <span>
+                        {{ participant.organization.name }}
+                    </span>
+                    <div 
+                        class="tender__participants-item-chat"
                         @click="startChat(participant.organization.id)"
                     >
-                        <use xlink:href="../assets/img/icons/icons.svg#message" />
-                    </svg>
+                        Чат
+                    </div>
                 </div>
                 <div class="tender__participants-item-status">
                     {{ statuses[participant.status] }}

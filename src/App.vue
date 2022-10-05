@@ -45,8 +45,11 @@
         watch: {
             '$route': {
                 immediate: true,
-                handler(to) {
-                    document.title = to.meta.title + ' | Бизнес-платформа TUGAN' || 'Бизнес-платформа TUGAN';
+                handler(to, from) {
+                    console.log(to, from);
+                    if (!from || to.fullPath !== from.fullPath) {
+                        document.title = to.meta.title + ' | Бизнес-платформа TUGAN' || 'Бизнес-платформа TUGAN';
+                    }
                 }
             },
             '$route.name': {

@@ -424,7 +424,9 @@
                                 <div
                                     class="tender__contact-chat"
                                     @click="startChat(tender.organization.id)"
-                                />
+                                >
+                                    Чат
+                                </div>
                             </template>
                         </div>
                         <template
@@ -539,7 +541,7 @@
         },
         props: {
             id: {
-                type: Number,
+                type: [Number, String],
                 default() { return null; }
             },
         },

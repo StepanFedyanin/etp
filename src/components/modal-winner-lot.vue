@@ -90,7 +90,7 @@
                         </div>
                         <FormKit
                             v-if="show"
-                            id="form-offer"
+                            :id="`form-offer-${lot.id}`"
                             v-model="formValues"
                             preserve
                             type="form"
@@ -163,6 +163,7 @@
                 winnerSchema: [
                     {
                         $formkit: 'multiselect',
+                        id: `bet-${this.lot.id}`,
                         //mode: 'single',
                         name: 'bet',
                         label: 'Новый победитель',
@@ -224,7 +225,7 @@
                     this.betSended = true;
                     this.updateData = true;
                     console.log(res);
-                    this.$formkit.reset('form-offer');
+                    this.$formkit.reset(`form-offer-${this.lot.id}`);
                 }).catch(err => {
                     node.setErrors(
                         [err.detail],

@@ -87,7 +87,7 @@
                         </div>
                         <div class="cabinet__block-item-description">
                             <span>{{ user.first_name }} {{ user.patronymic }}</span>
-                            <p class="block__subtitle">
+                            <p class="cabinet__block-item-subtitle m--uppercase">
                                 {{ user.last_name }}
                             </p>
                             <span>{{ user.post }}</span>

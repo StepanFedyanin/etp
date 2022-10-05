@@ -65,7 +65,7 @@
                             href="#"
                             class="header__user"
                             :class="showPopup ? 'is-active' : ''"
-                            @click="onClickPopup"
+                            @click.stop="onClickPopup"
                         />
                         <div 
                             v-if="showPopup"
@@ -81,7 +81,7 @@
                                     <a 
                                         href="#" 
                                         class="header__popup-close"
-                                        @click="onClickPopup"
+                                        @click.stop="onClickPopup"
                                     />
                                 </div>
                                 <div class="header__popup-body">
