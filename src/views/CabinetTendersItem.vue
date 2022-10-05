@@ -294,10 +294,15 @@
                     >
                         <button 
                             class="button button-red"
-                            @click.stop="onClickCloseTender(false)"
+                            @click.stop="onClickCancelTender()"
                         >
                             Отменить тендер
                         </button>
+                        <ModalCancelTenderConfirm
+                            :tender="tender || {}"
+                            :showModal="showCancelTenderConfirmModal"
+                            @hideModal="hideCancelTenderConfirmModal"
+                        />
                     </div>
                     <div
                         v-else-if="tender.status === 'bidding_process'" 
@@ -523,6 +528,7 @@
     import Timer from '@/components/timer';
     import inviteTender from '@/components/invite-tender.vue';
     import ModalCloseTenderConfirm from '@/components/modal-close-tender-confirm';
+    import ModalCancelTenderConfirm from '@/components/modal-cancel-tender-confirm';
     import ModalDeleteTenderConfirm from '@/components/modal-delete-tender-confirm';
     import { chat as Chat } from "@/services"
     import RelatedTenders from '@/components/relatedTenders.vue';
@@ -536,6 +542,7 @@
             Timer,
             inviteTender,
             ModalCloseTenderConfirm,
+            ModalCancelTenderConfirm,
             ModalDeleteTenderConfirm,
             RelatedTenders
         },
@@ -563,6 +570,7 @@
                 },
                 sendingBets: false,
                 showCloseTenderConfirmModal: false,
+                showCancelTenderConfirmModal: false,
                 showDeleteTenderConfirmModal: false,
                 showLoaderSending: false,
                 formValues: {},
@@ -654,6 +662,9 @@
             onClickEditTender() {
                 this.$router.push({ name: 'tender-edit', id: this.tender.id });
             },
+            onClickCancelTender() {
+                this.showCancelTenderConfirmModal = true;
+            },
             onClickDeleteTender() {
                 this.showDeleteTenderConfirmModal = true;
             },
@@ -667,6 +678,12 @@
             */
             hideCloseTenderConfirmModal(updateData=false) {
                 this.showCloseTenderConfirmModal = false;
+                if (updateData) {
+                    this.getTenderData();
+                }
+            },
+            hideCancelTenderConfirmModal(updateData=false) {
+                this.showCancelTenderConfirmModal = false;
                 if (updateData) {
                     this.getTenderData();
                 }
