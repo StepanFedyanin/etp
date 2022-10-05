@@ -310,16 +310,22 @@
                     >
                         <button 
                             class="button button-red"
-                            @click.stop="onClickCloseTender(true)"
+                            @click.stop="onClickCloseTenderAhead(true)"
                         >
                             Завершить досрочно и выбрать победителя
                         </button>
                         <button 
                             class="button button-green"
-                            @click.stop="onClickCloseTender(false)"
+                            @click.stop="onClickCloseTenderAhead(false)"
                         >
                             Завершить досрочно без победителя
                         </button>
+                        <ModalCloseAheadTenderConfirm
+                            :tender="tender || {}"
+                            :setWinner="setWinner"
+                            :showModal="showCloseAheadTenderConfirmModal"
+                            @hideModal="hideCloseAheadTenderConfirmModal"
+                        />
                     </div>
                     <div
                         v-else-if="tender.status === 'bidding_completed'" 
@@ -402,7 +408,7 @@
                                     class="tender__docs-item"
                                 >
                                     <a
-                                        :href="doc.file"
+                                        :href="urlPath + doc.file"
                                         class="tender__docs-cell m--file"
                                         target="_blank"
                                     >
@@ -520,6 +526,7 @@
 </template>
 
 <script>
+    import { urlPath } from '@/settings'
     import { tender as tenderApi } from "@/services"
     import TenderOrganizationStatus from '@/components/tender-organization-status';
     import TenderParticipants from '@/components/tender-participants';
@@ -528,6 +535,7 @@
     import Timer from '@/components/timer';
     import inviteTender from '@/components/invite-tender.vue';
     import ModalCloseTenderConfirm from '@/components/modal-close-tender-confirm';
+    import ModalCloseAheadTenderConfirm from '@/components/modal-close-ahead-tender-confirm';
     import ModalCancelTenderConfirm from '@/components/modal-cancel-tender-confirm';
     import ModalDeleteTenderConfirm from '@/components/modal-delete-tender-confirm';
     import { chat as Chat } from "@/services"
@@ -542,6 +550,7 @@
             Timer,
             inviteTender,
             ModalCloseTenderConfirm,
+            ModalCloseAheadTenderConfirm,
             ModalCancelTenderConfirm,
             ModalDeleteTenderConfirm,
             RelatedTenders
@@ -554,6 +563,7 @@
         },
         data() {
             return {
+                urlPath,
                 user: this.$store.state.user,
                 tender: null,
                 lot: null,
@@ -569,7 +579,9 @@
                     closed: 'Тендер завершен'
                 },
                 sendingBets: false,
+                setWinner: null,
                 showCloseTenderConfirmModal: false,
+                showCloseAheadTenderConfirmModal: false,
                 showCancelTenderConfirmModal: false,
                 showDeleteTenderConfirmModal: false,
                 showLoaderSending: false,
@@ -647,7 +659,10 @@
                     console.error(err);
                 });
             },
-            onClickCloseTender(setWinner) {
+            onClickCloseTenderAhead(setWinner) {
+                this.showCloseAheadTenderConfirmModal = true;
+                this.setWinner = setWinner;
+                /*
                 tenderApi.closeTender(this.tender.id, { set_winner: setWinner }).then(res => {
                     console.log(res);
                     this.getTenderData();
@@ -655,6 +670,7 @@
                     this.$store.dispatch('showError', err);
                     console.error(err);
                 });
+                */
             },
             onClickCloseTenderWithWinner() {
                 this.showCloseTenderConfirmModal = true;
@@ -678,6 +694,12 @@
             */
             hideCloseTenderConfirmModal(updateData=false) {
                 this.showCloseTenderConfirmModal = false;
+                if (updateData) {
+                    this.getTenderData();
+                }
+            },
+            hideCloseAheadTenderConfirmModal(updateData=false) {
+                this.showCloseAheadTenderConfirmModal = false;
                 if (updateData) {
                     this.getTenderData();
                 }

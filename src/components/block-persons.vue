@@ -22,55 +22,59 @@
             <div class="persons__item-cell" />
             <div class="persons__item-cell" />
         </div>
-        <!-- <template v-for="(item, index) in persons"> -->
-        <div
+        <template 
             v-for="(item, index) in persons"
-            class="persons__item"
-            :class="[item.is_active ? '' : 'not_active']"
         >
-            <div class="persons__item-cell">
-                {{ index + 1 }}
-            </div>
-            <div class="persons__item-cell">
-                {{ item.full_name }}
-            </div>
-            <div class="persons__item-cell">
-                {{ item.post }} 
-            </div>
-            <div class="persons__item-cell">
-                {{ item.contact_email }}
-            </div>
-            <div class="persons__item-cell">
-                {{ item.phone }}
-            </div>
             <div
-                v-if=" user.is_staff || user.is_master && user.organization.id == $store._state.data.user.organization.id "
-                class="cell-icons"
+                v-if="item.is_active || (user.is_staff || user.is_master && user.organization.id == $store._state.data.user.organization.id)"
+                :key="`person-${item.id}`"
+                class="persons__item"
+                :class="[item.is_active ? '' : 'not_active']"
             >
-                <svg 
-                    class="svg-icon svg-icon__edit"
-                    @click="onClickEditPerson(item.id)"
+                <div class="persons__item-cell">
+                    {{ index + 1 }}
+                </div>
+                <div class="persons__item-cell">
+                    {{ item.full_name }}
+                    {{ item.is_active }}
+                </div>
+                <div class="persons__item-cell">
+                    {{ item.post }} 
+                </div>
+                <div class="persons__item-cell">
+                    {{ item.contact_email }}
+                </div>
+                <div class="persons__item-cell">
+                    {{ item.phone }}
+                </div>
+                <div
+                    v-if="user.is_staff || user.is_master && user.organization.id == $store._state.data.user.organization.id"
+                    class="cell-icons"
                 >
-                    <use xlink:href="../assets/img/icons/icons.svg#edit" />
-                </svg>
+                    <svg 
+                        class="svg-icon svg-icon__edit"
+                        @click="onClickEditPerson(item.id)"
+                    >
+                        <use xlink:href="../assets/img/icons/icons.svg#edit" />
+                    </svg>
 
-                <svg 
-                    v-if=" item.is_active && item.id !== user.id"
-                    class="svg-icon svg-icon__delete"
-                    @click="onClickDeletePerson(item.id)"
-                >
-                    <use xlink:href="../assets/img/icons/icons.svg#delete" />
-                </svg>
-                <svg 
-                    v-else-if="item.id !== user.id"
-                    class="svg-icon svg-icon__activate"
-                    @click="onClickActivatePerson(item.id)"
-                >
-                    <use xlink:href="../assets/img/icons/icons.svg#activate" />
-                </svg>
+                    <svg 
+                        v-if=" item.is_active && item.id !== user.id"
+                        class="svg-icon svg-icon__delete"
+                        @click="onClickDeletePerson(item.id)"
+                    >
+                        <use xlink:href="../assets/img/icons/icons.svg#delete" />
+                    </svg>
+                    <svg 
+                        v-else-if="item.id !== user.id"
+                        class="svg-icon svg-icon__activate"
+                        @click="onClickActivatePerson(item.id)"
+                    >
+                        <use xlink:href="../assets/img/icons/icons.svg#activate" />
+                    </svg>
+                </div>
             </div>
-        </div>
-        <!-- </template> -->
+        </template>
     </div>
 </template>
 

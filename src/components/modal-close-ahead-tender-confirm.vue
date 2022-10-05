@@ -10,7 +10,9 @@
         >
             <span />
         </button>
-        <span class="modal__title">Завершение тендера с текущими победителями</span>
+        <span class="modal__title">
+            {{ setWinner ? 'Досрочное завершение тендера с выбором победителя' : 'Досрочное завершение тендера без победителя' }}
+        </span>
         <div 
             class="modal__content"
         >
@@ -44,7 +46,6 @@
                     </div>
                     <FormKit
                         v-else
-                        v-model="formValues"
                         name="form-tender"
                         preserve
                         type="form"
@@ -59,9 +60,17 @@
                             <div class="form__block-title m--center">
                                 Вы действительно хотите завершить тендер?
                             </div>
-                            <div class="form__block-content text content m--center">
-                                <p>Вы можете проверить список победителей и в случае необходимости изменить победителя по каждому лоту.</p>
-                                <p>После завершения тендера смена победителей будет невозможна.</p>
+                            <div 
+                                v-if="setWinner"
+                                class="form__block-content text content m--center"
+                            >
+                                Этап ставок завершится досрочно, и вы сможете выбрать победителей по каждой из позиций.
+                            </div>
+                            <div 
+                                v-else
+                                class="form__block-content text content m--center"
+                            >
+                                Тендер будет считаться завершенным, победители не будут выбраны.
                             </div>
                         </div>
                         <div 
@@ -71,18 +80,18 @@
                             <button
                                 type="reset"
                                 :disabled="showLoaderSending"
-                                class="button button-red m--small"
+                                class="button button-green m--small"
                                 @click="$emit('hideModal', false)"
                             >
-                                Вернуться и изменить победителей
+                                Продолжить тендер
                             </button>
                             <button
                                 type="submit"
                                 :disabled="showLoaderSending"
-                                class="button button-green m--small"
+                                class="button button-red m--small"
                                 @click="submitForm"
                             >
-                                Завершить тендер
+                                {{ setWinner ? 'Завершить и выбрать победителя' : 'Завершить без победителя' }}
                             </button>
                         </div>
                     </FormKit>
@@ -97,6 +106,10 @@
     export default {
         props: {
             showModal: {
+                type: Boolean,
+                default() { return false; }
+            },
+            setWinner: {
                 type: Boolean,
                 default() { return false; }
             },
@@ -126,7 +139,7 @@
             submitHandler() {
                 this.showLoaderSending = true;
                 this.loading = true;
-                tenderApi.closeWithAcceptWinnersTender(this.tender.id).then(res => {
+                tenderApi.closeTender(this.tender.id, { set_winner: this.setWinner }).then(res => {
                     this.showLoaderSending = false;
                     this.loading = false;
                     this.closeSended = true;

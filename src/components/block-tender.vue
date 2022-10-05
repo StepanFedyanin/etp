@@ -116,6 +116,7 @@
                         <a
                             :href="urlPath + file.file"
                             class=""
+                            target="_blank"
                         >{{ file.name }}</a>
                         <div class="">
                             {{ file.description }}
@@ -378,7 +379,11 @@
             },
             restTime() {
                 let rest = new Date(this.tender.date_end) - new Date()
-                return (rest < 0) ? false : true;
+                if (this.tender.status === 'bidding_accept' || this.tender.status === 'bidding_process') {
+                    return (rest < 0) ? false : true;
+                } else {
+                    return false;
+                }
             }
         },
         created() {
