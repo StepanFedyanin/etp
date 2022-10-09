@@ -59,6 +59,10 @@
                 type: Object,
                 default() { return null; }
             },
+            tender: {
+                type: Object,
+                default() { return {}; }
+            },
         },
         data() {
             return {
@@ -128,7 +132,7 @@
                         maska: { mask: '#*D##', tokens: { 'D': { pattern: /\./ }}},
                         label: 'Цена за единицу, руб',
                         placeholder: "Введите цену за единицу",
-                        validation: 'required',
+                        validation: (this.tender.kind === 'tender' || (this.tender.kind === 'price_request' && !this.tender.fulfilment)) ? 'required' : null,
                         inputClass: 'modal-form__input',
                         labelClass: '$reset modal-form__label',
                         outerClass: '$reset modal-form__field m--width-100',

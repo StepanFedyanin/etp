@@ -1,23 +1,6 @@
 <template>
     <div class="tender-start">
         <div class="container">
-            <div class="tender-start__title h1">
-                <template
-                    v-if="type === 0"
-                >
-                    Тендер на понижение 
-                </template>
-                <template
-                    v-else-if="type === 1"
-                >
-                    Запрос цен без исполнения договора 
-                </template>
-                <template
-                    v-else-if="type === 2"
-                >
-                    Запрос цен с исполнением договора 
-                </template>
-            </div>
             <template
                 v-if="showLoaderSending"
             >
@@ -28,6 +11,23 @@
             <template
                 v-else
             >
+                <div class="tender-start__title h1">
+                    <template
+                        v-if="type === 0"
+                    >
+                        Тендер на понижение 
+                    </template>
+                    <template
+                        v-else-if="type === 1"
+                    >
+                        Запрос цен без исполнения договора 
+                    </template>
+                    <template
+                        v-else-if="type === 2"
+                    >
+                        Запрос цен с исполнением договора 
+                    </template>
+                </div>
                 <FormKit
                     id="tenderForm"
                     v-model="tenderForm"
@@ -321,6 +321,7 @@
         <ModalAddLot
             :showModal="showAddLotModal"
             :data="lotModalData"
+            :tender="tenderForm"
             @hideModal="hideAddLotModal"
             @addLot="addLotModal"
         />
@@ -344,7 +345,7 @@
             ModalAddLotFile,
         },
         props: {
-            type: {
+            propType: {
                 type: [Number, String],
                 default() { return 0; }
             },
@@ -352,6 +353,7 @@
         data() {
             return {
                 urlPath,
+                type: this.propType,
                 defaultTender: null,
                 lots: [],
                 documents: [],
@@ -799,6 +801,15 @@
                     this.defaultTender = tender;
                     // console.log(tender)
                     this.setTender();
+                    if (this.defaultTender.kind === 'tender') {
+                        this.type = 0;
+                    } else if (this.defaultTender.kind === 'price_request') {
+                        if (!this.defaultTender.fulfilment) {
+                            this.type = 1;
+                        } else {
+                            this.type = 2;
+                        }
+                    }
                     this.showLoaderSending = false;
                 }).catch(err => {
                     this.showLoaderSending = false;
@@ -815,27 +826,27 @@
                     this.documents = []
                     this.lots = []
                 }
-            }
-            if (this.type * 1 === 0) {
-                this.tenderForm.kind = 'tender';
-                this.tenderForm.fulfilment = true;
-            } else if (this.type * 1 === 1) {
-                this.tenderForm.kind = 'price_request';
-                this.tenderForm.fulfilment = false;
-                const node_fulfilment = this.$formkit.get('date_fulfilment');
-                node_fulfilment.props.disabled = true;
-                node_fulfilment.props.outerClass = 'm--hidden';
-                const node_step = this.$formkit.get('min_step');
-                node_step.props.validation = null;
-                node_step.props.disabled = true;
-                node_step.props.outerClass = 'm--hidden';
-            } else if (this.type * 1 === 2) {
-                this.tenderForm.kind = 'price_request';
-                this.tenderForm.fulfilment = true;
-                const node_step = this.$formkit.get('min_step');
-                node_step.props.validation = null;
-                node_step.props.disabled = true;
-                node_step.props.outerClass = 'm--hidden';
+                if (this.type * 1 === 0) {
+                    this.tenderForm.kind = 'tender';
+                    this.tenderForm.fulfilment = true;
+                } else if (this.type * 1 === 1) {
+                    this.tenderForm.kind = 'price_request';
+                    this.tenderForm.fulfilment = false;
+                    const node_fulfilment = this.$formkit.get('date_fulfilment');
+                    node_fulfilment.props.disabled = true;
+                    node_fulfilment.props.outerClass = 'm--hidden';
+                    const node_step = this.$formkit.get('min_step');
+                    node_step.props.validation = null;
+                    node_step.props.disabled = true;
+                    node_step.props.outerClass = 'm--hidden';
+                } else if (this.type * 1 === 2) {
+                    this.tenderForm.kind = 'price_request';
+                    this.tenderForm.fulfilment = true;
+                    const node_step = this.$formkit.get('min_step');
+                    node_step.props.validation = null;
+                    node_step.props.disabled = true;
+                    node_step.props.outerClass = 'm--hidden';
+                }
             }
             userApi.getOrganizationRelatedTenders().then(tenders => {
                 this.relatedTenders = tenders;

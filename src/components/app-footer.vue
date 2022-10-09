@@ -26,22 +26,25 @@
                         class="footer__link m--developer"
                         target="_blank"
                     >
-                        Создание сайта - Flexites
+                        Разработка тендерных площадок - Flexites
                     </a>
                 </div>
                 <div class="footer__right">
                     <div class="footer__menu">
                         <div class="footer__title">
-                            О площадке
+                            Электронная торговая площадка TUGAN
                         </div>
-                        <router-link
-                            v-for="(item, key) in menu"
-                            :key="key"
-                            :to="{ name: item.name }"
-                            class="footer__link"
-                            v-text="item.title"
-                        />
+                        <div class="footer__menu-block">
+                            <router-link
+                                v-for="(item, key) in menu"
+                                :key="key"
+                                :to="{ name: item.name }"
+                                class="footer__link"
+                                v-text="item.title"
+                            />
+                        </div>
                     </div>
+                    <!--
                     <div class="footer__menu">
                         <div class="footer__title">
                             По вопросам работы площадки
@@ -55,17 +58,18 @@
                             class="footer__link"
                         >{{ emailSupport }}</a>
                     </div>
+                -->
                     <div class="footer__menu">
                         <div class="footer__title">
-                            По вопросам сотрудничества
+                            По вопросам работы площадки и сотрудничества
                         </div>
                         <a
                             :href="$helpers.formatTel(phone)"
-                            class="footer__link"
+                            class="footer__link m--strong"
                         >{{ phone }}</a>
                         <a
                             :href="`mailto:${email}`"
-                            class="footer__link"
+                            class="footer__link m--strong"
                         >{{
                             email
                         }}</a>
@@ -77,20 +81,48 @@
 </template>
 
 <script>
-    import { footerMenu, footerMenuUser } from '@/settings';
+    //import { footerMenu, footerMenuUser } from '@/settings';
     export default {
         name: 'Footer',
         data() {
             return {
-                phone: '8 (800) 123-45-67',
+                phone: '+7 (343) 344-83-83',
                 email: 'info@etptugan.ru',
                 phoneSupport: '8 (800) 765-43-21',
                 emailSupport: 'help@etptugan.ru',
+                footerMenu: [
+                    {
+                        name: 'tenders',
+                        role: 'all',
+                        title: 'Тендеры'
+                    }, {
+                        name: 'cabinet',
+                        role: 'all',
+                        title: 'Личный кабинет',
+                    }, {
+                        name: 'groups',
+                        role: 'all',
+                        title: 'Товарные группы'
+                    }, {
+                        name: 'registration',
+                        role: 'all',
+                        title: 'О площадке',
+                    }, {
+                        name: 'contragents',
+                        role: 'all',
+                        title: 'Контрагенты',
+                    }, {
+                        name: 'registration',
+                        role: 'all',
+                        title: 'Регистрация',
+                    }
+                ]
             };
         },
         computed: {
             menu() {
-                return (this.$store.state.user) ? footerMenuUser : footerMenu;
+                // return (this.$store.state.user) ? footerMenuUser : footerMenu;
+                return this.footerMenu;
             }
         },
 

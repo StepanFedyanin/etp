@@ -324,7 +324,7 @@
             <template
                 v-else
             >
-                Показать {{ $helpers.stringForNumber(lots.length - 5, ['позицию', 'позиции', 'позиций']) }}
+                Показать еще {{ $helpers.stringForNumber(lots.length - 5, ['позицию', 'позиции', 'позиций']) }}
             </template>
         </div>
     </div>

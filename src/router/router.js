@@ -39,6 +39,7 @@ import cabinetOrganizationAddPerson from '@/views/CabinetOrganizationAddPerson';
 import CabinetOrganization from '@/views/CabinetOrganization';
 import CabinetOrganizationEdit from '@/views/CabinetOrganizationEdit';
 import cabinetNotifications from '@/views/CabinetNotifications';
+import cabinetNotificationsSettings from '@/views/CabinetNotificationsSettings';
 import groups from '@/views/Groups';
 import page404 from '@/views/Page404';
 
@@ -267,7 +268,7 @@ const routes = [
                     breadcrumbs: ['tenders', 'tenders-start'],
                     requiresAuth: true 
                 },
-                props: { type: 0 },
+                props: { propType: 0 },
             }, {
                 path: 'start-price',
                 name: 'start-price',
@@ -277,7 +278,7 @@ const routes = [
                     breadcrumbs: ['tenders', 'tenders-start'],
                     requiresAuth: true 
                 },
-                props: { type: 1 },
+                props: { propType: 1 },
             }, {
                 path: 'start-price-fulfilment',
                 name: 'start-price-fulfilment',
@@ -287,7 +288,7 @@ const routes = [
                     breadcrumbs: ['tenders', 'tenders-start'],
                     requiresAuth: true 
                 },
-                props: { type: 2 },
+                props: { propType: 2 },
             }, {
                 path: 'drafts',
                 name: 'customer-drafts',
@@ -457,6 +458,16 @@ const routes = [
         component: cabinetNotifications,
         meta: { 
             title: 'Уведомления',
+            breadcrumbs: [],
+            requiresAuth: true 
+        },
+        props: true,
+    }, {
+        path: '/notifications-settings',
+        name: 'notifications-settings',
+        component: cabinetNotificationsSettings,
+        meta: { 
+            title: 'Настройка уведомлений',
             breadcrumbs: [],
             requiresAuth: true 
         },

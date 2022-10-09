@@ -22,8 +22,20 @@ if (serviceUrl.onLocal || window.location.hostname === 'localhost') {
     urlPath = `${serviceUrl.localPath}:${serviceUrl.port}${serviceUrl.api}`;
 }
 
+/*
+const serviceUrl = {
+    selfUrl: 'https://etptugan.ru',
+    url: 'https://app.etptugan.ru',
+}
+let urlPath = `${serviceUrl.url}`;
+*/
 const tender = {
     url: `${urlPath}/tender`,
+    token: 'c7d63a2e58d186ae3760a5f7c690293e973c08c4'
+};
+
+const event = {
+    url: `${urlPath}/event`,
     token: 'c7d63a2e58d186ae3760a5f7c690293e973c08c4'
 };
 
@@ -104,7 +116,7 @@ const headerMenuUser = [
         title: 'Мой кабинет',
     }
 ];
-
+/*
 const userMenu = [
     {
         name: 'profile',
@@ -116,7 +128,8 @@ const userMenu = [
         title: 'моя организация',
     }
 ];
-
+*/
+/*
 const footerMenu = [
     {
         name: 'needs',
@@ -152,7 +165,7 @@ const footerMenuUser = [
         title: 'Профиль'
     }
 ];
-
+*/
 const sidebarMenu = [
     {
         name: 'tenders',
@@ -244,6 +257,7 @@ export {
     cache,
 
     tender,
+    event,
     user,
     category,
     geo,
@@ -257,8 +271,8 @@ export {
     // accountMenu,
     headerMenu,
     headerMenuUser,
-    footerMenu,
-    footerMenuUser,
-    userMenu,
+    //footerMenu,
+    //footerMenuUser,
+    // userMenu,
     sidebarMenu,
 };

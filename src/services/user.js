@@ -191,7 +191,7 @@ export default class extends REST {
         return this._post(`send_invites`, {}, params).then((data) => {
             return data;
         }).catch((error) => {
-            throw new RESTError(error, 'Не удалось  отправить приглашения');
+            throw new RESTError(error, 'Не удалось отправить приглашения');
         });
     }
 }

@@ -26,7 +26,7 @@
             v-for="(item, index) in persons"
         >
             <div
-                v-if="item.is_active || (user.is_staff || user.is_master && user.organization.id == $store._state.data.user.organization.id)"
+                v-if="item.is_active || (user.organization.id == $store._state.data.user.organization.id)"
                 :key="`person-${item.id}`"
                 class="persons__item"
                 :class="[item.is_active ? '' : 'not_active']"

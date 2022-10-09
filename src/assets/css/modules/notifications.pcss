@@ -1,0 +1,167 @@
+.notifications {
+    &__content {
+        margin-bottom: 24px;
+    }
+    
+    &__item {
+        position: relative;
+        display: flex;
+        flex-direction: column;
+        padding: 24px;
+        margin-bottom: 24px;
+        @mixin shadow-box;
+
+        &-header {
+            position: relative;
+            display: flex;
+            align-items: center;
+            /*flex-wrap: wrap;*/
+            margin-bottom: 4px;
+            font-size: 18px;
+            line-height: 24px;
+        }
+
+        &-title {
+            display: block;
+            font-weight: 600;
+            font-size: 20px;
+            line-height: 24px;
+            text-transform: uppercase;
+            text-decoration: none;
+            padding-right: 24px;
+            margin-right: auto;
+            margin-bottom: 12px;
+        }
+
+        &-seen {
+            font-weight: 700;
+            font-size: 18px;
+            line-height: 22px;
+            color: $color-green;
+            text-transform: uppercase;
+            margin-bottom: 12px;
+        }
+
+        &-date {
+            font-weight: 400;
+            font-size: 16px;
+            line-height: 20px;
+            margin-bottom: 12px;
+            margin-left: 36px;
+        }
+        &-content {
+            margin-bottom: 36px;
+        }
+        &-footer {
+            position: relative;
+            display: flex;
+            align-items: center;
+            flex-wrap: wrap;
+            margin-bottom: 12px;
+            .button {
+                margin-right: 36px;
+            }
+        }
+    }
+
+    &__settings {
+        &-group {
+            &-name {
+                font-weight: 700;
+                font-size: 24px;
+                line-height: 30px;
+                text-transform: uppercase;
+                margin-bottom: 24px;
+                color: $color-gray-T3;
+            }
+        }
+        &-item {
+            display: grid;
+            grid-template-columns: 106px 106px auto;
+            align-items: flex-start;
+            margin-bottom: 24px;
+            &-param {
+                .field.field {
+                    margin-bottom: 0;
+                    padding-bottom: 0;
+                }
+                .field__inner.field__inner {
+                    margin-top: 0;
+                    flex-direction: row;
+                    align-content: center;
+                }
+                .field__input.field__input {
+                    margin-top: 0;
+                }
+                .field__label.field__label {
+                    margin-bottom: 0;
+                    font-weight: 400;
+                    font-size: 18px;
+                    line-height: 22px;
+                }
+            }
+            &-name {
+                font-weight: 600;
+                font-size: 16px;
+                line-height: 19px;
+                align-self: center;
+            }
+        }
+    }
+
+    &__pagination {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+
+        @mixin responsive-le-s {
+            /*flex-direction: column;*/
+
+            &-left {
+                /*margin-bottom: 16px;*/
+            }
+        }
+
+        &-right {
+            display: flex;
+            align-items: center;
+
+            @mixin responsive-le-s {
+                flex-direction: column;
+            }
+        }
+
+        &-count {
+            font-weight: 400;
+            font-size: 16px;
+            color: $color-black;
+
+            & span {
+                font-weight: 700;
+            }
+        }
+
+        &-perpage {
+            display: flex;
+            align-items: center;
+            margin-right: 20px;
+
+            @mixin responsive-le-s {
+                display: none;
+                margin-right: 0;
+                margin-bottom: 16px;
+            }
+
+            & span {
+                white-space: nowrap;
+                padding-right: 20px;
+            }
+        }
+
+        &-select {
+            @mixin select--with-arrow;
+            padding-right: 36px;
+        }
+    }
+
+}

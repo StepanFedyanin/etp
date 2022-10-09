@@ -10,7 +10,7 @@
                         href="#"
                         class="header__burger"
                         :class="showSidebar ? 'is-active' : ''"
-                        @click="onClickBurger"
+                        @click.stop="onClickBurger"
                     />
 
                     <div class="header__logo">
@@ -113,7 +113,7 @@
                                     <a 
                                         href="#"
                                         class="button button-outline-red"
-                                        @click="onClickExit"
+                                        @click.stop="onClickExit"
                                     >
                                         Выйти
                                     </a>
@@ -154,7 +154,7 @@
 </template>
 
 <script>
-    import { headerMenu, headerMenuUser, userMenu } from '@/settings';
+    import { headerMenu, headerMenuUser } from '@/settings';
 
     export default {
         name: 'Header',
@@ -166,12 +166,26 @@
         },
         data() {
             return {
-                phone: '8 (800) 123-45-67',
+                phone: '+7 (343) 344-83-83',
                 email: 'info@etptugan.ru',
                 timer: null,
                 currentDate: null,
                 currentTime: null,
-                menuUser: userMenu,
+                menuUser: [
+                    {
+                        name: 'profile',
+                        role: 'all',
+                        title: 'Мой профиль'
+                    }, {
+                        name: 'organization',
+                        role: 'all',
+                        title: 'Моя организация',
+                    }, {
+                        name: 'notifications-settings',
+                        role: 'all',
+                        title: 'Настройка уведомлений',
+                    }
+                ],
                 showPopup: false,
             };
         },
