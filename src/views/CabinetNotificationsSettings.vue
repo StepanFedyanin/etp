@@ -2,9 +2,11 @@
     <div class="app__main">
         <div class="cabinet notifications">
             <div class="container">
-                <div class="notifications__title h1">Настройка уведомлений</div>
+                <div class="notifications__title h1">
+                    Настройка уведомлений
+                </div>
                 <div class="notifications__content content">
-                    <p>Выбранные уведомления будут приходить на почту: <strong class="m--color-green">info@flexites.org</strong>. Изменить ее вы можете в настройках профиля.</p>
+                    <p>Выбранные уведомления будут приходить на почту: <strong class="m--color-green">{{ user.email }}</strong>. Изменить ее вы можете в настройках профиля.</p>
                     <p>Также вы будете видеть выбранные уведомления в соответствующем разделе площадки.</p>
                 </div>
                 <template
@@ -76,6 +78,11 @@
                 showLoaderSending: false,
             }
         },
+        computed: {
+            user() {
+                return this.$store.state.user;
+            },
+        },
         mounted() {
             this.getNotificationsSettings();
         },
@@ -99,6 +106,7 @@
                     template: id
                 };
                 api.toggleNotificationsEmail(params).then(res => {
+                    console.log(res);
                     this.showLoaderSending = false;
                 }).catch(err => {
                     console.error(err);
@@ -110,6 +118,7 @@
                     template: id
                 };
                 api.toggleNotificationsPush(params).then(res => {
+                    console.log(res);
                     this.showLoaderSending = false;
                 }).catch(err => {
                     console.error(err);
