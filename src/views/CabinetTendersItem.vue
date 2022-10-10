@@ -67,6 +67,7 @@
                                 <div class="tender__data-info">
                                     <Timer 
                                         :dateEnd="tender.date_end"
+                                        :timerToDaysTime="true"
                                     />
                                     <span
                                         v-if="tender.prolong > 0"

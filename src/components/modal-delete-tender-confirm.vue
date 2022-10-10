@@ -14,7 +14,7 @@
         <div 
             class="modal__content"
         >
-            <div class="tender m--no-padding m--no-background m--no-shadow m--modal">
+            <div class="tender m--no-padding m--no-margin m--no-background m--no-shadow m--modal">
                 <div class="tender__info">
                     <div class="tender__info-title">
                         {{ tender.kind_detail }} №{{ tender.id }}. {{ tender.name }}

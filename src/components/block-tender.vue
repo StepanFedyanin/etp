@@ -379,7 +379,7 @@
             },
             restTime() {
                 let rest = new Date(this.tender.date_end) - new Date()
-                if (this.tender.status === 'bidding_accept' || this.tender.status === 'bidding_process') {
+                if (this.tender.status === 'bid_accept' || this.tender.status === 'bidding_process') {
                     return (rest < 0) ? false : true;
                 } else {
                     return false;
