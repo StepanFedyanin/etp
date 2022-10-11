@@ -219,6 +219,7 @@
             },
             onClickAcceptInvite() {
                 tenderApi.acceptInvitation(this.tender.id).then(res => {
+                    this.$emit('getTenderData');
                     console.log(res);
                 }).catch(err => {
                     this.$store.dispatch('showError', err);
@@ -227,6 +228,7 @@
             },
             onClickRejectInvite() {
                 tenderApi.rejectInvitation(this.tender.id).then(res => {
+                    this.$emit('getTenderData');
                     console.log(res);
                 }).catch(err => {
                     this.$store.dispatch('showError', err);

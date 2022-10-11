@@ -158,6 +158,7 @@
                 this.push.openPush();
             },
             handlePush(event) {
+                //console.log(event);
                 if (event.invites_count) {
                     this.invitesCount = event.invites_count;
                 }
