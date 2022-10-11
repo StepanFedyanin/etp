@@ -28,7 +28,7 @@
                                     {{ notification.title }}
                                 </div>
                                 <div 
-                                    v-if="notification.seen"
+                                    v-if="!notification.seen"
                                     class="notifications__item-seen"
                                 >
                                     Новое

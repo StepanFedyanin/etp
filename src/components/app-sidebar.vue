@@ -37,6 +37,11 @@
                                 >
                                     <div class="sidebar__menu-count">{{ roomUnreadCount }}</div>
                                 </template>
+                                <template
+                                    v-if="item.name === 'notifications' && notificationsCount !== 0"
+                                >
+                                    <div class="sidebar__menu-count">{{ notificationsCount }}</div>
+                                </template>
                                 <div
                                     v-if="item.items"
                                     class="sidebar__menu-item-arrow"
@@ -96,7 +101,8 @@
                 menuOpenedItems: {},
                 push: undefined,
                 roomUnreadCount: 0,
-                invitesCount: 0
+                invitesCount: 0,
+                notificationsCount: 0
             };
         },
         watch: {
@@ -153,6 +159,7 @@
             },
             handlePush(event) {
                 this.invitesCount = event.invites_count;
+                this.notificationsCount = event.notifications_count;
                 // let route_path = this.$route.path
                 switch(event.push_reason) {
                 // case 'notification':
