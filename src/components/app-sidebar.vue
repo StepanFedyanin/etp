@@ -158,8 +158,12 @@
                 this.push.openPush();
             },
             handlePush(event) {
-                this.invitesCount = event.invites_count;
-                this.notificationsCount = event.notifications_count;
+                if (event.invites_count) {
+                    this.invitesCount = event.invites_count;
+                }
+                if (event.notifications_count) {
+                    this.notificationsCount = event.notifications_count;
+                }
                 // let route_path = this.$route.path
                 switch(event.push_reason) {
                 // case 'notification':

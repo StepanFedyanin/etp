@@ -104,7 +104,7 @@
                         role: 'all',
                         title: 'Товарные группы'
                     }, {
-                        name: 'registration',
+                        name: 'about',
                         role: 'all',
                         title: 'О площадке',
                     }, {
