@@ -40,7 +40,7 @@
                                 </div>
                             </div>
                             <div 
-                                class="notifications__item-content"
+                                class="notifications__item-content content"
                                 v-html="notification.content"
                             />
                             <div 

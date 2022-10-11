@@ -15,7 +15,7 @@ import cabinetInvite from '@/views/CabinetInvite';
 import cabinetChat from '@/views/CabinetChat';
 import cabinetCustomer from '@/views/CabinetCustomer';
 import cabinetCustomerTendersList from '@/views/CabinetCustomerTendersList';
-import cabinetCustomerPrivateTenders from '@/views/СabinetCustomerPrivateTenders';
+import cabinetCustomerPrivateTenders from '@/views/CabinetCustomerPrivateTenders';
 import cabinetCustomerDrafts from '@/views/CabinetCustomerDrafts';
 import cabinetParticipant from '@/views/CabinetParticipant';
 import cabinetParticipantInvites from '@/views/CabinetParticipantInvites';

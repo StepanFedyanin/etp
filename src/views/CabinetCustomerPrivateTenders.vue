@@ -59,7 +59,7 @@
         methods: {
             getListPrivateTenders(){
                 let tendersType = {type: "reduction_closed"};
-                tenderApi.getTenders(tendersType).then(tenders => {
+                tenderApi.getTendersPrivates(tendersType).then(tenders => {
                     // if (tenders.type==="reduction_closed") {
                     //     this.tenders = tenders;
                     // }

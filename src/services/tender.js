@@ -38,6 +38,14 @@ export default class extends REST {
         });
     }
 
+    static getTendersPrivates(params) {
+        return this._get('privates', {}, params).then((data) => {
+            return data;
+        }).catch((error) => {
+            throw new RESTError(error, 'Ошибка при получении список закрытых тендеров');
+        });
+    }
+
     static searchTenders(params) {
         return this._post('tenders', {}, params).then((data) => {
             return data;
