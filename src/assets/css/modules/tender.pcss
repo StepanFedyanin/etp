@@ -207,6 +207,13 @@
             width: 100%;
         }
 
+        &-list {
+            padding-bottom: 10px;
+            margin-bottom: 10px;
+            overflow-x: auto;
+            @mixin scrollbar $color-shadow, $color-green, 10px;
+        }
+
         &-title {
             font-weight: 700;
             font-size: 20px;
@@ -216,6 +223,7 @@
         }
 
         &-item {
+            min-width: 720px;
             display: grid;
             grid-template-columns: 50% 50%;
             grid-template-areas: 'A B';
@@ -237,6 +245,12 @@
 
             &.m--width-40-60 {
                 grid-template-columns: 40% 60%;
+            }
+
+            &.m--edit {
+                grid-template-columns: 25% auto 60px 60px;
+                grid-template-areas: 'A B C D';
+
             }
         }
 
@@ -288,6 +302,29 @@
                 font-size: 16px;
                 color: $color-black;
             }
+
+            &.m--edit,
+            &.m--delete {
+                align-self: center;
+                justify-self: center;
+            }
+        }
+
+        &-edit,
+        &-delete {
+            display: block;
+            width: 24px;
+            height: 24px;
+            cursor: pointer;
+            background-size: contain;
+        }
+
+        &-edit {
+            background-image: url('./assets/img/icons/icon-edit.svg');
+        }
+
+        &-delete {
+            background-image: url('./assets/img/icons/icon-delete.svg');
         }
     }
 

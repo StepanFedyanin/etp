@@ -384,7 +384,7 @@
 
                 <div class="tender__block">
                     <div
-                        v-if="tender.documents.length"
+                        v-if="tender.creator === user.id || tender.documents.length"
                         class="tender__docs"
                         :class="tender.creator === user.id ? 'm--width-100' : ''"
                     >
@@ -392,13 +392,22 @@
                             Документы:
                         </div>
                         <div class="tender__docs-list">
-                            <div class="tender__docs-item">
+                            <div 
+                                class="tender__docs-item"
+                                :class="tender.creator === user.id && tender.status === 'bid_accept' ? 'm--edit' : ''"
+                            >
                                 <div class="tender__docs-cell m--title">
                                     Файл
                                 </div>
                                 <div class="tender__docs-cell m--title">
                                     Описание
                                 </div>
+                                <template
+                                    v-if="tender.creator === user.id && tender.status === 'bid_accept'"
+                                >
+                                    <div class="tender__docs-cell m--edit" />
+                                    <div class="tender__docs-cell m--delete" />
+                                </template>
                             </div>
                             <template 
                                 v-for="doc in tender.documents"
@@ -407,6 +416,7 @@
                                     v-if="doc.publication"
                                     :key="`doc-${doc.id}`"
                                     class="tender__docs-item"
+                                    :class="tender.creator === user.id && tender.status === 'bid_accept' ? 'm--edit' : ''"
                                 >
                                     <a
                                         :href="urlPath + doc.file"
@@ -415,12 +425,62 @@
                                     >
                                         {{ doc.name }}
                                     </a>
-                                    <div class="tender__docs-cell m--desc">
+                                    <template
+                                        v-if="tender.creator === user.id && tender.status === 'bid_accept'"
+                                    >
+                                        <div class="tender__docs-cell">
+                                            <FormKit
+                                                v-model="doc.description"
+                                                class="input"
+                                                type="text"
+                                                placeholder="Ввести данные"
+                                                :name="`description_${doc.id}`"
+                                                :value="doc.description"
+                                                outerClass="$reset"
+                                                @focusout="updateDocument(doc.id)"
+                                            />
+                                        </div>
+                                        <div class="tender__docs-cell m--edit">
+                                            <div
+                                                class="tender__docs-edit"
+                                                @click="updateDocument(doc.id)"
+                                            />
+                                        </div>
+                                        <div class="tender__docs-cell m--delete">
+                                            <div
+                                                class="tender__docs-delete"
+                                                @click="onClickRemoveFile(doc.id)"
+                                            />
+                                        </div>
+                                    </template>
+                                    <div 
+                                        v-else
+                                        class="tender__docs-cell m--desc"
+                                    >
                                         {{ doc.description }}
                                     </div>
+
                                 </div>
                             </template>
                         </div>
+                        <template
+                            v-if="tender.creator === user.id && tender.status === 'bid_accept'"
+                        >
+                            <FormKit
+                                id="draft_file"
+                                name="draft_file"
+                                type="file"
+                                outerClass="$reset field--type_hidden"
+                                @change="uploadFileComplete"
+                            />
+                            <button
+                                type="button"
+                                class="button button-outline-green"
+                                @click="onClickUploadFile(null)"
+                            >
+                                Добавить документ
+                            </button>
+                        </template>
                     </div>
                     <div
                         v-if="tender.creator !== user.id"
@@ -569,6 +629,8 @@
                 tender: null,
                 lot: null,
                 participants: [],
+                documents: [],
+                tenderForm: {},
                 types: {
                     reduction_opened: 'Открытый',
                     reduction_closed: 'Закрытый',
@@ -730,7 +792,64 @@
                 }).catch(err => {
                     console.error(err);
                 });
-            }
+            },
+            onClickUploadFile(id) {
+                let input
+                if (id) { // for file edit
+                    input = document.getElementById(id)
+                } else {
+                    input = document.getElementById('draft_file')
+                }
+                let click = new MouseEvent("click")
+                input.dispatchEvent(click)
+            },
+            uploadFileComplete(event) {
+                for (let file of event.target.files) {
+                    file.id = event.target.id
+
+                    const formData = new FormData()
+                    formData.append("file", file)
+                    formData.append("description", file.name)
+                    formData.append("publication", true)
+                    tenderApi.addTenderDocument(this.tender.id, formData)
+                        .then(newFile => {
+                            this.documents.push(newFile)
+                            this.tender.documents.push(newFile)
+                            // this.defaultTender.documents = this.documents
+                        }).catch(err => {
+                            console.error(err)
+                        })
+                }
+            },
+            updateDocument(id) {
+                let idx = this.tender.documents.findIndex(f => f.id === id)
+                if (idx >= 0) {
+                    const formData = new FormData()
+                    formData.append("description", this.tender.documents[idx].description)
+                    tenderApi.updateTenderDocument(this.tender.id, this.tender.documents[idx].id, formData)
+                        .then(newFile => {
+                            // console.log(newFile)
+                            this.tender.documents[idx] = newFile
+                            // this.defaultTender.documents = this.documents
+                        }).catch(err => {
+                            console.error(err)
+                        })
+                }
+            },
+            onClickRemoveFile(id) {
+                let idx = this.tender.documents.findIndex(f => f.id === id)
+                if (idx >= 0) {
+                    tenderApi.deleteTenderDocument(this.tender.id, this.tender.documents[idx].id)
+                        .then(res => {
+                            //this.documents.splice(idx, 1)
+                            this.tender.documents.splice(idx, 1)
+                            console.log(res);
+                            // this.defaultTender.documents = this.documents
+                        }).catch(err => {
+                            console.error(err)
+                        })
+                }
+            },
         }
     };
 </script>
