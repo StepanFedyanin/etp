@@ -66,6 +66,7 @@
                 <span class="tenders__item-param-name">Заказчик: </span> 
                 <router-link
                     :to="{ name: 'contragent', params: { id: tender.organization.id } }"
+                    target="_blank"
                 >
                     {{ tender.organization.full_name ? tender.organization.full_name : '-' }}
                 </router-link>

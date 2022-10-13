@@ -4,108 +4,126 @@
             <div class="contragents__title h1">
                 Контрагенты
             </div>
-            <div class="contragents__block">
-                <div class="contragents__header">
-                    <div class="contragents__header-cell m--name">
-                        Название
-                    </div>
-                    <div class="contragents__header-cell m--activity">
-                        Основной вид деятельности
-                    </div>
-                    <div class="contragents__header-cell m--customer">
-                        Заказчик
-                    </div>
-                    <div class="contragents__header-cell m--member">
-                        Участник
-                    </div>
+            <template
+                v-if="showLoaderSending"
+            >
+                <div class="contragents__loader loader">
+                    <div class="spinner" /> Загрузка данных
                 </div>
-                <div class="contragents__list">
-                    <div class="contragents__list-inner">
-                        <div 
-                            v-for="contragent in this.contragents"
-                            :key="`customer-${contragent.id}`"
-                            class="contragents__item"
-                            @click="onClickContragent(contragent.id)"
-                        >
-                            <div class="contragents__item-cell m--name">
-                                {{ contragent.name }}
-                                <div class="m--name-city">
-                                    {{ contragent.city }}
+            </template>
+            <template
+                v-else-if="this.contragents && this.contragents.length"
+            >
+                <div class="contragents__block">
+                    <div class="contragents__header">
+                        <div class="contragents__header-cell m--name">
+                            Название
+                        </div>
+                        <div class="contragents__header-cell m--activity">
+                            Основной вид деятельности
+                        </div>
+                        <div class="contragents__header-cell m--customer">
+                            Заказчик
+                        </div>
+                        <div class="contragents__header-cell m--member">
+                            Участник
+                        </div>
+                    </div>
+                    <div class="contragents__list">
+                        <div class="contragents__list-inner">
+                            <div 
+                                v-for="contragent in this.contragents"
+                                :key="`customer-${contragent.id}`"
+                                class="contragents__item"
+                                @click="onClickContragent(contragent.id)"
+                            >
+                                <div class="contragents__item-cell m--name">
+                                    {{ contragent.name }}
+                                    <div class="m--name-city">
+                                        {{ contragent.city }}
+                                    </div>
+                                </div>
+                                <div class="contragents__item-cell m--activity">
+                                    {{ contragent.principal_activity }}
+                                </div>
+                                <div class="contragents__item-cell m--customer">
+                                    <svg class="svg-icon svg-icon__hammer">
+                                        <use xlink:href="../assets/img/icons/icons.svg#hammer" />
+                                    </svg>
+                                    <span>{{ contragent.created_tenders_count }}</span>
+                                </div>
+                                <div class="contragents__item-cell m--member">
+                                    <svg class="svg-icon svg-icon__briefcase">
+                                        <use xlink:href="../assets/img/icons/icons.svg#briefcase" />
+                                    </svg>
+                                    <span>{{ contragent.participation_tenders_count }}</span>
                                 </div>
                             </div>
-                            <div class="contragents__item-cell m--activity">
-                                {{ contragent.principal_activity }}
-                            </div>
-                            <div class="contragents__item-cell m--customer">
-                                <svg class="svg-icon svg-icon__hammer">
-                                    <use xlink:href="../assets/img/icons/icons.svg#hammer" />
-                                </svg>
-                                <span>{{ contragent.created_tenders_count }}</span>
-                            </div>
-                            <div class="contragents__item-cell m--member">
-                                <svg class="svg-icon svg-icon__briefcase">
-                                    <use xlink:href="../assets/img/icons/icons.svg#briefcase" />
-                                </svg>
-                                <span>{{ contragent.participation_tenders_count }}</span>
-                            </div>
                         </div>
                     </div>
-                </div>
-                <!-- <button 
-                    class="button"
-                    @click="getOrganizations()"
-                >
-                    Показать еще
-                </button> -->
+                    <!-- <button 
+                        class="button"
+                        @click="getOrganizations()"
+                    >
+                        Показать еще
+                    </button> -->
 
-                <div
-                    v-if="this.contragents && this.contragents.length"
-                    class="tenders__pagination"
-                >
-                    <div class="tenders__pagination-left">
-                        <div class="tenders__pagination-count">
-                            Всего: <span>{{ this.count }}</span>
+                    <div
+                        v-if="this.contragents && this.contragents.length"
+                        class="tenders__pagination"
+                    >
+                        <div class="tenders__pagination-left">
+                            <div class="tenders__pagination-count">
+                                Всего: <span>{{ this.count }}</span>
+                            </div>
                         </div>
-                    </div>
-                    <div class="tenders__pagination-left">
-                        <div class="tenders__pagination-count">
-                            Отобрано: <span>{{ this.contragents.length }}</span>
+                        <div class="tenders__pagination-left">
+                            <div class="tenders__pagination-count">
+                                Отобрано: <span>{{ this.contragents.length }}</span>
+                            </div>
                         </div>
-                    </div>
-                    <div class="tenders__pagination-right">
-                        <div class="tenders__pagination-perpage">
-                            <span>Выводить на страницу :</span>
-                            <select
-                                v-model="limit"
-                                class="tenders__pagination-select"
-                                name="limit"
-                            >
-                                <option
-                                    value="10"
-                                    selected="selected"
+                        <div class="tenders__pagination-right">
+                            <div class="tenders__pagination-perpage">
+                                <span>Выводить на страницу :</span>
+                                <select
+                                    v-model="limit"
+                                    class="tenders__pagination-select"
+                                    name="limit"
                                 >
-                                    10 контрагентов
-                                </option>
-                                <option value="20">
-                                    20 контрагентов
-                                </option>
-                                <option value="50">
-                                    50 контрагентов
-                                </option>
-                                <option value="100">
-                                    100 контрагентов
-                                </option>
-                            </select>
+                                    <option
+                                        value="10"
+                                        selected="selected"
+                                    >
+                                        10 контрагентов
+                                    </option>
+                                    <option value="20">
+                                        20 контрагентов
+                                    </option>
+                                    <option value="50">
+                                        50 контрагентов
+                                    </option>
+                                    <option value="100">
+                                        100 контрагентов
+                                    </option>
+                                </select>
+                            </div>
+                            <Pagination
+                                :total="this.count"
+                                :limit="Number(limit)"
+                                :currentPage="Number($route.query.page || 1)"
+                                :url="$route.path"
+                            />
                         </div>
-                        <Pagination
-                            :total="this.count"
-                            :limit="Number(limit)"
-                            :currentPage="Number($route.query.page || 1)"
-                            :url="$route.path"
-                        />
                     </div>
                 </div>
-            </div>
+            </template>
+            <template
+                v-else
+            >
+                <div class="contragents__block">
+                    По Вашему запросу ничего не найдено.                    
+                </div>
+            </template>
         </div>
     </div>
 </template>
@@ -129,6 +147,7 @@
                 contragents: [],
                 limit: 10,
                 count: "",
+                showLoaderSending: false,
             }
         },
         computed: {
@@ -171,11 +190,14 @@
                     limit,
                     offset: this.offset
                 }
+                this.showLoaderSending = true;
                 api.getOrganizations(params).then(res => {
                     this.contragents = res.results;
                     this.count = res.count;
+                    this.showLoaderSending = false;
                 }).catch(err => {
                     console.error(err);
+                    this.showLoaderSending = false;
                 })
             }
 

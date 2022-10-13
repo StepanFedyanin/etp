@@ -1,65 +1,76 @@
 <template>
     <div class="cabinet contragent">
         <div class="container">
-            <div class="contragent__title h1">
-                {{ contragent.name }}
-            </div>
-            <div class="contragent__subtitle h2">
-                Информация о компании
-            </div>
-            <div class="contragent__block">
-                <blockOrganization 
-                    :organization="contragent"
-                />
-            </div>
-            <div class="contragent__subtitle h2">
-                Представители организации
-            </div>
-            <div class="contragent__block">
-                <blockPersons 
-                    :persons="persons"
-                />
-            </div>
-            <div class="contragent__subtitle h2">
-                Заказчик <span class="m--color-green"> {{ createdTenders.count }}  {{ getNoun(createdTenders.count) }} </span>
-            </div>
-            <div class="contragent__tenders tenders tenders__created">
-                <blockTenderMini
-                    v-for="(tender, index) in createdTenders.results"
-                    :key="`tender-${index}`"
-                    :tender="tender"
-                    :whole="true"
-                />
-                <button 
-                    v-if="createdTenders.count > countCreatedTenders"
-                    class="button button-outline-green tenders__more"
-                    @click="getCreatedTenders()"
-                >
-                    показать еще
-                </button>
-            </div>
-            <div class="contragent__subtitle h2">
-                Участник <span class="m--color-green">{{ participationTenders.count }} {{ getNoun(participationTenders.count) }} </span>
-            </div>
-            <div 
-                v-if="participationTenders && participationTenders.count"
-                class="contragent__tenders tenders participation__created"
+            <template
+                v-if="showLoaderSending"
             >
-                <blockTenderMini
-                    v-for="(tender, index) in participationTenders.results"
-                    :key="`tender-${index}`"
-                    :tender="tender"
-                    :whole="true"
-                />
-
-                <button 
-                    v-if="participationTenders.count > countParticipationTenders"
-                    class="button button-outline-green tenders__more"
-                    @click="getParticipationTenders()"
+                <div class="contragent__loader loader">
+                    <div class="spinner" /> Загрузка данных
+                </div>
+            </template>
+            <template
+                v-else
+            >
+                <div class="contragent__title h1">
+                    {{ contragent.name }}
+                </div>
+                <div class="contragent__subtitle h2">
+                    Информация о компании
+                </div>
+                <div class="contragent__block">
+                    <blockOrganization 
+                        :organization="contragent"
+                    />
+                </div>
+                <div class="contragent__subtitle h2">
+                    Представители организации
+                </div>
+                <div class="contragent__block">
+                    <blockPersons 
+                        :persons="persons"
+                    />
+                </div>
+                <div class="contragent__subtitle h2">
+                    Заказчик <span class="m--color-green"> {{ createdTenders.count }}  {{ getNoun(createdTenders.count) }} </span>
+                </div>
+                <div class="contragent__tenders tenders tenders__created">
+                    <blockTenderMini
+                        v-for="(tender, index) in createdTenders.results"
+                        :key="`tender-${index}`"
+                        :tender="tender"
+                        :whole="true"
+                    />
+                    <button 
+                        v-if="createdTenders.count > countCreatedTenders"
+                        class="button button-outline-green tenders__more"
+                        @click="getCreatedTenders()"
+                    >
+                        показать еще
+                    </button>
+                </div>
+                <div class="contragent__subtitle h2">
+                    Участник <span class="m--color-green">{{ participationTenders.count }} {{ getNoun(participationTenders.count) }} </span>
+                </div>
+                <div 
+                    v-if="participationTenders && participationTenders.count"
+                    class="contragent__tenders tenders participation__created"
                 >
-                    показать еще
-                </button>
-            </div>
+                    <blockTenderMini
+                        v-for="(tender, index) in participationTenders.results"
+                        :key="`tender-${index}`"
+                        :tender="tender"
+                        :whole="true"
+                    />
+
+                    <button 
+                        v-if="participationTenders.count > countParticipationTenders"
+                        class="button button-outline-green tenders__more"
+                        @click="getParticipationTenders()"
+                    >
+                        показать еще
+                    </button>
+                </div>
+            </template>
         </div>
     </div>
 </template>
@@ -97,6 +108,7 @@
                 tenders: null,
                 countCreatedTenders: 0,
                 countParticipationTenders: 0,
+                showLoaderSending: false,
             }
         },
         mounted() {
@@ -105,10 +117,13 @@
         beforeDestroy() {
         },
         created() {
+            this.showLoaderSending = true;
             api.getOrganization(this.id).then(res => {
                 this.contragent = res;
+                this.showLoaderSending = false;
             }).catch(err => {
                 console.error(err);
+                this.showLoaderSending = false;
             });
 
             this.getCreatedTenders();

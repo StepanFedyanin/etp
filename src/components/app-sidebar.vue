@@ -33,12 +33,12 @@
                             >
                                 {{ item.title }}
                                 <template
-                                    v-if="item.name === 'chat' && roomUnreadCount !== 0"
+                                    v-if="item.name === 'chat' && roomUnreadCount"
                                 >
                                     <div class="sidebar__menu-count">{{ roomUnreadCount }}</div>
                                 </template>
                                 <template
-                                    v-if="item.name === 'notifications' && notificationsCount !== 0"
+                                    v-if="item.name === 'notifications' && notificationsCount"
                                 >
                                     <div class="sidebar__menu-count">{{ notificationsCount }}</div>
                                 </template>
@@ -71,7 +71,7 @@
                                                 >
                                                     {{ sitem.title }}
                                                     <template
-                                                        v-if="sitem.name === 'participant-invites' && invitesCount !== 0"
+                                                        v-if="sitem.name === 'participant-invites' && invitesCount"
                                                     >
                                                         <div class="sidebar__menu-count">{{ invitesCount }}</div>
                                                     </template>
@@ -105,17 +105,23 @@
                 notificationsCount: 0
             };
         },
+        /*
         watch: {
             '$route' (value) {
                 // this.getCount()
-                if (this.hasNotification && value.name === 'notifications') {
-                    this.hasNotification = false;
+                // if (this.hasNotification && value.name === 'notifications') {
+                //    this.hasNotification = false;
+                // }
+                if (this.push) {
+                    //this.push.closePush();
                 }
+                //this.connectToPushWS();
                 // this.close();
             }
         },
+        */
         mounted() {
-            this.connectToPushWS()
+            this.connectToPushWS();
         },
         destroyed() {
             this.push.closePush();
@@ -158,20 +164,11 @@
                 this.push.openPush();
             },
             handlePush(event) {
-                //console.log(event);
-                if (event.invites_count) {
-                    this.invitesCount = event.invites_count;
-                }
-                if (event.notifications_count) {
-                    this.notificationsCount = event.notifications_count;
-                }
-                // let route_path = this.$route.path
+                this.invitesCount = event.invites_count || 0;
+                this.notificationsCount = event.notifications_count || 0;
+                this.roomUnreadCount = event.unread_room_count || 0;
+                /*
                 switch(event.push_reason) {
-                // case 'notification':
-                //     if (!route_path.includes('notification')) {
-                //         this.hasNotification = true;
-                //     }
-                //     break;
                 case 'chat_update':
                     this.roomUnreadCount = event.unread_room_count;
                     break;
@@ -182,6 +179,7 @@
                     this.roomUnreadCount = event.unread_room_count;
                     break;
                 }
+                */
             },
 
         }
