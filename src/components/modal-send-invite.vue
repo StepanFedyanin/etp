@@ -3,6 +3,7 @@
         v-model="show"
         classes="modal__container" 
         content-class="modal__block modal__notice"
+        @click-outside="$emit('hideModal')"
     >
         <button 
             class="modal__close" 

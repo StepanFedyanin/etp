@@ -30,6 +30,14 @@ export default class extends REST {
         });
     }
 
+    static recoveryPassword(params) {
+        return this._post('password_reset_user', {}, params).then((data) => {
+            return data;
+        }).catch((error) => {
+            throw new RESTError(error, 'Ошибка при восстановлении пароля', { request: { params } });
+        });
+    }
+
     static getMyProfile() {
         return this._get('profile', {}).then((data) => {
             return data;

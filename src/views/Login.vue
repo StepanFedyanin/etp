@@ -20,21 +20,39 @@
                 >
                     <div class="form__block">
                         <FormKitSchema :schema="authForm" />
+                        <div class="field m--offset m--no-margin">
+                            <label class="field__inner">
+                                <a 
+                                    href="#"
+                                    @click.stop="onClickRecoveryPasswordModal"
+                                >
+                                    Забыли пароль?
+                                </a>
+                            </label>
+                        </div>
                     </div>
                 </FormKit>
             </div>
         </div>
+        <ModalRecoveryPassword
+            :showModal="showRecoveryPasswordModal"
+            @hideModal="hideRecoveryPasswordModal"
+        />
     </div>
 </template>
 
 <script>
     import { user as api } from "@/services";
+    import ModalRecoveryPassword from '@/components/modal-recovery-password.vue'
+
     export default {
         components: {
+            ModalRecoveryPassword
         },
         data() {
             return {
                 formData: {},
+                showRecoveryPasswordModal: false,
                 showLoaderSending: false,
                 authForm: [
                     {
@@ -95,6 +113,12 @@
                     this.$store.dispatch('showError', err);
                     console.error(err);
                 });
+            },
+            onClickRecoveryPasswordModal() {
+                this.showRecoveryPasswordModal = true;
+            },
+            hideRecoveryPasswordModal() {
+                this.showRecoveryPasswordModal = false;
             },
             next() {
                 this.$router.push({ name: 'cabinet' });

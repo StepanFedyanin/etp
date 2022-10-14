@@ -18,7 +18,7 @@
                         :to="{ name: 'tender', params: { id: item.id } }"
                         class="tender__related-link"
                     >
-                        №{{ item.id }}
+                        {{ item.kind_detail }} №{{ item.id }}
                     </router-link>
                     <div>
                         {{ item.status_detail }}
@@ -64,7 +64,7 @@
                         :to="{ name: 'tender', params: { id: item.id } }"
                         class="tender__related-link"
                     >
-                        №{{ item.id }}
+                        {{ item.kind_detail }} №{{ item.id }}
                     </router-link>
                     <div>
                         {{ item.status_detail }}

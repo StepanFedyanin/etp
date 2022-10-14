@@ -18,9 +18,17 @@
         }
         &-submit {
             padding-top: 45px;
+            &.m--recovery {
+                padding-top: 0;
+                display: flex;
+                justify-content: center;
+            }
             .button {
                 margin: 0 12px;
             }
+        }
+        & > .field__comment {
+            display: none;
         }
     }
 }
