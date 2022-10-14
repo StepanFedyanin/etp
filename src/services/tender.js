@@ -79,7 +79,7 @@ export default class extends REST {
     }
 
     static getClosedTenders(params) {
-        return this._post('my_closed', {}, params).then((data) => {
+        return this._post('closed', {}, params).then((data) => {
             return data;
         }).catch((error) => {
             throw new RESTError(error, 'Ошибка при получении список тендеров');

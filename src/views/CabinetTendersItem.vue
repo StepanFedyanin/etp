@@ -521,7 +521,7 @@
                         </template>
                     </div>
                 </div>
-                <RelatedTenders
+                <TenderRelatedTenders
                     v-if="tender.status === 'fulfilment'"
                     :tender="tender"
                 />
@@ -591,6 +591,7 @@
     import { tender as tenderApi } from "@/services"
     import TenderOrganizationStatus from '@/components/tender-organization-status';
     import TenderParticipants from '@/components/tender-participants';
+    import TenderRelatedTenders from '@/components/tender-related-tenders.vue';
     import TenderLots from '@/components/tender-lots';
     import TenderBids from '@/components/tender-bids';
     import Timer from '@/components/timer';
@@ -600,12 +601,12 @@
     import ModalCancelTenderConfirm from '@/components/modal-cancel-tender-confirm';
     import ModalDeleteTenderConfirm from '@/components/modal-delete-tender-confirm';
     import { chat as Chat } from "@/services"
-    import RelatedTenders from '@/components/relatedTenders.vue';
 
     export default {
         components: {
             TenderOrganizationStatus,
             TenderParticipants,
+            TenderRelatedTenders,
             TenderLots,
             TenderBids,
             Timer,
@@ -614,7 +615,6 @@
             ModalCloseAheadTenderConfirm,
             ModalCancelTenderConfirm,
             ModalDeleteTenderConfirm,
-            RelatedTenders
         },
         props: {
             id: {
@@ -649,6 +649,16 @@
                 showDeleteTenderConfirmModal: false,
                 showLoaderSending: false,
                 formValues: {},
+            }
+        },
+        watch: {
+            '$route.params': {
+                handler() {
+                    console.log(this.$route.params);
+                    this.$nextTick(() => {
+                        this.getTenderData();
+                    });
+                },
             }
         },
         created() {
