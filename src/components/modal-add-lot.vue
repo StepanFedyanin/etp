@@ -149,8 +149,18 @@
             data() {
                 console.log('data')
                 console.log(this.data)
-                if (this.data)
-                    this.addLotForm = this.data
+                this.addLotForm = this.data || {}
+                if (this.data) {
+                    this.addLotForm.nds = {
+                        fromParent: true,
+                        value: this.data.nds
+                    }
+                } else {
+                    this.addLotForm.nds = {
+                        fromParent: true,
+                        value: null
+                    }
+                }
             }
         },
         mounted() {    
