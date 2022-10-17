@@ -2,7 +2,6 @@
     <div class="app__main">
         <div class="cabinet notifications">
             <div class="container">
-                <div class="notifications__title h1">Уведомления</div>
                 <template
                     v-if="showLoaderSending"
                 >
@@ -13,6 +12,7 @@
                 <template
                     v-else-if="notifications && totalCount"
                 >
+                    <div class="notifications__title h1">Уведомления</div>
                     <div class="notifications__block">
                         <div
                             v-for="notification in notifications"
@@ -67,7 +67,43 @@
                 <template
                     v-else
                 >
-                    У Вас нет уведомлений.                    
+                    <div class="notifications__block">
+                        <div
+                            class="notifications__item m--no-notifications"
+                        >
+                            <div 
+                                class="notifications__item-header"
+                            >
+                                <div 
+                                    class="notifications__item-title"
+                                >
+                                    Система уведомлений на ЭТП TUGAN
+                                </div>
+                            </div>
+                            <div 
+                                class="notifications__item-content content"
+                            >
+                                <p>
+                                    Здесь вы будете получать уведомления о всех важных событиях на платформе.<br>
+                                    <strong>Email-уведомления</strong> отправляются на ваш контактный адрес.<br>
+                                    <strong>Web-уведомления</strong> будут показаны на этой странице.
+                                </p>
+                                <p>
+                                    Любой тип уведомлений можно включить или отключить в настройках.
+                                </p>
+                            </div>
+                            <div 
+                                class="notifications__item-footer"
+                            >
+                                <router-link
+                                    :to="{ name: 'notifications-settings' }"
+                                    class="button button-outline-green m--width-auto"
+                                >
+                                    Настроить уведомления
+                                </router-link>
+                            </div>
+                        </div>
+                    </div>
                 </template>
                 <div
                     v-if="!showLoaderSending && notifications && totalCount"
