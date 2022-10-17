@@ -79,7 +79,7 @@
                         $formkit: 'text',
                         name: 'email',
                         label: 'Ваш E-mail',
-                        placeholder: 'Выберите нового победителя',
+                        placeholder: 'E-mail, указанный при регистрации',
                         validation: 'required',
                     }
                 ]

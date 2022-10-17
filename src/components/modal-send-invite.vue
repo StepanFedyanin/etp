@@ -17,8 +17,12 @@
         <div class="modal__content">
             <div class="modal__title">{{ text }}</div>
             <div class="modal__text text">
-                <p class="text__important">На электронную почту: <span class="text__email">{{ emails }}</span></p>
-                <p>Ваши партнеры получат ссылку-приглашение на почту, после чего смогут зарегистрироваться в системе TUGAN.</p>
+                <p class="text__important">
+                    На электронную почту: <span class="text__email">{{ emails }}</span>
+                </p>
+                <p>
+                    Ваши партнеры получат ссылку-приглашение на почту, после чего смогут зарегистрироваться в системе TUGAN.
+                </p>
             </div>
             <button 
                 class="button button-green"

@@ -2,7 +2,9 @@
     <div class="app__main">
         <div class="auth">
             <div class="container">
-                <div class="auth__title h2">Укажите ваши данные для авторизации</div>
+                <div class="auth__title h2">
+                    Укажите ваши данные для авторизации
+                </div>
                 <FormKit
                     v-model="formData"
                     type="form"

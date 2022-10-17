@@ -75,6 +75,7 @@
                             <div 
                                 v-if="showPopup"
                                 class="header__popup"
+                                v-click-out="onClickPopup"
                             >
                                 <div class="header__popup-title">
                                     {{ user.last_name }} {{ user.first_name ? user.first_name[0] + '.' : '' }} {{ user.patronymic ? user.patronymic[0] + '.' : '' }}

@@ -12,7 +12,7 @@
             <span />
         </button>
         <span class="modal__title">
-            {{ tender.kind === 'tender' ? 'Сделать ставку' : lot.user_price ? 'Изменить предложение' : 'Сделать предложение'  }}
+            {{ tender.kind === 'tender' ? 'Сделать ставку' : lot.user_price ? 'Изменить предложение' : 'Сделать предложение' }}
         </span>
         <div
             v-if="betSended"
@@ -112,10 +112,10 @@
                                     </div>
                                     <FormKit
                                         v-if="!refreshInput"
-                                        v-model="formValues.price"
                                         id="price"
+                                        v-model="formValues.price"
                                         :maska="{ mask: '#*D##', tokens: { 'D': { pattern: /\./ }}}"
-                                        :disabled="this.formValues.min_bid.length ? true : false"
+                                        :disabled="formValues.min_bid.length ? true : false"
                                         type="maska"
                                         name="price"
                                         label=""
