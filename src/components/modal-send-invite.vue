@@ -15,7 +15,9 @@
             <use xlink:href="../assets/img/icons/icons.svg#sent" />
         </svg>
         <div class="modal__content">
-            <div class="modal__title">{{ text }}</div>
+            <div class="modal__title">
+                {{ text }}
+            </div>
             <div class="modal__text text">
                 <p class="text__important">
                     На электронную почту: <span class="text__email">{{ emails }}</span>

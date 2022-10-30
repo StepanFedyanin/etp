@@ -23,7 +23,7 @@
                             Ед.изм.
                         </div>
                         <div class="lots__header-cell m--tax">
-                            НДС
+                            В т.ч. НДС
                         </div>
                         <div class="lots__header-cell m--price">
                             Цена

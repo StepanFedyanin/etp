@@ -459,7 +459,6 @@
                                     >
                                         {{ doc.description }}
                                     </div>
-
                                 </div>
                             </template>
                         </div>

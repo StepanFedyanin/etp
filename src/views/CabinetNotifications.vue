@@ -12,7 +12,9 @@
                 <template
                     v-else-if="notifications && totalCount"
                 >
-                    <div class="notifications__title h1">Уведомления</div>
+                    <div class="notifications__title h1">
+                        Уведомления
+                    </div>
                     <div class="notifications__block">
                         <div
                             v-for="notification in notifications"

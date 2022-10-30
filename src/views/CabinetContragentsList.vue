@@ -12,7 +12,7 @@
                 </div>
             </template>
             <template
-                v-else-if="this.contragents && this.contragents.length"
+                v-else-if="contragents && contragents.length"
             >
                 <div class="contragents__block">
                     <div class="contragents__header">
@@ -32,7 +32,7 @@
                     <div class="contragents__list">
                         <div class="contragents__list-inner">
                             <div 
-                                v-for="contragent in this.contragents"
+                                v-for="contragent in contragents"
                                 :key="`customer-${contragent.id}`"
                                 class="contragents__item"
                                 @click="onClickContragent(contragent.id)"
@@ -69,17 +69,17 @@
                     </button> -->
 
                     <div
-                        v-if="this.contragents && this.contragents.length"
+                        v-if="contragents && contragents.length"
                         class="tenders__pagination"
                     >
                         <div class="tenders__pagination-left">
                             <div class="tenders__pagination-count">
-                                Всего: <span>{{ this.count }}</span>
+                                Всего: <span>{{ count }}</span>
                             </div>
                         </div>
                         <div class="tenders__pagination-left">
                             <div class="tenders__pagination-count">
-                                Отобрано: <span>{{ this.contragents.length }}</span>
+                                Отобрано: <span>{{ contragents.length }}</span>
                             </div>
                         </div>
                         <div class="tenders__pagination-right">
@@ -108,7 +108,7 @@
                                 </select>
                             </div>
                             <Pagination
-                                :total="this.count"
+                                :total="count"
                                 :limit="Number(limit)"
                                 :currentPage="Number($route.query.page || 1)"
                                 :url="$route.path"
