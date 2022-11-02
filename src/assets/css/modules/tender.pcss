@@ -27,6 +27,20 @@
         flex-wrap: wrap;
         margin: 0 0 24px;
         gap: 1%;
+
+        &.m--top {
+            position: sticky;
+            top: 0;
+            padding: 24px 48px 0;
+            background: $color-white;
+            margin: -48px -48px 24px;
+            z-index: 10;
+
+            @mixin responsive-le-l {
+                position: relative;
+                top: auto;
+            }
+        }
     }
 
     &__info {
@@ -426,10 +440,11 @@
         position: relative;
         display: flex;
         width: 32.33%;
-        padding: 36px 24px;
+        padding: 20px;
         margin: 0 0 24px;
         min-width: 300px;
         @mixin shadow-box;
+        background: $color-bg;
 
         &.m--long {
             width: 37.58%;

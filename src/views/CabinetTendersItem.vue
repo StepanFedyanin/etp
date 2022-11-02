@@ -11,7 +11,7 @@
             <template
                 v-else-if="tender"
             >
-                <div class="tender__block">
+                <div class="tender__block m--top">
                     <!-- CARD 1 -->
                     <div 
                         class="tender__data"
