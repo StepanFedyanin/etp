@@ -43,14 +43,22 @@
             }
         },
         watch: {
+            /*
             '$route': {
                 immediate: true,
                 handler(to, from) {
                     if (!from || to.fullPath !== from.fullPath) {
-                        document.title = to.meta.title + ' | Бизнес-платформа TUGAN' || 'Бизнес-платформа TUGAN';
+                        console.log(to.meta);
+                        console.log(this.$route.meta);
+                        document.title = to.meta.title + ' | ЭТП TUGAN' || 'ЭТП TUGAN';
+                        const description = document.querySelector('head meta[name="description"]');
+                        const keywords = document.querySelector('head meta[name="keywords"]');
+                        description.setAttribute('content', to.meta.description || '');
+                        keywords.setAttribute('content', to.meta.keywords || '');
                     }
                 }
             },
+            */
             '$route.name': {
                 immediate: true,
                 handler() {
@@ -63,6 +71,9 @@
                 console.error('Window error', err.message);
                 this.$store.dispatch('showError', { err });
             };
+        },
+        mounted() {
+            console.log(this.$route);
         },
         errorCaptured(err, vm, info) {
             console.error('Local error', err.message, vm, info);

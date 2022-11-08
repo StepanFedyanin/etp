@@ -78,7 +78,11 @@ const routes = [
         path: '/',
         name: 'home',
         component: home,
-        meta: { title: 'Главная' },
+        meta: { 
+            title: 'Электронная торговая площадка',
+            description: 'ЭТП TUGAN — Электронная торговая площадка для проведения тендеров, онлайн торгов и аукционов. ✅Официальный сайт электронной торговой платформы TUGAN. ☎ +7 (343) 344-83-83',
+            keywords: 'электронная торговая площадка, торговая площадка, электронные торги, электронная торговая платформа? проведение тендеров, конкурс, аукцион, закупка, Туган, Tugan'
+        },
         props: true
     }, {
         path: '/needs',
@@ -499,7 +503,13 @@ const router = createRouter({
 });
 
 router.beforeEach((to, from, next) => {
-
+    if (!from.name || to.fullPath !== from.fullPath) {
+        document.title = to.meta.title + ' | ЭТП TUGAN' || 'ЭТП TUGAN';
+        const description = document.querySelector('head meta[name="description"]');
+        const keywords = document.querySelector('head meta[name="keywords"]');
+        description.setAttribute('content', to.meta.description || '');
+        keywords.setAttribute('content', to.meta.keywords || '');
+    }
     if (to.matched.some(record => record.meta.requiresAuth)) {
         if (store.state.user && store.state.user.id) {
             next();
