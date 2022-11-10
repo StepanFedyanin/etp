@@ -28,6 +28,7 @@
                 <div class="contragent__block">
                     <blockPersons 
                         :persons="persons"
+                        @updated="getMembers"
                     />
                 </div>
                 <div class="contragent__subtitle h2">
