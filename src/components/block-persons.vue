@@ -26,7 +26,7 @@
             v-for="(item, index) in persons"
         >
             <div
-                v-if="item.is_active || (user.organization && user.organization.id == $store._state.data.user.organization.id) || $store._state.data.user.is_staff"
+                v-if="item.is_active || user.is_staff || (organization && user.organization && organization.id == user.organization.id)"
                 :key="`person-${item.id}`"
                 class="persons__item"
                 :class="[item.is_active ? '' : 'not_active']"
@@ -47,7 +47,7 @@
                     {{ item.phone }}
                 </div>
                 <div
-                    v-if="$store._state.data.user.is_staff || (user.is_master && user.organization && user.organization.id == $store._state.data.user.organization.id)"
+                    v-if="user.is_staff || (user.is_master && organization && user.organization && organization.id == user.organization.id)"
                     class="cell-icons"
                 >
                     <svg 
@@ -58,7 +58,7 @@
                     </svg>
 
                     <svg 
-                        v-if="item.is_active && item.id !== user.id"
+                        v-if="item.is_active && item.id !== user.id && !item.is_staff"
                         class="svg-icon svg-icon__delete"
                         @click="onClickDeletePerson(item.id)"
                     >
@@ -89,7 +89,7 @@
                 type: Array,
                 default() { return []; }
             },
-            user: {
+            organization: {
                 type: Object,
                 default() { 
                     return {} 
@@ -100,6 +100,11 @@
             return {
                 item: [],
             };
+        },
+        computed: {
+            user() {
+                return this.$store.state.user;
+            },
         },
         created() {
             // this.persons = this.item

@@ -37,7 +37,7 @@
                 </svg>
                 <div class="cabinet__persons">
                     <blockPersons 
-                        :user="profile"
+                        :organization="organization"
                         :persons="persons"
                         @updated="getMembers"
                     />
@@ -118,11 +118,13 @@
         },
         created() {
             this.getMyProfile();
+            /*
             api.getMyOrganizationMembers().then(res => {
                 this.persons = res;
             }).catch(err => {
                 console.error(err);
             });
+            */
             this.getMembers();
         },
         methods: {
@@ -130,12 +132,8 @@
                 api.getMyProfile().then(res => {
                     this.profile = res;
                     this.organization = res.organization;
-                    this.getCreatedTenders(this.organization);
-                    this.getParticipationTenders(this.organization);
-
-                    if(this.organization){
-                        console.log(this.organization.id);
-                    }
+                    this.getCreatedTenders();
+                    this.getParticipationTenders();
                 }).catch(err => {
                     console.error(err);
                 });
@@ -149,7 +147,6 @@
             getMembers() {
                 api.getMyOrganizationMembers().then(res => {
                     this.persons = res;
-
                 }).catch(err => {
                     console.error(err);
                 });
