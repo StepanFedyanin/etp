@@ -65,7 +65,7 @@
                         <use xlink:href="../assets/img/icons/icons.svg#delete" />
                     </svg>
                     <svg 
-                        v-else-if="item.id !== user.id"
+                        v-else-if="!item.is_active"
                         class="svg-icon svg-icon__activate"
                         @click="onClickActivatePerson(item.id)"
                     >
