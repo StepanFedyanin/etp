@@ -94,7 +94,7 @@
                 class="button button-green"
                 @click="$router.push({ name: 'registration' })"
             >
-                Участвовать
+                {{ new Date() <= new Date(tender.date_start) ? 'Участвовать' : 'Подробнее' }}
             </button>
         </div>
     </div>
