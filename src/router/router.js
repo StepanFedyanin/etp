@@ -430,7 +430,7 @@ const routes = [
                 meta: { 
                     title: 'Контрагенты', 
                     breadcrumbs: [],
-                    requiresAuth: true 
+                    //requiresAuth: true 
                 },
                 props: true,
             }, {
@@ -440,7 +440,7 @@ const routes = [
                 meta: { 
                     title: 'Контрагент', 
                     breadcrumbs: ['contragents'],
-                    requiresAuth: true 
+                    //requiresAuth: true 
                 },
                 props: true,
             }

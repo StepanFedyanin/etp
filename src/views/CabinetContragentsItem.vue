@@ -22,15 +22,19 @@
                         :organization="contragent"
                     />
                 </div>
-                <div class="contragent__subtitle h2">
-                    Представители организации
-                </div>
-                <div class="contragent__block">
-                    <blockPersons 
-                        :persons="persons"
-                        @updated="getMembers"
-                    />
-                </div>
+                <template
+                    v-if="$route.meta.requiresAuth"
+                >
+                    <div class="contragent__subtitle h2">
+                        Представители организации
+                    </div>
+                    <div class="contragent__block">
+                        <blockPersons 
+                            :persons="persons"
+                            @updated="getMembers"
+                        />
+                    </div>
+                </template>
                 <div class="contragent__subtitle h2">
                     Заказчик <span class="m--color-green"> {{ createdTenders.count }}  {{ getNoun(createdTenders.count) }} </span>
                 </div>
@@ -134,12 +138,14 @@
         },
         methods: {
             getMembers() {
-                api.getOrganizationMembers(this.id).then(res => {
-                    this.persons = res;
+                if (this.$route.meta.requiresAuth) {
+                    api.getOrganizationMembers(this.id).then(res => {
+                        this.persons = res;
 
-                }).catch(err => {
-                    console.error(err);
-                });
+                    }).catch(err => {
+                        console.error(err);
+                    });
+                }
             },
             getParticipationTenders(){
                 api.getParticipationTenders(this.id, {limit: this.limit, offset: this.offsetParticipation}).then(res =>{
