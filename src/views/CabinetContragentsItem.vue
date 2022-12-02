@@ -23,7 +23,7 @@
                     />
                 </div>
                 <template
-                    v-if="$route.meta.requiresAuth"
+                    v-if="user && user.id"
                 >
                     <div class="contragent__subtitle h2">
                         Представители организации
@@ -99,6 +99,11 @@
                 default() { return null; }
             },
         },
+        computed: {
+            user() {
+                return this.$store.state.user;
+            },
+        },
         data() {
             return {
                 contragent: {},
@@ -138,7 +143,7 @@
         },
         methods: {
             getMembers() {
-                if (this.$route.meta.requiresAuth) {
+                if (this.user && this.user.id) {
                     api.getOrganizationMembers(this.id).then(res => {
                         this.persons = res;
 
