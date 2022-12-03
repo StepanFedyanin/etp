@@ -5,7 +5,7 @@
         </div>
         <div 
             class="lots"
-            :class="(tender.status === 'bidding_process' && user.id === tender.creator) ? 'm--process' : (tender.status === 'closed' || tender.status === 'bidding_completed' || tender.status === 'fulfilment') ? 'm--finished' : '' "
+            :class="(tender.status === 'bidding_process' && (user.id === tender.creator || user.is_staff)) ? 'm--process' : (tender.status === 'closed' || tender.status === 'bidding_completed' || tender.status === 'fulfilment') ? 'm--finished' : '' "
         >
             <div class="lots__inner">
                 <div class="lots__inner-block">
@@ -32,7 +32,7 @@
                             Сумма
                         </div>
                         <template
-                            v-if="tender.status === 'bidding_process' && user.id === tender.creator"
+                            v-if="tender.status === 'bidding_process' && (user.id === tender.creator || user.is_staff)"
                         >
                             <div class="lots__header-cell m--sum">
                                 Участник с лучшей ставкой
@@ -81,7 +81,7 @@
                                 {{ $helpers.toPrice(lot.quantity * lot.price, { sign: '₽', pointer: ',' }) }}
                             </div>
                             <template
-                                v-if="tender.status === 'bidding_process' && user.id === tender.creator"
+                                v-if="tender.status === 'bidding_process' && (user.id === tender.creator || user.is_staff)"
                             >
                                 <div class="lots__item-cell">
                                     <template

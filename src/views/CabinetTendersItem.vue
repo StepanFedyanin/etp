@@ -306,10 +306,11 @@
                         />
                     </div>
                     <div
-                        v-else-if="tender.creator === user.id && tender.status === 'bidding_process'" 
+                        v-else-if="(tender.creator === user.id || user.is_staff) && tender.status === 'bidding_process'" 
                         class="tender__actions-buttons"
                     >
                         <button 
+                            v-if="tender.creator === user.id"
                             class="button button-red"
                             @click.stop="onClickCloseTenderAhead(true)"
                         >
