@@ -49,6 +49,7 @@
             </div>
         </div>
         <FormKit
+            v-if="!user.is_staff"
             id="form-search"
             v-model="formValues"
             name="form-search"

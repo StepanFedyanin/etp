@@ -283,7 +283,7 @@
                     </div>
                 </div>
                 <div 
-                    v-if="tender.creator === user.id && tender.publication && tender.status !== 'closed' && tender.status !== 'fulfilment'" 
+                    v-if="(tender.creator === user.id || user.is_staff) && tender.publication && tender.status !== 'closed' && tender.status !== 'fulfilment'" 
                     class="tender__actions"
                 >
                     <div class="tender__actions-title">
@@ -306,7 +306,7 @@
                         />
                     </div>
                     <div
-                        v-else-if="tender.status === 'bidding_process'" 
+                        v-else-if="tender.creator === user.id && tender.status === 'bidding_process'" 
                         class="tender__actions-buttons"
                     >
                         <button 
@@ -329,7 +329,7 @@
                         />
                     </div>
                     <div
-                        v-else-if="tender.status === 'bidding_completed'" 
+                        v-else-if="tender.creator === user.id && tender.status === 'bidding_completed'" 
                         class="tender__actions-buttons"
                     >
                         <button 
@@ -384,9 +384,9 @@
 
                 <div class="tender__block">
                     <div
-                        v-if="tender.creator === user.id || tender.documents.length"
+                        v-if="tender.creator === user.id || user.is_staff || tender.documents.length"
                         class="tender__docs"
-                        :class="tender.creator === user.id ? 'm--width-100' : ''"
+                        :class="tender.creator === user.id || user.is_staff ? 'm--width-100' : ''"
                     >
                         <div class="tender__docs-title">
                             Документы:
@@ -394,7 +394,7 @@
                         <div class="tender__docs-list">
                             <div 
                                 class="tender__docs-item"
-                                :class="tender.creator === user.id && tender.status === 'bid_accept' ? 'm--edit' : ''"
+                                :class="(tender.creator === user.id || user.is_staff) && tender.status === 'bid_accept' ? 'm--edit' : ''"
                             >
                                 <div class="tender__docs-cell m--title">
                                     Файл
@@ -403,7 +403,7 @@
                                     Описание
                                 </div>
                                 <template
-                                    v-if="tender.creator === user.id && tender.status === 'bid_accept'"
+                                    v-if="(tender.creator === user.id || user.is_staff) && tender.status === 'bid_accept'"
                                 >
                                     <div class="tender__docs-cell m--edit" />
                                     <div class="tender__docs-cell m--delete" />
@@ -416,7 +416,7 @@
                                     v-if="doc.publication"
                                     :key="`doc-${doc.id}`"
                                     class="tender__docs-item"
-                                    :class="tender.creator === user.id && tender.status === 'bid_accept' ? 'm--edit' : ''"
+                                    :class="(tender.creator === user.id || user.is_staff) && tender.status === 'bid_accept' ? 'm--edit' : ''"
                                 >
                                     <a
                                         :href="urlPath + doc.file"
@@ -426,7 +426,7 @@
                                         {{ doc.name }}
                                     </a>
                                     <template
-                                        v-if="tender.creator === user.id && tender.status === 'bid_accept'"
+                                        v-if="(tender.creator === user.id || user.is_staff) && tender.status === 'bid_accept'"
                                     >
                                         <div class="tender__docs-cell">
                                             <FormKit
@@ -463,7 +463,7 @@
                             </template>
                         </div>
                         <template
-                            v-if="tender.creator === user.id && tender.status === 'bid_accept'"
+                            v-if="(tender.creator === user.id || user.is_staff) && tender.status === 'bid_accept'"
                         >
                             <FormKit
                                 id="draft_file"
@@ -482,7 +482,7 @@
                         </template>
                     </div>
                     <div
-                        v-if="tender.creator !== user.id"
+                        v-if="tender.creator !== user.id && !user.is_staff"
                         class="tender__contact"
                         :class="tender.documents.length ? '' : 'm--full-width'"
                     >
@@ -525,7 +525,7 @@
                     :tender="tender"
                 />
                 <TenderOrganizationStatus
-                    v-if="user.id !== tender.creator && user.organization.id !== tender.organization.id"
+                    v-if="user.id !== tender.creator && !user.is_staff && user.organization.id !== tender.organization.id"
                     :tender="tender"
                     @getTenderData="getTenderData"
                 />
@@ -676,7 +676,7 @@
                     // let limit = (new Date(this.tender.date_end) - new Date()) / 1000;
                     this.tender.limit = (new Date(this.tender.date_end) - new Date()) / 1000;
                     console.log(res);
-                    if (this.user.id === this.tender.creator) {
+                    if (this.user.id === this.tender.creator || this.user.is_staff) {
                         tenderApi.getTenderParticipants(this.id).then(res => {
                             this.participants = res;
                             console.log(res);

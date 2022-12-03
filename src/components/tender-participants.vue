@@ -174,6 +174,7 @@
                                     Отказать
                                 </button>
                                 <button
+                                    v-if="user.id === tender.creator"
                                     type="submit"
                                     :disabled="loadingConfirm"
                                     class="button button-green"
@@ -208,6 +209,7 @@
         },
         data() {
             return {
+                user: this.$store.state.user,
                 statuses: {
                     sent: 'Требует рассмотрения',
                     rejected: 'Заявка отклонена',
