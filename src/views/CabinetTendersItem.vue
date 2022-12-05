@@ -283,7 +283,7 @@
                     </div>
                 </div>
                 <div 
-                    v-if="(tender.creator === user.id || user.is_staff) && tender.publication && tender.status !== 'closed' && tender.status !== 'fulfilment'" 
+                    v-if="showActinsBlock" 
                     class="tender__actions"
                 >
                     <div class="tender__actions-title">
@@ -306,7 +306,7 @@
                         />
                     </div>
                     <div
-                        v-else-if="(tender.creator === user.id || user.is_staff) && tender.status === 'bidding_process'" 
+                        v-else-if="tender.status === 'bidding_process'" 
                         class="tender__actions-buttons"
                     >
                         <button 
@@ -330,7 +330,7 @@
                         />
                     </div>
                     <div
-                        v-else-if="tender.creator === user.id && tender.status === 'bidding_completed'" 
+                        v-else-if="tender.status === 'bidding_completed'" 
                         class="tender__actions-buttons"
                     >
                         <button 
@@ -649,6 +649,19 @@
                 showDeleteTenderConfirmModal: false,
                 showLoaderSending: false,
                 formValues: {},
+            }
+        },
+        computed: {
+            showActinsBlock() {
+                if (this.tender.publication && this.tender.status !== 'closed' && this.tender.status !== 'fulfilment') {
+                    if (this.tender.creator === this.user.id) {
+                        return true;
+                    }
+                    if (this.user.is_staff && this.tender.status !== 'bidding_completed') {
+                        return true;
+                    }
+                }
+                return false;
             }
         },
         watch: {
