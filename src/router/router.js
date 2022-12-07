@@ -92,6 +92,7 @@ const routes = [
         meta: { 
             title: `%title%`, 
             breadcrumbs: [],
+            showSidebarAuth: true
         },
         props: true,
     }, {

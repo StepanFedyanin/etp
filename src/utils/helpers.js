@@ -125,6 +125,14 @@ const helpers = {
             document.title = title;
         }
     },
+    setDocumentMeta(obj) {
+        if (obj) {
+            const description = document.querySelector('head meta[name="description"]');
+            const keywords = document.querySelector('head meta[name="keywords"]');
+            description.setAttribute('content', obj.description || '');
+            keywords.setAttribute('content', obj.keywords || '');
+        }
+    },
     curDateMSK() {
         return parse(new Date().toLocaleString('ru', { timeZone: 'Europe/Moscow' }), 'DD.MM.YYYY, HH:mm:ss');
     }

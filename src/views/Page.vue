@@ -67,6 +67,7 @@
                 api.getPage(this.slug).then(res => {
                     this.page = res;
                     this.$helpers.setDocumentTitle(this.page);
+                    this.$helpers.setDocumentMeta(this.page);
                     this.showLoaderSending = false;
                 }).catch(err => {
                     this.$router.push({ name: 'page404' });
