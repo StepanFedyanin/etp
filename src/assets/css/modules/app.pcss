@@ -42,6 +42,27 @@
         }
     }
 
+    &__breadcrumbs {
+        font-size: 16px;
+        line-height: 20px;
+        margin-bottom: 10px;
+
+        &-link {
+            position: relative;
+            display: inline-block;
+            color: $color-gray-T2;
+            margin-bottom: 8px;
+            font-weight: 400;
+
+            &:after {
+                content: '—';
+                position: relative;
+                display: inline-block;
+                margin: 0 10px;
+            }
+        }
+    }
+
     &__main {
         width: 100%;
         /* padding-top: 25px; */

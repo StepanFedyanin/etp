@@ -31,18 +31,18 @@
 
     margin-top: 32px;
     margin-bottom: 24px;
-    font-size: 24px;
+    font-size: 20px;
     line-height: 1.2;
     font-weight: 700;
+    text-transform: uppercase;
+    color: $color-gray-T3;
 
     @mixin responsive-le-s {
         font-size: 20px;
-        line-height: 36px;
     }
 
     @mixin responsive-le-xs {
         font-size: 18px;
-        line-height: 24px;
     }
 }
 
@@ -135,6 +135,7 @@
 @define-mixin a {
     text-decoration: underline;
     color: $color-green;
+    font-weight: 700;
 
     &:hover {
         text-decoration: none;

@@ -1,3 +1,4 @@
+import common from './common';
 import tender from './tender';
 import user from './user';
 import event from './event';
@@ -7,6 +8,7 @@ import chat from './chat';
 import push from './push';
 
 export {
+    common,
     tender,
     user,
     event,

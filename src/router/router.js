@@ -2,6 +2,7 @@ import { createRouter, createWebHistory  } from 'vue-router';
 import store from '@/store/store';
 /* all */
 import home from '@/views/Home';
+import page from '@/views/Page';
 import empty from '@/views/Empty';
 import about from '@/views/About';
 import rules from '@/views/Rules';
@@ -84,6 +85,15 @@ const routes = [
             keywords: 'электронная торговая площадка, торговая площадка, электронные торги, электронная торговая платформа? проведение тендеров, конкурс, аукцион, закупка, Туган, Tugan'
         },
         props: true
+    }, {
+        path: '/info/:slug',
+        name: 'page',
+        component: page,
+        meta: { 
+            title: `%title%`, 
+            breadcrumbs: [],
+        },
+        props: true,
     }, {
         path: '/needs',
         name: 'needs',

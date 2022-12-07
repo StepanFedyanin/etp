@@ -48,6 +48,10 @@ const category = {
     url: `${urlPath}`
 };
 
+const common = {
+    url: `${urlPath}/common`
+};
+
 const geo = {
     url: `${urlPath}/geo`
 };
@@ -236,6 +240,7 @@ export {
     event,
     user,
     category,
+    common,
     geo,
     logger,
     urlPath,
