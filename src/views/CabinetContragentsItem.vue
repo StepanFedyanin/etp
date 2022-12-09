@@ -130,6 +130,8 @@
             this.showLoaderSending = true;
             api.getOrganization(this.id).then(res => {
                 this.contragent = res;
+                this.$helpers.setDocumentTitle(this.contragent);
+                this.$helpers.setDocumentMeta(this.contragent);
                 this.showLoaderSending = false;
             }).catch(err => {
                 console.error(err);

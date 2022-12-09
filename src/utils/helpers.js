@@ -118,6 +118,8 @@ const helpers = {
     },
     setDocumentTitle(obj) {
         let title = document.title;
+        let description = document.querySelector('head meta[name="description"]');
+        let keywords = document.querySelector('head meta[name="keywords"]');
         if (obj) {
             Object.keys(obj).map((key) => {
                 title = title.replace(`%${key}%`, obj[key]);
@@ -129,8 +131,20 @@ const helpers = {
         if (obj) {
             const description = document.querySelector('head meta[name="description"]');
             const keywords = document.querySelector('head meta[name="keywords"]');
-            description.setAttribute('content', obj.description || '');
-            keywords.setAttribute('content', obj.keywords || '');
+            if (obj.description) {
+                description.setAttribute('content', obj.description);
+            } else {
+                Object.keys(obj).map((key) => {
+                    description.content = description.content.replace(`%${key}%`, obj[key]);
+                });
+            }
+            if (obj.keywords) {
+                keywords.setAttribute('content', obj.keywords || '');
+            } else {
+                Object.keys(obj).map((key) => {
+                    keywords.content = keywords.content.replace(`%${key}%`, obj[key]);
+                });
+            }
         }
     },
     curDateMSK() {

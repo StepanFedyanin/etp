@@ -147,7 +147,7 @@
                     >Главная страница</a>
                 </div>
                 <div class="header__title h1">
-                    {{ $route.meta.title }} {{ $route.name === 'registration' ? $store.state.stepRegistration || 1 : '' }}
+                    {{ $route.meta.name || $route.meta.title }} {{ $route.name === 'registration' ? $store.state.stepRegistration || 1 : '' }}
                 </div>
             </div>
         </div>

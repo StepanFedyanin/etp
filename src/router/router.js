@@ -448,8 +448,11 @@ const routes = [
                 path: ':id',
                 name: 'contragent',
                 component: cabinetContragentsItem,
-                meta: { 
-                    title: 'Контрагент', 
+                meta: {
+                    name: 'Контрагент',
+                    title: '%name% (ИНН %inn%). Реквизиты, КПП, ОГРН %actual_address%', 
+                    description: 'Реквизиты %name%: ИНН %inn%, ОГРН %ogrn%. Руководитель: %head_name%. Информация об %name%: Юр. адрес - %legal_address%. Официальный сайт, телефон, контакты, вид деятельности - узнать на etptugan.ru',
+                    keywords: '%name%, %full_name%, %head_name%, ИНН %inn%, ОГРН %ogrn%, проверка контрагента, проверка директора,  компания, предприятие, организация, адрес, телефон, официальный сайт, почта, email, веб-сайт, схема проезда, карта',
                     breadcrumbs: ['contragents'],
                     //requiresAuth: true 
                 },
