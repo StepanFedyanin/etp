@@ -441,6 +441,7 @@ const routes = [
                 meta: { 
                     title: 'Контрагенты', 
                     breadcrumbs: [],
+                    showSidebarAuth: true,
                     //requiresAuth: true 
                 },
                 props: true,
@@ -454,6 +455,7 @@ const routes = [
                     description: 'Реквизиты %name%: ИНН %inn%, ОГРН %ogrn%. Руководитель: %head_name%. Информация об %name%: Юр. адрес - %legal_address%. Официальный сайт, телефон, контакты, вид деятельности - узнать на etptugan.ru',
                     keywords: '%name%, %full_name%, %head_name%, ИНН %inn%, ОГРН %ogrn%, проверка контрагента, проверка директора,  компания, предприятие, организация, адрес, телефон, официальный сайт, почта, email, веб-сайт, схема проезда, карта',
                     breadcrumbs: ['contragents'],
+                    showSidebarAuth: true,
                     //requiresAuth: true 
                 },
                 props: true,
