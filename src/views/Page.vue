@@ -21,7 +21,7 @@
                 <template
                     v-else-if="page"
                 >
-                    <h1>{{ page.title }}</h1>
+                    <h1>{{ page.page_name }}</h1>
                     <div
                         v-html="page.content"
                     />

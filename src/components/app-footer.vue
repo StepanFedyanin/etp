@@ -38,7 +38,7 @@
                             <router-link
                                 v-for="(item, key) in menu"
                                 :key="key"
-                                :to="{ name: item.name }"
+                                :to="{ name: item.name, params: item.params }"
                                 class="footer__link"
                                 v-text="item.title"
                             />
@@ -96,9 +96,10 @@
                         role: 'all',
                         title: 'Тендеры'
                     }, {
-                        name: 'cabinet',
+                        name: 'page',
+                        params: { slug: 'contacts' },
                         role: 'all',
-                        title: 'Личный кабинет',
+                        title: 'Контакты',
                     }, {
                         name: 'groups',
                         role: 'all',

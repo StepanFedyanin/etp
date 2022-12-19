@@ -91,6 +91,7 @@ const routes = [
         component: page,
         meta: { 
             title: `%title%`, 
+            description: `%description%`,
             breadcrumbs: [],
             showSidebarAuth: true
         },
