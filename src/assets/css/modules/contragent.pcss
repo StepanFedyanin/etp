@@ -4,6 +4,125 @@
         color: $color-gray-T3;
     }
 
+    &__info {
+        display: flex;
+        gap: 48px;
+
+        &-left {
+            width: 60%;
+        }
+
+        &-right {
+            flex-grow: 1;
+            padding: 20px;
+            @mixin shadow-box;
+        }
+
+        &-name {
+            font-weight: 600;
+            font-size: 22px;
+            line-height: 28px;
+            margin-bottom: 8px;
+        }
+
+        &-tags {
+            position: relative;
+            display: flex;
+            flex-wrap: wrap;
+        }
+
+        &-tag {
+            border-radius: 8px;
+            margin-right: 12px;
+            margin-bottom: 12px;
+            font-weight: 500;
+            font-size: 16px;
+            line-height: 20px;
+            padding: 4px 12px;
+            color: $color-white;
+            background: $color-green;
+        }
+
+        &-favorite {
+            margin-bottom: 34px;
+        }
+
+        &-principal {
+            font-weight: 400;
+            font-size: 18px;
+            line-height: 22px;
+            margin-bottom: 32px;
+        }
+
+        &-block {
+            display: flex;
+            gap: 32px;
+        }
+
+        &-params {}
+
+        &-logo {
+            width: 240px;
+            margin-left: auto;
+
+            img {
+                display: block;
+                margin: 0 auto;
+                width: 100%;
+                height: auto;
+                max-width: 240px;
+            }
+        }
+
+        &-param {
+            margin-bottom: 16px;
+            line-height: 22px;
+
+            &.m--inline {
+                display: flex;
+            }
+
+            &.m--margin {
+                margin-bottom: 36px;
+            }
+
+            &-name {
+                padding-right: 16px;
+            }
+
+            &.m--inline &-name {
+                width: 40%;
+                min-width: 40%;
+            }
+
+            &-data {
+                padding-top: 8px;
+                font-weight: 600;
+            }
+
+            &.m--inline &-data {
+                padding-top: 0;
+            }
+        }
+
+        &-rating {
+            margin-bottom: 36px;
+
+            div {
+                font-weight: 600;
+                font-size: 16px;
+                line-height: 20px;
+                &.m--green {
+                    color: $color-green;
+                }
+
+                &.m--yellow {
+                    color: $color-yellow;
+                }
+            }
+        }
+    }
+
     &__block {
         padding: 20px;
         @mixin shadow-box;
