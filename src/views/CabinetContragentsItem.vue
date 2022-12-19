@@ -161,25 +161,37 @@
                                 <div class="contragent__info-param-name">
                                     Сайт
                                 </div>
-                                <div class="contragent__info-param-data">
+                                <a 
+                                    :href="contragent.website"
+                                    target="_blank"
+                                    class="contragent__info-param-data"
+                                >
                                     {{ contragent.website }}
-                                </div>
+                                </a>
                             </div>
                             <div class="contragent__info-param m--inline">
                                 <div class="contragent__info-param-name">
                                     Контактный телефон
                                 </div>
-                                <div class="contragent__info-param-data">
+                                <a 
+                                    :href="`tel:${contragent.contact_phone}`"
+                                    target="_blank"
+                                    class="contragent__info-param-data"
+                                >
                                     {{ contragent.contact_phone }}
-                                </div>
+                                </a>
                             </div>
                             <div class="contragent__info-param m--inline">
                                 <div class="contragent__info-param-name">
                                     Контактный email
                                 </div>
-                                <div class="contragent__info-param-data">
+                                <a 
+                                    :href="`mailto:${contragent.contact_email}`"
+                                    target="_blank"
+                                    class="contragent__info-param-data"
+                                >
                                     {{ contragent.contact_email }}
-                                </div>
+                                </a>
                             </div>
                         </div>
                     </div>
