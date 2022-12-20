@@ -62,12 +62,21 @@
             margin-right: 0;
         }
     }
+    &__content {
+        margin-bottom: 24px;
+    }
     &__submit {
         display: flex;
         justify-content: center;
         @mixin responsive-xxs {
             flex-direction: column;
             align-items: center;
+        }
+        &.m--start {
+            justify-content: flex-start;
+        }
+        &.m--end {
+            justify-content: flex-end;
         }
         .button {
             margin-bottom: 24px;

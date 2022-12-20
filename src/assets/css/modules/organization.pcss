@@ -9,6 +9,71 @@
             margin-top: 0;
         }
     }
+
+    &__tabs {
+        display: flex;
+        flex-wrap: wrap;
+        margin-bottom: 36px;
+
+        &-item {
+            margin-right: 24px;
+            margin-bottom: 12px;
+            border-radius: 24px;
+            color: $color-gray-T3;
+
+            &:hover, &.is-active {
+                background: $color-green;
+                color: $color-white;
+            }
+        }
+    }
+
+    &__tab {
+
+        &-content {
+            padding-top: 48px;
+        }
+    }
+
+    &__content {
+        margin-bottom: 48px;
+    }
+
+    &__form {
+        .field {
+            margin-right: 0;
+        }
+
+        &-checkboxes {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            margin-bottom: 28px;
+            @mixin responsive-le-xs {
+                grid-template-columns: 1fr;
+                margin-bottom: 24px;
+                .field {
+                    padding-bottom: 0;
+                    margin-right: 0;
+                }
+            }
+            .field {
+                padding-bottom: 0;
+            }
+            .field[data-type=checkbox] .field__inner {
+                flex-direction: row;
+                .field__label{
+                    margin: 0 0 0 8px;
+                }
+            }
+        }
+    }
+
+    &__persons {
+        @mixin shadow-box;
+        padding: 25px 20px 35px 20px;
+        margin-bottom: 24px;
+    }
+
     &__block {
         display: flex;
         flex-wrap: wrap;
@@ -52,6 +117,10 @@
                 }
             }
         }
+    }
+
+    &__form {
+        max-width: 640px;
     }
     .svg-icon__addPerson{
         margin: 0 20px;

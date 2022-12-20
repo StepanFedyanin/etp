@@ -9,6 +9,18 @@
                     <div class="organization__title h1">
                         {{ organization.name }}
                     </div>
+                    <div class="organization__tabs">
+                        <button 
+                            v-for="item in tabsItems"
+                            :key="`tab-${item.name}`"
+                            class="button organization__tabs-item"
+                            :class="currentTabsItem === item.name && 'is-active'"
+                            @click.prevent="changeTab(item.name)"
+                        >
+                            {{ item.label }}
+                        </button>
+                    </div>
+                    <!--
                     <div class="organization__subtitle h2">
                         Информация о компании
                     </div>
@@ -19,66 +31,120 @@
                     >
                         <use xlink:href="../assets/img/icons/icons.svg#edit" />
                     </svg>
-                    <div class="cabinet__organization">
-                        <blockOrganization 
+                    -->
+                </div>
+                <div 
+                    v-if="currentTabsItem === 'public'"
+                    class="organization__tab"
+                >
+                    <div class="organization__content">
+                        Ваш профиль виден всем по ссылке:
+                        <router-link
+                            :to="{ name: 'contragent', params: { id: organization.id } }"
+                            v-slot="{ href, navigate }"
+                        >
+                            <a 
+                                :href="href"
+                                target="_blank"
+                                @click="navigate"
+                            >
+                                {{ urlPath }}{{ href }}
+                            </a>
+                        </router-link>
+                    </div>
+                    <OrganizationPublic
+                        v-if="organization"
+                        :organization="organization"
+                        @getMyProfile="getMyProfile"
+                    />
+                </div>
+                <div 
+                    v-if="currentTabsItem === 'props'"
+                    class="organization__tab"
+                >
+                    <OrganizationProps
+                        v-if="organization"
+                        :organization="organization"
+                    />
+                </div>
+                <div 
+                    v-if="currentTabsItem === 'persons'"
+                    class="organization__tab"
+                >
+                    <!--
+                    <h2 class="organization__subtitle h2">
+                        Представители организации
+                    </h2>
+                    <svg 
+                        v-if=" profile.is_staff || profile.is_master && profile.organization.id == $store._state.data.user.organization.id"
+                        class="svg-icon svg-icon__addPerson"
+                        @click="onClickAddStaff()"
+                    >
+                        <use xlink:href="../assets/img/icons/icons.svg#addPerson" />
+                    </svg>
+                    -->
+                    <div class="organization__persons">
+                        <blockPersons 
                             :organization="organization"
+                            :persons="persons"
+                            @updated="getMembers"
                         />
                     </div>
+                    <button
+                        v-if=" profile.is_staff || profile.is_master && profile.organization.id == $store._state.data.user.organization.id"
+                        class="button button-green"
+                        @click="onClickAddStaff()"
+                    >
+                        Добавить сотрудника
+                    </button>
+                    <div class="organization__tab-content text">
+                        <p>Вы можете добавлять новых сотрудников (представителей компании), редактировать и деактивировать их.</p>
+                        <p>Каждый сотрудник будет иметь собственную учетную запись для входа на платформу TUGAN.</p>
+                        <p>Список сотрудников виден только зарегистрированным участникам платформы.</p>
+                    </div>
                 </div>
-                <h2 class="organization__subtitle h2">
-                    Представители организации
-                </h2>
-                <svg 
-                    v-if=" profile.is_staff || profile.is_master && profile.organization.id == $store._state.data.user.organization.id"
-                    class="svg-icon svg-icon__addPerson"
-                    @click="onClickAddStaff()"
+                <div 
+                    v-if="currentTabsItem === 'tenders'"
+                    class="organization__tab"
                 >
-                    <use xlink:href="../assets/img/icons/icons.svg#addPerson" />
-                </svg>
-                <div class="cabinet__persons">
-                    <blockPersons 
-                        :organization="organization"
-                        :persons="persons"
-                        @updated="getMembers"
-                    />
-                </div>
-                <div class="contragent__subtitle h2">
-                    Заказчик <span class="m--color-green">{{ createdTenders.count }} {{ getNoun(createdTenders.count) }}</span>
-                </div>
-                <div class="contragent__tenders tenders">
-                    <blockTenderMini
-                        v-for="(tender, index) in createdTenders.results"
-                        :key="`tender-${index}`"
-                        :tender="tender"
-                        :whole="true"
-                    />
+                    <div class="contragent__subtitle h2">
+                        Заказчик <span class="m--color-green">{{ createdTenders.count }} {{ getNoun(createdTenders.count) }}</span>
+                    </div>
+                    <div class="contragent__tenders tenders">
+                        <blockTenderMini
+                            v-for="(tender, index) in createdTenders.results"
+                            :key="`tender-${index}`"
+                            :tender="tender"
+                            :whole="true"
+                        />
 
-                    <button 
-                        v-if="createdTenders.count > countCreatedTenders"
-                        class="button button-outline-green tenders__more"
-                        @click="getCreatedTenders()"
-                    >
-                        показать еще
-                    </button>
-                </div>
-                <div class="contragent__subtitle h2">
-                    Участник <span class="m--color-green">{{ participationTenders.count }} {{ getNoun(participationTenders.count) }}</span>
-                </div>
-                <div class="contragent__tenders tenders">
-                    <blockTenderMini
-                        v-for="(tender, index) in participationTenders.results"
-                        :key="`tender-${index}`"
-                        :tender="tender"
-                        :whole="true"
-                    />
+                        <button 
+                            v-if="createdTenders.count > countCreatedTenders"
+                            class="button button-outline-green tenders__more"
+                            @click="getCreatedTenders()"
+                        >
+                            показать еще
+                        </button>
+                    </div>
+                    <div class="contragent__subtitle h2">
+                        Участник <span class="m--color-green">{{ participationTenders.count }} {{ getNoun(participationTenders.count) }}</span>
+                    </div>
+                    <div class="contragent__tenders tenders">
+                        <blockTenderMini
+                            v-for="(tender, index) in participationTenders.results"
+                            :key="`tender-${index}`"
+                            :tender="tender"
+                            :whole="true"
+                        />
 
-                    <button 
-                        v-if="participationTenders.count > countParticipationTenders"
-                        class="button button-outline-green tenders__more"
-                        @click="getParticipationTenders()"
-                    >
-                        показать еще
-                    </button>
+                        <button 
+                            v-if="participationTenders.count > countParticipationTenders"
+                            class="button button-outline-green tenders__more"
+                            @click="getParticipationTenders()"
+                        >
+                            показать еще
+                        </button>
+                    </div>
                 </div>
             </div>
         </div>
@@ -86,19 +152,25 @@
 </template>
 
 <script>
+    import { urlPath } from '@/settings'
     import { user as api } from "@/services";
-    import blockOrganization from '@/components/block-organization.vue';
+    //import blockOrganization from '@/components/block-organization.vue';
     import blockPersons from '@/components/block-persons.vue';
     import blockTenderMini from '@/components/block-tender-mini.vue';
+    import OrganizationPublic from '@/components/forms/organization-public.vue';
+    import OrganizationProps from '@/components/forms/organization-props.vue';
 
     export default {
         components: {
-            blockOrganization,
+            //blockOrganization,
             blockPersons,
             blockTenderMini,
+            OrganizationPublic,
+            OrganizationProps,
         },
         data() {
             return {
+                urlPath,
                 profile: undefined,
                 contragents: [],
                 contragent:{},
@@ -114,6 +186,23 @@
                 tenders: null,
                 countCreatedTenders: 0,
                 countParticipationTenders: 0,
+                tabsItems: [{
+                    label: 'Публичный профиль',
+                    name: 'public'
+                }, {
+                    label: 'Виды деятельности',
+                    name: 'activities'
+                }, {
+                    label: 'Товары',
+                    name: 'goods'
+                }, {
+                    label: 'Реквизиты',
+                    name: 'props'
+                }, {
+                    label: 'Сотрудники',
+                    name: 'persons'
+                }],
+                currentTabsItem: 'public',
             }
         },
         created() {
@@ -172,6 +261,9 @@
                     this.offsetCreated += 5;
                     this.countCreatedTenders = this.createdTenders.results.length;
                 });
+            },
+            changeTab(name) {
+                this.currentTabsItem = name;
             },
             getNoun(number) {
                 let n = Math.abs(number);

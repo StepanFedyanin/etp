@@ -72,13 +72,17 @@
                                 {{ contragent.actual_address }}
                             </div>
                         </div>
-                        <div class="contragent__info-title h2">
-                            О компании
-                        </div>
-                        <div 
-                            class="contragent__info-about text"
-                            v-html="contragent.about_company"
-                        />
+                        <template
+                            v-if="contragent.about_company"
+                        >
+                            <div class="contragent__info-title h2">
+                                О компании
+                            </div>
+                            <div 
+                                class="contragent__info-about text"
+                                v-html="contragent.about_company"
+                            />
+                        </template>
                     </div>
                     <div class="contragent__info-right">
                         <div class="contragent__info-block">
@@ -157,7 +161,10 @@
                                     {{ contragent.status_detail }}
                                 </div>
                             </div>
-                            <div class="contragent__info-param m--inline">
+                            <div 
+                                v-if="contragent.website"
+                                class="contragent__info-param m--inline"
+                            >
                                 <div class="contragent__info-param-name">
                                     Сайт
                                 </div>
@@ -169,7 +176,10 @@
                                     {{ contragent.website }}
                                 </a>
                             </div>
-                            <div class="contragent__info-param m--inline">
+                            <div 
+                                v-if="contragent.contact_phone"
+                                class="contragent__info-param m--inline"
+                            >
                                 <div class="contragent__info-param-name">
                                     Контактный телефон
                                 </div>
@@ -181,7 +191,10 @@
                                     {{ contragent.contact_phone }}
                                 </a>
                             </div>
-                            <div class="contragent__info-param m--inline">
+                            <div 
+                                v-if="contragent.contact_email"
+                                class="contragent__info-param m--inline"
+                            >
                                 <div class="contragent__info-param-name">
                                     Контактный email
                                 </div>
@@ -307,23 +320,25 @@
         beforeDestroy() {
         },
         created() {
-            this.showLoaderSending = true;
-            api.getOrganization(this.id).then(res => {
-                this.contragent = res;
-                this.$helpers.setDocumentTitle(this.contragent);
-                this.$helpers.setDocumentMeta(this.contragent);
-                this.showLoaderSending = false;
-            }).catch(err => {
-                console.error(err);
-                this.showLoaderSending = false;
-            });
-
+            this.getOrganization();
             this.getCreatedTenders();
             this.getParticipationTenders();
             this.getMembers();
             this.getNoun(4, "тендров", "тендер", "тендера", "тендеров");
         },
         methods: {
+            getOrganization() {
+                this.showLoaderSending = true;
+                api.getOrganization(this.id).then(res => {
+                    this.contragent = res;
+                    this.$helpers.setDocumentTitle(this.contragent);
+                    this.$helpers.setDocumentMeta(this.contragent);
+                    this.showLoaderSending = false;
+                }).catch(err => {
+                    console.error(err);
+                    this.showLoaderSending = false;
+                });
+            },
             getMembers() {
                 if (this.user && this.user.id) {
                     api.getOrganizationMembers(this.id).then(res => {

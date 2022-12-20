@@ -199,6 +199,7 @@
                             {
                                 $formkit: "checkbox",
                                 label: "Производитель",
+                                name: "manufacturer",
                                 disabled: this.formData.created ? false : true,
                             },{
                                 $formkit: "checkbox",

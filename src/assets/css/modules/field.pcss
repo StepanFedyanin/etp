@@ -27,6 +27,11 @@
         align-items: center;
     }
 
+    &&.m--left {
+        margin-top: -24px;
+        display: block;
+    }
+
     &&.m--hidden {
         display: none;
     }
@@ -62,6 +67,13 @@
         }
     }
 
+    &&.m--left &__inner {
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        margin-top: 0;
+    }
+
     &__label {
         display: block;
         margin: 0 0 8px 8px;
@@ -71,11 +83,13 @@
     }
 
     &&.m--offset &__input,
+    &&.m--left &__input,
     &&.m--single-checkbox &__input {
         margin-top: 0;
     }
 
     &&.m--offset &__label,
+    &&.m--left &__label,
     &&.m--single-checkbox &__label {
         margin-bottom: 0;
     }

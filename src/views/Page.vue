@@ -10,23 +10,27 @@
         </div>
 
         <div class="container m--1460 page">
-            <div class="page__content text">
-                <template
-                    v-if="showLoaderSending"
-                >
-                    <div class="page__loader loader">
-                        <div class="spinner" /> Загрузка данных
-                    </div>
-                </template>
-                <template
-                    v-else-if="page"
-                >
+            <template
+                v-if="showLoaderSending"
+            >
+                <div class="page__loader loader">
+                    <div class="spinner" /> Загрузка данных
+                </div>
+            </template>
+            <template
+                v-else-if="page"
+            >
+                <div class="page__content text">
                     <h1>{{ page.page_name }}</h1>
                     <div
                         v-html="page.content"
                     />
-                </template>
-            </div>
+                </div>
+                <div 
+                    class="page__code"
+                    v-html="page.additional_text"
+                />
+            </template>
         </div>
     </div>
 </template>
