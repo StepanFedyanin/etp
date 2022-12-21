@@ -270,7 +270,7 @@
                 </div>
 
                 <template
-                    v-if="contragent.neighbouring_organizations.length"
+                    v-if="contragent.neighbouring_organizations && contragent.neighbouring_organizations.length"
                 >
                     <div class="contragent__subtitle h2">
                         Другие организации
@@ -330,6 +330,18 @@
                 return this.$store.state.user;
             },
         },
+        watch: {
+            'id': {
+                immediate: true,
+                handler() {
+                    this.getOrganization();
+                    this.getCreatedTenders();
+                    this.getParticipationTenders();
+                    this.getMembers();
+                    this.getNoun(4, "тендров", "тендер", "тендера", "тендеров");
+                },
+            }
+        },
         data() {
             return {
                 contragent: {},
@@ -353,11 +365,6 @@
         beforeDestroy() {
         },
         created() {
-            this.getOrganization();
-            this.getCreatedTenders();
-            this.getParticipationTenders();
-            this.getMembers();
-            this.getNoun(4, "тендров", "тендер", "тендера", "тендеров");
         },
         methods: {
             getOrganization() {
