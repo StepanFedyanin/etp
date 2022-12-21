@@ -268,6 +268,39 @@
                         показать еще
                     </button>
                 </div>
+
+                <template
+                    v-if="contragent.neighbouring_organizations.length"
+                >
+                    <div class="contragent__subtitle h2">
+                        Другие организации
+                    </div>
+                    <div class="contragent__siblings">
+                        <router-link
+                            v-for="item in contragent.neighbouring_organizations"
+                            :key="`contragent-${item.id}`"
+                            :to="{ name: 'contragent', params: { id: item.id } }"
+                            class="contragent__siblings-item"
+                        >
+                            <div 
+                                class="contragent__siblings-item-logo"
+                                :class="item.logo ? '' : 'm--no-logo'"
+                            >
+                                <img 
+                                    v-if="item.logo"
+                                    :src="item.logo" 
+                                    :alt="item.name"
+                                />
+                            </div>
+                            <div class="contragent__siblings-item-name">
+                                {{ item.name }}    
+                            </div>
+                            <div class="contragent__siblings-item-city">
+                                {{ item.city }}    
+                            </div>
+                        </router-link>
+                    </div>
+                </template>                
             </template>
         </div>
     </div>
