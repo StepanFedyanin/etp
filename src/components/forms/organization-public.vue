@@ -38,6 +38,60 @@
                 </button>
             </div> 
         </FormKit>
+        <div class="organization__form form__public">
+            <div class="organization__form-logo">
+                <div class="field">
+                    <div class="field__inner">
+                        <label class="field__label" for="logo">Логотип</label>
+                        <div class="field__input m--hidden">
+                            <input
+                                ref="logoInput"
+                                accept=".jpg,.png,.svg" 
+                                class="input" 
+                                type="file" 
+                                name="logo" 
+                                id="logo"
+                            >
+                        </div>
+                    </div>
+                    <div 
+                        class="form__submit edit__form-submit m--start" 
+                    >
+                        <button
+                            :disabled="loading"
+                            class="button button-outline-green button-width-auto"
+                            @click.prevent="onClickUploadLogo"
+                        >
+                            Загрузить новый
+                        </button>
+                        <button
+                            v-if="organization.logo"
+                            :disabled="loading"
+                            class="button button-outline-red button-width-auto"
+                            @click.prevent="onClickDeleteLogo"
+                        >
+                            Удалить
+                        </button>
+                    </div>
+                    <div 
+                        v-if="organization.logo"
+                        class="field__text m--color-green"
+                    >
+                        Загружен файл: {{ organization.logo.split('/').at(-1) }}
+                    </div>
+                    <div class="field__text">
+                        Рекомендуемый размер: 600х600px. jpg, png, svg
+                    </div>
+                </div>
+                <div class="organization__form-logo-pic">
+                    <img
+                        v-if="organization.logo"
+                        :src="organization.logo" 
+                        alt="" 
+                    />
+                </div>
+            </div>
+        </div>
     </div>
 </template>
 <script>
@@ -45,10 +99,12 @@
     export default {
         name: 'OrganizationEdit',
         props: {
+            /*
             loading: {
                 type: Boolean,
                 default() { return false; }
             },
+            */
             readonly: {
                 type: Boolean,
                 default() { return false; }
@@ -87,6 +143,7 @@
                         disabled: false,
                         label: 'Совпадает с юридическим',
                         outerClass: 'm--left'
+                    /*
                     }, {
                         $formkit: 'file',
                         name: 'logo',
@@ -96,6 +153,7 @@
                         // placeholder: 'https://example.ru',
                         // outerClass: 'field--required',
                         // maska: { mask: ['########', '##########']},
+                    */
                     }, {
                         $formkit: 'text',
                         name: 'website',
@@ -156,6 +214,7 @@
                         ],
                     }
                 ],
+                loading: false
             };
         },
         watch: {
@@ -174,6 +233,48 @@
             }
         },
         methods: {
+            onClickUploadLogo() {
+                let logoInput = this.$refs.logoInput;
+                let click = new MouseEvent('click');
+
+                logoInput.onchange = this.uploaLogoComplete;
+                logoInput.dispatchEvent(click);
+            },
+            onClickDeleteLogo() {
+                console.log('onClickDeleteLogo');
+                const data = new FormData();
+                data.append('logo', '');
+                this.loading = true;
+                api.updateOrganization(this.organization.id, data).then(res => {
+                    // this.showLoaderSending = false;
+                    // this.$router.go(-1);
+                    this.$emit('getMyProfile');
+                    this.loading = false;
+                }).catch(err => {
+                    this.loading = false;
+                    this.$store.dispatch('showError', err);
+                    console.error(err);
+                });
+            },
+            uploaLogoComplete(event) {
+                console.log(event.target);
+                let file = event.target.files ? event.target.files[0] : null
+                if (file) {
+                    const data = new FormData();
+                    data.append('logo', file);
+                    this.loading = true;
+                    api.updateOrganization(this.organization.id, data).then(res => {
+                        // this.showLoaderSending = false;
+                        // this.$router.go(-1);
+                        this.$emit('getMyProfile');
+                        this.loading = false;
+                    }).catch(err => {
+                        this.loading = false;
+                        this.$store.dispatch('showError', err);
+                        console.error(err);
+                    });
+                }
+            },
             onClickCancel() {
                 this.$router.go(-1);
             },
