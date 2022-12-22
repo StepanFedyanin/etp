@@ -121,10 +121,14 @@
                                     </div>
                                 </div>
                             </div>
-                            <div class="contragent__info-logo">
+                            <div 
+                                class="contragent__info-logo"
+                                :class="contragent.logo ? '' : 'm--no-logo'"
+                            >
                                 <img 
+                                    v-if="contragent.logo"
                                     :src="contragent.logo"
-                                    alt=""
+                                    :alt="contragent.name"
                                 >
                             </div>
                         </div>
