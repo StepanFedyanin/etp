@@ -9,8 +9,8 @@
             data-loading="loading"
             form-class="$reset organization__form form__public"
             :actions="false"
-            :disabled="loading"
-            :loading="loading ? true : undefined"
+            :disabled="loading || busyForm"
+            :loading="loading || busyForm ? true : undefined"
             @submit="updateOrganization"
         >
             <div class="form__block">
@@ -23,15 +23,16 @@
                 data-type="submit"
             >
                 <button
-                    :disabled="loading"
+                    type="reset"
+                    :disabled="loading || busyForm"
                     class="button button-red"
-                    @click="onClickCancel"
+                    @click.prevent="onClickCancel"
                 >
                     Отменить
                 </button>
                 <button
                     type="submit"
-                    :disabled="loading"
+                    :disabled="loading || busyForm"
                     class="button button-green"
                 >
                     Сохранить
@@ -58,7 +59,7 @@
                         class="form__submit edit__form-submit m--start" 
                     >
                         <button
-                            :disabled="loading"
+                            :disabled="loading || busyForm"
                             class="button button-outline-green button-width-auto"
                             @click.prevent="onClickUploadLogo"
                         >
@@ -66,7 +67,7 @@
                         </button>
                         <button
                             v-if="organization.logo"
-                            :disabled="loading"
+                            :disabled="loading || busyForm"
                             class="button button-outline-red button-width-auto"
                             @click.prevent="onClickDeleteLogo"
                         >
@@ -99,12 +100,10 @@
     export default {
         name: 'OrganizationEdit',
         props: {
-            /*
             loading: {
                 type: Boolean,
                 default() { return false; }
             },
-            */
             readonly: {
                 type: Boolean,
                 default() { return false; }
@@ -162,12 +161,13 @@
                         // outerClass: 'field--required',
                         // maska: { mask: ['########', '##########']},
                     }, {
-                        $formkit: 'text',
+                        $formkit: 'maska',
                         name: 'contact_phone',
                         label: 'Контактный телефон организации',
                         placeholder: '+7 (999) 999 99 99',
                         // outerClass: 'field--required',
                         // maska: { mask: ['########', '##########']},
+                        maska: { mask: 'P*', tokens: { 'P': { pattern: /\+|-|\(|\)|[0-9]/ }}}
                     }, {
                         $formkit: 'text',
                         name: 'contact_email',
@@ -214,20 +214,37 @@
                         ],
                     }
                 ],
-                loading: false
+                busyForm: false
             };
         },
         watch: {
             'formValues.address_matches': {
                 handler() {
+                    console.log('BLA');
                     this.addressMatches = this.formValues.address_matches;
                     const node = this.$formkit.get('address');
-                    node.props.disabled = this.addressMatches;
-                    this.formValues.actual_address = this.formValues.legal_address;
+                    if (node) {
+                        node.props.disabled = this.addressMatches;
+                    }
+                    if (this.addressMatches) {
+                        this.formValues.actual_address = this.formValues.legal_address;
+                    }
                 },
+            },
+            'loading': {
+                handler() {
+                    console.log('BLA 2');
+                    if (!this.loading) {
+                        this.formValues = Object.assign({}, this.organization);
+                        if (this.formValues.actual_address === this.formValues.legal_address) {
+                            this.formValues.address_matches = true;
+                        }
+                    }
+                }
             }
         },
         mounted() {
+            console.log('MOUNTED');
             if (this.formValues.actual_address === this.formValues.legal_address) {
                 this.formValues.address_matches = true;
             }
@@ -244,14 +261,12 @@
                 console.log('onClickDeleteLogo');
                 const data = new FormData();
                 data.append('logo', '');
-                this.loading = true;
+                this.busyForm = true;
                 api.updateOrganization(this.organization.id, data).then(res => {
-                    // this.showLoaderSending = false;
-                    // this.$router.go(-1);
                     this.$emit('getMyProfile');
-                    this.loading = false;
+                    this.busyForm = false;
                 }).catch(err => {
-                    this.loading = false;
+                    this.busyForm = false;
                     this.$store.dispatch('showError', err);
                     console.error(err);
                 });
@@ -262,21 +277,19 @@
                 if (file) {
                     const data = new FormData();
                     data.append('logo', file);
-                    this.loading = true;
+                    this.busyForm = true;
                     api.updateOrganization(this.organization.id, data).then(res => {
-                        // this.showLoaderSending = false;
-                        // this.$router.go(-1);
                         this.$emit('getMyProfile');
-                        this.loading = false;
+                        this.busyForm = false;
                     }).catch(err => {
-                        this.loading = false;
+                        this.busyForm = false;
                         this.$store.dispatch('showError', err);
                         console.error(err);
                     });
                 }
             },
             onClickCancel() {
-                this.$router.go(-1);
+                this.$emit('getMyProfile');
             },
             updateOrganization(formData, node) {
                 console.log(formData);
@@ -287,11 +300,7 @@
                 //formData.append("publication", true)
                 this.schema.forEach(item => {
                     if (formData[item.name] && formData[item.name].length) {
-                        if (item.name === 'logo') {
-                            data.append(item.name, formData[item.name][0].file);
-                        } else {
-                            data.append(item.name, formData[item.name]);
-                        }
+                        data.append(item.name, formData[item.name]);
                     }
                     if (item.children && Array.isArray(item.children)) {
                         item.children.forEach(sitem => {
@@ -301,15 +310,16 @@
                     }
                 });
                 console.log(data);
+                this.busyForm = true;
                 api.updateOrganization(formData.id, data).then(res => {
-                    // this.showLoaderSending = false;
-                    // this.$router.go(-1);
                     this.$emit('getMyProfile');
+                    this.busyForm = false;
                 }).catch(err => {
+                    console.log(err.response);
                     node.setErrors(
-                        [err.detail],
+                        err.response.data,
                     );
-                    // this.showLoaderSending = false;
+                    this.busyForm = false;
                     this.$store.dispatch('showError', err);
                     console.error(err);
                 });

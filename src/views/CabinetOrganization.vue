@@ -13,7 +13,7 @@
                         <button 
                             v-for="item in tabsItems"
                             :key="`tab-${item.name}`"
-                            class="button organization__tabs-item"
+                            class="button organization__tabs-item button-width-auto"
                             :class="currentTabsItem === item.name && 'is-active'"
                             @click.prevent="changeTab(item.name)"
                         >
@@ -54,6 +54,7 @@
                     </div>
                     <OrganizationPublic
                         v-if="organization"
+                        :loading="loading"
                         :organization="organization"
                         @getMyProfile="getMyProfile"
                     />
@@ -203,6 +204,7 @@
                     name: 'persons'
                 }],
                 currentTabsItem: 'public',
+                loading: false
             }
         },
         created() {
@@ -218,12 +220,15 @@
         },
         methods: {
             getMyProfile(){
+                this.loading = true;
                 api.getMyProfile().then(res => {
                     this.profile = res;
                     this.organization = res.organization;
                     this.getCreatedTenders();
                     this.getParticipationTenders();
+                    this.loading = false;
                 }).catch(err => {
+                    this.loading = false;
                     console.error(err);
                 });
             },
