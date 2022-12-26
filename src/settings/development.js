@@ -9,6 +9,7 @@ const cache = {
 };
 
 const serviceUrl = {
+    selfUrl: '//etptugan.ru',
     url: '//tugan-app.flexidev.ru',
     localPath: '//localhost',
     protocol: 'http',
@@ -21,6 +22,8 @@ let urlPath = `${serviceUrl.url}${serviceUrl.api}`;
 if (serviceUrl.onLocal || window.location.hostname === 'localhost') {
     urlPath = `${serviceUrl.localPath}:${serviceUrl.port}${serviceUrl.api}`;
 }
+
+let selfPath = `https:${serviceUrl.selfUrl}`;
 
 /*
 const serviceUrl = {
@@ -268,6 +271,7 @@ export {
     geo,
     logger,
     urlPath,
+    selfPath,
     chat,
     push,
     websocket,

@@ -48,7 +48,7 @@
                                 target="_blank"
                                 @click="navigate"
                             >
-                                {{ urlPath }}{{ href }}
+                                {{ selfPath }}{{ href }}
                             </a>
                         </router-link>
                     </div>
@@ -153,7 +153,7 @@
 </template>
 
 <script>
-    import { urlPath } from '@/settings'
+    import { selfPath } from '@/settings'
     import { user as api } from "@/services";
     //import blockOrganization from '@/components/block-organization.vue';
     import blockPersons from '@/components/block-persons.vue';
@@ -171,7 +171,7 @@
         },
         data() {
             return {
-                urlPath,
+                selfPath,
                 profile: undefined,
                 contragents: [],
                 contragent:{},
@@ -190,12 +190,14 @@
                 tabsItems: [{
                     label: 'Публичный профиль',
                     name: 'public'
+                /*
                 }, {
                     label: 'Виды деятельности',
                     name: 'activities'
                 }, {
                     label: 'Товары',
                     name: 'goods'
+                */
                 }, {
                     label: 'Реквизиты',
                     name: 'props'

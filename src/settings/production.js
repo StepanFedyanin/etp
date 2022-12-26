@@ -14,6 +14,7 @@ const serviceUrl = {
 }
 
 let urlPath = `${serviceUrl.url}`;
+let selfPath = `https:${serviceUrl.selfUrl}`;
 
 const tender = {
     url: `${urlPath}/tender`,
@@ -244,6 +245,7 @@ export {
     geo,
     logger,
     urlPath,
+    selfPath,
     chat,
     push,
     websocket,
