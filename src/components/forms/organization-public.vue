@@ -165,6 +165,7 @@
                         name: 'contact_phone',
                         label: 'Контактный телефон организации',
                         placeholder: '+7 (999) 999 99 99',
+                        disabled: this.busyForm,
                         // outerClass: 'field--required',
                         // maska: { mask: ['########', '##########']},
                         maska: { mask: 'P*', tokens: { 'P': { pattern: /\+|-|\(|\)|[0-9]/ }}}
@@ -220,7 +221,6 @@
         watch: {
             'formValues.address_matches': {
                 handler() {
-                    console.log('BLA');
                     this.addressMatches = this.formValues.address_matches;
                     const node = this.$formkit.get('address');
                     if (node) {
@@ -233,7 +233,6 @@
             },
             'loading': {
                 handler() {
-                    console.log('BLA 2');
                     if (!this.loading) {
                         this.formValues = Object.assign({}, this.organization);
                         if (this.formValues.actual_address === this.formValues.legal_address) {
@@ -299,7 +298,8 @@
                 //formData.append("description", this.tenderForm[`description_${file.id}`] || file.name)
                 //formData.append("publication", true)
                 this.schema.forEach(item => {
-                    if (formData[item.name] && formData[item.name].length) {
+                    //if (formData[item.name] && formData[item.name].length) {
+                    if (item.name) {
                         data.append(item.name, formData[item.name]);
                     }
                     if (item.children && Array.isArray(item.children)) {
