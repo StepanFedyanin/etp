@@ -232,47 +232,54 @@
                         />
                     </div>
                 </template>
-                <div class="contragent__subtitle h2">
-                    Заказчик <span class="m--color-green"> {{ createdTenders.count }}  {{ getNoun(createdTenders.count) }} </span>
-                </div>
-                <div class="contragent__tenders tenders tenders__created">
-                    <blockTenderMini
-                        v-for="(tender, index) in createdTenders.results"
-                        :key="`tender-${index}`"
-                        :tender="tender"
-                        :whole="true"
-                    />
-                    <button 
-                        v-if="createdTenders.count > countCreatedTenders"
-                        class="button button-outline-green tenders__more"
-                        @click="getCreatedTenders()"
-                    >
-                        показать еще
-                    </button>
-                </div>
-                <div class="contragent__subtitle h2">
-                    Участник <span class="m--color-green">{{ participationTenders.count }} {{ getNoun(participationTenders.count) }} </span>
-                </div>
-                <div 
-                    v-if="participationTenders && participationTenders.count"
-                    class="contragent__tenders tenders participation__created"
+                <template
+                    v-if="createdTenders.count"
                 >
-                    <blockTenderMini
-                        v-for="(tender, index) in participationTenders.results"
-                        :key="`tender-${index}`"
-                        :tender="tender"
-                        :whole="true"
-                    />
-
-                    <button 
-                        v-if="participationTenders.count > countParticipationTenders"
-                        class="button button-outline-green tenders__more"
-                        @click="getParticipationTenders()"
+                    <div class="contragent__subtitle h2">
+                        Заказчик <span class="m--color-green">{{ $helpers.stringForNumber(createdTenders.count, ['тендера', 'тендеров', 'тендеров']) }}</span>
+                    </div>
+                    <div class="contragent__tenders tenders tenders__created">
+                        <blockTenderMini
+                            v-for="(tender, index) in createdTenders.results"
+                            :key="`tender-${index}`"
+                            :tender="tender"
+                            :whole="true"
+                        />
+                        <button 
+                            v-if="createdTenders.count > countCreatedTenders"
+                            class="button button-outline-green tenders__more"
+                            @click="getCreatedTenders()"
+                        >
+                            показать еще
+                        </button>
+                    </div>
+                </template>
+                <template
+                    v-if="participationTenders.count"
+                >
+                    <div class="contragent__subtitle h2">
+                        Участник <span class="m--color-green">{{ $helpers.stringForNumber(participationTenders.count, ['тендера', 'тендеров', 'тендеров']) }}</span>
+                    </div>
+                    <div 
+                        v-if="participationTenders && participationTenders.count"
+                        class="contragent__tenders tenders participation__created"
                     >
-                        показать еще
-                    </button>
-                </div>
+                        <blockTenderMini
+                            v-for="(tender, index) in participationTenders.results"
+                            :key="`tender-${index}`"
+                            :tender="tender"
+                            :whole="true"
+                        />
 
+                        <button 
+                            v-if="participationTenders.count > countParticipationTenders"
+                            class="button button-outline-green tenders__more"
+                            @click="getParticipationTenders()"
+                        >
+                            показать еще
+                        </button>
+                    </div>
+                </template>
                 <template
                     v-if="contragent.neighbouring_organizations && contragent.neighbouring_organizations.length"
                 >
@@ -342,7 +349,6 @@
                     this.getCreatedTenders();
                     this.getParticipationTenders();
                     this.getMembers();
-                    this.getNoun(4, "тендров", "тендер", "тендера", "тендеров");
                 },
             }
         },
@@ -415,18 +421,6 @@
                     this.countCreatedTenders = this.createdTenders.results.length;
                 });
             },
-            getNoun(number) {
-                let n = Math.abs(number);
-                n %= 100;
-                if (n === 0 || n >= 2 && n <= 20) {
-                    return "тендеров";
-                }
-                n %= 10;
-                if (n === 1) {
-                    return "тендера";
-                }
-                return "тендеров";
-            }
         }
     };
 </script>

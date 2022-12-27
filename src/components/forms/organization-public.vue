@@ -151,7 +151,6 @@
                         help: 'Рекомендуемый размер: 600х600px. jpg, png, svg',
                         // placeholder: 'https://example.ru',
                         // outerClass: 'field--required',
-                        // maska: { mask: ['########', '##########']},
                     */
                     }, {
                         $formkit: 'text',
@@ -159,15 +158,13 @@
                         label: 'Сайт',
                         placeholder: 'https://example.ru',
                         // outerClass: 'field--required',
-                        // maska: { mask: ['########', '##########']},
                     }, {
                         $formkit: 'maska',
                         name: 'contact_phone',
                         label: 'Контактный телефон организации',
                         placeholder: '+7 (999) 999 99 99',
-                        disabled: this.busyForm,
+                        // disabled: this.busyForm,
                         // outerClass: 'field--required',
-                        // maska: { mask: ['########', '##########']},
                         maska: { mask: 'P*', tokens: { 'P': { pattern: /\+|-|\(|\)|[0-9]/ }}}
                     }, {
                         $formkit: 'text',
@@ -175,14 +172,12 @@
                         label: 'Контактный email организации',
                         placeholder: 'mail@example.ru',
                         // outerClass: 'field--required',
-                        // maska: { mask: ['########', '##########']},
                     }, {
                         $formkit: 'textarea',
                         name: 'about_company',
                         label: 'О компании',
                         placeholder: '',
                         // outerClass: 'field--required',
-                        // maska: { mask: ['########', '##########']},
                     }, {         
                         $el: 'div',
                         children: 'Статус предприятия',
