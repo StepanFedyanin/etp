@@ -90,14 +90,107 @@
 </template>
 
 <script>
-    import { sidebarMenu } from '@/settings';
     import { push as Push } from '@/services';
 
     export default {
         name: 'Sidebar',
         data() {
             return {
-                menu: sidebarMenu,
+                menu: [{
+                    name: 'tenders',
+                    role: 'all',
+                    title: 'Поиск тендеров',
+                    icon: 'search'
+                }, {
+                    name: 'customer-current',
+                    role: 'all',
+                    title: 'Я - заказчик',
+                    icon: 'customer',
+                    items: [
+                        {
+                            name: 'tender-start',
+                            role: 'all',
+                            title: 'Объявить тендер',
+                            icon: 'loudspeaker'
+                        }, {
+                            name: 'customer-drafts',
+                            role: 'all',
+                            title: 'Черновики',
+                        }, {
+                            name: 'customer-current',
+                            role: 'all',
+                            title: 'Текущие торги',
+                        }, {
+                            name: 'private-tender',
+                            role: 'all',
+                            title: 'Закрытые торги',
+                        }, {
+                            name: 'customer-closed',
+                            role: 'all',
+                            title: 'Завершенные',
+                        }
+                    ]
+                }, {
+                    name: 'participant-current',
+                    role: 'all',
+                    title: 'Я - поставщик',
+                    icon: 'provider',
+                    items: [
+                        {
+                            name: 'participant-current',
+                            role: 'all',
+                            title: 'Текущие торги',
+                        }, {
+                            name: 'participant-closed',
+                            role: 'all',
+                            title: 'Завершенные',
+                        }, {
+                            name: 'participant-invites',
+                            role: 'all',
+                            title: 'Приглашения',
+                        }
+                    ]
+                }, {
+                    name: 'contragents',
+                    role: 'all',
+                    title: 'Контрагенты',
+                    icon: 'peoples'
+                }, {
+                    name: 'favorites-contragents',
+                    role: 'all',
+                    title: 'Избранное',
+                    icon: 'favorites',
+                    items: [
+                        {
+                            name: 'favorites-contragents',
+                            role: 'all',
+                            title: 'Контрагенты',
+                        }, {
+                            name: 'favorites-tenders',
+                            role: 'all',
+                            title: 'Тендеры',
+                        }
+                    ]
+                }, {
+                    name: 'devider',
+                }, {
+                    name: 'chat',
+                    role: 'all',
+                    title: 'Чат',
+                    icon: 'loudspeaker'
+                }, {
+                    name: 'notifications',
+                    role: 'all',
+                    title: 'Уведомления',
+                    icon: 'notifications'
+                },
+                // {
+                //     name: 'help',
+                //     role: 'all',
+                //     title: 'Помощь',
+                //     icon: 'info'
+                // }
+                ],
                 menuOpenedItems: {},
                 push: undefined,
                 roomUnreadCount: 0,

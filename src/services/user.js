@@ -140,6 +140,14 @@ export default class extends REST {
         });
     }
 
+    static getFavoritesOrganizations(params) {
+        return this._get(`organizations/get_favorites`, params, params).then((data) => {
+            return data;
+        }).catch((error) => {
+            throw new RESTError(error, 'Не удалось получить избранные организации');
+        });
+    }
+
     static getOrganization(id, params) {
         return this._get(`organizations/${id}`, {}, params).then((data) => {
             return data;
@@ -147,6 +155,18 @@ export default class extends REST {
             throw new RESTError(error, 'Не удалось получить организацию');
         });
     }
+
+    static switchFavoriteOrganization(id) {
+        let params = {
+            organization_id: id
+        }
+        return this._post(`organizations/set_unset_favorite`, {}, params).then((data) => {
+            return data;
+        }).catch((error) => {
+            throw new RESTError(error, 'Ошибка при изменении статуса избранной организации');
+        });
+    }
+
     // static getMyOrganization(){
     //     return this._get('organization', {}).then((data) => {
     //         return data;

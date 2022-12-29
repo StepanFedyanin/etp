@@ -2,9 +2,14 @@
     &__header,
     &__item {
         display: grid;
-        grid-template-columns: 20% auto 140px 140px;
+        grid-template-columns: 35% auto 140px 140px;
         grid-template-areas: 'A B C D';
         gap: 15px;
+
+        &.m--user {
+            grid-template-columns: 35% auto 140px 140px 32px;
+            grid-template-areas: 'A B C D E';
+        }
     }
 
     &__header {
@@ -78,8 +83,8 @@
             display: flex;
             align-items: center;
             &.m--name {
-                flex-direction: column;
-                align-items: flex-start;
+                flex-direction: row;
+                align-items: center;
             }
             &.m--customer,
             &.m--member {
@@ -99,6 +104,61 @@
                 line-height: 15px;
                 color: $color-gray-T3;
                 padding-top: 4px;
+            }
+            &.m--favorite {
+                align-items: center;
+            }
+        }
+
+        &-logo {
+            position: relative;
+            width: 60px;
+            height: 60px;
+            margin-right: 24px;
+
+            &.m--no-logo:before {
+                content: '';
+                position: absolute;
+                top: 0;
+                left: 0;
+                right: 0;
+                bottom: 0;
+                background: url('./assets/img/no-logo.png') 50% 50% no-repeat;
+                background-size: 50px auto;
+            }
+
+            img {
+                position: relative;
+                display: block;
+                width: 100%;
+                height: 100%;
+                max-width: 100%;
+                max-height: 100%;
+                object-fit: contain;
+            }
+
+        }
+        &-info {
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start;
+        }
+
+        &-favorite {
+            position: relative;
+            width: 32px;
+            height: 32px;
+            background-image: svg-load('./assets/img/icons/icon-star.svg', fill=$color-gray-T4);
+            background-size: contain;
+            cursor: pointer;
+
+            &.m--favorite {
+                background-image: svg-load('./assets/img/icons/icon-star.svg', fill=$color-green);
+            }
+
+            @mixin responsive-le-xl {
+                width: 24px;
+                height: 24px;
             }
         }
     }

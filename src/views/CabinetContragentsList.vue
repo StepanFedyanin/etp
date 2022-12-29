@@ -14,60 +14,10 @@
             <template
                 v-else-if="contragents && contragents.length"
             >
+                <BlockContragents 
+                    :contragents="contragents"
+                />
                 <div class="contragents__block">
-                    <div class="contragents__header">
-                        <div class="contragents__header-cell m--name">
-                            Название
-                        </div>
-                        <div class="contragents__header-cell m--activity">
-                            Основной вид деятельности
-                        </div>
-                        <div class="contragents__header-cell m--customer">
-                            Заказчик
-                        </div>
-                        <div class="contragents__header-cell m--member">
-                            Участник
-                        </div>
-                    </div>
-                    <div class="contragents__list">
-                        <div class="contragents__list-inner">
-                            <div 
-                                v-for="contragent in contragents"
-                                :key="`customer-${contragent.id}`"
-                                class="contragents__item"
-                                @click="onClickContragent(contragent.id)"
-                            >
-                                <div class="contragents__item-cell m--name">
-                                    {{ contragent.name }}
-                                    <div class="m--name-city">
-                                        {{ contragent.city }}
-                                    </div>
-                                </div>
-                                <div class="contragents__item-cell m--activity">
-                                    {{ contragent.principal_activity }}
-                                </div>
-                                <div class="contragents__item-cell m--customer">
-                                    <svg class="svg-icon svg-icon__hammer">
-                                        <use xlink:href="../assets/img/icons/icons.svg#hammer" />
-                                    </svg>
-                                    <span>{{ contragent.created_tenders_count }}</span>
-                                </div>
-                                <div class="contragents__item-cell m--member">
-                                    <svg class="svg-icon svg-icon__briefcase">
-                                        <use xlink:href="../assets/img/icons/icons.svg#briefcase" />
-                                    </svg>
-                                    <span>{{ contragent.participation_tenders_count }}</span>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <!-- <button 
-                        class="button"
-                        @click="getOrganizations()"
-                    >
-                        Показать еще
-                    </button> -->
-
                     <div
                         v-if="contragents && contragents.length"
                         class="tenders__pagination"
@@ -77,11 +27,11 @@
                                 Всего: <span>{{ count }}</span>
                             </div>
                         </div>
-                        <div class="tenders__pagination-left">
+                        <!--div class="tenders__pagination-left">
                             <div class="tenders__pagination-count">
                                 Отобрано: <span>{{ contragents.length }}</span>
                             </div>
-                        </div>
+                        </div-->
                         <div class="tenders__pagination-right">
                             <div class="tenders__pagination-perpage">
                                 <span>Выводить на страницу :</span>
@@ -130,10 +80,12 @@
 
 <script>
     import { user as api } from "@/services";
+    import BlockContragents from '@/components/block-contragents.vue';
     import Pagination from '@/components/pagination.vue';
 
     export default {
         components: {
+            BlockContragents,
             Pagination,
         },
         props: {
@@ -181,9 +133,6 @@
             this.getOrganizations();
         },
         methods: {
-            onClickContragent(id) {
-                this.$router.push({ name: 'contragent', params: { id: id } });
-            },
             getOrganizations(){
                 let limit = Number(this.limit)
                 let params = {
@@ -200,7 +149,6 @@
                     this.showLoaderSending = false;
                 })
             }
-
         }
     };
 </script>

@@ -21,7 +21,9 @@ import cabinetCustomerDrafts from '@/views/CabinetCustomerDrafts';
 import cabinetParticipant from '@/views/CabinetParticipant';
 import cabinetParticipantInvites from '@/views/CabinetParticipantInvites';
 import cabinetParticipantTendersList from '@/views/CabinetParticipantTendersList';
-import cabinetTendersFavorites from '@/views/CabinetTendersFavorites';
+import cabinetFavorites from '@/views/CabinetFavorites';
+import cabinetFavoritesContragents from '@/views/CabinetFavoritesContragents';
+import cabinetFavoritesTenders from '@/views/CabinetFavoritesTenders';
 import cabinetProfile from '@/views/CabinetProfile';
 import cabinetProfileEdit from '@/views/CabinetProfileEdit';
 import cabinetProfilePassword from '@/views/CabinetProfilePassword';
@@ -361,7 +363,6 @@ const routes = [
             requiresAuth: true 
         },
         props: true,
-        
         children: [
             {
                 path: 'current',
@@ -404,33 +405,34 @@ const routes = [
     }, {
         path: '/favorites',
         name: 'favorites',
-        component: cabinetTendersFavorites,
-        meta: { title: 'Избранные тендеры', requiresAuth: true },
+        component: cabinetFavorites,
+        meta: { 
+            title: 'Избранные контрагенты', 
+            requiresAuth: true 
+        },
         props: true,
+        children: [
+            {
+                path: '/favorites/contragents',
+                name: 'favorites-contragents',
+                component: cabinetFavoritesContragents,
+                meta: { 
+                    title: 'Избранные контрагенты', 
+                    requiresAuth: true 
+                },
+                props: true
+            }, {
+                path: '/favorites/tenders',
+                name: 'favorites-tenders',
+                component: cabinetFavoritesTenders,
+                meta: { 
+                    title: 'Избранные тендеры', 
+                    requiresAuth: true 
+                },
+                props: true
+            }
+        ]
     }, {
-    //     path: '/cabinet/tender-start',
-    //     name: 'tender-start',
-    //     component: cabinetTenderStart,
-    //     meta: { 
-    //         title: 'Объявить тендер', 
-    //         breadcrumbs: ['cabinet'],
-    //         requiresAuth: true 
-    //     },
-    //     props: true,
-    //     children: [
-    //         {
-    //             path: '/cabinet/tender-start/:id',
-    //             name: 'tender-start-edit',
-    //             component: cabinetTenderStart,
-    //             meta: { 
-    //                 title: 'Объявить тендер', 
-    //                 breadcrumbs: ['cabinet'],
-    //                 requiresAuth: true 
-    //             },
-    //             props: true,
-    //         }
-    //     ]
-    // }, {
         path: '/contragents',
         component: cabinetContragents,
         props: true,
