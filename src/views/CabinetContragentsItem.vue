@@ -85,9 +85,15 @@
                         </template>
                     </div>
                     <div class="contragent__info-right">
+                        <div 
+                            class="contragent__info-favorite"
+                            :class="contragent.is_favorite && 'm--favorite'"
+                            @click.prevent="toggleFavorite()"
+                        >
+                            {{ contragent.is_favorite ? 'У вас в избранном' : 'Добавить в избранное' }}
+                        </div>
                         <div class="contragent__info-block">
                             <div class="contragent__info-params">
-                                <!--div class="contragent__info-favorite">У вас в избранном</div-->
                                 <div class="contragent__info-param m--inline">
                                     <div class="contragent__info-param-name">
                                         ИНН
@@ -421,6 +427,16 @@
                     this.countCreatedTenders = this.createdTenders.results.length;
                 });
             },
+            toggleFavorite() {
+                this.contragent.is_favorite = !this.contragent.is_favorite;
+                api.switchFavoriteOrganization(this.contragent.id).then(res => {
+                    console.log(res);
+                }).catch(err => {
+                    this.$store.dispatch('showError', err);
+                    console.error(err);
+                });
+            },
+
         }
     };
 </script>

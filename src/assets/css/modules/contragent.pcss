@@ -52,7 +52,27 @@
         }
 
         &-favorite {
+            position: relative;
+            padding-left: 32px;
             margin-bottom: 34px;
+            cursor: pointer;
+
+            &:before {
+                content: '';
+                position: absolute;
+                top: 50%;
+                margin-top: -12px;
+                left: 0;
+                width: 24px;
+                height: 24px;
+                background-image: svg-load('./assets/img/icons/icon-star.svg', fill=$color-gray-T4);
+                background-size: contain;
+                cursor: pointer;
+            }
+
+            &.m--favorite:before {
+                background-image: svg-load('./assets/img/icons/icon-star.svg', fill=$color-green);
+            }
         }
 
         &-principal {
