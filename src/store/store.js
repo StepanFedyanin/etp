@@ -61,7 +61,9 @@ export default createStore({
             context.commit('regData', data);
         },
         showError(context, error) {
-            context.commit('updateError', error);
+            if (error.response && error.response.status !== 401) {
+                context.commit('updateError', error);
+            }
         },
         hideError(context) {
             context.commit('updateError', null);

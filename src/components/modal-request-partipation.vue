@@ -154,14 +154,6 @@
                     data-type="submit"
                 >
                     <button
-                        type="reset"
-                        :disabled="showLoaderSending"
-                        class="button button-red"
-                        @click="$emit('hideModal', updateData)"
-                    >
-                        Отменить
-                    </button>
-                    <button
                         type="submit"
                         :disabled="showLoaderSending"
                         class="button button-green"
