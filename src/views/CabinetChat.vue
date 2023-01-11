@@ -151,7 +151,7 @@
                                     Выберите собеседника для общения.
                                 </div> -->
                                 <div class="chat__board-empty">
-                                    <div class="h1">
+                                    <div class="chat__board-title">
                                         Добро пожаловать в чат!
                                     </div>
                                     <p>

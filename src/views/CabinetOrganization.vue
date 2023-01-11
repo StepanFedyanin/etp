@@ -60,6 +60,14 @@
                     />
                 </div>
                 <div 
+                    v-if="currentTabsItem === 'goods'"
+                    class="organization__tab"
+                >
+                    <OrganizationGoods
+                        :organization="organization"
+                    />
+                </div>
+                <div 
                     v-if="currentTabsItem === 'props'"
                     class="organization__tab"
                 >
@@ -158,6 +166,7 @@
     //import blockOrganization from '@/components/block-organization.vue';
     import blockPersons from '@/components/block-persons.vue';
     import blockTenderMini from '@/components/block-tender-mini.vue';
+    import OrganizationGoods from '@/components/organization-goods.vue';
     import OrganizationPublic from '@/components/forms/organization-public.vue';
     import OrganizationProps from '@/components/forms/organization-props.vue';
 
@@ -166,6 +175,7 @@
             //blockOrganization,
             blockPersons,
             blockTenderMini,
+            OrganizationGoods,
             OrganizationPublic,
             OrganizationProps,
         },
