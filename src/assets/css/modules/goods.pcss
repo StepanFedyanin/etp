@@ -19,6 +19,7 @@
         flex-wrap: wrap;
         gap: 16px;
         padding: 24px 28px 8px;
+        margin-bottom: 24px;
         @mixin shadow-box;
     }
 
@@ -54,6 +55,7 @@
         &-photo {
             position: relative;
             display: block;
+            margin-bottom: 8px;
 
             &:before {
                 content: '';
@@ -129,9 +131,12 @@
     }
 
     &__pagination {
+        position: relative;
         display: flex;
         justify-content: space-between;
         align-items: center;
+        margin-bottom: 24px;
+        z-index: 2;
 
         @mixin responsive-le-s {
             /*flex-direction: column;*/

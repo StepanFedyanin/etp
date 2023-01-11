@@ -204,10 +204,10 @@
                 }, {
                     label: 'Виды деятельности',
                     name: 'activities'
+                */
                 }, {
                     label: 'Товары',
                     name: 'goods'
-                */
                 }, {
                     label: 'Реквизиты',
                     name: 'props'
