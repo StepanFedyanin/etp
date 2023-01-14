@@ -8,12 +8,17 @@
         </div>
         <div class="goods__block">
             <div class="goods__item">
-                <div class="goods__item-photo m--no-photo">
+                <router-link
+                    :to="{ name: 'product', params: { slug: 'test' } }"
+                    class="goods__item-photo m--no-photo"
+                >
                     <div class="goods__item-photo-inner">
                         
                     </div>
-                </div>
-                <div class="goods__item-info">
+                </router-link>
+                <div 
+                    class="goods__item-info"
+                >
                     <div class="goods__item-price">123 006 000 ₽</div>
                     <div class="goods__item-desc">Длинное название запчасти на автомобиль КамАЗ, УАЗ, ЗИЛ, Газель, удлинненное до немыслимых размеров</div>
                 </div>
@@ -248,19 +253,19 @@
                         name="limit"
                     >
                         <option
-                            value="10"
+                            value="18"
                             selected="selected"
                         >
-                            10 товаров
+                            18 товаров
                         </option>
-                        <option value="20">
-                            20 товаров
+                        <option value="36">
+                            36 товаров
                         </option>
-                        <option value="50">
-                            50 товаров
+                        <option value="54">
+                            54 товара
                         </option>
-                        <option value="100">
-                            100 товаров
+                        <option value="72">
+                            72 товара
                         </option>
                     </select>
                 </div>
@@ -273,17 +278,31 @@
                 />
             </div>
         </div>
-        <button class="button button-green">Добавить товар</button>
+        <button 
+            class="button button-green"
+            @click.prevent="onClickAddGood"
+        >
+            Добавить товар
+        </button>
+        <ModalAddGood
+            v-if="showAddGoodModal"
+            :tender="tender || {}"
+            :goodId="good.is"
+            :showModal="showAddGoodModal"
+            @hideModal="hideAddGoodModal"
+        />
     </div>
 </template>
 
 <script>
     import { urlPath } from '@/settings'
-    import { tender as tenderApi } from "@/services"
+    import { user as userApi, tender as tenderApi } from "@/services"
+    import ModalAddGood from '@/components/modal-add-good.vue';
     import Pagination from '@/components/pagination.vue';
 
     export default {
         components: {
+            ModalAddGood,
             Pagination,
         },
         props: {
@@ -291,15 +310,16 @@
                 type: String,
                 default() { return ''; }
             },
-            organozation: {
+            organization: {
                 type: Object,
                 default() { return {}; }
             },
         },
         data() {
             return {
-                limit: 10,
+                limit: 18,
                 goods: null,
+                showAddGoodModal: false,
                 showLoaderSending: false,
             }
         },
@@ -331,7 +351,32 @@
         methods: {
             getGoods() {
                 console.log('getGoods');
-            }
+                let limit = Number(this.limit)
+                let params = {
+                    limit,
+                    offset: this.offset
+                }
+                userApi.getOrganizationProducts(this.organization.id, params).then(tenders => {
+                    this.tenders = tenders
+                    this.showLoaderSending = false;
+                    console.log(tenders)
+                }).catch(err => {
+                    this.showLoaderSending = false;
+                    console.error(err)
+                })
+
+            },
+            onClickAddGood(good) {
+                this.good = good;
+                this.showAddGoodModal = true;
+            },
+            hideAddGoodModal(updateData) {
+                this.showAddGoodModal = false;
+                if (updateData) {
+                    this.getGoods();
+                    //this.$emit('getTenderData');
+                }
+            },
         },
     };
 </script>

@@ -13,51 +13,65 @@
         </button>
         <span class="modal__title">Добавить лот вручную</span>
         <div class="modal__content">
-            <FormKit
-                id="addLotForm"
-                v-model="addLotForm"
-                name="add-lot-form"
-                preserve
-                type="form"
-                data-loading="showLoaderSending"
-                form-class="$reset modal-form"
-                :disabled="showLoaderSending"
-                :loading="showLoaderSending ? true : undefined"
-                :actions="false"
-                @submit="submitAddLotForm"
+            <template
+                v-if="showLoaderSending"
             >
-                <div class="modal-form__block">
-                    <FormKitSchema :schema="addLotSchema" />
+                <div class="tenders__loader loader">
+                    <div class="spinner" /> Загрузка данных
                 </div>
-                <div class="modal-form__actions">
-                    <button
-                        type="button"
-                        class="button button-red"
-                        @click="$emit('hideModal')"
-                    >
-                        Отменить
-                    </button>
-                    <button
-                        type="submit"
-                        class="button button-green"
-                    >
-                        Сохранить
-                    </button>
-                </div>
-            </FormKit>
+            </template>
+            <template
+                v-else
+            >
+                <FormKit
+                    id="addLotForm"
+                    v-model="addLotForm"
+                    name="add-lot-form"
+                    preserve
+                    type="form"
+                    data-loading="showLoaderSending"
+                    form-class="$reset modal-form"
+                    :disabled="showLoaderSending"
+                    :loading="showLoaderSending ? true : undefined"
+                    :actions="false"
+                    @submit="submitAddLotForm"
+                >
+                    <div class="modal-form__block">
+                        <FormKitSchema 
+                            :schema="addLotSchema" 
+                        />
+                    </div>
+                    <div class="modal-form__actions">
+                        <button
+                            type="button"
+                            class="button button-red"
+                            @click="$emit('hideModal')"
+                        >
+                            Отменить
+                        </button>
+                        <button
+                            type="submit"
+                            class="button button-green"
+                        >
+                            Сохранить
+                        </button>
+                    </div>
+                </FormKit>
+            </template>
         </div>
     </vue-final-modal>
 </template>
 
 <script>
+    import { tender as tenderApi } from "@/services"
     export default {
         props: {
             showModal: {
                 type: Boolean,
                 default() { return false; }
             },
-            data: {
-                type: Object,
+            lotId: {
+                type: [Number, String],
                 default() { return null; }
             },
             tender: {
@@ -134,6 +148,7 @@
                         label: 'Цена за единицу, руб',
                         placeholder: "Введите цену за единицу",
                         validation: (this.tender.kind === 'tender' || (this.tender.kind === 'price_request' && !this.tender.fulfilment)) ? 'required' : null,
+                        //validation: 'required',
                         inputClass: 'modal-form__input',
                         labelClass: '$reset modal-form__label',
                         outerClass: '$reset modal-form__field m--width-100',
@@ -147,14 +162,15 @@
             },
         },
         watch: {
-            data() {
-                console.log('data')
-                console.log(this.data)
-                this.addLotForm = this.data || {}
-                if (this.data) {
+            /*
+            lotId() {
+                console.log('lotId')
+                console.log(this.lotId)
+                //this.addLotForm = this.data || {}
+                if (this.lotId) {
                     this.addLotForm.nds = {
                         fromParent: true,
-                        value: this.data.nds
+                        value: this.addLotForm.nds
                     }
                 } else {
                     this.addLotForm.nds = {
@@ -163,10 +179,37 @@
                     }
                 }
             }
+            */
         },
-        mounted() {    
+        mounted() {
+            if (this.lotId) {
+                this.getLot();
+            }
         },
         methods: {
+            getLot() {
+                this.showLoaderSending = true;
+                tenderApi.getTenderLot(this.tender.id, this.lotId).then(res => {
+                    console.log(res);
+                    this.addLotForm = res;
+                    if (this.lotId) {
+                        this.addLotForm.nds = {
+                            fromParent: true,
+                            value: this.addLotForm.nds
+                        }
+                    } else {
+                        this.addLotForm.nds = {
+                            fromParent: true,
+                            value: null
+                        }
+                    }
+                    this.showLoaderSending = false;
+                }).catch(err => {
+                    this.showLoaderSending = false;
+                    this.$store.dispatch('showError', err);
+                    console.error(err);
+                });
+            },
             submitAddLotForm(formData) {
                 this.$emit('addLot', formData)
                 this.$emit('hideModal')

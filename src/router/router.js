@@ -44,6 +44,7 @@ import CabinetOrganizationEdit from '@/views/CabinetOrganizationEdit';
 import cabinetNotifications from '@/views/CabinetNotifications';
 import cabinetNotificationsSettings from '@/views/CabinetNotificationsSettings';
 import groups from '@/views/Groups';
+import product from '@/views/Product';
 import page404 from '@/views/Page404';
 
 const routes = [
@@ -491,6 +492,16 @@ const routes = [
         component: cabinetNotificationsSettings,
         meta: { 
             title: 'Настройка уведомлений',
+            breadcrumbs: [],
+            requiresAuth: true 
+        },
+        props: true,
+    }, {
+        path: '/product/:slug',
+        name: 'product',
+        component: product,
+        meta: { 
+            title: 'Товар',
             breadcrumbs: [],
             requiresAuth: true 
         },

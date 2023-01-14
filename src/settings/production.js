@@ -57,6 +57,10 @@ const geo = {
     url: `${urlPath}/geo`
 };
 
+const product = {
+    url: `${urlPath}`,
+};
+
 const logger = {
     url: `${urlPath}/logger`,
     level: 'debug'
@@ -108,6 +112,7 @@ export {
     category,
     common,
     geo,
+    product,
     logger,
     urlPath,
     selfPath,

@@ -138,7 +138,7 @@
                 let params = {
                     limit,
                     offset: this.offset
-                }
+                };
                 this.showLoaderSending = true;
                 api.getOrganizations(params).then(res => {
                     this.contragents = res.results;

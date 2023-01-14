@@ -11,7 +11,7 @@
 </template>
 
 <script setup>
-    import { defineProps } from 'vue';
+    import { defineProps, ref, onUpdated, computed } from 'vue';
     const props = defineProps({
         context: {
             type: Object,
@@ -23,6 +23,7 @@
     const placeholder = props.context.placeholder || '';
     const disabled = props.context.disabled || false;
     const readonly = props.context.readonly || false;
+    //const required = props.context.validatin === 'required' && 'required';
 
     function handleMaska($event) {
         console.log('handleInput', $event.target.disabled)

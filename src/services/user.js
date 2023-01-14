@@ -125,6 +125,7 @@ export default class extends REST {
             throw new RESTError(error, 'Не удалось создать организацию');
         });
     }
+
     static applyOrganization(params) {
         return this._post(`organizations/apply`, {}, params).then((data) => {
             return data;
@@ -132,6 +133,7 @@ export default class extends REST {
             throw new RESTError(error, 'Не удалось изменить данные организации');
         });
     }
+
     static getOrganizations(params) {
         return this._get(`organizations`, params, params).then((data) => {
             return data;
@@ -215,6 +217,15 @@ export default class extends REST {
         });
     }
 
+    static getOrganizationProducts(id, params) {
+        return this._get(`organizations/${id}/products`, {}, params).then((data) => {
+            return data;
+        }).catch((error) => {
+            throw new RESTError(error, 'Не удалось получить представителей организации');
+        });
+    }
+
+
     static sendInvites(params) {
         return this._post(`send_invites`, {}, params).then((data) => {
             return data;
@@ -222,4 +233,55 @@ export default class extends REST {
             throw new RESTError(error, 'Не удалось отправить приглашения');
         });
     }
+
+
+
+    static addProduct(params) {
+        return this._post(`products`, {}, params).then((data) => {
+            return data;
+        }).catch((error) => {
+            throw new RESTError(error, 'Не удалось создать товар');
+        });
+    }
+
+    static updateProduct(id, params) {
+        return this._put(`products/${id}`, {}, params).then((data) => {
+            return data;
+        }).catch((error) => {
+            throw new RESTError(error, 'Не удалось обновить товар');
+        });
+    }
+
+    static applyProduct(id, params) {
+        return this._patch(`products/${id}`, {}, params).then((data) => {
+            return data;
+        }).catch((error) => {
+            throw new RESTError(error, 'Не удалось обновить параметры товара');
+        });
+    }
+
+    static deleteProduct(id) {
+        return this._delete(`products/${id}`, {}, {}).then((data) => {
+            return data;
+        }).catch((error) => {
+            throw new RESTError(error, 'Не удалось удалить товар');
+        });
+    }
+
+    static getProducts(params) {
+        return this._get(`products`, params, {}).then((data) => {
+            return data;
+        }).catch((error) => {
+            throw new RESTError(error, 'Не удалось получить товары');
+        });
+    }
+
+    static getProduct(id, params) {
+        return this._get(`products/${id}`, params, {}).then((data) => {
+            return data;
+        }).catch((error) => {
+            throw new RESTError(error, 'Не удалось получить товар');
+        });
+    }
+
 }

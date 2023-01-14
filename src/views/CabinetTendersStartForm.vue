@@ -319,8 +319,9 @@
         </div>
 
         <ModalAddLot
+            v-if="showAddLotModal"
             :showModal="showAddLotModal"
-            :data="lotModalData"
+            :lotId="lotId"
             :tender="tenderForm"
             @hideModal="hideAddLotModal"
             @addLot="addLotModal"
@@ -357,7 +358,7 @@
                 defaultTender: null,
                 lots: [],
                 documents: [],
-                lotModalData: null,
+                lotId: null,
                 tenderForm: {},
                 relatedTenders: [],
                 setRelatedLots: false,
@@ -988,16 +989,16 @@
                 // передать в модалку данные для редактирования лота
                 if (id) {
                     let idx = this.lots.findIndex(lot => lot.id === id)
-                    this.lotModalData = this.lots[idx]
+                    this.lotId = id //this.lots[idx]
                 } else {
-                    this.lotModalData = null
+                    this.lotId = null
                 }
 
                 this.showAddLotModal = true
             },
             hideAddLotModal() {
                 this.showAddLotModal = false
-                this.lotModalData = null
+                this.lotId = null
             },
             addLotModal(newLot) {
                 if (newLot.id) { // обновление лота
