@@ -3,95 +3,116 @@
         v-model="show"
         classes="modal__container" 
         content-class="modal__block"
-        @click-outside="$emit('hideModal')"
+        @click-outside="$emit('hideModal', updateData)"
     >
         <button 
             class="modal__close" 
-            @click="$emit('hideModal')"
+            @click="$emit('hideModal', updateData)"
         >
             <span />
         </button>
-        {{ formValues }}
-        <span class="modal__title">Добавление товара</span>
-        <div class="modal__content">
-            <FormKit
-                id="addGoodForm"
-                v-model="formValues"
-                name="add-good-form"
-                preserve
-                type="form"
-                data-loading="showLoaderSending"
-                form-class="$reset modal-form goods__form"
-                :disabled="showLoaderSending"
-                :loading="showLoaderSending ? true : undefined"
-                :actions="false"
-                @submit="submitAddGoodForm"
+        <span class="modal__title">
+            {{ slug ? 'Редактирование товара' : 'Добавление товара' }}
+        </span>
+        <div
+            v-if="productSended"
+            class="modal__content"
+        >
+            {{ slug ? 'Товар успешно обновлен' : 'Товар Успешно добавлен.' }}
+        </div>
+        <div 
+            v-else
+            class="modal__content"
+        >
+            <template
+                v-if="showLoaderSending"
             >
-                <div class="modal-form__block">
-                    <div class="goods__form-photo">
-                        <div class="field">
-                            <div class="field__inner">
-                                <label class="field__label" for="photo">Фотография</label>
-                                <div class="field__input m--hidden">
-                                    <input
-                                        ref="logoInput"
-                                        accept=".jpg,.png,.svg" 
-                                        class="input" 
-                                        type="file" 
-                                        name="photo" 
-                                        id="photo"
+                <div class="tenders__loader loader">
+                    <div class="spinner" /> Загрузка данных
+                </div>
+            </template>
+            <template
+                v-else
+            >
+                <FormKit
+                    id="addGoodForm"
+                    v-model="formValues"
+                    name="add-good-form"
+                    preserve
+                    type="form"
+                    data-loading="showLoaderSending"
+                    form-class="$reset modal-form goods__form"
+                    :disabled="showLoaderSending"
+                    :loading="showLoaderSending ? true : undefined"
+                    :actions="false"
+                    @submit="submitAddGoodForm"
+                >
+                    <div class="modal-form__block">
+                        <div class="goods__form-photo">
+                            <div class="field">
+                                <div class="field__inner">
+                                    <label class="field__label" for="photo">Фотография</label>
+                                    <div class="field__input m--hidden">
+                                        <input
+                                            ref="logoInput"
+                                            accept=".jpg,.png,.svg" 
+                                            class="input" 
+                                            type="file" 
+                                            name="photo" 
+                                            id="photo"
+                                        >
+                                    </div>
+                                </div>
+                                <div 
+                                    class="form__submit edit__form-submit m--start" 
+                                >
+                                    <button
+                                        :disabled="loading || busyForm"
+                                        class="button button-outline-green button-width-auto"
+                                        @click.prevent="onClickUploadLogo"
                                     >
+                                        Загрузить новую
+                                    </button>
+                                    <button
+                                        v-if="formValues.photo"
+                                        :disabled="loading || busyForm"
+                                        class="button button-outline-red button-width-auto"
+                                        @click.prevent="onClickDeleteLogo"
+                                    >
+                                        Удалить
+                                    </button>
+                                </div>
+                                <div 
+                                    v-if="formValues.photo"
+                                    class="field__text m--color-green"
+                                >
+                                    Загружен файл: {{ formValues.photo.split('/').at(-1) }}
+                                </div>
+                                <div class="field__text">
+                                    Рекомендуемый размер: 600х600px. jpg, png, svg
                                 </div>
                             </div>
-                            <div 
-                                class="form__submit edit__form-submit m--start" 
-                            >
-                                <button
-                                    :disabled="loading || busyForm"
-                                    class="button button-outline-green button-width-auto"
-                                    @click.prevent="onClickUploadLogo"
-                                >
-                                    Загрузить новую
-                                </button>
-                                <button
-                                    v-if="good.photo"
-                                    :disabled="loading || busyForm"
-                                    class="button button-outline-red button-width-auto"
-                                    @click.prevent="onClickDeleteLogo"
-                                >
-                                    Удалить
-                                </button>
-                            </div>
-                            <div 
-                                v-if="good.photo"
-                                class="field__text m--color-green"
-                            >
-                                Загружен файл: {{ good.photo.split('/').at(-1) }}
-                            </div>
-                            <div class="field__text">
-                                Рекомендуемый размер: 600х600px. jpg, png, svg
+                            <div class="goods__form-photo-pic">
+                                <img
+                                    v-if="formValues.photo"
+                                    :src="formValues.photo" 
+                                    alt="" 
+                                />
                             </div>
                         </div>
-                        <div class="goods__form-photo-pic">
-                            <img
-                                v-if="good.photo"
-                                :src="good.photo" 
-                                alt="" 
-                            />
-                        </div>
-                    </div>
 
-                    <FormKitSchema :schema="addGoodSchema" />
-                </div>
-                <div class="modal-form__actions">
-                    <button
-                        type="submit"
-                        class="button button-green"
-                    >
-                        Сохранить
-                    </button>
-                </div>
-            </FormKit>
+                        <FormKitSchema :schema="addGoodSchema" />
+                    </div>
+                    <div class="modal-form__actions">
+                        <button
+                            type="submit"
+                            class="button button-green"
+                        >
+                            Сохранить
+                        </button>
+                    </div>
+                </FormKit>
+            </template>
         </div>
     </vue-final-modal>
 </template>
@@ -104,32 +125,26 @@
                 type: Boolean,
                 default() { return false; }
             },
-            data: {
-                type: Object,
+            slug: {
+                type: String,
                 default() { return null; }
-            },
-            good: {
-                type: Object,
-                default() { return {}; }
             },
         },
         data() {
             return {
-                formValues: null,
+                //good: {},
+                formValues: {},
                 showLoaderSending: false,
+                productSended: false,
+                busyForm: false,
+                loading: false,
                 addGoodSchema: [
                     {
-                        $formkit: 'hidden',
-                        name: 'slug',
-                    }, {
-                        $formkit: 'hidden',
-                        name: 'organization',
-                    }, {
                         $formkit: 'multiselect',
                         mode: 'single',
                         name: 'category',
                         groups: true,
-                        closeOnSelect: false,
+                        closeOnSelect: true,
                         label: 'Категория',
                         placeholder: 'Выберите категорию из списка собственных видов деятельности',
                         searchable: true,
@@ -205,45 +220,80 @@
             },
         },
         watch: {
-            data() {
-                console.log('data')
-                console.log(this.data)
-                this.formValues = this.data || {}
-                if (this.data) {
-                    this.formValues.category = {
-                        fromParent: true,
-                        value: this.data.category
-                    }
-                } else {
-                    this.formValues.category = {
-                        fromParent: true,
-                        value: null
-                    }
+            slug() {
+                if (this.slug) {
+                    this.getProduct();
                 }
             }
         },
-        mounted() {    
+        mounted() {
         },
         methods: {
-            submitAddGoodForm(formData, node) {
-                this.showLoaderSending = true;
-                this.loading = true;
-                let params = Object.assign({}, this.formValues);
-                productApi.addProduct(params).then(res => {
-                    this.showLoaderSending = false;
-                    this.loading = false;
-                    this.productSended = true;
-                    this.updateData = true;
+            getProduct() {
+                //this.showLoaderSending = true;
+                let params = {
+                };
+                productApi.getProduct(this.slug, params).then(res => {
                     console.log(res);
+                    //this.formValues = res;
+                    this.formValues = {
+                        category: res.category,
+                        name: res.name,
+                        price: res.price,
+                        unit: res.unit,
+                        description: res.description,
+                    };
+
+                    console.log('BLA', this.formValues.category);
+                    this.formValues.category = {
+                        fromParent: true,
+                        value: this.formValues.category
+                    };
+                    this.showLoaderSending = false;
                 }).catch(err => {
-                    node.setErrors(
-                        err.response.data
-                    );
                     this.showLoaderSending = false;
                     this.loading = false;
                     this.$store.dispatch('showError', err);
                     console.error(err);
                 });
+            },
+            submitAddGoodForm(formData, node) {
+                this.showLoaderSending = true;
+                //this.loading = true;
+                let params = Object.assign({}, this.formValues);
+                if (this.slug) {
+                    productApi.updateProduct(this.slug, params).then(res => {
+                        this.showLoaderSending = false;
+                        this.loading = false;
+                        this.productSended = true;
+                        this.updateData = true;
+                        console.log(res);
+                    }).catch(err => {
+                        node.setErrors(
+                            err.response.data
+                        );
+                        this.showLoaderSending = false;
+                        this.loading = false;
+                        this.$store.dispatch('showError', err);
+                        console.error(err);
+                    });
+                } else {
+                    productApi.addProduct(params).then(res => {
+                        this.showLoaderSending = false;
+                        this.loading = false;
+                        this.productSended = true;
+                        this.updateData = true;
+                        console.log(res);
+                    }).catch(err => {
+                        node.setErrors(
+                            err.response.data
+                        );
+                        this.showLoaderSending = false;
+                        this.loading = false;
+                        this.$store.dispatch('showError', err);
+                        console.error(err);
+                    });
+                }
             },
         },
     };

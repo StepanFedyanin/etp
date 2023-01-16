@@ -3,245 +3,73 @@
         :class="blockClass" 
         class="goods"
     >
-        <div class="goods__title">
-            Загруженные товары <span>(105)</span>
-        </div>
-        <div class="goods__block">
-            <div class="goods__item">
-                <router-link
-                    :to="{ name: 'product', params: { slug: 'test' } }"
-                    class="goods__item-photo m--no-photo"
-                >
-                    <div class="goods__item-photo-inner">
-                        
-                    </div>
-                </router-link>
+        <template
+            v-if="showLoaderSending"
+        >
+            <div class="goods__loader loader">
+                <div class="spinner" /> Загрузка данных
+            </div>
+        </template>
+        <template
+            v-else-if="goods && count"
+        >    
+            <div class="goods__title">
+                Загруженные товары <span>({{ count }})</span>
+            </div>
+            <div class="goods__block">
                 <div 
-                    class="goods__item-info"
+                    v-for="good in goods"
+                    :key="`good-${good.id}`"
+                    class="goods__item"
                 >
-                    <div class="goods__item-price">123 006 000 ₽</div>
-                    <div class="goods__item-desc">Длинное название запчасти на автомобиль КамАЗ, УАЗ, ЗИЛ, Газель, удлинненное до немыслимых размеров</div>
-                </div>
-                <div class="goods__item-control">
-                    <a href="#" class="goods__item-control-link m--change">Изменить</a>
-                    <a href="#" class="goods__item-control-link m--delete">Удалить</a>
-                </div>
-            </div>
-
-            <div class="goods__item">
-                <div class="goods__item-photo">
-                    <div class="goods__item-photo-inner">
-                        <img src="../assets/img/temp/good-1.png" alt="">
+                    <router-link
+                        :to="{ name: 'product', params: { slug: good.slug || '404' } }"
+                        class="goods__item-photo m--no-photo"
+                    >
+                        <div class="goods__item-photo-inner">
+                            
+                        </div>
+                    </router-link>
+                    <div 
+                        class="goods__item-info"
+                    >
+                        <div class="goods__item-price">
+                            {{ $helpers.toPrice(good.price, { sign: '₽' }) }}
+                        </div>
+                        <div class="goods__item-desc">
+                            {{ good.name }}
+                        </div>
+                    </div>
+                    <div class="goods__item-control">
+                        <a 
+                            href="#" 
+                            class="goods__item-control-link m--change"
+                            @click.prevent="addGood(good.slug)"
+                        >
+                            Изменить
+                        </a>
+                        <a 
+                            href="#" 
+                            class="goods__item-control-link m--delete"
+                            @click.prevent="deleteGood(good.slug)"
+                        >
+                            Удалить
+                        </a>
                     </div>
                 </div>
-                <div class="goods__item-info">
-                    <div class="goods__item-price">123 006 000 ₽</div>
-                    <div class="goods__item-desc">Длинное название запчасти на автомобиль КамАЗ</div>
-                </div>
-                <div class="goods__item-control">
-                    <a href="#" class="goods__item-control-link m--change">Изменить</a>
-                    <a href="#" class="goods__item-control-link m--delete">Удалить</a>
-                </div>
             </div>
-
-            <div class="goods__item">
-                <div class="goods__item-photo m--no-photo">
-                    <div class="goods__item-photo-inner">
-                        
-                    </div>
-                </div>
-                <div class="goods__item-info">
-                    <div class="goods__item-price">123 006 000 ₽</div>
-                    <div class="goods__item-desc">Длинное название запчасти на автомобиль КамАЗ</div>
-                </div>
-                <div class="goods__item-control">
-                    <a href="#" class="goods__item-control-link m--change">Изменить</a>
-                    <a href="#" class="goods__item-control-link m--delete">Удалить</a>
-                </div>
-            </div>
-
-            <div class="goods__item">
-                <div class="goods__item-photo">
-                    <div class="goods__item-photo-inner">
-                        <img src="../assets/img/temp/good-2.png" alt="">
-                    </div>
-                </div>
-                <div class="goods__item-info">
-                    <div class="goods__item-price">123 006 000 ₽</div>
-                    <div class="goods__item-desc">Длинное название запчасти на автомобиль КамАЗ</div>
-                </div>
-                <div class="goods__item-control">
-                    <a href="#" class="goods__item-control-link m--change">Изменить</a>
-                    <a href="#" class="goods__item-control-link m--delete">Удалить</a>
-                </div>
-            </div>
-
-            <div class="goods__item">
-                <div class="goods__item-photo">
-                    <div class="goods__item-photo-inner">
-                        <img src="../assets/img/temp/good-3.png" alt="">
-                    </div>
-                </div>
-                <div class="goods__item-info">
-                    <div class="goods__item-price">123 006 000 ₽</div>
-                    <div class="goods__item-desc">Длинное название запчасти на автомобиль КамАЗ</div>
-                </div>
-                <div class="goods__item-control">
-                    <a href="#" class="goods__item-control-link m--change">Изменить</a>
-                    <a href="#" class="goods__item-control-link m--delete">Удалить</a>
-                </div>
-            </div>
-
-            <div class="goods__item">
-                <div class="goods__item-photo m--no-photo">
-                    <div class="goods__item-photo-inner">
-                        
-                    </div>
-                </div>
-                <div class="goods__item-info">
-                    <div class="goods__item-price">123 006 000 ₽</div>
-                    <div class="goods__item-desc">Длинное название запчасти на автомобиль КамАЗ</div>
-                </div>
-                <div class="goods__item-control">
-                    <a href="#" class="goods__item-control-link m--change">Изменить</a>
-                    <a href="#" class="goods__item-control-link m--delete">Удалить</a>
-                </div>
-            </div>
-
-            <div class="goods__item">
-                <div class="goods__item-photo">
-                    <div class="goods__item-photo-inner">
-                        <img src="../assets/img/temp/good-3.png" alt="">
-                    </div>
-                </div>
-                <div class="goods__item-info">
-                    <div class="goods__item-price">123 006 000 ₽</div>
-                    <div class="goods__item-desc">Длинное название запчасти на автомобиль КамАЗ</div>
-                </div>
-                <div class="goods__item-control">
-                    <a href="#" class="goods__item-control-link m--change">Изменить</a>
-                    <a href="#" class="goods__item-control-link m--delete">Удалить</a>
-                </div>
-            </div>
-
-            <div class="goods__item">
-                <div class="goods__item-photo m--no-photo">
-                    <div class="goods__item-photo-inner">
-                        
-                    </div>
-                </div>
-                <div class="goods__item-info">
-                    <div class="goods__item-price">123 006 000 ₽</div>
-                    <div class="goods__item-desc">Длинное название запчасти на автомобиль КамАЗ</div>
-                </div>
-                <div class="goods__item-control">
-                    <a href="#" class="goods__item-control-link m--change">Изменить</a>
-                    <a href="#" class="goods__item-control-link m--delete">Удалить</a>
-                </div>
-            </div>
-
-            <div class="goods__item">
-                <div class="goods__item-photo">
-                    <div class="goods__item-photo-inner">
-                        <img src="../assets/img/temp/good-3.png" alt="">
-                    </div>
-                </div>
-                <div class="goods__item-info">
-                    <div class="goods__item-price">123 006 000 ₽</div>
-                    <div class="goods__item-desc">Длинное название запчасти на автомобиль КамАЗ</div>
-                </div>
-                <div class="goods__item-control">
-                    <a href="#" class="goods__item-control-link m--change">Изменить</a>
-                    <a href="#" class="goods__item-control-link m--delete">Удалить</a>
-                </div>
-            </div>
-
-            <div class="goods__item">
-                <div class="goods__item-photo m--no-photo">
-                    <div class="goods__item-photo-inner">
-                        
-                    </div>
-                </div>
-                <div class="goods__item-info">
-                    <div class="goods__item-price">123 006 000 ₽</div>
-                    <div class="goods__item-desc">Длинное название запчасти на автомобиль КамАЗ</div>
-                </div>
-                <div class="goods__item-control">
-                    <a href="#" class="goods__item-control-link m--change">Изменить</a>
-                    <a href="#" class="goods__item-control-link m--delete">Удалить</a>
-                </div>
-            </div>
-
-            <div class="goods__item">
-                <div class="goods__item-photo">
-                    <div class="goods__item-photo-inner">
-                        <img src="../assets/img/temp/good-3.png" alt="">
-                    </div>
-                </div>
-                <div class="goods__item-info">
-                    <div class="goods__item-price">123 006 000 ₽</div>
-                    <div class="goods__item-desc">Длинное название запчасти на автомобиль КамАЗ</div>
-                </div>
-                <div class="goods__item-control">
-                    <a href="#" class="goods__item-control-link m--change">Изменить</a>
-                    <a href="#" class="goods__item-control-link m--delete">Удалить</a>
-                </div>
-            </div>
-
-            <div class="goods__item">
-                <div class="goods__item-photo m--no-photo">
-                    <div class="goods__item-photo-inner">
-                        
-                    </div>
-                </div>
-                <div class="goods__item-info">
-                    <div class="goods__item-price">123 006 000 ₽</div>
-                    <div class="goods__item-desc">Длинное название запчасти на автомобиль КамАЗ</div>
-                </div>
-                <div class="goods__item-control">
-                    <a href="#" class="goods__item-control-link m--change">Изменить</a>
-                    <a href="#" class="goods__item-control-link m--delete">Удалить</a>
-                </div>
-            </div>
-
-            <div class="goods__item">
-                <div class="goods__item-photo">
-                    <div class="goods__item-photo-inner">
-                        <img src="../assets/img/temp/good-3.png" alt="">
-                    </div>
-                </div>
-                <div class="goods__item-info">
-                    <div class="goods__item-price">123 006 000 ₽</div>
-                    <div class="goods__item-desc">Длинное название запчасти на автомобиль КамАЗ</div>
-                </div>
-                <div class="goods__item-control">
-                    <a href="#" class="goods__item-control-link m--change">Изменить</a>
-                    <a href="#" class="goods__item-control-link m--delete">Удалить</a>
-                </div>
-            </div>
-
-            <div class="goods__item">
-                <div class="goods__item-photo m--no-photo">
-                    <div class="goods__item-photo-inner">
-                        
-                    </div>
-                </div>
-                <div class="goods__item-info">
-                    <div class="goods__item-price">123 006 000 ₽</div>
-                    <div class="goods__item-desc">Длинное название запчасти на автомобиль КамАЗ</div>
-                </div>
-                <div class="goods__item-control">
-                    <a href="#" class="goods__item-control-link m--change">Изменить</a>
-                    <a href="#" class="goods__item-control-link m--delete">Удалить</a>
-                </div>
-            </div>
-        </div>
+        </template>
+        <template
+            v-else
+        >
+            <div class="tenders__empty">В данный момент у вас нет ни одного товара</div> 
+        </template>
         <div
             class="goods__pagination"
         >
             <div class="goods__pagination-left">
                 <div class="goods__pagination-count">
-                    Товаров: <span>107</span>
+                    Товаров: <span>{{ count }}</span>
                 </div>
             </div>
             <div class="tenders__pagination-right">
@@ -270,8 +98,8 @@
                     </select>
                 </div>
                 <Pagination
-                    :total="107"
-                    :limit="Number(10)"
+                    :total="count"
+                    :limit="limit"
                     :currentPage="Number($route.query.page || 1)"
                     :query="$route.query"
                     :url="$route.path"
@@ -285,9 +113,7 @@
             Добавить товар
         </button>
         <ModalAddGood
-            v-if="showAddGoodModal"
-            :tender="tender || {}"
-            :goodId="good.is"
+            :slug="slug"
             :showModal="showAddGoodModal"
             @hideModal="hideAddGoodModal"
         />
@@ -296,7 +122,7 @@
 
 <script>
     import { urlPath } from '@/settings'
-    import { user as userApi, tender as tenderApi } from "@/services"
+    import { user as userApi, product as productApi } from "@/services"
     import ModalAddGood from '@/components/modal-add-good.vue';
     import Pagination from '@/components/pagination.vue';
 
@@ -318,12 +144,17 @@
         data() {
             return {
                 limit: 18,
+                slug: null,
                 goods: null,
+                count: null,
                 showAddGoodModal: false,
                 showLoaderSending: false,
             }
         },
         computed: {
+            user() {
+                return this.$store.state.user;
+            },
             page() {
                 return Number(this.$route.query.page) || 1
             },
@@ -337,7 +168,7 @@
                 if (this.$route.query) {
                     this.$router.replace({ query: Object.assign({}, this.$route.query, { page: 1 }) })
                 }
-                this.getTenders()
+                this.getGoods()
             },
             '$route.query.page': {
                 handler() {
@@ -348,27 +179,43 @@
         created() {
             // this.getInviteStatus();
         },
+        mounted() {
+            this.getGoods();
+        },
         methods: {
             getGoods() {
                 console.log('getGoods');
                 let limit = Number(this.limit)
                 let params = {
+                    organization: this.user.organization.id,
                     limit,
                     offset: this.offset
-                }
-                userApi.getOrganizationProducts(this.organization.id, params).then(tenders => {
-                    this.tenders = tenders
+                };
+                this.showLoaderSending = true;
+                userApi.getOrganizationProducts(this.organization.id, params).then(res => {
+                    this.goods = res.results;
+                    this.count = res.count;
                     this.showLoaderSending = false;
-                    console.log(tenders)
+                    console.log(res)
                 }).catch(err => {
                     this.showLoaderSending = false;
                     console.error(err)
                 })
 
             },
-            onClickAddGood(good) {
-                this.good = good;
+            addGood(slug) {
+                this.slug = slug;
                 this.showAddGoodModal = true;
+            },
+            deleteGood(slug) {
+                productApi.deleteProduct(slug).then(res => {
+                    this.getGoods();
+                }).catch(err => {
+                    this.showLoaderSending = false;
+                    this.loading = false;
+                    this.$store.dispatch('showError', err);
+                    console.error(err);
+                });
             },
             hideAddGoodModal(updateData) {
                 this.showAddGoodModal = false;

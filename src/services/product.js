@@ -22,15 +22,15 @@ export default class extends REST {
             throw new RESTError(error, 'Не удалось обновить товар');
         });
     }
-    /*
-    static deleteProduct(id) {
-        return this._delete(`products/${id}`, {}, {}).then((data) => {
+
+    static deleteProduct(slug) {
+        return this._delete(`products/${slug}`, {}, {}).then((data) => {
             return data;
         }).catch((error) => {
             throw new RESTError(error, 'Не удалось удалить товар');
         });
     }
-    */
+
     static getProducts(params) {
         return this._get(`products`, params, {}).then((data) => {
             return data;
@@ -38,13 +38,12 @@ export default class extends REST {
             throw new RESTError(error, 'Не удалось получить товары');
         });
     }
-    /*
-    static getProduct(id, params) {
-        return this._get(`products/${id}`, params, {}).then((data) => {
+
+    static getProduct(slug, params) {
+        return this._get(`products/${slug}`, params, {}).then((data) => {
             return data;
         }).catch((error) => {
             throw new RESTError(error, 'Не удалось получить товар');
         });
     }
-    */
 }

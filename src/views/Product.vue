@@ -2,11 +2,6 @@
     <div class="app__main">
         <div class="good">
             <div class="container">
-                <div 
-                    class="good__title h1"
-                >
-                    Портландцемент ПЦТ I-50 ГОСТ 1581-96
-                </div>
                 <template
                     v-if="showLoaderSending"
                 >
@@ -17,22 +12,39 @@
                 <template
                     v-else-if="good"
                 >
+                    <div 
+                        class="good__title h1"
+                    >
+                        {{ good.name }}
+                    </div>
                     <div class="good__block">
                         <div class="good__block-left">
                             <div class="good__params">
                                 <div class="good__param">
-                                    <div class="good__param-name">Поставщик</div>
-                                    <div class="good__param-data">ООО “ЕЦЗ”</div>
+                                    <div class="good__param-name">
+                                        Поставщик
+                                    </div>
+                                    <div class="good__param-data">
+                                        {{ good.organization.name }}
+                                    </div>
                                 </div>
 
                                 <div class="good__param">
-                                    <div class="good__param-name">Единица измерения</div>
-                                    <div class="good__param-data">Мешок 50кг</div>
+                                    <div class="good__param-name">
+                                        Единица измерения
+                                    </div>
+                                    <div class="good__param-data">
+                                        {{ good.unit }}
+                                    </div>
                                 </div>
 
                                 <div class="good__param">
-                                    <div class="good__param-name">Дата обновления</div>
-                                    <div class="good__param-data">30.11.2022</div>
+                                    <div class="good__param-name">
+                                        Дата обновления
+                                    </div>
+                                    <div class="good__param-data">
+                                        {{ $helpers.formatDate(new Date(good.updated), 'DD.MM.YYYY', 'Europe/Moscow') }}
+                                    </div>
                                 </div>
 
                                 <div class="good__param">
@@ -42,11 +54,13 @@
                             </div> 
 
                             <div class="good__block-info">
-                                <div class="good__block-title">О товаре</div>
-                                <div class="good__block-content">
-                                    <p>Портландцемент и другие товары можно приобрести в Леруа Мерлен в Челябинске по низким ценам. Подберите интересующий товар на сайте и купите его в нашем интернет-магазине. Ассортимент товаров, представленных в каталоге, чрезвычайно широк. Среди них наверняка найдется подходящая по всем параметрам позиция.</p>
-                                    <p>Все представленные в разделе «Портландцемент» изделия выпускаются известными и отлично зарекомендовавшими себя высоким качеством своей продукции компаниями.</p>
+                                <div class="good__block-title">
+                                    О товаре
                                 </div>
+                                <div 
+                                    class="good__block-content"
+                                    v-html="good.description"
+                                />
                             </div>                           
                         </div>
                         <div class="good__block-right">
@@ -66,9 +80,67 @@
                     <div class="good__contragent contragent">
                         <div class="good__contragent-title">О поставщике</div>
                         <blockContragent 
-                            :contragent="contragent"
+                            :contragent="good.organization"
                             @toggleFavorite="toggleFavorite"
                         />
+                    </div>
+
+                    <div class="good__list goods">
+                        <div class="goods__title">
+                            Все товары поставщика <span>(105)</span>
+                        </div>
+                        <div class="goods__block">
+                            <div class="goods__item">
+                                <router-link
+                                    :to="{ name: 'product', params: { slug: 'test' } }"
+                                    class="goods__item-photo m--no-photo"
+                                >
+                                    <div class="goods__item-photo-inner">
+                                        
+                                    </div>
+                                </router-link>
+                                <div 
+                                    class="goods__item-info"
+                                >
+                                    <div class="goods__item-price">123 006 000 ₽</div>
+                                    <div class="goods__item-desc">Длинное название запчасти на автомобиль КамАЗ, УАЗ, ЗИЛ, Газель, удлинненное до немыслимых размеров</div>
+                                </div>
+                                <div class="goods__item-control">
+                                    <a href="#" class="goods__item-control-link m--change">Изменить</a>
+                                    <a href="#" class="goods__item-control-link m--delete">Удалить</a>
+                                </div>
+                            </div>
+                        </div>
+                        <button class="button button-outline-green goods__more">показать еще</button>
+                    </div>
+
+                    <div class="good__list goods">
+                        <div class="goods__title">
+                            Товары из категории «Банковские и финансовые услуги, кредит» <span>(105)</span>
+                        </div>
+                        <div class="goods__block">
+                            <div class="goods__item">
+                                <router-link
+                                    :to="{ name: 'product', params: { slug: 'test' } }"
+                                    class="goods__item-photo m--no-photo"
+                                >
+                                    <div class="goods__item-photo-inner">
+                                        
+                                    </div>
+                                </router-link>
+                                <div 
+                                    class="goods__item-info"
+                                >
+                                    <div class="goods__item-price">123 006 000 ₽</div>
+                                    <div class="goods__item-desc">Длинное название запчасти на автомобиль КамАЗ, УАЗ, ЗИЛ, Газель, удлинненное до немыслимых размеров</div>
+                                </div>
+                                <div class="goods__item-control">
+                                    <a href="#" class="goods__item-control-link m--change">Изменить</a>
+                                    <a href="#" class="goods__item-control-link m--delete">Удалить</a>
+                                </div>
+                            </div>
+                        </div>
+                        <button class="button button-outline-green goods__more">показать еще</button>
                     </div>
                 </template>
             </div>
@@ -78,7 +150,7 @@
 
 <script>
     //import { category as api } from "@/services"
-    import { user as api } from "@/services";
+    import { user as api, product as productApi } from "@/services";
     import blockContragent from '@/components/block-contragent.vue';
 
     export default {
@@ -86,10 +158,15 @@
         components: {
             blockContragent
         },
+        props: {
+            slug: {
+                type: String,
+                default() { return null; }
+            },
+        },
         data() {
             return {
                 good: {},
-                contragent: {},
                 showLoaderSending: false,
             }
         },
@@ -99,26 +176,27 @@
             },
         },
         mounted() {
-            this.getOrganization();
+            this.getProduct();
         },
         methods: {
             getProduct() {
-            },
-            getOrganization() {
                 this.showLoaderSending = true;
-                api.getOrganization(48).then(res => {
-                    this.contragent = res;
-                    //this.$helpers.setDocumentTitle(this.contragent);
-                    //this.$helpers.setDocumentMeta(this.contragent);
+                let params = {
+                };
+                productApi.getProduct(this.slug, params).then(res => {
+                    console.log(res);
+                    this.good = res;
                     this.showLoaderSending = false;
                 }).catch(err => {
-                    console.error(err);
                     this.showLoaderSending = false;
+                    this.loading = false;
+                    this.$store.dispatch('showError', err);
+                    console.error(err);
                 });
             },
             toggleFavorite() {
-                this.contragent.is_favorite = !this.contragent.is_favorite;
-                api.switchFavoriteOrganization(this.contragent.id).then(res => {
+                this.good.organization.is_favorite = !this.good.organization.is_favorite;
+                api.switchFavoriteOrganization(this.good.organization.id).then(res => {
                     console.log(res);
                 }).catch(err => {
                     this.$store.dispatch('showError', err);

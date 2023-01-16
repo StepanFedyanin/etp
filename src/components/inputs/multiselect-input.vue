@@ -145,7 +145,7 @@
 
     onUpdated(() => {
         console.log('onUpdated');
-        let v = props.context._value
+        let v = props.context._value;
         if (v && v.fromParent) {
             multiselect._value.clear()
 
@@ -154,7 +154,6 @@
 
             if (Array.isArray(v.value) && !v.value.length)
                 return
-
             if (v.value) {
                 multiselect._value.select(v.value)
             }
