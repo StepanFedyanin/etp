@@ -6,6 +6,22 @@ export default class extends REST {
         return settings;
     }
 
+    static getCurrenciesList() {
+        return this._get('currencies', {}, {}).then((data) => {
+            return data;
+        }).catch((error) => {
+            throw new RESTError(error, 'Ошибка при получении списка валют');
+        });
+    }
+
+    static getCurrency(iso_name) {
+        return this._get(`currencies/${iso_name}`, {}, {}).then((data) => {
+            return data;
+        }).catch((error) => {
+            throw new RESTError(error, 'Ошибка при получении валюты');
+        });
+    }
+
     static getPageList(params) {
         return this._get('pages', {}, params).then((data) => {
             return data;

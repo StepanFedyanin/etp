@@ -31,6 +31,14 @@ export default class extends REST {
         });
     }
 
+    static deleteProductPhoto(slug) {
+        return this._post(`products/${slug}/delete_photo`, {}, {}).then((data) => {
+            return data;
+        }).catch((error) => {
+            throw new RESTError(error, 'Не удалось удалить фото товара');
+        });
+    }
+
     static getProducts(params) {
         return this._get(`products`, params, {}).then((data) => {
             return data;

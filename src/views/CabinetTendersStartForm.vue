@@ -335,7 +335,7 @@
 </template>
 
 <script>
-    import { tender as tenderApi, category as categoryApi, geo as geoApi, user as userApi } from "@/services"
+    import { tender as tenderApi, category as categoryApi, geo as geoApi, user as userApi, common as commonApi } from "@/services"
     import ModalAddLot from '@/components/modal-add-lot.vue'
     import ModalAddLotFile from '@/components/modal-add-lot-file.vue'
     import { urlPath } from '@/settings'
@@ -733,6 +733,44 @@
                         outerClass: 'tender-form__field m--half',
                         messageClass: 'tender-form__message',
                     }, {
+                        $formkit: 'multiselect',
+                        mode: 'single',
+                        name: 'currency',
+                        closeOnSelect: true,
+                        label: 'Валюта тендера',
+                        help: 'Вы можете выбрать рубли или «условные единицы». В комментарии укажите, чему равна 1 у. е.',
+                        placeholder: 'Выберите валюту тендера',
+                        searchable: true,
+                        minChars: 1,
+                        validation: 'required',
+                        options: async () => {
+                            return await commonApi.getCurrenciesList().then(res => {
+                                if (res) {
+                                    let options = res.map((currency) => {
+                                        return { label: currency.name, value: currency.iso_name };
+                                    })
+                                    return options;
+                                } else {
+                                    console.log('No getCurrenciesList data');
+                                }
+                            }).catch(err => {
+                                console.error(err);
+                            })
+                        },
+                        __raw__sectionsSchema: {
+                            prefix: {
+                                $el: 'div',
+                                attrs: {
+                                    class: 'tender-form__prefix',
+                                },
+                                children: '$help',
+                            },
+                        },
+                        helpClass: 'tender-form__hidden',
+                        labelClass: 'tender-form__label',
+                        outerClass: 'tender-form__field m--half',
+                        messageClass: 'tender-form__message',
+                    }, {
                         $formkit: 'textarea',
                         name: 'description',
                         label: 'Комментарий к тендеру',
@@ -800,7 +838,6 @@
                 this.showLoaderSending = true;
                 tenderApi.getTender(id).then(tender => {
                     this.defaultTender = tender;
-                    // console.log(tender)
                     this.setTender();
                     if (this.defaultTender.kind === 'tender') {
                         this.type = 0;
@@ -915,6 +952,10 @@
                     value: 'reduction_opened'
                 }
                 this.tenderForm.region = {
+                    fromParent: true,
+                    value: null
+                }
+                this.tenderForm.currency = {
                     fromParent: true,
                     value: null
                 }
@@ -1069,6 +1110,13 @@
                     value: {
                         label: this.defaultTender.region_detail.name,
                         value: this.defaultTender.region
+                    }
+                }
+                this.tenderForm.currency = {
+                    fromParent: true,
+                    value: {
+                        label: this.defaultTender.currency_detail,
+                        value: this.defaultTender.currency
                     }
                 }
                 /*

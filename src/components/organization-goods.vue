@@ -17,46 +17,14 @@
                 Загруженные товары <span>({{ count }})</span>
             </div>
             <div class="goods__block">
-                <div 
-                    v-for="good in goods"
-                    :key="`good-${good.id}`"
-                    class="goods__item"
-                >
-                    <router-link
-                        :to="{ name: 'product', params: { slug: good.slug || '404' } }"
-                        class="goods__item-photo m--no-photo"
-                    >
-                        <div class="goods__item-photo-inner">
-                            
-                        </div>
-                    </router-link>
-                    <div 
-                        class="goods__item-info"
-                    >
-                        <div class="goods__item-price">
-                            {{ $helpers.toPrice(good.price, { sign: '₽' }) }}
-                        </div>
-                        <div class="goods__item-desc">
-                            {{ good.name }}
-                        </div>
-                    </div>
-                    <div class="goods__item-control">
-                        <a 
-                            href="#" 
-                            class="goods__item-control-link m--change"
-                            @click.prevent="addGood(good.slug)"
-                        >
-                            Изменить
-                        </a>
-                        <a 
-                            href="#" 
-                            class="goods__item-control-link m--delete"
-                            @click.prevent="deleteGood(good.slug)"
-                        >
-                            Удалить
-                        </a>
-                    </div>
-                </div>
+                <blockGoodsItem
+                    v-for="item in goods"
+                    :key="`good-${item.id}`"
+                    :good="item"
+                    :showControl="true"
+                    @addGood="addGood"
+                    @deleteGood="deleteGood"
+                />
             </div>
         </template>
         <template
@@ -108,11 +76,12 @@
         </div>
         <button 
             class="button button-green"
-            @click.prevent="onClickAddGood"
+            @click.prevent="addGood()"
         >
             Добавить товар
         </button>
         <ModalAddGood
+            v-if="showAddGoodModal"
             :slug="slug"
             :showModal="showAddGoodModal"
             @hideModal="hideAddGoodModal"
@@ -123,11 +92,13 @@
 <script>
     import { urlPath } from '@/settings'
     import { user as userApi, product as productApi } from "@/services"
+    import blockGoodsItem from '@/components/block-goods-item.vue';
     import ModalAddGood from '@/components/modal-add-good.vue';
     import Pagination from '@/components/pagination.vue';
 
     export default {
         components: {
+            blockGoodsItem,
             ModalAddGood,
             Pagination,
         },

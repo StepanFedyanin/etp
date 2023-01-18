@@ -3,10 +3,10 @@
         <div class="good">
             <div class="container">
                 <template
-                    v-if="showLoaderSending"
+                    v-if="this.showLoaderSending['product']"
                 >
                     <div class="good__loader loader">
-                        <div class="spinner" /> Загрузка данных
+                        <div class="spinner" /> Загрузка данных о товаре
                     </div>
                 </template>
                 <template
@@ -65,13 +65,25 @@
                         </div>
                         <div class="good__block-right">
                             <div class="good__price">
-                                <div class="good__price-value">50 000 ₽</div>
+                                <div class="good__price-value">
+                                    {{ $helpers.toPrice(good.price, { sign: good.currency_detail }) }}
+                                </div>
                                 <button class="button button-green good__price-button">Отправить заявку</button>
                             </div>
 
-                            <div class="good__photo m--no-photo">
+                            <div 
+                                class="good__photo"
+                                :class="good.photo ? '' : 'm--no-photo'"
+                            >
                                 <div class="good__photo-inner">
-                                    
+                                    <template
+                                        v-if="good.photo"
+                                    >
+                                        <img 
+                                            :src="`${urlPath}${good.photo}`"
+                                            :alt="good.name"
+                                        />
+                                    </template>
                                 </div>
                             </div>
                         </div>
@@ -84,63 +96,79 @@
                             @toggleFavorite="toggleFavorite"
                         />
                     </div>
-
+                </template>
+                <template
+                    v-if="goodsOrganizationTotal"
+                >
                     <div class="good__list goods">
                         <div class="goods__title">
-                            Все товары поставщика <span>(105)</span>
+                            Все товары поставщика <span>({{ goodsOrganizationTotal }})</span>
                         </div>
-                        <div class="goods__block">
-                            <div class="goods__item">
-                                <router-link
-                                    :to="{ name: 'product', params: { slug: 'test' } }"
-                                    class="goods__item-photo m--no-photo"
-                                >
-                                    <div class="goods__item-photo-inner">
-                                        
-                                    </div>
-                                </router-link>
-                                <div 
-                                    class="goods__item-info"
-                                >
-                                    <div class="goods__item-price">123 006 000 ₽</div>
-                                    <div class="goods__item-desc">Длинное название запчасти на автомобиль КамАЗ, УАЗ, ЗИЛ, Газель, удлинненное до немыслимых размеров</div>
-                                </div>
-                                <div class="goods__item-control">
-                                    <a href="#" class="goods__item-control-link m--change">Изменить</a>
-                                    <a href="#" class="goods__item-control-link m--delete">Удалить</a>
-                                </div>
+                        <div 
+                            class="goods__block"
+                        >
+                            <blockGoodsItem
+                                v-for="item in goodsOrganization"
+                                :key="`good-organization-${item.id}`"
+                                :good="item"
+                                :showCategory="true"
+                                :showOrganization="false"
+                            />
+                        </div>
+                        <template
+                            v-if="this.showLoaderSending['organization']"
+                        >
+                            <div class="good__loader loader">
+                                <div class="spinner" /> Загрузка данных о товарах поставщика
                             </div>
-                        </div>
-                        <button class="button button-outline-green goods__more">показать еще</button>
+                        </template>
+                        <template
+                            v-else
+                        >
+                            <button 
+                                v-if="goodsOrganizationTotal > goodsOrganization.length"
+                                class="button button-outline-green goods__more"
+                                @click.prevent="getOrganizationProducts()"
+                            >
+                                показать еще
+                            </button>
+                        </template>
                     </div>
-
+                </template>
+                <template
+                    v-if="goodsCategoryTotal"
+                >
                     <div class="good__list goods">
                         <div class="goods__title">
-                            Товары из категории «Банковские и финансовые услуги, кредит» <span>(105)</span>
+                            Товары из категории «{{ good.category_detail.name }}» <span>({{ goodsCategoryTotal }})</span>
                         </div>
                         <div class="goods__block">
-                            <div class="goods__item">
-                                <router-link
-                                    :to="{ name: 'product', params: { slug: 'test' } }"
-                                    class="goods__item-photo m--no-photo"
-                                >
-                                    <div class="goods__item-photo-inner">
-                                        
-                                    </div>
-                                </router-link>
-                                <div 
-                                    class="goods__item-info"
-                                >
-                                    <div class="goods__item-price">123 006 000 ₽</div>
-                                    <div class="goods__item-desc">Длинное название запчасти на автомобиль КамАЗ, УАЗ, ЗИЛ, Газель, удлинненное до немыслимых размеров</div>
-                                </div>
-                                <div class="goods__item-control">
-                                    <a href="#" class="goods__item-control-link m--change">Изменить</a>
-                                    <a href="#" class="goods__item-control-link m--delete">Удалить</a>
-                                </div>
-                            </div>
+                            <blockGoodsItem
+                                v-for="item in goodsCategory"
+                                :key="`good-category-${item.id}`"
+                                :good="item"
+                                :showCategory="false"
+                                :showOrganization="true"
+                            />
                         </div>
-                        <button class="button button-outline-green goods__more">показать еще</button>
+                        <template
+                            v-if="this.showLoaderSending['category']"
+                        >
+                            <div class="good__loader loader">
+                                <div class="spinner" /> Загрузка данных о товарах категории
+                            </div>
+                        </template>
+                        <template
+                            v-else
+                        >
+                            <button 
+                                v-if="goodsCategoryTotal > goodsCategory.length"
+                                class="button button-outline-green goods__more"
+                                @click.prevent="getCategoryProducts()"
+                            >
+                                показать еще
+                            </button>
+                        </template>
                     </div>
                 </template>
             </div>
@@ -150,13 +178,16 @@
 
 <script>
     //import { category as api } from "@/services"
+    import { urlPath } from '@/settings';
     import { user as api, product as productApi } from "@/services";
     import blockContragent from '@/components/block-contragent.vue';
+    import blockGoodsItem from '@/components/block-goods-item.vue';
 
     export default {
         name: 'Product',
         components: {
-            blockContragent
+            blockContragent,
+            blockGoodsItem
         },
         props: {
             slug: {
@@ -166,8 +197,25 @@
         },
         data() {
             return {
-                good: {},
-                showLoaderSending: false,
+                urlPath,
+                good: null,
+                goodsOrganization: null,
+                goodsOrganizationTotal: null,
+                goodsOrganizationLimit: 18,
+                goodsOrganizationOffset: 0,
+                goodsCategory: null,
+                goodsCategoryTotal: null,
+                goodsCategoryLimit: 18,
+                goodsCategoryOffset: 0,
+                showLoaderSending: {},
+            }
+        },
+        watch: {
+            slug: {
+                immediate: true,
+                handler() {
+                    this.getProduct();
+                },
             }
         },
         computed: {
@@ -176,20 +224,72 @@
             },
         },
         mounted() {
-            this.getProduct();
         },
         methods: {
             getProduct() {
-                this.showLoaderSending = true;
+                this.showLoaderSending['product'] = true;
+                this.goodsOrganization = null;
+                this.goodsOrganizationOffset = 0;
+                this.goodsCategory = null;
+                this.goodsCategoryOffset = 0;
                 let params = {
                 };
                 productApi.getProduct(this.slug, params).then(res => {
                     console.log(res);
                     this.good = res;
-                    this.showLoaderSending = false;
+                    this.showLoaderSending['product'] = false;
+                    this.getOrganizationProducts();
+                    this.getCategoryProducts();
                 }).catch(err => {
-                    this.showLoaderSending = false;
-                    this.loading = false;
+                    this.showLoaderSending['product'] = false;
+                    this.$store.dispatch('showError', err);
+                    console.error(err);
+                });
+            },
+            getOrganizationProducts() {
+                this.showLoaderSending['organization'] = true;
+                let params = {
+                    limit: this.goodsOrganizationLimit,
+                    offset: this.goodsOrganizationOffset,
+                    organization: this.good.organization.id,
+                    exclude_slug: this.slug
+                };
+                productApi.getProducts(params).then(res => {
+                    console.log(res);
+                    if (!this.goodsOrganization) {
+                        this.goodsOrganization = res.results;
+                    } else {
+                        this.goodsOrganization = [...this.goodsOrganization, ...res.results];
+                    }
+                    this.goodsOrganizationOffset = this.goodsOrganizationOffset + this.goodsOrganizationLimit;
+                    this.goodsOrganizationTotal = res.count;
+                    this.showLoaderSending['organization'] = false;
+                }).catch(err => {
+                    this.showLoaderSending['organization'] = false;
+                    this.$store.dispatch('showError', err);
+                    console.error(err);
+                });
+            },
+            getCategoryProducts() {
+                this.showLoaderSending['category'] = true;
+                let params = {
+                    limit: this.goodsCategoryLimit,
+                    offset: this.goodsCategoryOffset,
+                    category: this.good.category,
+                    exclude_slug: this.slug
+                };
+                productApi.getProducts(params).then(res => {
+                    console.log(res);
+                    if (!this.goodsCategory) {
+                        this.goodsCategory = res.results;
+                    } else {
+                        this.goodsCategory = [...this.goodsCategory, ...res.results];
+                    }
+                    this.goodsCategoryOffset = this.goodsCategoryOffset + this.goodsCategoryLimit;
+                    this.goodsCategoryTotal = res.count;
+                    this.showLoaderSending['category'] = false;
+                }).catch(err => {
+                    this.showLoaderSending['category'] = false;
                     this.$store.dispatch('showError', err);
                     console.error(err);
                 });
