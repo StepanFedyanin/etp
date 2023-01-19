@@ -127,7 +127,6 @@
         },
         data() {
             return {
-                //good: {},
                 urlPath,
                 formValues: {},
                 showLoaderSending: false,
@@ -263,11 +262,7 @@
             getProduct() {
                 this.showLoaderSending = true;
                 this.busyForm = true;
-                let params = {
-                };
-                productApi.getProduct(this.slug, params).then(res => {
-                    console.log(res);
-                    //this.formValues = res;
+                productApi.getProduct(this.slug, {}).then(res => {
                     this.formValues = {
                         category: res.category,
                         name: res.name,
@@ -321,36 +316,20 @@
                 }
             },
             uploaPhotoComplete(event) {
-                console.log(event.target);
                 let file = event.target.files ? event.target.files[0] : null
                 if (file) {
-                    /*
-                    const data = new FormData();
-                    data.append('photo', file);
-                    */
                     this.formValues.photo = file;
                     this.formValues.small_photo = URL.createObjectURL(file);
-
-                    //this.busyForm = true;
-                    /*
-                    api.updateOrganization(this.organization.id, data).then(res => {
-                        this.$emit('getMyProfile');
-                        this.busyForm = false;
-                    }).catch(err => {
-                        this.busyForm = false;
-                        this.$store.dispatch('showError', err);
-                        console.error(err);
-                    });
-                    */
                 }
             },
             submitAddGoodForm(formData, node) {
                 console.log(formData);
                 const data = new FormData();
                 Object.keys(this.formValues).forEach(key => {
-                    data.append(key, this.formValues[key]);
+                    if (this.formValues[key]) {
+                        data.append(key, this.formValues[key]);
+                    }
                 });
-                //data.append('photo', file);
                 this.showLoaderSending = true;
                 //this.loading = true;
                 let params = Object.assign({}, this.formValues);
