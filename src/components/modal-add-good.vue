@@ -142,7 +142,7 @@
                         groups: true,
                         closeOnSelect: true,
                         label: 'Категория',
-                        placeholder: 'Выберите категорию из списка собственных видов деятельности',
+                        placeholder: 'Выберите категорию товара',
                         searchable: true,
                         minChars: 1,
                         validation: 'required',
@@ -188,16 +188,6 @@
                         labelClass: '$reset field__label',
                         outerClass: '$reset modal-form__field m--width-100',
                     }, {
-                        $formkit: 'maska',
-                        name: 'price',
-                        maska: { mask: '#*D##', tokens: { 'D': { pattern: /\./ }}},
-                        label: 'Цена за единицу, руб',
-                        placeholder: 'Цена, соответствующая единице измерения, с учетом НДС',
-                        validation: 'required',
-                        inputClass: 'modal-form__input',
-                        labelClass: '$reset field__label',
-                        outerClass: '$reset modal-form__field m--width-100',
-                    }, {
                         $formkit: 'multiselect',
                         mode: 'single',
                         name: 'currency',
@@ -221,6 +211,16 @@
                                 console.error(err);
                             })
                         },
+                        inputClass: 'modal-form__input',
+                        labelClass: '$reset field__label',
+                        outerClass: '$reset modal-form__field m--width-100',
+                    }, {
+                        $formkit: 'maska',
+                        name: 'price',
+                        maska: { mask: '#*D##', tokens: { 'D': { pattern: /\./ }}},
+                        label: 'Цена за единицу',
+                        placeholder: 'Цена, соответствующая единице измерения, с учетом НДС',
+                        validation: 'required',
                         inputClass: 'modal-form__input',
                         labelClass: '$reset field__label',
                         outerClass: '$reset modal-form__field m--width-100',
@@ -275,7 +275,7 @@
                         currency: res.currency,
                         unit: res.unit,
                         description: res.description,
-                        photo: res.photo,
+                        //photo: res.photo,
                         small_photo: res.small_photo ? `${urlPath}${res.small_photo}` : null,
                     };
                     this.formValues.category = {
@@ -348,9 +348,7 @@
                 console.log(formData);
                 const data = new FormData();
                 Object.keys(this.formValues).forEach(key => {
-                    if (this.formValues[key]) {
-                        data.append(key, this.formValues[key]);
-                    }
+                    data.append(key, this.formValues[key]);
                 });
                 //data.append('photo', file);
                 this.showLoaderSending = true;
@@ -373,7 +371,7 @@
                         console.error(err);
                     });
                 } else {
-                    productApi.addProduct(params).then(res => {
+                    productApi.addProduct(data).then(res => {
                         this.showLoaderSending = false;
                         this.loading = false;
                         this.productSended = true;

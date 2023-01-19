@@ -85,7 +85,10 @@
                                 </div>
                             </div> 
 
-                            <div class="good__block-info">
+                            <div 
+                                v-if="good.description"
+                                class="good__block-info"
+                            >
                                 <div class="good__block-title">
                                     О товаре
                                 </div>
