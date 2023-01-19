@@ -2,7 +2,7 @@
     <vue-final-modal 
         v-model="show"
         classes="modal__container" 
-        content-class="modal__block"
+        content-class="modal__block m--middle"
         @click-outside="$emit('hideModal', updateData)"
     >
         <button 
@@ -41,15 +41,20 @@
                     <div class="goods__form-photo">
                         <div class="field">
                             <div class="field__inner">
-                                <label class="field__label" for="photo">Фотография</label>
+                                <label 
+                                    class="field__label" 
+                                    for="photo"
+                                >
+                                    Фотография
+                                </label>
                                 <div class="field__input m--hidden">
                                     <input
                                         ref="photoInput"
+                                        id="photo"
                                         accept=".jpg,.png,.svg" 
                                         class="input" 
                                         type="file" 
                                         name="photo" 
-                                        id="photo"
                                     >
                                 </div>
                             </div>
@@ -343,7 +348,9 @@
                 console.log(formData);
                 const data = new FormData();
                 Object.keys(this.formValues).forEach(key => {
-                    data.append(key, this.formValues[key]);
+                    if (this.formValues[key]) {
+                        data.append(key, this.formValues[key]);
+                    }
                 });
                 //data.append('photo', file);
                 this.showLoaderSending = true;

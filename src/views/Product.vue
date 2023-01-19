@@ -1,9 +1,34 @@
 <template>
     <div class="app__main">
+        <div 
+            v-if="!showLoaderSending['product']"
+            class="container"
+        >
+            <div class="app__breadcrumbs">
+                <a
+                    href="/"
+                    class="app__breadcrumbs-link"
+                >
+                    Главная страница
+                </a>
+                <a
+                    href="#"
+                    class="app__breadcrumbs-link"
+                >
+                    {{ good.category_detail.parent.name }}
+                </a>
+                <a
+                    href="#"
+                    class="app__breadcrumbs-link"
+                >
+                    {{ good.category_detail.name }}
+                </a>
+            </div>
+        </div>
         <div class="good">
             <div class="container">
                 <template
-                    v-if="this.showLoaderSending['product']"
+                    v-if="showLoaderSending['product']"
                 >
                     <div class="good__loader loader">
                         <div class="spinner" /> Загрузка данных о товаре
@@ -24,9 +49,12 @@
                                     <div class="good__param-name">
                                         Поставщик
                                     </div>
-                                    <div class="good__param-data">
+                                    <router-link 
+                                        :to="{ name: 'contragent', params: { id: good.organization.id } }"
+                                        class="good__param-data"
+                                    >
                                         {{ good.organization.name }}
-                                    </div>
+                                    </router-link>
                                 </div>
 
                                 <div class="good__param">
@@ -48,8 +76,12 @@
                                 </div>
 
                                 <div class="good__param">
-                                    <div class="good__param-name">Код позиции ЭТП</div>
-                                    <div class="good__param-data">A-12-35120</div>
+                                    <div class="good__param-name">
+                                        Код позиции ЭТП
+                                    </div>
+                                    <div class="good__param-data">
+                                        {{ good.category_detail.parent.code }}-{{ good.category_detail.code }}-{{ good.id }}
+                                    </div>
                                 </div>
                             </div> 
 
@@ -68,7 +100,12 @@
                                 <div class="good__price-value">
                                     {{ $helpers.toPrice(good.price, { sign: good.currency_detail }) }}
                                 </div>
-                                <button class="button button-green good__price-button">Отправить заявку</button>
+                                <button 
+                                    class="button button-green good__price-button"
+                                    @click.prevent="requestGood()"
+                                >
+                                    Отправить заявку
+                                </button>
                             </div>
 
                             <div 
@@ -90,7 +127,9 @@
                     </div>
 
                     <div class="good__contragent contragent">
-                        <div class="good__contragent-title">О поставщике</div>
+                        <div class="good__contragent-title">
+                            О поставщике
+                        </div>
                         <blockContragent 
                             :contragent="good.organization"
                             @toggleFavorite="toggleFavorite"
@@ -116,7 +155,7 @@
                             />
                         </div>
                         <template
-                            v-if="this.showLoaderSending['organization']"
+                            v-if="showLoaderSending['organization']"
                         >
                             <div class="good__loader loader">
                                 <div class="spinner" /> Загрузка данных о товарах поставщика
@@ -128,7 +167,7 @@
                             <button 
                                 v-if="goodsOrganizationTotal > goodsOrganization.length"
                                 class="button button-outline-green goods__more"
-                                @click.prevent="getOrganizationProducts()"
+                                @click.prevent="getOrganizationGoods()"
                             >
                                 показать еще
                             </button>
@@ -152,7 +191,7 @@
                             />
                         </div>
                         <template
-                            v-if="this.showLoaderSending['category']"
+                            v-if="showLoaderSending['category']"
                         >
                             <div class="good__loader loader">
                                 <div class="spinner" /> Загрузка данных о товарах категории
@@ -164,7 +203,7 @@
                             <button 
                                 v-if="goodsCategoryTotal > goodsCategory.length"
                                 class="button button-outline-green goods__more"
-                                @click.prevent="getCategoryProducts()"
+                                @click.prevent="getCategoryGoods()"
                             >
                                 показать еще
                             </button>
@@ -173,6 +212,12 @@
                 </template>
             </div>
         </div>
+        <ModalRequestGood
+            v-if="showRequestGoodModal"
+            :good="good"
+            :showModal="showRequestGoodModal"
+            @hideModal="hideRequestGoodModal"
+        />
     </div>
 </template>
 
@@ -182,12 +227,14 @@
     import { user as api, product as productApi } from "@/services";
     import blockContragent from '@/components/block-contragent.vue';
     import blockGoodsItem from '@/components/block-goods-item.vue';
+    import ModalRequestGood from '@/components/modal-request-good.vue';
 
     export default {
         name: 'Product',
         components: {
             blockContragent,
-            blockGoodsItem
+            blockGoodsItem,
+            ModalRequestGood
         },
         props: {
             slug: {
@@ -208,14 +255,7 @@
                 goodsCategoryLimit: 18,
                 goodsCategoryOffset: 0,
                 showLoaderSending: {},
-            }
-        },
-        watch: {
-            slug: {
-                immediate: true,
-                handler() {
-                    this.getProduct();
-                },
+                showRequestGoodModal: false,
             }
         },
         computed: {
@@ -223,10 +263,18 @@
                 return this.$store.state.user;
             },
         },
+        watch: {
+            slug: {
+                immediate: true,
+                handler() {
+                    this.getGood();
+                },
+            }
+        },
         mounted() {
         },
         methods: {
-            getProduct() {
+            getGood() {
                 this.showLoaderSending['product'] = true;
                 this.goodsOrganization = null;
                 this.goodsOrganizationOffset = 0;
@@ -238,15 +286,15 @@
                     console.log(res);
                     this.good = res;
                     this.showLoaderSending['product'] = false;
-                    this.getOrganizationProducts();
-                    this.getCategoryProducts();
+                    this.getOrganizationGoods();
+                    this.getCategoryGoods();
                 }).catch(err => {
                     this.showLoaderSending['product'] = false;
                     this.$store.dispatch('showError', err);
                     console.error(err);
                 });
             },
-            getOrganizationProducts() {
+            getOrganizationGoods() {
                 this.showLoaderSending['organization'] = true;
                 let params = {
                     limit: this.goodsOrganizationLimit,
@@ -270,7 +318,7 @@
                     console.error(err);
                 });
             },
-            getCategoryProducts() {
+            getCategoryGoods() {
                 this.showLoaderSending['category'] = true;
                 let params = {
                     limit: this.goodsCategoryLimit,
@@ -303,6 +351,18 @@
                     console.error(err);
                 });
             },
+            requestGood() {
+                console.log('BLA');
+                this.showRequestGoodModal = true;
+            },
+            hideRequestGoodModal(updateData) {
+                this.showRequestGoodModal = false;
+                if (updateData) {
+                    this.getGood();
+                    //this.$emit('getTenderData');
+                }
+            },
+
         },
     }
 </script>

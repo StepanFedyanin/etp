@@ -74,6 +74,7 @@
         },
         mounted() {
             console.log(this.$route);
+            this.$store.dispatch('hideError');
         },
         errorCaptured(err, vm, info) {
             console.error('Local error', err.message, vm, info);

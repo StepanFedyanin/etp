@@ -30,7 +30,9 @@
         <template
             v-else
         >
-            <div class="tenders__empty">В данный момент у вас нет ни одного товара</div> 
+            <div class="tenders__empty">
+                В данный момент у вас нет ни одного товара
+            </div> 
         </template>
         <div
             class="goods__pagination"
@@ -90,7 +92,7 @@
 </template>
 
 <script>
-    import { urlPath } from '@/settings'
+    //import { urlPath } from '@/settings'
     import { user as userApi, product as productApi } from "@/services"
     import blockGoodsItem from '@/components/block-goods-item.vue';
     import ModalAddGood from '@/components/modal-add-good.vue';
