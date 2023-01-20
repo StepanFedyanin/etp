@@ -114,61 +114,6 @@
                                     :key="`tender-${index}`"
                                     :tender="tender"
                                 />
-                                <!--
-                                <div
-                                    v-for="item in tenderList.results"
-                                    :key="item.id"
-                                    class="auction__item"
-                                >
-                                    <div class="auction__item-left">
-                                        <div class="auction__item-title">
-                                            {{ item.name }}
-                                        </div>
-                                        <div class="auction__item-price m--mobile">
-                                            {{ $helpers.toPrice(item.price, {sign: '₽'}) }}
-                                        </div>
-                                        <div class="auction__item-description">
-                                            {{ item.description }}
-                                        </div>
-                                        <div class="auction__item-foot">
-                                            <div class="auction__item-status">
-                                                {{ item.status }}
-                                            </div>
-                                            <div
-                                                class="auction__item-button"
-                                            >
-                                                <button
-                                                    class="button button-green"
-                                                    @click="$router.push({ name: 'tender', params: { id: item.id } });"
-                                                >
-                                                    Участвовать
-                                                </button>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="auction__item-right">
-                                        <div class="auction__item-price">
-                                            {{ $helpers.toPrice(item.price, {sign: '₽'}) }}
-                                        </div>
-                                        <div class="auction__item-prop">
-                                            Тип аукциона: {{ item.type }}
-                                        </div>
-                                        <div class="auction__item-prop">
-                                            Лоты: {{ item.lot_count }}
-                                        </div>
-                                        <div class="auction__item-prop">
-                                            Категории:
-                                            <span
-                                                v-for="(category, idx) in item.category"
-                                                :key="category.id"
-                                            >
-                                                {{ category.name }}
-                                                <span v-if="idx != Object.keys(item.category).length - 1">, </span>
-                                            </span>
-                                        </div>
-                                    </div>
-                                </div>
-                                -->
                             </div>
                         </template>
                     </div>
@@ -540,7 +485,6 @@
             startSearch(formData) {
                 formData.limit = Number(this.limit)
                 formData.offset = this.offset
-                console.log(formData)
                 tender.searchTenders(formData)
                     .then(tenders => {
                         console.log(tenders)
@@ -570,7 +514,6 @@
                 category.getCategoryList(params).then(res => {
                     this.groups = res
                     this.showLoaderGroups = false;
-                    // console.log(res)
                 }).catch(err => {
                     this.showLoaderGroups = false;
                     console.error(err)

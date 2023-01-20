@@ -73,13 +73,13 @@
                                     <span>Лот:</span> {{ lot.name }}
                                 </div>
                                 <div class="offers__item-param m--winner">
-                                    <span>Начальная цена:</span> {{ $helpers.toPrice(lot.price * lot.quantity || 0, { sign: '₽', pointer: ',' }) }}
+                                    <span>Начальная цена:</span> {{ $helpers.toPrice(lot.price * lot.quantity || 0, { sign: tender.currency_detail, pointer: ',' }) }}
                                 </div>
                                 <div 
                                     v-if="lot.winner_bet && lot.winner_bet.price"
                                     class="offers__item-param m--winner"
                                 >
-                                    <span>Ставка текущего победителя:</span> {{ $helpers.toPrice(lot.winner_bet.price || 0, { sign: '₽', pointer: ',' }) }}
+                                    <span>Ставка текущего победителя:</span> {{ $helpers.toPrice(lot.winner_bet.price || 0, { sign: tender.currency_detail, pointer: ',' }) }}
                                 </div>
                                 <div 
                                     v-else
@@ -177,7 +177,7 @@
                             return await tenderApi.getTenderLotUsers(this.tender.id, this.lot.id).then(res => {
                                 console.log(res);
                                 return res.map((bet) => {
-                                    return { label: bet.organization.name, price: bet.price, value: { bet: bet.id, winner: bet.user.id } }
+                                    return { label: bet.organization.name, price: bet.price, currency_detail: tender.currency_detail, value: { bet: bet.id, winner: bet.user.id } }
                                 });
                             }).catch(err => {
                                 console.error(err);

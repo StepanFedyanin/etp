@@ -145,7 +145,7 @@
                         $formkit: 'maska',
                         name: 'price',
                         maska: { mask: '#*D##', tokens: { 'D': { pattern: /\./ }}},
-                        label: 'Цена за единицу, руб',
+                        label: `Цена за единицу, ${this.tender.currency_detail}`,
                         placeholder: "Введите цену за единицу",
                         validation: (this.tender.kind === 'tender') ? 'required' : null,
                         inputClass: 'modal-form__input',

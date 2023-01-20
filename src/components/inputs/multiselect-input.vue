@@ -57,7 +57,7 @@
             >
                 <div class="multiselect-bet__inner">
                     <div class="multiselect-bet__name">{{ option.label }}</div>
-                    <div class="multiselect-bet__price">{{ $helpers.toPrice(option.price || 0, { sign: '₽', pointer: ',' }) }}</div>
+                    <div class="multiselect-bet__price">{{ $helpers.toPrice(option.price || 0, { sign: option.currency_detail, pointer: ',' }) }}</div>
                 </div>
             </div>
             <div 

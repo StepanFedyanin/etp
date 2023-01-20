@@ -45,7 +45,7 @@
                             </div>
                             <div class="offers__item-info">
                                 <div class="offers__item-param">
-                                    Начальная цена <span>{{ $helpers.toPrice(lot.price * lot.quantity || 0, { sign: '₽', pointer: ',' }) }}</span>
+                                    Начальная цена <span>{{ $helpers.toPrice(lot.price * lot.quantity || 0, { sign: tender.currency_detail, pointer: ',' }) }}</span>
                                 </div>
                                 <template
                                     v-if="tender.kind === 'tender'"
@@ -55,7 +55,7 @@
                                         <span
                                             v-if="lot.last_price"
                                         >
-                                            {{ $helpers.toPrice(lot.last_price || 0, { sign: '₽', pointer: ',' }) }}
+                                            {{ $helpers.toPrice(lot.last_price || 0, { sign: tender.currency_detail, pointer: ',' }) }}
                                         </span>
                                         <span
                                             v-else
@@ -75,7 +75,7 @@
                                         <span
                                             v-if="lot.user_price"
                                         >
-                                            {{ $helpers.toPrice(lot.user_price || 0, { sign: '₽', pointer: ',' }) }}
+                                            {{ $helpers.toPrice(lot.user_price || 0, { sign: tender.currency_detail, pointer: ',' }) }}
                                         </span>
                                         <span
                                             v-else
@@ -107,7 +107,7 @@
                                         <template
                                             v-if="tender.kind === 'tender'"
                                         >
-                                            Минимальная ставка: <span>{{ $helpers.toPrice(lot.min_price || 0, { sign: '₽', pointer: ',' }) }}</span> (шаг цены - <span>{{ tender.min_step }} %</span>)
+                                            Минимальная ставка: <span>{{ $helpers.toPrice(lot.min_price || 0, { sign: tender.currency_detail, pointer: ',' }) }}</span> (шаг цены - <span>{{ tender.min_step }} %</span>)
                                         </template>
                                     </div>
                                     <FormKit

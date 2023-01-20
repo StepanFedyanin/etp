@@ -85,11 +85,11 @@
                     <div class="lots__item-params">
                         <div class="lots__item-param m--underline">
                             {{ lot.quantity }} {{ lot.unit }}
-                            <span>{{ $helpers.toPrice(lot.price, { sign: '₽ / ед.' }) }}</span>
+                            <span>{{ $helpers.toPrice(lot.price, { sign: `${tender.currency_detail} / ед.` }) }}</span>
                         </div>
                         <div class="lots__item-param">
                             Начальная цена:
-                            <span>{{ $helpers.toPrice(lot.price * lot.quantity, { sign: '₽' }) }}</span>
+                            <span>{{ $helpers.toPrice(lot.price * lot.quantity, { sign: tender.currency_detail }) }}</span>
                         </div>
                         <div 
                             v-if="tender.kind === 'tender'"
@@ -99,7 +99,7 @@
                             <span
                                 v-if="lot.last_price"
                             >
-                                {{ $helpers.toPrice(lot.last_price, { sign: '₽' }) }}
+                                {{ $helpers.toPrice(lot.last_price, { sign: tender.currency_detail }) }}
                             </span>
                             <span
                                 v-else
@@ -112,7 +112,7 @@
                             <span
                                 v-if="lot.user_price"
                             >
-                                {{ $helpers.toPrice(lot.user_price, { sign: '₽' }) }}
+                                {{ $helpers.toPrice(lot.user_price, { sign: tender.currency_detail }) }}
                             </span>
                             <span
                                 v-else

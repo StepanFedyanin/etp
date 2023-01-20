@@ -11,7 +11,7 @@
                 {{ tender.name }}
             </router-link>
             <div class="tenders__item-price m--mobile">
-                {{ $helpers.toPrice(tender.price, {sign: '₽'}) }}
+                {{ $helpers.toPrice(tender.price, {sign: tender.currency_detail}) }}
             </div>
             <!-- <div class="tenders__item-param">
                 <span class="tenders__item-param-name">Заказчик: </span> 
@@ -43,7 +43,7 @@
         </div>
         <div class="tenders__item-right">
             <div class="tenders__item-price">
-                {{ $helpers.toPrice(tender.price, {sign: '₽'}) }}
+                {{ $helpers.toPrice(tender.price, {sign: tender.currency_detail}) }}
             </div>
             <div class="tenders__item-param">
                 <span class="tenders__item-param-name">{{ tender.kind_detail }} №{{ tender.id }}</span>
@@ -54,7 +54,7 @@
                     class="tenders__item-param-name">Объявлено:</span> {{ $helpers.formatDate(new Date(tender.date_start), 'DD.MM.YYYY HH:mm') }} МСК
             </div> -->
             <div class="tenders__item-param">
-                <span class="tenders__item-param-name">Тип аукциона:</span> {{ tender.type }}
+                <span class="tenders__item-param-name">Доступ:</span> {{ tender.type }}
             </div>
             <div class="tenders__item-param">
                 <span class="tenders__item-param-name">Лоты:</span> {{ tender.lot_count }}

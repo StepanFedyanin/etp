@@ -75,10 +75,10 @@
                                 {{ lot.nds_detail }}
                             </div>
                             <div class="lots__item-cell">
-                                {{ $helpers.toPrice(lot.price, { sign: '₽', pointer: ',' }) }}
+                                {{ lot.price ? $helpers.toPrice(lot.price, { sign: tender.currency_detail, pointer: ',' }) : '—' }}
                             </div>
                             <div class="lots__item-cell">
-                                {{ $helpers.toPrice(lot.quantity * lot.price, { sign: '₽', pointer: ',' }) }}
+                                {{ lot.price ? $helpers.toPrice(lot.quantity * lot.price, { sign: tender.currency_detail, pointer: ',' }) : '—' }}
                             </div>
                             <template
                                 v-if="tender.status === 'bidding_process' && (user.id === tender.creator || user.is_staff)"
@@ -99,7 +99,7 @@
                                     <template
                                         v-if="lot.last_bet"
                                     >
-                                        {{ $helpers.toPrice(lot.last_bet.price || 0, { sign: '₽', pointer: ',' }) }}
+                                        {{ $helpers.toPrice(lot.last_bet.price || 0, { sign: tender.currency_detail, pointer: ',' }) }}
                                     </template>
                                     <template
                                         v-else
@@ -127,7 +127,7 @@
                                     <template
                                         v-if="lot.winner_bet.price"
                                     >
-                                        {{ $helpers.toPrice(lot.winner_bet.price || 0, { sign: '₽', pointer: ',' }) }}
+                                        {{ $helpers.toPrice(lot.winner_bet.price || 0, { sign: tender.currency_detail, pointer: ',' }) }}
                                     </template>
                                     <template
                                         v-else
@@ -165,7 +165,7 @@
                                     <template
                                         v-if="lot.winner_bet && lot.winner_bet.price"
                                     >
-                                        {{ $helpers.toPrice(lot.winner_bet.price || 0, { sign: '₽', pointer: ',' }) }}
+                                        {{ $helpers.toPrice(lot.winner_bet.price || 0, { sign: tender.currency_detail, pointer: ',' }) }}
                                     </template>
                                     <template
                                         v-else

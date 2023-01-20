@@ -34,7 +34,7 @@ import cabinetTendersList from '@/views/CabinetTendersList';
 import cabinetTendersItem from '@/views/CabinetTendersItem';
 import cabinetTendersStart from '@/views/CabinetTendersStart';
 import cabinetTendersStartForm from '@/views/CabinetTendersStartForm';
-import cabinetTendersEnd from '@/views/CabinetTendersEnd';
+//import cabinetTendersEnd from '@/views/CabinetTendersEnd';
 import cabinetContragents from '@/views/CabinetContragents';
 import cabinetContragentsList from '@/views/CabinetContragentsList';
 import cabinetContragentsItem from '@/views/CabinetContragentsItem';
@@ -244,6 +244,7 @@ const routes = [
                     requiresAuth: true 
                 },
                 props: true,
+            /*
             }, {
                 path: ':id/end',
                 name: 'tender-end',
@@ -254,6 +255,8 @@ const routes = [
                     requiresAuth: true 
                 },
                 props: true,
+
+            */
             }, 
         ]
     }, {

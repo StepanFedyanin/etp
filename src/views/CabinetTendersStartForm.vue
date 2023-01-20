@@ -250,10 +250,10 @@
                                             {{ lot.nds_detail }}
                                         </div>
                                         <div class="lots__item-cell">
-                                            {{ $helpers.toPrice(lot.price, { pointer: ',', sign: '₽' }) }}
+                                            {{ lot.price ? $helpers.toPrice(lot.price, { pointer: ',', sign: defaultTender.currency_detail }) : '—' }}
                                         </div>
                                         <div class="lots__item-cell">
-                                            {{ $helpers.toPrice(lot.price * lot.quantity, { pointer: ',', sign: '₽' }) }}
+                                            {{ lot.price ? $helpers.toPrice(lot.price * lot.quantity, { pointer: ',', sign: defaultTender.currency_detail }) : '—' }}
                                         </div>
                                         <div class="lots__item-cell m--edit">
                                             <div
@@ -959,6 +959,7 @@
                     fromParent: true,
                     value: null
                 }
+                this.tenderForm.currency_detail = '';
                 /*
                 this.tenderForm.supervisor = {
                     fromParent: true,
@@ -1119,6 +1120,7 @@
                         value: this.defaultTender.currency
                     }
                 }
+                this.tenderForm.currency_detail = this.defaultTender.currency_detail;
                 /*
                 this.tenderForm.supervisor = {
                     fromParent: true,

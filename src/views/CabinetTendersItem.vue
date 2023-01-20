@@ -205,7 +205,7 @@
                             {{ tender.name }}
                         </div>
                         <div class="tender__info-price m--mobile">
-                            {{ $helpers.toPrice(tender.price, { sign: '₽' }) }}
+                            {{ $helpers.toPrice(tender.price, { sign: tender.currency_detail }) }}
                         </div>
                         <div class="tender__info-param">
                             <span>Заказчик: </span> 
@@ -235,7 +235,7 @@
                     </div>
                     <div class="tender__info-right">
                         <div class="tender__info-price">
-                            {{ $helpers.toPrice(tender.price, { sign: '₽' }) }}
+                            {{ tender.price ? $helpers.toPrice(tender.price, {sign: tender.currency_detail}) : 'Цена не указана' }}
                         </div>
                         <div 
                             class="tender__info-param"
@@ -260,7 +260,7 @@
                             <span>Исполнение договора: до</span> {{ $helpers.formatDate(new Date(tender.date_fulfilment), 'DD.MM.YYYY HH:mm', 'Europe/Moscow') }} МСК
                         </div>
                         <div class="tender__info-param">
-                            <span>Тип аукциона:</span> {{ tender.type_detail }}
+                            <span>Доступ:</span> {{ tender.type_detail }}
                         </div>
                         <div 
                             v-if="tender.kind === 'tender'"

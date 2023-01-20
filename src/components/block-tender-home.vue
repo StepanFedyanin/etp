@@ -16,7 +16,7 @@
                 {{ tender.name }}
             </router-link>
             <div class="tenders__item-price m--mobile">
-                {{ $helpers.toPrice(tender.price, {sign: '₽'}) }}
+                {{ $helpers.toPrice(tender.price, {sign: tender.currency_detail}) }}
             </div>
             <div
                 v-if="tender.organization" 
@@ -44,7 +44,7 @@
         </div>
         <div class="tenders__item-right">
             <div class="tenders__item-price">
-                {{ $helpers.toPrice(tender.price, {sign: '₽'}) }}
+                {{ $helpers.toPrice(tender.price, {sign: tender.currency_detail}) }}
             </div>
             <div 
                 v-if="tender.date_publication"

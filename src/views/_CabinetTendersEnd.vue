@@ -68,7 +68,7 @@
                         <span>Объявлено:</span> 10.03.2022 11:59 МСК
                     </div>
                     <div class="tender__info-param">
-                        <span>Тип аукциона:</span> Открытый
+                        <span>Доступ:</span> Открытый
                     </div>
                     <div class="tender__info-param">
                         <span>Минимальный шаг ставки:</span> 5
