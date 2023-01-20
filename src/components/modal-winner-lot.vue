@@ -177,7 +177,7 @@
                             return await tenderApi.getTenderLotUsers(this.tender.id, this.lot.id).then(res => {
                                 console.log(res);
                                 return res.map((bet) => {
-                                    return { label: bet.organization.name, price: bet.price, currency_detail: tender.currency_detail, value: { bet: bet.id, winner: bet.user.id } }
+                                    return { label: bet.organization.name, price: bet.price, currency_detail: this.tender.currency_detail, value: { bet: bet.id, winner: bet.user.id } }
                                 });
                             }).catch(err => {
                                 console.error(err);
