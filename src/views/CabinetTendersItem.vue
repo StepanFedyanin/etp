@@ -47,6 +47,7 @@
                                 </div>
                                 <div class="tender__data-info">
                                     <Timer 
+                                        :dateCurrent="tender.date_request"
                                         :dateEnd="tender.date_start"
                                         :timerToDaysTime="true"
                                     />
@@ -66,6 +67,7 @@
                                 </div>
                                 <div class="tender__data-info">
                                     <Timer 
+                                        :dateCurrent="tender.date_request"
                                         :dateEnd="tender.date_end"
                                         :timerToDaysTime="true"
                                     />

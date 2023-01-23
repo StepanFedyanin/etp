@@ -8,6 +8,10 @@
 
     export default {
         props: {
+            dateCurrent: {
+                type: String,
+                default() { return null; }
+            },
             dateEnd: {
                 type: String,
                 default() { return null; }
@@ -70,7 +74,10 @@
         },
         created(){
             //{ timeZone: 'Europe/Moscow' }
-            this.timestampCurrent = new Date(new Date().toLocaleString('EN-en', { timeZone: 'Europe/Moscow' })).getTime();
+            //this.timestampCurrent = new Date(new Date().toLocaleString('EN-en', { timeZone: 'Europe/Moscow' })).getTime();
+            console.log(new Date(new Date().toLocaleString('EN-en', { timeZone: 'Europe/Moscow' })).getTime());
+            console.log( new Date(new Date(this.dateCurrent).toLocaleString('EN-en', { timeZone: 'Europe/Moscow' })).getTime());
+            this.timestampCurrent = new Date(new Date(this.dateCurrent).toLocaleString('EN-en', { timeZone: 'Europe/Moscow' })).getTime();
             this.timestampEnd = new Date(new Date(this.dateEnd).toLocaleString('EN-en', { timeZone: 'Europe/Moscow' })).getTime();
             this.difference = this.calculateDifference();
         },
