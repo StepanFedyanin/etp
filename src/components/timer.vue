@@ -24,7 +24,6 @@
                 timer: null,
                 time: '',
                 timestampCurrent: '',
-                moscowdatetime: '',
                 timestampEnd: '',
                 difference: undefined,
                 timerTime:'',
@@ -70,9 +69,9 @@
             this.stopTimer()
         },
         created(){
-            this.timestampCurrent = Date.now();
-            this.timestampEnd = new Date(this.dateEnd).getTime();
-            this.moscowdatetime = this.getMoscowDate();
+            //{ timeZone: 'Europe/Moscow' }
+            this.timestampCurrent = new Date(new Date().toLocaleString('EN-en', { timeZone: 'Europe/Moscow' })).getTime();
+            this.timestampEnd = new Date(new Date(this.dateEnd).toLocaleString('EN-en', { timeZone: 'Europe/Moscow' })).getTime();
             this.difference = this.calculateDifference();
         },
         methods: {
@@ -84,10 +83,6 @@
             },
             stopTimer() {
                 clearTimeout(this.timer)
-            },
-            getMoscowDate() {
-                const offset = +3;
-                return new Date( new Date().getTime() + offset * 3600 * 1000).toUTCString().replace( / GMT$/, "" ); // 3600 секунд в часе, 1000 для перевода в милисекунды
             },
             calculateDifference(){
                 return Math.round((this.timestampEnd - this.timestampCurrent)/1000);
