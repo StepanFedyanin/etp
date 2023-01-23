@@ -105,7 +105,13 @@ const helpers = {
         let limit = (end - start) / 1000;
         let days = Math.floor(Math.abs(limit / (3600 * 24)));
         let hours = Math.floor(Math.abs(limit / 3600 - days * 24));
-        let string = helpers.stringForNumber(days, ['день', 'дня', 'дней']) + ' ' + helpers.stringForNumber(hours, ['час', 'часа', 'часов']);
+        let mins = Math.floor(Math.abs(limit / 3600 - days * 24 - hours * 60));
+        let string = '';
+        if (days !== 0) {
+            string = helpers.stringForNumber(days, ['день', 'дня', 'дней']) + ' ' + helpers.stringForNumber(hours, ['час', 'часа', 'часов']);
+        } else {
+            string = helpers.stringForNumber(hours, ['час', 'часа', 'часов']) + ' ' + helpers.stringForNumber(mins, ['минута', 'минуты', 'минут']);
+        }
         return string;
     },
     timerToDaysTime(timer) {

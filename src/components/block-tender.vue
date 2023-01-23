@@ -30,12 +30,12 @@
                             <template
                                 v-if="tender.status === 'bid_accept'"
                             >
-                                ({{ $helpers.dateRangeToDaysHours(new Date(), new Date(tender.date_start)) }})
+                                ({{ $helpers.dateRangeToDaysHours(new Date(new Date(tender.date_request).toLocaleString('EN-en', { timeZone: 'Europe/Moscow' })).getTime(), new Date(new Date(tender.date_start).toLocaleString('EN-en', { timeZone: 'Europe/Moscow' })).getTime()) }})
                             </template>
                             <template
                                 v-else
                             >
-                                ({{ $helpers.dateRangeToDaysHours(new Date(), new Date(tender.date_end)) }})
+                                ({{ $helpers.dateRangeToDaysHours(new Date(new Date(tender.date_request).toLocaleString('EN-en', { timeZone: 'Europe/Moscow' })).getTime(), new Date(new Date(tender.date_end).toLocaleString('EN-en', { timeZone: 'Europe/Moscow' })).getTime()) }})
                             </template>
                         </div>
                     </template>
