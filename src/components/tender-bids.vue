@@ -85,10 +85,10 @@
                     <div class="lots__item-params">
                         <div class="lots__item-param m--underline">
                             {{ lot.quantity }} {{ lot.unit }}
-                            <span>{{ $helpers.toPrice(lot.price, { sign: `${tender.currency_detail} / ед.` }) }}</span>
+                            <span>{{ $helpers.toPrice(lot.price, { sign: `${tender.currency_detail} / ед.` }) }} (в т.ч. НДС: {{ lot.nds }})</span>
                         </div>
                         <div class="lots__item-param">
-                            Начальная цена:
+                            Начальная цена (с НДС):
                             <span>{{ $helpers.toPrice(lot.price * lot.quantity, { sign: tender.currency_detail }) }}</span>
                         </div>
                         <div 
