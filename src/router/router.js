@@ -45,6 +45,7 @@ import cabinetNotifications from '@/views/CabinetNotifications';
 import cabinetNotificationsSettings from '@/views/CabinetNotificationsSettings';
 import groups from '@/views/Groups';
 import product from '@/views/Product';
+import products from '@/views/Products';
 import page404 from '@/views/Page404';
 
 const routes = [
@@ -500,13 +501,25 @@ const routes = [
         },
         props: true,
     }, {
-        path: '/product/:slug',
+        path: '/products',
+        name: 'products',
+        component: products,
+        meta: { 
+            title: 'Товары и услуги',
+            breadcrumbs: [],
+            //showSidebarAuth: true
+            //requiresAuth: true 
+        },
+        props: true,
+    }, {
+        path: '/products/:slug',
         name: 'product',
         component: product,
         meta: { 
             title: 'Товар',
             breadcrumbs: [],
-            requiresAuth: true 
+            //showSidebarAuth: true
+            //requiresAuth: true 
         },
         props: true,
     }, {
