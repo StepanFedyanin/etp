@@ -1,7 +1,7 @@
 <template>
-    <div>
+    <span>
         {{ timerTime }} 
-    </div>
+    </span>
 </template>
 <script>
 // import { difference } from 'lodash';
@@ -55,7 +55,7 @@
                 minutes = minutes < 0 ? '00' : minutes < 10 ? "0" + minutes : minutes;
                 seconds = seconds < 0 ? '00' : seconds < 10 ? "0" + seconds : seconds;
 
-                if (this.timerToDaysTime) {
+                if (this.timerToDaysTime && days > 0) {
                     this.timerTime = `${this.$helpers.stringForNumber(days, ['день', 'дня', 'дней'])} ${hours}:${minutes}:${seconds}`;
                 } else {
                     this.timerTime = `${hours}:${minutes}:${seconds}`;

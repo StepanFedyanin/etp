@@ -24,8 +24,6 @@
 
         &-left {
             width: 60%;
-            padding: 24px;
-            @mixin shadow-box;
 
             @mixin responsive-le-l {
                 width: 70%;
@@ -38,6 +36,12 @@
 
         &-right {
             flex-grow: 1;
+        }
+
+        &-card {
+            padding: 24px;
+            @mixin shadow-box;
+            margin-bottom: 24px;
         }
 
         &-title {
@@ -80,12 +84,13 @@
     }
 
     &__price {
+        position: sticky;
+        top: 24px;
         display: flex;
         justify-content: space-between;
         align-items: center;
         padding: 20px;
         @mixin shadow-box;
-        margin-bottom: 24px;
         gap: 24px;
 
         @mixin responsive-le-l {
@@ -144,7 +149,7 @@
 
     &__contragent {
         margin-bottom: 48px;
-        
+
         &-title {
             font-weight: 700;
             font-size: 20px;

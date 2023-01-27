@@ -37,6 +37,10 @@
                         />
                     </div>
                 </template>
+                <ContragentGoods
+                    :contragent="contragent"
+                />
+
                 <template
                     v-if="createdTenders.count"
                 >
@@ -126,6 +130,7 @@
     import blockContragent from '@/components/block-contragent.vue';
     import blockPersons from '@/components/block-persons.vue';
     import blockTenderMini from '@/components/block-tender-mini.vue';
+    import ContragentGoods from '@/components/contragent-goods.vue';
     import { user as api } from "@/services";
     // import { number } from '@formkit/inputs';
 
@@ -134,7 +139,8 @@
             //blockOrganization,
             blockContragent,
             blockPersons,
-            blockTenderMini
+            blockTenderMini,
+            ContragentGoods
         },
         props: {
             id: {

@@ -115,7 +115,7 @@
                                         id="price"
                                         v-model="formValues.price"
                                         :maska="{ mask: '#*D##', tokens: { 'D': { pattern: /\./ }}}"
-                                        :disabled="formValues.min_bid.length ? true : false"
+                                        :disabled="loading || formValues.min_bid.length ? true : false"
                                         type="maska"
                                         name="price"
                                         label=""
@@ -130,6 +130,7 @@
                                         v-model="formValues.min_bid"
                                         type="checkbox"
                                         name="min_bid"
+                                        :disabled="loading"
                                         :options="['Минимальная ставка']"
                                         outerClass="field--inline"
                                     />
@@ -140,7 +141,7 @@
                                 >
                                     <button
                                         type="reset"
-                                        :disabled="showLoaderSending"
+                                        :disabled="loading"
                                         class="button button-red"
                                         @click="$emit('hideModal')"
                                     >
@@ -148,7 +149,7 @@
                                     </button>
                                     <button
                                         type="submit"
-                                        :disabled="showLoaderSending"
+                                        :disabled="loading"
                                         class="button button-green"
                                         @click="submitForm"
                                     >
@@ -222,11 +223,11 @@
                 });
             },
             submitHandler(data, node) {
-                this.showLoaderSending = true;
+                //this.showLoaderSending = true;
                 this.loading = true;
                 let params = Object.assign({}, this.formValues);
                 tenderApi.addTenderLotBet(this.tender.id, this.lot.id, params).then(res => {
-                    this.showLoaderSending = false;
+                    //this.showLoaderSending = false;
                     this.loading = false;
                     this.betSended = true;
                     this.updateData = true;
@@ -235,10 +236,21 @@
                     node.setErrors(
                         err.response.data
                     );
-                    this.showLoaderSending = false;
+                    //this.showLoaderSending = false;
                     this.loading = false;
-                    this.$store.dispatch('showError', err);
-                    console.error(err);
+                    //this.$store.dispatch('showError', err);
+                    //console.error(err.response.data);
+                    tenderApi.getTenderLot(this.tender.id, this.lotId).then(res => {
+                        console.log(res);
+                        this.lot = res;
+                        this.loading = false;
+                    }).catch(err => {
+                        node.setErrors(
+                            err.response.data
+                        );
+                        this.loading = false;
+                    });
+
                 });
             },
             getLot() {

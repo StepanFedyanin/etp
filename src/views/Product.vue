@@ -44,61 +44,60 @@
                     </div>
                     <div class="good__block">
                         <div class="good__block-left">
-                            <div class="good__params">
-                                <div class="good__param">
-                                    <div class="good__param-name">
-                                        Поставщик
+                            <div class="good__block-card">
+                                <div class="good__params">
+                                    <div class="good__param">
+                                        <div class="good__param-name">
+                                            Поставщик
+                                        </div>
+                                        <router-link 
+                                            :to="{ name: 'contragent', params: { id: good.organization.id } }"
+                                            class="good__param-data"
+                                        >
+                                            {{ good.organization.name }}
+                                        </router-link>
                                     </div>
-                                    <router-link 
-                                        :to="{ name: 'contragent', params: { id: good.organization.id } }"
-                                        class="good__param-data"
-                                    >
-                                        {{ good.organization.name }}
-                                    </router-link>
-                                </div>
 
-                                <div class="good__param">
-                                    <div class="good__param-name">
-                                        Единица измерения
+                                    <div class="good__param">
+                                        <div class="good__param-name">
+                                            Единица измерения
+                                        </div>
+                                        <div class="good__param-data">
+                                            {{ good.unit }}
+                                        </div>
                                     </div>
-                                    <div class="good__param-data">
-                                        {{ good.unit }}
-                                    </div>
-                                </div>
 
-                                <div class="good__param">
-                                    <div class="good__param-name">
-                                        Дата обновления
+                                    <div class="good__param">
+                                        <div class="good__param-name">
+                                            Дата обновления
+                                        </div>
+                                        <div class="good__param-data">
+                                            {{ $helpers.formatDate(new Date(good.updated), 'DD.MM.YYYY', 'Europe/Moscow') }}
+                                        </div>
                                     </div>
-                                    <div class="good__param-data">
-                                        {{ $helpers.formatDate(new Date(good.updated), 'DD.MM.YYYY', 'Europe/Moscow') }}
-                                    </div>
-                                </div>
 
-                                <div class="good__param">
-                                    <div class="good__param-name">
-                                        Код позиции ЭТП
+                                    <div class="good__param">
+                                        <div class="good__param-name">
+                                            Код позиции ЭТП
+                                        </div>
+                                        <div class="good__param-data">
+                                            {{ good.category_detail.parent.code }}-{{ good.category_detail.code }}-{{ good.id }}
+                                        </div>
                                     </div>
-                                    <div class="good__param-data">
-                                        {{ good.category_detail.parent.code }}-{{ good.category_detail.code }}-{{ good.id }}
-                                    </div>
-                                </div>
-                            </div> 
-
-                            <div 
-                                v-if="good.description"
-                                class="good__block-info"
-                            >
-                                <div class="good__block-title">
-                                    О товаре
-                                </div>
+                                </div> 
                                 <div 
-                                    class="good__block-content"
-                                    v-html="good.description"
-                                />
-                            </div>                           
-                        </div>
-                        <div class="good__block-right">
+                                    v-if="good.description"
+                                    class="good__block-info"
+                                >
+                                    <div class="good__block-title">
+                                        О товаре
+                                    </div>
+                                    <div 
+                                        class="good__block-content"
+                                        v-html="good.description"
+                                    />
+                                </div>                           
+                            </div>
                             <div class="good__price">
                                 <div class="good__price-value">
                                     {{ $helpers.toPrice(good.price, { sign: good.currency_detail }) }}
@@ -110,7 +109,8 @@
                                     Отправить заявку
                                 </button>
                             </div>
-
+                        </div>
+                        <div class="good__block-right">
                             <div 
                                 class="good__photo"
                                 :class="good.photo ? '' : 'm--no-photo'"

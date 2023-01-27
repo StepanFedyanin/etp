@@ -40,7 +40,7 @@
             href="#"
             class="goods__item-category"
         >
-            {{ good.category }}
+            {{ good.category_detail.name }}
         </a>
         <div 
             v-if="showControl"
