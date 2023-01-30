@@ -2,14 +2,6 @@
     <div class="app__main">
         <div class="groups">
             <div class="container">
-                <div class="app__breadcrumbs">
-                    <router-link
-                        :to="{ name: 'home' }"
-                        class="app__breadcrumbs-link"
-                    >
-                        Главная
-                    </router-link>
-                </div>
                 <div 
                     v-if="user && user.id"
                     class="groups__title h1"
@@ -32,34 +24,51 @@
                             :key="group.id"
                             class="group"
                         >
-                            <router-link
-                                :to="{ name: 'group', params: { slug: group.slug } }"
-                                class="group__title"
-                            >
+                            <div class="group__title">
                                 {{ group.name }}
-                            </router-link>
+                            </div>
                             <div class="group__info">
                                 <div class="group__info-trades">
-                                    Тендеров: <span class="group__info-red">{{ group.bidding_count }}/{{ group.tender_count }}</span>
+                                    Активных торгов: <span class="group__info-red">{{ group.bidding_count }}</span>
                                 </div>
-                                <div class="group__info-trades">
-                                    Товаров: <span class="group__info-red">{{ group.product_count }}</span>
+                                <div class="group__info-date">
+                                    Последний аукцион: 
+                                    <span 
+                                        v-if="group.last_bidding"
+                                        class="group__info-red"
+                                    >{{ $helpers.formatDate(new Date(group.last_bidding), 'DD.MM.YYYY HH:mm', 'Europe/Moscow') }} МСК
+                                    </span>
+                                    <span
+                                        v-else
+                                    >
+                                        —
+                                    </span>
                                 </div>
                             </div>
-                            <ul
-                                class="group__products"
-                            >
-                                <li
-                                    v-for="category in group.categories"
-                                    :key="category.id"
-                                    class="group__products-item"
+                            <Transition name="">
+                                <ul
+                                    v-show="group.isShowProducts"
+                                    class="group__products"
                                 >
-                                    <router-link
-                                        :to="{ name: 'group', params: { parentslug: group.slug, slug: category.slug } }"
-                                        v-text="category.name"
-                                    />
-                                </li>
-                            </ul>
+                                    <li
+                                        v-for="category in group.categories"
+                                        :key="category.id"
+                                        class="group__products-item"
+                                    >
+                                        <router-link
+                                            :to="{ name: 'tenders', query: { category: category.id } }"
+                                            v-text="category.name"
+                                        />
+                                        <span>{{ category.bidding_count ? `(${category.bidding_count})` : '' }}</span>
+                                    </li>
+                                </ul>
+                            </Transition>
+                            <div
+                                class="group__toggle"
+                                :class="{'group__toggle--active': group.isShowProducts}"
+                                @click="group.isShowProducts = !group.isShowProducts"
+                                v-text="group.isShowProducts ? 'Скрыть информацию' : 'Показать информацию'"
+                            />
                         </div>
                         <Pagination
                             :total="groups.count"
@@ -99,14 +108,14 @@
             '$route.query.page': {
                 immediate: true,
                 handler() {
-                    this.getGroups()
+                    this.getGroupsFromApi()
                 },
             }
         },
         mounted() {
         },
         methods: {
-            getGroups() {
+            getGroupsFromApi() {
                 let page = Number(this.$route.query.page) || 1
                 let params = {
                     limit: this.limit,

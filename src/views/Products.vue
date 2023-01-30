@@ -4,18 +4,12 @@
             class="container"
         >
             <div class="app__breadcrumbs">
-                <a
-                    href="/"
+                <router-link
+                    :to="{ name: 'home' }"
                     class="app__breadcrumbs-link"
                 >
-                    Главная страница
-                </a>
-                <a
-                    href="#"
-                    class="app__breadcrumbs-link"
-                >
-                    Товары и услуги
-                </a>
+                    Главная
+                </router-link>
             </div>
         </div>
         <div

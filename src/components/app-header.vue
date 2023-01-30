@@ -136,15 +136,17 @@
             </div>
         </div>
         <div 
-            v-if="!$route.meta.requiresAuth && $route.name !== 'home' && $route.name !== 'page' && $route.name !== 'page404' && !($route.meta.showSidebarAuth && user && user.id)"
+            v-if="$route.meta.showSubHeader && !($route.meta.showSidebarAuth && user && user.id)"
             class="header__sub"
         >
             <div class="container">
                 <div class="header__breadcrumbs">
-                    <a
-                        href="/"
-                        class="header__breadcrumbs-link"
-                    >Главная страница</a>
+                    <router-link
+                        :to="{ name: 'home' }"
+                        class=""
+                    >
+                        Главная
+                    </router-link>
                 </div>
                 <div class="header__title h1">
                     {{ $route.meta.name || $route.meta.title }} {{ $route.name === 'registration' ? $store.state.stepRegistration || 1 : '' }}

@@ -5,24 +5,30 @@
             class="container"
         >
             <div class="app__breadcrumbs">
-                <a
-                    href="/"
+                <router-link
+                    :to="{ name: 'home' }"
                     class="app__breadcrumbs-link"
                 >
-                    Главная страница
-                </a>
-                <a
-                    href="#"
+                    Главная
+                </router-link>
+                <router-link
+                    :to="{ name: 'groups' }"
+                    class="app__breadcrumbs-link"
+                >
+                    Товары и услуги
+                </router-link>
+                <router-link
+                    :to="{ name: 'group', params: { slug: good.category_detail.parent.slug } }"
                     class="app__breadcrumbs-link"
                 >
                     {{ good.category_detail.parent.name }}
-                </a>
-                <a
-                    href="#"
+                </router-link>
+                <router-link
+                    :to="{ name: 'group', params: { parentslug: good.category_detail.parent.slug, slug: good.category_detail.slug } }"
                     class="app__breadcrumbs-link"
                 >
                     {{ good.category_detail.name }}
-                </a>
+                </router-link>
             </div>
         </div>
         <div class="good">

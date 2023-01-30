@@ -35,13 +35,13 @@
         >
             {{ good.organization.name }}
         </router-link>
-        <a 
+        <router-link
             v-if="showCategory"
-            href="#"
+            :to="{ name: 'group', params: { parentslug: good.category_detail.parent.slug, slug: good.category_detail.slug } }"
             class="goods__item-category"
         >
             {{ good.category_detail.name }}
-        </a>
+        </router-link>
         <div 
             v-if="showControl"
             class="goods__item-control"

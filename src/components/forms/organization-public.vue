@@ -87,7 +87,7 @@
                 <div class="organization__form-logo-pic">
                     <img
                         v-if="organization.logo"
-                        :src="organization.small_logo" 
+                        :src="organization.logo" 
                         alt="" 
                     />
                 </div>

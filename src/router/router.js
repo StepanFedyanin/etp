@@ -44,6 +44,7 @@ import CabinetOrganizationEdit from '@/views/CabinetOrganizationEdit';
 import cabinetNotifications from '@/views/CabinetNotifications';
 import cabinetNotificationsSettings from '@/views/CabinetNotificationsSettings';
 import groups from '@/views/Groups';
+import group from '@/views/Group';
 import product from '@/views/Product';
 import products from '@/views/Products';
 import page404 from '@/views/Page404';
@@ -53,13 +54,13 @@ const routes = [
         path: '/auth',
         name: 'auth',
         component: auth,
-        meta: { title: 'Вход на платформу' },
+        meta: { title: 'Вход на платформу', showSubHeader: true },
         props: true
     }, {
         path: '/registration',
         name: 'registration',
         component: registration,
-        meta: { title: 'Регистрация аккаунта - Шаг ' },
+        meta: { title: 'Регистрация аккаунта - Шаг ', showSubHeader: true },
         props: true,
     }, {
     //     path: '/bidding',
@@ -74,10 +75,16 @@ const routes = [
         meta: { title: 'Товарные группы', showSidebarAuth: true },
         props: true,
     }, {
+        path: '/groups/:parentslug?/:slug',
+        name: 'group',
+        component: group,
+        meta: { title: 'Товарная группа', showSidebarAuth: true },
+        props: true,
+    }, {
         path: '/about',
         name: 'about',
         component: about,
-        meta: { title: 'О площадке' },
+        meta: { title: 'О площадке', showSubHeader: true },
         props: true,
     }, {
         path: '/',
@@ -507,7 +514,7 @@ const routes = [
         meta: { 
             title: 'Товары и услуги',
             breadcrumbs: [],
-            //showSidebarAuth: true
+            showSidebarAuth: true
             //requiresAuth: true 
         },
         props: true,
@@ -518,7 +525,7 @@ const routes = [
         meta: { 
             title: 'Товар',
             breadcrumbs: [],
-            //showSidebarAuth: true
+            showSidebarAuth: true
             //requiresAuth: true 
         },
         props: true,

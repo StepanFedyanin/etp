@@ -2,10 +2,12 @@
     <div class="app__main">
         <div class="container m--1460">
             <div class="app__breadcrumbs">
-                <a
-                    href="/"
+                <router-link
+                    :to="{ name: 'home' }"
                     class="app__breadcrumbs-link"
-                >Главная страница</a>
+                >
+                    Главная
+                </router-link>
             </div>
         </div>
 

@@ -36,9 +36,20 @@
             margin: -48px -48px 24px;
             z-index: 10;
 
+            @mixin responsive-le-xl {
+                margin-left: -32px;
+                margin-right: -32px;
+                padding-left: 32px;
+                padding-right: 32px;
+            }
+
             @mixin responsive-le-l {
                 position: relative;
                 top: auto;
+                margin-left: -16px;
+                margin-right: -16px;
+                padding-left: 16px;
+                padding-right: 16px;
             }
         }
     }
