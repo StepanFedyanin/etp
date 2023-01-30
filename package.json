@@ -1,6 +1,6 @@
 {
     "name": "tugan",
-    "version": "0.7.15",
+    "version": "0.7.20",
     "private": true,
     "scripts": {
         "serve": "vue-cli-service serve",

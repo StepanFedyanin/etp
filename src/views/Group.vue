@@ -244,6 +244,12 @@
         methods: {
             getGroup() {
                 this.showLoaderSending['group'] = true;
+                this.group = null;
+                this.goods = null;
+                this.countGoods = null;
+                this.tenders = null;
+                this.offsetTenders = 0;
+                this.countTenders = null;
                 if (!this.parentslug) {
                     api.getCategory(this.slug).then(res => {
                         this.group = res
