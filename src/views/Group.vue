@@ -1,6 +1,30 @@
 <template>
     <div class="app__main">
         <div class="groups">
+            <div 
+                v-if="!showLoaderSending['group']" 
+                class="container"
+            >
+                <div
+                    class="app__breadcrumbs">
+                    <router-link
+                        :to="{ name: 'home' }"
+                        class="app__breadcrumbs-link"
+                        v-text="`Главная`"
+                    />
+                    <router-link
+                        :to="{ name: 'groups' }"
+                        class="app__breadcrumbs-link"
+                        v-text="`Товары и услуги`"
+                    />
+                    <router-link
+                        v-if="parentslug"
+                        :to="{ name: 'group', params: { slug: group.parent.slug } }"
+                        class="app__breadcrumbs-link"
+                        v-text="group.parent.name"
+                    />
+                </div>
+            </div>
             <div class="container">
                 <template
                     v-if="showLoaderSending['group']"
@@ -12,32 +36,11 @@
                 <template
                     v-else-if="group"
                 >
-                    <div class="app__breadcrumbs">
-                        <router-link
-                            :to="{ name: 'home' }"
-                            class="app__breadcrumbs-link"
-                        >
-                            Главная
-                        </router-link>
-                        <router-link
-                            :to="{ name: 'groups' }"
-                            class="app__breadcrumbs-link"
-                        >
-                            Товары и услуги
-                        </router-link>
-                        <router-link
-                            v-if="parentslug"
-                            :to="{ name: 'group', params: { slug: group.parent.slug } }"
-                            class="app__breadcrumbs-link"
-                        >
-                            {{ group.parent.name }}
-                        </router-link>
-                    </div>
-                    <div 
+                    <h1 
                         class="groups__title h1"
                     >
                         {{ group.name }}
-                    </div>
+                    </h1>
                     <div
                         v-if="!parentslug"
                         class="group m--margin"
@@ -58,7 +61,6 @@
                         </ul>
                     </div>
                 </template>
-
                 <div
                     class="goods"
                 >

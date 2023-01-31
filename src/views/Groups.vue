@@ -6,16 +6,16 @@
                     <router-link
                         :to="{ name: 'home' }"
                         class="app__breadcrumbs-link"
-                    >
-                        Главная
-                    </router-link>
+                        v-text="`Главная`"
+                    />
                 </div>
-                <div 
-                    v-if="user && user.id"
+            </div>
+            <div class="container">
+                <h1 
                     class="groups__title h1"
                 >
                     Товарные группы
-                </div>
+                </h1>
                 <template
                     v-if="showLoaderSending"
                 >

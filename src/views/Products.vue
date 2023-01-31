@@ -7,9 +7,8 @@
                 <router-link
                     :to="{ name: 'home' }"
                     class="app__breadcrumbs-link"
-                >
-                    Главная
-                </router-link>
+                    v-text="`Главная`"
+                />
             </div>
         </div>
         <div

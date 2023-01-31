@@ -8,27 +8,23 @@
                 <router-link
                     :to="{ name: 'home' }"
                     class="app__breadcrumbs-link"
-                >
-                    Главная
-                </router-link>
+                    v-text="`Главная`"
+                />
                 <router-link
                     :to="{ name: 'groups' }"
                     class="app__breadcrumbs-link"
-                >
-                    Товары и услуги
-                </router-link>
+                    v-text="`Товары и услуги`"
+                />
                 <router-link
                     :to="{ name: 'group', params: { slug: good.category_detail.parent.slug } }"
                     class="app__breadcrumbs-link"
-                >
-                    {{ good.category_detail.parent.name }}
-                </router-link>
+                    v-text="good.category_detail.parent.name"
+                />
                 <router-link
                     :to="{ name: 'group', params: { parentslug: good.category_detail.parent.slug, slug: good.category_detail.slug } }"
                     class="app__breadcrumbs-link"
-                >
-                    {{ good.category_detail.name }}
-                </router-link>
+                    v-text="good.category_detail.name"
+                />
             </div>
         </div>
         <div class="good">
@@ -43,11 +39,11 @@
                 <template
                     v-else-if="good"
                 >
-                    <div 
+                    <h1 
                         class="good__title h1"
                     >
                         {{ good.name }}
-                    </div>
+                    </h1>
                     <div class="good__block">
                         <div class="good__block-left">
                             <div class="good__block-card">
@@ -126,7 +122,7 @@
                                         v-if="good.photo"
                                     >
                                         <img 
-                                            :src="`${urlPath}${good.photo}`"
+                                            :src="good.photo"
                                             :alt="good.name"
                                         />
                                     </template>
