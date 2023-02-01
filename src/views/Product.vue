@@ -100,11 +100,14 @@
                                     />
                                 </div>                           
                             </div>
-                            <div class="good__price">
+                            <div 
+                                class="good__price"
+                            >
                                 <div class="good__price-value">
                                     {{ $helpers.toPrice(good.price, { sign: good.currency_detail }) }}
                                 </div>
                                 <button 
+                                    v-if="user.organization.id !== good.organization.id"
                                     class="button button-green good__price-button"
                                     @click.prevent="requestGood()"
                                 >

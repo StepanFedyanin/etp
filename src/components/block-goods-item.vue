@@ -1,6 +1,7 @@
 <template>
     <div 
         class="goods__item"
+        :class="blockClass"
     >
         <router-link
             :to="{ name: 'product', params: { slug: good.slug || '404' } }"
@@ -68,6 +69,10 @@
     import { urlPath } from '@/settings'
     export default {
         props: {
+            blockClass: {
+                type: String,
+                default() { return ''; }
+            },
             good: {
                 type: Object,
                 default() { 

@@ -21,9 +21,25 @@
         position: relative;
         display: flex;
         flex-wrap: wrap;
-        padding: 20px;
         margin-bottom: 24px;
-        @mixin shadow-box;
+
+        &:not(.m--small) {
+            padding: 20px;
+            @mixin shadow-box;
+        }
+
+        &.m--small {
+            flex-direction: column;
+        }
+
+        &.m--small &-organization {
+            font-weight: 700;
+            font-size: 14px;
+            line-height: 18px;
+            display: block;
+            margin-bottom: 4px;
+            text-decoration: none;
+        }
 
         &-favorite {
             position: absolute;
@@ -147,6 +163,13 @@
             }
         }
 
+        &.m--small &-title {
+            font-weight: 600;
+            font-size: 16px;
+            line-height: 20px;
+            margin-bottom: 8px;
+        }
+
         &-param {
             margin-bottom: 16px;
             font-weight: 400;
@@ -192,6 +215,13 @@
                     display: block;
                 }
             }            
+        }
+
+        &.m--small &-price {
+            font-weight: 700;
+            font-size: 24px;
+            line-height: 29px;
+            margin-bottom: 0;
         }
 
         &-docs {

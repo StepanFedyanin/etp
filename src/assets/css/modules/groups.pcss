@@ -2,11 +2,48 @@
     /*padding: 70px 0;*/
     padding: 0;
     /*background-color: $color-bg;*/
+
+    &__main {
+        display: flex;
+        gap: 32px;
+    }
     
     &__blocks {
         @mixin simple-box-list;
         gap: 45px;
         padding: 0;
+        flex-grow: 1;
+    }
+
+    &__last {
+        position: relative;
+        display: flex;
+        flex-direction: column;
+        @mixin simple-box;
+        max-width: 560px;
+        width: 100%;
+        margin-bottom: auto;
+        padding: 20px;
+
+        &-title {
+            display: block;
+            font-weight: 700;
+            font-size: 20px;
+            line-height: 24px;
+            margin-bottom: 24px;
+            text-transform: uppercase;
+        }
+
+        &-goods {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 20px;
+            margin-bottom: 48px;
+        }
+
+        @mixin responsive-le-l {
+            display: none;
+        }
     }
 }
 
