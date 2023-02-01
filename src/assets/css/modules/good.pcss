@@ -165,4 +165,63 @@
 
     }
 
+    &__request {
+        position: relative;
+
+        &-content {
+            position: relative;
+            font-weight: 400;
+            font-size: 18px;
+            line-height: 22px;
+            margin-bottom: 24px;
+            padding-right: 180px;
+
+            @mixin responsive-le-xs {
+                padding-right: 100px;
+            }
+
+            @mixin responsive-xxs {
+                padding-right: 0;
+            }
+
+            &:before {
+                content: '';
+                position: absolute;
+                top: 0;
+                right: 0;
+                width: 160px;
+                height: 160px;
+                background: url('./assets/img/icons/icon-check-square.svg') 50% 50% no-repeat;
+                background-size: contain;
+
+                @mixin responsive-le-xs {
+                    width: 80px;
+                    height: 80px;
+                }
+
+                @mixin responsive-xxs {
+                    display: none;
+                }
+            }
+        }
+
+        &-organization {
+            padding-top: 16px;
+            padding-bottom: 48px;
+
+            &-item {
+                margin-bottom: 8px;
+                display: flex;
+                font-weight: 600;
+                font-size: 16px;
+                line-height: 20px;
+
+                span {
+                    font-weight: 400;
+                    width: 200px;
+                }
+            }
+        }
+    }
+
 }

@@ -12,13 +12,48 @@
             <span />
         </button>
         <span class="modal__title">
-            Заявка на товар
+            {{ requestSended ? 'Заявка отправлена' : 'Заявка на товар' }}
         </span>
         <div
-            v-if="productSended"
+            v-if="requestSended"
             class="modal__content"
         >
-            {{ slug ? 'Товар успешно обновлен' : 'Товар Успешно добавлен.' }}
+            <div class="good__request">
+                <div class="good__request-content text">
+                    <p><strong class="m--color-green">{{ good.organization.name }}</strong> ответит вам на контатную почту или телефон.</p>
+                    <p>Если через некоторое время ответа не будет, попробуйте связаться с контрагентом самостоятельно:</p>
+                </div>
+                <div class="good__request-organization">
+                    <div 
+                        v-if="good.organization.website"
+                        class="good__request-organization-item"
+                    >
+                        <span>Сайт</span> <a :href="good.organization.website" target="_blank">{{ good.organization.website }}</a>
+                    </div>
+                    <div 
+                        v-if="good.organization.contact_phone"
+                        class="good__request-organization-item"
+                    >
+                        <span>Контактный телефон</span> {{ good.organization.contact_phone }}
+                    </div>
+                    <div 
+                        v-if="good.organization.contact_email"
+                        class="good__request-organization-item"
+                    >
+                        <span>Контактный email</span> {{ good.organization.contact_email }}
+                    </div>
+                </div>
+            </div>
+            <div 
+                class="modal-form__actions" 
+            >
+                <button
+                    class="button button-green"
+                    @click.prevent="$emit('hideModal', updateData)"
+                >
+                    Спасибо!
+                </button>
+            </div>
         </div>
         <div 
             v-else
@@ -35,8 +70,8 @@
                 name="request-good-form"
                 preserve
                 type="form"
-                data-loading="showLoaderSending"
-                form-class="$reset modal-form goods__form"
+                data-loading="loading"
+                form-class="$reset form modal-form good__form"
                 :disabled="showLoaderSending"
                 :loading="showLoaderSending ? true : undefined"
                 :actions="false"
@@ -45,9 +80,13 @@
                 <div class="modal-form__block">
                     <FormKitSchema :schema="requestGoodSchema" />
                 </div>
-                <div class="modal-form__actions">
+                <div 
+                    class="modal-form__actions" 
+                    data-type="submit"
+                >
                     <button
                         type="submit"
+                        :disabled="showLoaderSending"
                         class="button button-green"
                     >
                         Отправить заявку
@@ -75,10 +114,11 @@
         data() {
             return {
                 //good: {},
+                user: this.$store.state.user,
                 urlPath,
                 formValues: {},
                 showLoaderSending: false,
-                productSended: false,
+                requestSended: false,
                 busyForm: false,
                 loading: false,
                 requestGoodSchema: [
@@ -93,7 +133,7 @@
                         outerClass: '$reset modal-form__field m--width-100',
                     }, {
                         $formkit: 'text',
-                        name: 'phone',
+                        name: 'contact_phone',
                         label: 'Контактный телефон',
                         placeholder: '',
                         validation: 'required',
@@ -102,7 +142,7 @@
                         outerClass: '$reset modal-form__field m--width-100',
                     }, {
                         $formkit: 'text',
-                        name: 'email',
+                        name: 'contact_email',
                         label: 'Контактный email',
                         placeholder: '',
                         validation: 'required',
@@ -131,26 +171,27 @@
         },
         mounted() {
             console.log('mounted modal');
-            this.productSended = false;
+            this.requestSended = false;
             this.formValues = {};
+            if (this.user && this.user.id) {
+                this.formValues = {
+                    name: this.user.first_name,
+                    contact_phone: this.user.phone,
+                    contact_email: this.user.email
+                };
+            }
         },
         methods: {
             submitRequestGoodForm(formData, node) {
                 console.log(formData);
-                /*
-                const data = new FormData();
-                Object.keys(this.formValues).forEach(key => {
-                    data.append(key, this.formValues[key]);
-                });
-                //data.append('photo', file);
                 this.showLoaderSending = true;
                 //this.loading = true;
                 let params = Object.assign({}, this.formValues);
-                productApi.updateProduct(this.slug, data).then(res => {
+                productApi.requestProduct(this.good.slug, params).then(res => {
                     this.showLoaderSending = false;
                     this.loading = false;
-                    this.productSended = true;
-                    this.updateData = true;
+                    this.requestSended = true;
+                    this.formValues = {};
                     console.log(res);
                 }).catch(err => {
                     node.setErrors(
@@ -158,10 +199,9 @@
                     );
                     this.showLoaderSending = false;
                     this.loading = false;
-                    this.$store.dispatch('showError', err);
+                    //this.$store.dispatch('showError', err);
                     console.error(err);
                 });
-                */
             },
         },
     };

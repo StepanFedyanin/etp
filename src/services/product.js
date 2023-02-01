@@ -54,4 +54,12 @@ export default class extends REST {
             throw new RESTError(error, 'Не удалось получить товар');
         });
     }
+
+    static requestProduct(slug, params) {
+        return this._post(`products/${slug}/request_product`, {}, params).then((data) => {
+            return data;
+        }).catch((error) => {
+            throw new RESTError(error, 'Не удалось отправить запрос на товар');
+        });
+    }
 }
