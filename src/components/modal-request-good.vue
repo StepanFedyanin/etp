@@ -65,6 +65,7 @@
             </div>
 
             <FormKit
+                v-if="showModal"
                 id="requestGoodForm"
                 v-model="formValues"
                 name="request-good-form"
