@@ -103,7 +103,7 @@
                     }, {
                         name: 'groups',
                         role: 'all',
-                        title: 'Товарные группы'
+                        title: 'Товары'
                     }, {
                         name: 'about',
                         role: 'all',

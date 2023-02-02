@@ -121,7 +121,7 @@ const headerMenuUser = [
     }, {
         name: 'groups',
         role: 'all',
-        title: 'Товарные группы'
+        title: 'Товары'
     }, {
         name: 'cabinet',
         role: 'all',

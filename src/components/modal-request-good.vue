@@ -113,8 +113,6 @@
         },
         data() {
             return {
-                //good: {},
-                user: this.$store.state.user,
                 urlPath,
                 formValues: {},
                 showLoaderSending: false,
@@ -166,8 +164,9 @@
             show() {
                 return this.showModal;
             },
-        },
-        watch: {
+            user() {
+                return this.$store.state.user;
+            },
         },
         mounted() {
             console.log('mounted modal');
