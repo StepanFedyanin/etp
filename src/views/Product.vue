@@ -360,7 +360,6 @@
                 });
             },
             requestGood() {
-                console.log('BLA');
                 this.showRequestGoodModal = true;
             },
             hideRequestGoodModal(updateData) {

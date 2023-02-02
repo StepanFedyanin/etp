@@ -20,7 +20,7 @@
         >
             <div class="good__request">
                 <div class="good__request-content text">
-                    <p><strong class="m--color-green">{{ good.organization.name }}</strong> ответит вам на контатную почту или телефон.</p>
+                    <p><strong class="m--color-green">{{ good.organization.name }}</strong> ответит вам на контактную почту или телефон.</p>
                     <p>Если через некоторое время ответа не будет, попробуйте связаться с контрагентом самостоятельно:</p>
                 </div>
                 <div class="good__request-organization">
@@ -65,7 +65,6 @@
             </div>
 
             <FormKit
-                v-if="showModal"
                 id="requestGoodForm"
                 v-model="formValues"
                 name="request-good-form"
@@ -115,6 +114,7 @@
         data() {
             return {
                 urlPath,
+                user: this.$store.state.user,
                 formValues: {},
                 showLoaderSending: false,
                 requestSended: false,
@@ -165,21 +165,20 @@
             show() {
                 return this.showModal;
             },
-            user() {
-                return this.$store.state.user;
-            },
         },
-        mounted() {
-            console.log('mounted modal');
+        created() {
+            console.log('Created modal');
             this.requestSended = false;
-            this.formValues = {};
             if (this.user && this.user.id) {
                 this.formValues = {
                     name: this.user.first_name,
                     contact_phone: this.user.phone,
                     contact_email: this.user.email
                 };
+            } else {
+                this.formValues = {};
             }
+            console.log(this.formValues);
         },
         methods: {
             submitRequestGoodForm(formData, node) {
