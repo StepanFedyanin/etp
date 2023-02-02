@@ -50,7 +50,10 @@
                             class="header__contacts-email"
                         >{{ email }}</a>
                     </div>
-                    <div class="header__timer">
+                    <div 
+                        v-if="user && user.id"
+                        class="header__timer"
+                    >
                         <div class="header__timer-time">
                             {{ `${currentTime} МСК` }}
                         </div>
