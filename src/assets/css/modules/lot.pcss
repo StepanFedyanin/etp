@@ -1,0 +1,224 @@
+.lot {
+    position: relative;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 48px;
+    padding: 20px;
+    @mixin shadow-box;
+    margin-bottom: 24px;
+
+    @mixin responsive-le-m {
+        flex-direction: column;
+        gap: 24px;
+    }
+
+    .m--title {
+        font-weight: 600;
+        font-size: 16px;
+        line-height: 20px;
+        margin-bottom: 24px;
+        color: $color-gray-T4;
+    }
+
+    &__info,
+    &__history {
+        position: relative;
+        flex-grow: 1;
+        width: calc(100% / 2 - 48px * 1 / 2);
+
+        @mixin responsive-le-m {
+            width: 100%;
+        }
+    }
+
+    &__info {
+
+        @mixin responsive-le-m {
+            padding-bottom: 24px;
+            border-bottom: 1px solid $color-gray-T5;
+        }
+
+        &:after {
+            content: '';
+            position: absolute;
+            display: block;
+            top: 0;
+            bottom: 0;
+            right: -24px;
+            width: 0;
+            border-right: 1px solid $color-gray-T5;
+
+            @mixin responsive-le-m {
+                display: none;
+            }
+        }
+
+        &-top {
+            display: flex;
+            flex-wrap: wrap;
+
+        }
+
+        &-number {}
+
+        &-participants {
+            font-weight: 600;
+            font-size: 16px;
+            line-height: 20px;
+            text-transform: uppercase;
+            margin-left: auto;
+        }
+
+        &-name {
+            font-weight: 400;
+            font-size: 16px;
+            line-height: 20px;
+            text-transform: uppercase;
+            margin-bottom: 24px;
+        }
+
+        &-data {
+            display: flex;
+            flex-wrap: wrap;
+            font-size: 16px;
+            line-height: 20px;
+            padding-bottom: 24px;
+            margin-bottom: 24px;
+            border-bottom: 1px solid $color-gray-T5;
+
+            @mixin responsive-le-xs {
+                flex-direction: column;
+            }
+        }
+
+        &-unit {
+            span {
+                font-weight: 600;
+            }
+        }
+
+        &-price {
+            margin-left: auto;
+
+            @mixin responsive-le-xs {
+                margin-left: 0;
+            }
+
+            span {
+                font-weight: 600;
+            }
+        }
+
+        &-params {
+            display: flex;
+            flex-direction: column;
+            padding-bottom: 24px;
+            border-bottom: 1px solid $color-gray-T5;
+        }
+
+        &-param {
+            display: flex;
+            font-weight: 400;
+            font-size: 16px;
+            line-height: 24px;
+            margin-bottom: 8px;
+            text-transform: uppercase;
+
+            span {
+                margin-left: auto;
+                padding-left: 16px;
+                font-weight: 600;
+                white-space: nowrap;
+            }
+        }
+
+        &-contragents {
+            margin-top: 24px;
+            &.m--empty {
+                margin-top: 0;
+            }
+
+            ol {
+                list-style: decimal;
+                margin-left: 24px;
+
+                li {
+                    padding-left: 16px;
+                    margin-bottom: 16px;
+
+                    &:last-child {
+                        margin-bottom: 0;
+                    }
+                }
+            }
+        }
+
+        &-contragent {
+            display: flex;
+            flex-wrap: wrap;
+
+            span {
+                font-weight: 600;
+                margin-left: auto;
+            }
+        }
+    }
+
+    &__history {
+        position: relative;
+
+        &-list {
+            position: absolute;
+            display: block;
+            top: 44px;
+            left: 0;
+            right: 0;
+            height: calc(100% - 44px);
+            min-height: 300px;
+            overflow-x: hidden;
+            overflow-y: auto;
+            @mixin scrollbar $color-shadow, $color-green, 10px;
+
+            @mixin responsive-le-m {
+                position: relative;
+                top: auto;
+                left: auto;
+                right: auto;
+                height: auto;
+                max-height: 350px;
+                min-height: auto;
+            }
+        }
+
+        &-item {
+            position: relative;
+            display: grid;
+            gap: 16px;
+            grid-template-columns: 150px auto 140px;
+            margin-bottom: 16px;
+            font-size: 14px;
+
+            @mixin responsive-le-xs {
+                display: flex;
+                flex-direction: column;
+                gap: 8px;
+                margin-bottom: 24px;
+            }
+
+            &-date {
+                font-weight: 400;
+            }
+
+            &-name {}
+
+            &-bet {
+                font-weight: 600;
+            }
+
+            &.m--deleted &-bet {
+                color: $color-red;
+                text-decoration: line-through;
+            }
+        }
+    }   
+}

@@ -538,6 +538,12 @@
                     :lots="tender.lots"
                     @getTenderData="getTenderData"
                 />
+                <TenderLotsExtended
+                    v-if="(user.id === tender.creator || user.is_staff) && tender.status !== 'bid_accept' && tender.lots && tender.lots.length"
+                    :tender="tender"
+                    :lots="tender.lots"
+                    @getTenderData="getTenderData"
+                />
                 <div 
                     v-if="tender.bet_enabled && tender.user_participation && tender.kind === 'tender' && tender.user_participation.status === 'participant' && tender.user_participation.contact_person.id === user.id"
                     class="tender__bids"
@@ -595,6 +601,7 @@
     import TenderParticipants from '@/components/tender-participants';
     import TenderRelatedTenders from '@/components/tender-related-tenders.vue';
     import TenderLots from '@/components/tender-lots';
+    import TenderLotsExtended from '@/components/tender-lots-extended';
     import TenderBids from '@/components/tender-bids';
     import Timer from '@/components/timer';
     import inviteTender from '@/components/invite-tender.vue';
@@ -610,6 +617,7 @@
             TenderParticipants,
             TenderRelatedTenders,
             TenderLots,
+            TenderLotsExtended,
             TenderBids,
             Timer,
             inviteTender,

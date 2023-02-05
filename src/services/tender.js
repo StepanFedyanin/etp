@@ -214,6 +214,14 @@ export default class extends REST {
         })
     }
 
+    static getTenderLotBets(tenderId, lotId) {
+        return this._get(`${tenderId}/lots/${lotId}/bets`, {}, {}).then((data) => {
+            return data
+        }).catch((error) => {
+            throw new RESTError(error, 'Ошибка при получении ставкок лота');
+        })
+    }
+
     static addTenderLotRapidBet(tenderId, params) {
         return this._post(`${tenderId}/lots/rapid_bets`, {}, params).then((data) => {
             return data
