@@ -79,7 +79,6 @@
             'formValues.inn': {
                 handler() {
                     if (this.formValues.inn === '') {
-                        console.log('BLA');
                         this.$emit('clearSearchResult');
                     }
                 },

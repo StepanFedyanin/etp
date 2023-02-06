@@ -168,6 +168,7 @@
                     this.prevStep();
                 }
             }
+            //if (this.$metrika) this.$metrika.reachGoal('reg_1');
         },
         methods: {
             prevStep() {

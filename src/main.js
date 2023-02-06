@@ -97,9 +97,15 @@ app.directive('clickOut', clickOutside);
 
 app.use(VueYandexMetrika, {
     id: 90339048,
-    //env: process.env.NODE_ENV,
-    debug: true
-    // other options
+    router: router,
+    env: 'production',
+    debug: true,
+    options: {
+        clickmap: true,
+        trackLinks: true,
+        accurateTrackBounce: true,
+        webvisor: true
+    }
 });
 
 app.mount('#app');

@@ -26,7 +26,7 @@
     //const required = props.context.validatin === 'required' && 'required';
 
     function handleMaska($event) {
-        console.log('handleInput', $event.target.disabled)
+        //console.log('handleInput', $event.target.disabled)
         props.context.node.input($event.target.value)
     }
 </script>
