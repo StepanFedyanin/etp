@@ -6,6 +6,7 @@ import { plugin, defaultConfig, createInput } from '@formkit/vue';
 import { vfmPlugin } from 'vue-final-modal';
 import { ru } from '@formkit/i18n';
 import Maska from 'maska';
+import VueYandexMetrika from 'vue3-yandex-metrika';
 
 import App from './App.vue';
 
@@ -93,6 +94,13 @@ const clickOutside = {
     },
 };
 app.directive('clickOut', clickOutside);
+
+app.use(VueYandexMetrika, {
+    id: 90339048,
+    //env: process.env.NODE_ENV,
+    debug: true
+    // other options
+});
 
 app.mount('#app');
 

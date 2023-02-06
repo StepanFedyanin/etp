@@ -239,6 +239,7 @@
                             console.log(this.regFormReadOnly);
                         }
                     }
+                    if (this.$metrika) this.$metrika.reachGoal('reg_1');
                 }).catch(err => {
                     node.setErrors(
                         [err.detail],
@@ -287,6 +288,7 @@
                         organization: res.id
                     };
                     this.$store.dispatch('setRegData', this.regData);
+                    if (this.$metrika) this.$metrika.reachGoal('reg_2');
                     this.next();
                 }).catch(err => {
                     node.setErrors(
@@ -308,6 +310,7 @@
                         api.getMyProfile().then(res => {
                             this.showLoaderSending = false;
                             this.$store.dispatch('setUser', res);
+                            if (this.$metrika) this.$metrika.reachGoal('reg_3');
                             this.next();
                         }).catch(err => {
                             this.showLoaderSending = false;

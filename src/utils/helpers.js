@@ -1,7 +1,6 @@
 //import _keys from 'lodash/keys';
 import { parse, format } from 'fecha';
 
-
 const helpers = {
     parseDate: (value, template) => {
         return (value && value.length === template.length) ? parse(value, template) : new Date(null);
