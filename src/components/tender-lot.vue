@@ -5,7 +5,7 @@
         <div class="lot__info">
             <div class="lot__info-top">
                 <div class="lot__info-number m--title">
-                    Лот №{{ lot.num }}
+                    Лот №{{ lot.num }} {{ tender.kind }}
                 </div>
                 <div 
                     class="lot__info-participants"
@@ -48,7 +48,10 @@
                     </span>
                 </div>
 
-                <div class="lot__info-param">
+                <div 
+                    v-if="tender.kind === 'tender'"
+                    class="lot__info-param"
+                >
                     Снижение:
                     <span
                         v-if="priceDecline(lot)"

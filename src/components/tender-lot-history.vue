@@ -21,7 +21,8 @@
                     :class="item.publication ? '' : 'm--deleted'"
                 >
                     <div class="lot__history-item-date">
-                        {{ $helpers.formatDate(new Date(item.date_publication), 'DD.MM.YYYY HH:mm', 'Europe/Moscow') }} МСК
+                        {{ $helpers.formatDate(new Date(item.date_publication), 'HH:mm:ss', 'Europe/Moscow') }} МСК<br>
+                        <span>{{ $helpers.formatDate(new Date(item.date_publication), 'DD.MM.YYYY', 'Europe/Moscow') }}</span>
                     </div>
                     <div class="lot__history-item-name">
                         {{ item.organization.name }}
