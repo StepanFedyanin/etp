@@ -5,7 +5,7 @@
         <div class="lot__info">
             <div class="lot__info-top">
                 <div class="lot__info-number m--title">
-                    Лот №{{ lot.num }} {{ tender.kind }}
+                    Лот №{{ lot.num }}
                 </div>
                 <div 
                     class="lot__info-participants"
