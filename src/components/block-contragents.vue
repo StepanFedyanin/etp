@@ -1,6 +1,7 @@
 <template>
     <div class="contragents__block">
         <div 
+            v-if="!hideHeader"
             class="contragents__header"
             :class="user && user.id ? 'm--user' : ''"
         >
@@ -42,14 +43,16 @@
                             />
                         </div>
                         <div class="contragents__item-info">
-                            {{ contragent.name }}
-                            <div class="m--name-city">
-                                {{ contragent.city }}
+                            <div class="m--name-name">
+                                {{ contragent.name }}
+                                <span class="m--name-city">
+                                    {{ contragent.city }}
+                                </span>
+                            </div>
+                            <div class="m--name-activity">
+                                {{ contragent.principal_activity }}
                             </div>
                         </div>
-                    </div>
-                    <div class="contragents__item-cell m--activity">
-                        {{ contragent.principal_activity }}
                     </div>
                     <div class="contragents__item-cell m--customer">
                         <svg class="svg-icon svg-icon__hammer">
@@ -89,6 +92,10 @@
             contragents: {
                 type: Array,
                 default() { return []; }
+            },
+            hideHeader: {
+                type: Boolean,
+                default() { return false; }
             },
         },
         data() {

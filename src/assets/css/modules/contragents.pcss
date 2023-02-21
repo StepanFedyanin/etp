@@ -2,13 +2,41 @@
     &__header,
     &__item {
         display: grid;
-        grid-template-columns: 35% auto 140px 140px;
-        grid-template-areas: 'A B C D';
-        gap: 15px;
+        grid-template-columns: auto 80px 80px;
+        grid-template-areas: 'A B C';
+        gap: 20px;
+
+        @mixin responsive-le-xs {
+            grid-template-columns: 80px auto;
+            grid-template-areas: 'A A'
+                                 'B C';
+        }
 
         &.m--user {
-            grid-template-columns: 35% auto 140px 140px 32px;
-            grid-template-areas: 'A B C D E';
+            grid-template-columns: auto 80px 80px 32px;
+            grid-template-areas: 'A B C D';
+
+            @mixin responsive-le-xs {
+                grid-template-columns: 80px auto 32px;
+                grid-template-areas: 'A A A'
+                                     'B C D';
+            }
+        }
+
+        &-cell {
+            &.m--name {
+                grid-area: A;
+            }
+            &.m--customer {
+                grid-area: B;
+            }
+            &.m--member {
+                grid-area: C;
+            }
+
+            &.m--favorite {
+                grid-area: D;
+            }
         }
     }
 
@@ -22,18 +50,6 @@
             text-transform: uppercase;
             color: $color-gray-T3;
             padding: 0 0 36px;
-            &.m--name {
-                grid-area: A;
-            }
-            &.m--activity {
-                grid-area: B;
-            }
-            &.m--customer {
-                grid-area: C;
-            }
-            &.m--member {
-                grid-area: D;
-            }
         }
     }
     &__list {
@@ -52,7 +68,11 @@
         position: relative;
         padding: 24px 15px;
         cursor: pointer;
-        min-width: 780px;
+        /*min-width: 580px;*/
+
+        @mixin responsive-le-xs {
+            padding: 12px 5px;
+        }
 
         &:after {
             content: '';
@@ -61,6 +81,11 @@
             left: 15px;
             right: 15px;
             border-bottom: 1px solid $color-gray-T5;
+
+            @mixin responsive-le-xs {
+                left: 0;
+                right: 0;
+            }
         }
 
         &:last-child:after {
@@ -94,17 +119,32 @@
                 display: flex;
                 align-items: center;
             }
-            span{
+            span {
                 margin-left: 10px;
+            }
+
+            .m--name-name {
+                font-weight: 500;
+                font-size: 16px;
+                line-height: 20px;
+                color: $color-gray-T1;
             }
 
             .m--name-city {
                 font-weight: 300;
                 font-size: 12px;
-                line-height: 15px;
+                line-height: 16px;
                 color: $color-gray-T3;
-                padding-top: 4px;
             }
+
+            .m--name-activity {
+                padding-top: 4px;
+                font-weight: 400;
+                font-size: 14px;
+                line-height: 18px;
+                color: $color-gray-T1;
+            }
+
             &.m--favorite {
                 align-items: center;
             }
@@ -113,8 +153,13 @@
         &-logo {
             position: relative;
             width: 60px;
+            min-width: 60px;
             height: 60px;
             margin-right: 24px;
+
+            @mixin responsive-le-s {
+                display: none;
+            }
 
             &.m--no-logo:before {
                 content: '';

@@ -16,6 +16,7 @@
             >
                 <BlockContragents 
                     :contragents="contragents"
+                    :hideHeader="true"
                 />
                 <div class="contragents__block">
                     <div

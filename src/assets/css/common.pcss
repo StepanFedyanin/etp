@@ -11,6 +11,9 @@ html {
     /*overflow-x: auto;*/
     scrollbar-gutter: stable;
     @mixin scrollbar $color-shadow, $color-green, 10px;
+    &::-webkit-scrollbar-thumb {
+        border-radius: 0;
+    }
 }
 
 body {
