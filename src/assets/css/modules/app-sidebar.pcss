@@ -2,8 +2,8 @@
     position: sticky;
     left: 0;
     background: $color-white;
-    padding: 48px 24px 48px 36px;
-    padding: 48px 0 48px 0;
+    /*padding: 48px 24px 48px 36px;*/
+    /*padding: 48px 0 48px 0;*/
     z-index: 9;
 
     @mixin responsive-le-xxl {
@@ -29,12 +29,24 @@
         top: 0;
         left: 0;
         right: 0;
-        height: 100vh;
+        height: 100%;
         background: $color-white;
         z-index: -1;
     }
 
+    &__inner {
+        position: sticky;
+        display: block;
+        top: 0;
+        max-height: 100%;
+        padding: 48px 0 48px 0;
+    }
+
     &__menu {
+        max-height: calc(100vh - 96px);
+        overflow-y: auto;
+        @mixin scrollbar $color-shadow, $color-green, 10px;
+        
         &-devider {
             height: 0;
             margin: 10px 0;
