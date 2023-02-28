@@ -45,8 +45,9 @@
     &__menu {
         max-height: calc(100vh - 96px);
         overflow-y: auto;
+        /*scrollbar-gutter: stable;*/
         @mixin scrollbar $color-shadow, $color-green, 10px;
-        
+
         &-devider {
             height: 0;
             margin: 10px 0;

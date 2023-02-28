@@ -63,52 +63,54 @@
                 v-if="tender.organization"
                 class="tenders__item-param"
             >
-                <span class="tenders__item-param-name">Заказчик: </span> 
-                <router-link
-                    :to="{ name: 'contragent', params: { id: tender.organization.id } }"
-                    target="_blank"
-                >
-                    {{ tender.organization.full_name ? tender.organization.full_name : '-' }}
-                </router-link>
+                <span class="tenders__item-param-name">Заказчик</span> 
+                <div class="tenders__item-param-value">
+                    <router-link
+                        :to="{ name: 'contragent', params: { id: tender.organization.id } }"
+                        target="_blank"
+                    >
+                        {{ tender.organization.full_name ? tender.organization.full_name : '-' }}
+                    </router-link>
+                </div>
             </div>
             <div class="tenders__item-param">
-                <span class="tenders__item-param-name">Категории: </span>
-                <span
-                    v-for="(category, idx) in tender.category"
-                    :key="category.id"
-                    class="tenders__item-param-value"
-                >
-                    {{ category.name }}<span v-if="idx != Object.keys(tender.category).length - 1">; </span>
-                </span>
+                <span class="tenders__item-param-name">Категории</span>
+                <div class="tenders__item-param-value">
+                    <span
+                        v-for="(category, idx) in tender.category"
+                        :key="category.id"
+                        class="tenders__item-param-value"
+                    >
+                        {{ category.name }}<span v-if="idx != Object.keys(tender.category).length - 1">; </span>
+                    </span>
+                </div>
             </div>
             <div
                 v-if="tender.region"
                 class="tenders__item-param"
             >
-                <span class="tenders__item-param-name">Регион:</span> {{ tender.region.name }}
+                <span class="tenders__item-param-name">Регион</span>
+                <div class="tenders__item-param-value">
+                    {{ tender.region.name }}
+                </div>
             </div>
             <div
                 v-if="tender.description"
                 class="tenders__item-param"
             >
-                <span class="tenders__item-param-name">Дополнительная информация:</span> {{ tender.description }}
+                <span class="tenders__item-param-name">Дополнительная информация</span>
+                <div class="tenders__item-param-value">
+                    {{ tender.description }}
+                </div>
             </div>
             <div
                 v-if="documents"
                 class="tenders__item-docs"
             >
                 <div class="tenders__item-docs__title">
-                    Документы:
+                    Документы
                 </div>
                 <div class="tenders__item-docs__list">
-                    <div class="tenders__item-docs__item">
-                        <div class="tenders__item-docs__cell m--title">
-                            Файл
-                        </div>
-                        <div class="tenders__item-docs__cell m--title">
-                            Описание
-                        </div>
-                    </div>
                     <div
                         v-for="file in documents"
                         :key="file.id"
@@ -116,10 +118,10 @@
                     >
                         <a
                             :href="urlPath + file.file"
-                            class=""
+                            class="tenders__item-docs__item-file"
                             target="_blank"
                         >{{ file.name }}</a>
-                        <div class="">
+                        <div class="tenders__item-docs__item-info">
                             {{ file.description }}
                         </div>
                     </div>
@@ -134,69 +136,86 @@
                 class="tenders__item-param"
             >
                 <span 
-                    class="tenders__item-param-name"
+                    class="tenders__item-param-name m--light"
                 >
-                    Начало приема заявок:
+                    Начало приема заявок
                 </span>
-                {{ $helpers.formatDate(new Date(tender.date_publication), 'DD.MM.YYYY HH:mm', 'Europe/Moscow') }} МСК
+                <div class="tenders__item-param-value">
+                    {{ $helpers.formatDate(new Date(tender.date_publication), 'DD.MM.YYYY HH:mm', 'Europe/Moscow') }} МСК
+                </div>
             </div>
             <div 
                 v-if="tender.date_start" 
                 class="tenders__item-param"
             >
                 <span 
-                    class="tenders__item-param-name"
+                    class="tenders__item-param-name m--light"
                 >
-                    Прием заявок: до
+                    Прием заявок
                 </span> 
-                {{ $helpers.formatDate(new Date(tender.date_start), 'DD.MM.YYYY HH:mm', 'Europe/Moscow') }} МСК
+                <div class="tenders__item-param-value">
+                    {{ $helpers.formatDate(new Date(tender.date_start), 'DD.MM.YYYY HH:mm', 'Europe/Moscow') }} МСК
+                </div>
             </div>
             <div
                 v-if="tender.date_end" 
                 class="tenders__item-param"
             >
                 <span 
-                    class="tenders__item-param-name"
+                    class="tenders__item-param-name m--light"
                 >
-                    Этап торгов: до
-                </span> 
-                {{ $helpers.formatDate(new Date(tender.date_end), 'DD.MM.YYYY HH:mm', 'Europe/Moscow') }} МСК
+                    Этап торгов
+                </span>
+                <div class="tenders__item-param-value">
+                    {{ $helpers.formatDate(new Date(tender.date_end), 'DD.MM.YYYY HH:mm', 'Europe/Moscow') }} МСК
+                </div>
             </div>
             <div 
                 class="tenders__item-param"
             >
                 <span 
-                    class="tenders__item-param-name"
+                    class="tenders__item-param-name m--light"
                 >
-                    Исполнение договора: до
-                </span> 
-                {{ $helpers.formatDate(new Date(tender.date_fulfilment), 'DD.MM.YYYY HH:mm', 'Europe/Moscow') }} МСК
+                    Исполнение договора
+                </span>
+                <div class="tenders__item-param-value">
+                    {{ $helpers.formatDate(new Date(tender.date_fulfilment), 'DD.MM.YYYY HH:mm', 'Europe/Moscow') }} МСК
+                </div>
             </div>
-            <div class="tenders__item-param">
-                <span class="tenders__item-param-name">Доступ:</span> {{ tender.type_detail }}
-            </div>
-            <!--
-            <div class="tenders__item-param">
-                <span class="tenders__item-param-name">Лоты:</span> {{ tender.lot_count }}
-            </div>
-            -->
             <div 
                 v-if="tender.kind === 'tender'"
                 class="tenders__item-param"
             >
-                <span class="tenders__item-param-name">Минимальный шаг ставки:</span> {{ tender.min_step }}%
+                <span class="tenders__item-param-name m--light">Минимальный шаг ставки</span> 
+                <div class="tenders__item-param-value">
+                    {{ tender.min_step }}%
+                </div>
             </div>
-            <div
-                v-if="tender.winner_count > 0" 
-                class="tenders__item-param"
-            >
-                <span class="tenders__item-param-name">Победители:</span> {{ tender.winner_count }}
-            </div>
-            <div 
-                v-else
-                class="tenders__item-param"
-            >
-                <span class="tenders__item-param-name">Участники:</span> {{ tender.participant_count }}
+            <div class="tenders__item-params">
+                <div class="tenders__item-param">
+                    <span class="tenders__item-param-name m--light">Доступ</span>
+                    <div class="tenders__item-param-value">
+                        {{ tender.type_detail }}
+                    </div>
+                </div>
+                <div
+                    v-if="tender.winner_count > 0" 
+                    class="tenders__item-param"
+                >
+                    <span class="tenders__item-param-name m--light">Победители</span>
+                    <div class="tenders__item-param-value">
+                        {{ tender.winner_count }}
+                    </div>
+                </div>
+                <div 
+                    v-else
+                    class="tenders__item-param"
+                >
+                    <span class="tenders__item-param-name m--light">Участники</span>
+                    <div class="tenders__item-param-value">
+                        {{ tender.participant_count }}
+                    </div>
+                </div>
             </div>
             <template
                 v-if="invites"
@@ -229,17 +248,6 @@
                         Подробнее
                     </button>
                 </div>
-                <!-- <div
-                    v-else-if="tender.user_invite.status === 'sent'"
-                    class="tenders__item-participate"
-                >
-                    <button
-                        class="button button-green"
-                        @click="onClickDraft"
-                    >
-                        Редактировать0
-                    </button>
-                </div> -->
             </template>
             <template
                 v-else-if="drafts"

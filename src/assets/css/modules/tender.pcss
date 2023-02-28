@@ -144,17 +144,34 @@
             }
         }
 
+        &-params {
+            display: flex;
+            gap: 12px;
+        }
+        &-params &-param {
+            width: calc(50% - 6px);
+        }
+
         &-param {
-            margin-bottom: 16px;
+            margin-bottom: 12px;
             font-weight: 400;
 
-            span,
+            &-name {
+                font-weight: 600;
+
+                &.m--light {
+                    font-weight: 500;
+                }
+            }
+            
+            &-value {
+                font-weight: 400;
+                white-space: pre-line;
+            }
+
             a {
                 font-weight: 600;
-            }
-            a {
                 color: $color-green;
-                cursor: pointer;
             }
         }
 
@@ -162,16 +179,17 @@
             color: $color-green;
             margin-bottom: 24px;
             font-style: normal;
-            font-weight: 700;
-            font-size: 34px;
-            line-height: 40px;
+            font-weight: 600;
+            font-size: 28px;
+            line-height: 34px;
+            padding-right: 30px;
 
             &.m--mobile {
                 display: none;
             }
 
             @mixin responsive-le-xl {
-                font-size: 30px;
+                font-size: 28px;
             }
 
             @mixin responsive-le-l {
@@ -183,7 +201,7 @@
 
                 &.m--mobile {
                     display: block;
-                    margin-bottom: auto;
+                    padding-right: 0;
                 }
             }            
         }

@@ -210,29 +210,39 @@
                             {{ $helpers.toPrice(tender.price, { sign: tender.currency_detail }) }}
                         </div>
                         <div class="tender__info-param">
-                            <span>Заказчик: </span> 
-                            <router-link
-                                :to="{ name: 'contragent', params: { id: tender.organization.id } }"
-                            >
-                                {{ tender.organization.name }}
-                            </router-link>
+                            <span class="tender__info-param-name">Заказчик</span> 
+                            <div class="tender__info-param-value">
+                                <router-link
+                                    :to="{ name: 'contragent', params: { id: tender.organization.id } }"
+                                >
+                                    {{ tender.organization.name }}
+                                </router-link>
+                            </div>
                         </div>
                         <div class="tender__info-param">
-                            <span>Категории: </span> 
-                            <template
-                                v-for="(category, index) in tender.category_detail"
-                            >
-                                {{ category.name }}<span v-if="tender.category.length > 0 && index != (tender.category.length - 1)">; </span>
-                            </template>
+                            <span class="tender__info-param-name">Категории</span>
+                            <div class="tender__info-param-value">
+                                <template
+                                    v-for="(category, index) in tender.category_detail"
+                                >
+                                    {{ category.name }}<span v-if="tender.category.length > 0 && index != (tender.category.length - 1)">; </span>
+                                </template>
+                            </div>
                         </div>
                         <div class="tender__info-param">
-                            <span>Регион:</span> {{ tender.region_detail ? tender.region_detail.name : '' }}
+                            <span class="tender__info-param-name">Регион</span> 
+                            <div class="tender__info-param-value">
+                                {{ tender.region_detail ? tender.region_detail.name : '' }}
+                            </div>
                         </div>
                         <div
                             v-if="tender.description"
                             class="tender__info-param"
                         >
-                            <span>Дополнительная информация:</span> {{ tender.description }}
+                            <span class="tender__info-param-name">Дополнительная информация</span>
+                            <div class="tender__info-param-value">
+                                {{ tender.description }}
+                            </div>
                         </div>
                     </div>
                     <div class="tender__info-right">
@@ -242,45 +252,71 @@
                         <div 
                             class="tender__info-param"
                         >
-                            <span>Начало приема заявок:</span> {{ $helpers.formatDate(new Date(tender.date_publication), 'DD.MM.YYYY HH:mm', 'Europe/Moscow') }} МСК
+                            <span class="tender__info-param-name m--light">Начало приема заявок</span>
+                            <div class="tender__info-param-value">
+                                {{ $helpers.formatDate(new Date(tender.date_publication), 'DD.MM.YYYY HH:mm', 'Europe/Moscow') }} МСК
+                            </div>
                         </div>
                         <div 
                             v-if="tender.date_start" 
                             class="tender__info-param"
                         >
-                            <span>Прием заявок: до</span> {{ $helpers.formatDate(new Date(tender.date_start), 'DD.MM.YYYY HH:mm', 'Europe/Moscow') }} МСК
+                            <span class="tender__info-param-name m--light">Прием заявок</span>
+                            <div class="tender__info-param-value">
+                                {{ $helpers.formatDate(new Date(tender.date_start), 'DD.MM.YYYY HH:mm', 'Europe/Moscow') }} МСК
+                            </div>
                         </div>
                         <div
                             v-if="tender.date_end" 
                             class="tender__info-param"
                         >
-                            <span>Этап торгов: до</span> {{ $helpers.formatDate(new Date(tender.date_end), 'DD.MM.YYYY HH:mm', 'Europe/Moscow') }} МСК
+                            <span class="tender__info-param-name m--light">Этап торгов</span> 
+                            <div class="tender__info-param-value">
+                                {{ $helpers.formatDate(new Date(tender.date_end), 'DD.MM.YYYY HH:mm', 'Europe/Moscow') }} МСК
+                            </div>
                         </div>
                         <div 
                             class="tender__info-param"
                         >
-                            <span>Исполнение договора: до</span> {{ $helpers.formatDate(new Date(tender.date_fulfilment), 'DD.MM.YYYY HH:mm', 'Europe/Moscow') }} МСК
-                        </div>
-                        <div class="tender__info-param">
-                            <span>Доступ:</span> {{ tender.type_detail }}
+                            <span class="tender__info-param-name m--light">Исполнение договора</span> 
+                            <div class="tender__info-param-value">
+                                {{ $helpers.formatDate(new Date(tender.date_fulfilment), 'DD.MM.YYYY HH:mm', 'Europe/Moscow') }} МСК
+                            </div>
                         </div>
                         <div 
                             v-if="tender.kind === 'tender'"
                             class="tender__info-param"
                         >
-                            <span>Минимальный шаг ставки:</span> {{ tender.min_step }}%
+                            <span class="tender__info-param-name m--light">Минимальный шаг ставки</span> 
+                            <div class="tender__info-param-value">
+                                {{ tender.min_step }}%
+                            </div>
                         </div>
-                        <div
-                            v-if="tender.winner_count > 0" 
-                            class="tender__info-param"
-                        >
-                            <span>Победители:</span> {{ tender.winner_count }}
-                        </div>
-                        <div
-                            v-else 
-                            class="tender__info-param"
-                        >
-                            <span>Участники:</span> {{ tender.participant_count }}
+                        <div class="tender__info-params">
+                            <div class="tender__info-param">
+                                <span class="tender__info-param-name m--light">Доступ</span>
+                                <div class="tenders__item-param-value">
+                                    {{ tender.type_detail }}
+                                </div>
+                            </div>
+                            <div
+                                v-if="tender.winner_count > 0" 
+                                class="tender__info-param"
+                            >
+                                <span class="tender__info-param-name m--light">Победители</span>
+                                <div class="tenders__item-param-value">
+                                    {{ tender.winner_count }}
+                                </div>
+                            </div>
+                            <div
+                                v-else 
+                                class="tender__info-param"
+                            >
+                                <span class="tender__info-param-name m--light">Участники</span>
+                                <div class="tenders__item-param-value">
+                                    {{ tender.participant_count }}
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
