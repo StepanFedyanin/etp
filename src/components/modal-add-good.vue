@@ -172,7 +172,7 @@
                         $formkit: 'text',
                         name: 'name',
                         label: 'Название товара',
-                        placeholder: 'Например: Портландцемент ПЦТ I-100 ГОСТ 1581-96',
+                        placeholder: 'Например: Мука пшеничная, высший сорт',
                         validation: 'required',
                         inputClass: 'modal-form__input',
                         labelClass: '$reset field__label',

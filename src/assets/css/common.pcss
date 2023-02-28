@@ -32,6 +32,12 @@ body {
     margin: auto;
     padding: 0 48px;
 
+    &.m--header {
+        max-width: none;
+        padding-left: 0;
+        margin-left: 0;
+    }
+
     &.m--1460 {
         max-width: 1500px;
         margin: auto !important;
@@ -44,11 +50,11 @@ body {
     }
 
     @mixin responsive-le-xl {
-        margin: auto 32px;
+        margin: auto 32px !important;
     }
 
     @mixin responsive-le-l {
-        margin: auto 16px;
+        margin: auto 16px !important;
     }
 
     /*

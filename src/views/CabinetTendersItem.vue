@@ -261,7 +261,7 @@
                             v-if="tender.date_start" 
                             class="tender__info-param"
                         >
-                            <span class="tender__info-param-name m--light">Прием заявок</span>
+                            <span class="tender__info-param-name m--light">Окончание приема заявок</span>
                             <div class="tender__info-param-value">
                                 {{ $helpers.formatDate(new Date(tender.date_start), 'DD.MM.YYYY HH:mm', 'Europe/Moscow') }} МСК
                             </div>
@@ -272,7 +272,7 @@
                         >
                             <span class="tender__info-param-name m--light">Этап торгов</span> 
                             <div class="tender__info-param-value">
-                                {{ $helpers.formatDate(new Date(tender.date_end), 'DD.MM.YYYY HH:mm', 'Europe/Moscow') }} МСК
+                                до {{ $helpers.formatDate(new Date(tender.date_end), 'DD.MM.YYYY HH:mm', 'Europe/Moscow') }} МСК
                             </div>
                         </div>
                         <div 
@@ -280,7 +280,7 @@
                         >
                             <span class="tender__info-param-name m--light">Исполнение договора</span> 
                             <div class="tender__info-param-value">
-                                {{ $helpers.formatDate(new Date(tender.date_fulfilment), 'DD.MM.YYYY HH:mm', 'Europe/Moscow') }} МСК
+                                до {{ $helpers.formatDate(new Date(tender.date_fulfilment), 'DD.MM.YYYY HH:mm', 'Europe/Moscow') }} МСК
                             </div>
                         </div>
                         <div 

@@ -160,7 +160,13 @@
     }
 
     &__logo {
-        width: 240px;
+        width: 300px;
+        padding: 0 30px;
+
+        @mixin responsive-le-xl {
+            width: 240px;
+            padding: 0;
+        }
 
         @mixin responsive-le-l {
             width: 200px;
@@ -259,6 +265,7 @@
 
         &-date {
             @mixin header-link;
+            margin-bottom: 0 !important;
             &:before {
                 background: url('./assets/img/icons/icon-timer-date.svg') 50% 50% no-repeat;
                 background-size: 100% 100%;

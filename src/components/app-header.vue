@@ -3,7 +3,7 @@
         class="header"
         :class="(!$route.meta.requiresAuth && $route.name !== 'home' && !($route.meta.showSidebarAuth && user && user.id)) ? 'm--seconds' : $route.meta.requiresAuth || ($route.meta.showSidebarAuth && user && user.id) ? 'm--cabinet' : ''"
     >
-        <div class="container">
+        <div class="container m--header">
             <div class="header__content">
                 <div class="header__left">
                     <a 

@@ -151,7 +151,7 @@
                 <span 
                     class="tenders__item-param-name m--light"
                 >
-                    Прием заявок
+                    Окончание приема заявок
                 </span> 
                 <div class="tenders__item-param-value">
                     {{ $helpers.formatDate(new Date(tender.date_start), 'DD.MM.YYYY HH:mm', 'Europe/Moscow') }} МСК
@@ -167,7 +167,7 @@
                     Этап торгов
                 </span>
                 <div class="tenders__item-param-value">
-                    {{ $helpers.formatDate(new Date(tender.date_end), 'DD.MM.YYYY HH:mm', 'Europe/Moscow') }} МСК
+                    до {{ $helpers.formatDate(new Date(tender.date_end), 'DD.MM.YYYY HH:mm', 'Europe/Moscow') }} МСК
                 </div>
             </div>
             <div 
@@ -179,7 +179,7 @@
                     Исполнение договора
                 </span>
                 <div class="tenders__item-param-value">
-                    {{ $helpers.formatDate(new Date(tender.date_fulfilment), 'DD.MM.YYYY HH:mm', 'Europe/Moscow') }} МСК
+                    до {{ $helpers.formatDate(new Date(tender.date_fulfilment), 'DD.MM.YYYY HH:mm', 'Europe/Moscow') }} МСК
                 </div>
             </div>
             <div 
