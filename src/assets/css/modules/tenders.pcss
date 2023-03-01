@@ -70,7 +70,9 @@
         &-left {
             padding-right: 20px;
             border-right: 1px solid $color-gray-T5;
-            width: calc(100% - 280px);
+            width: 65%;
+            max-width: calc(100% - 280px);
+            
             @mixin responsive-le-m {
                 width: 100%;
                 border-right: none;
@@ -83,8 +85,8 @@
 
         &-right {
             padding-left: 20px;
-            width: 280px;
-            /*padding-right: 40px;*/
+            min-width: 280px;
+            width: 35%;
 
             @mixin responsive-le-l {
                 /*padding-right: 30px;*/

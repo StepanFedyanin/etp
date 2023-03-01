@@ -91,9 +91,10 @@
         &-left {
             display: flex;
             flex-direction: column;
-            padding-right: 48px;
+            padding-right: 20px;
             border-right: 1px solid $color-gray-T5;
             width: 65%;
+            max-width: calc(100% - 280px);
 
             @mixin responsive-le-m {
                 width: 100%;
@@ -106,6 +107,7 @@
 
         &-right {
             padding-left: 20px;
+            min-width: 280px;
             width: 35%;
 
             @mixin responsive-le-l {
