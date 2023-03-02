@@ -45,8 +45,14 @@
                         <div class="contragents__item-info">
                             <div class="m--name-name">
                                 {{ contragent.name }}
-                                <span class="m--name-city">
-                                    {{ contragent.city }}
+                                <span class="m--name-inn">
+                                    <span>ИНН:</span> {{ contragent.inn }}
+                                </span>
+                                <span 
+                                    v-if="contragent.city"
+                                    class="m--name-city"
+                                >
+                                    | {{ contragent.city }}
                                 </span>
                             </div>
                             <div class="m--name-activity">

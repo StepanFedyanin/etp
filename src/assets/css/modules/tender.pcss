@@ -24,7 +24,7 @@
         position: relative;
         display: flex;
         justify-content: space-between;
-        flex-wrap: wrap;
+        /*flex-wrap: wrap;*/
         margin: 0 0 24px;
         gap: 1%;
 
@@ -50,6 +50,33 @@
                 margin-right: -16px;
                 padding-left: 16px;
                 padding-right: 16px;
+            }
+
+            @mixin responsive-le-xs {
+                flex-wrap: wrap;
+            }
+
+            &:before,
+            &:after {
+                content: '';
+                position: absolute;
+                display: block;
+                top: 0;
+                bottom: 0;
+                width: calc((100vw - 1866px) / 2);
+                background: $color-white;
+
+                @mixin responsive-g-xxl {
+                    width: calc((100vw - 1770px) / 2);
+                }
+            }
+
+            &:before {
+                left: 100%;
+            }
+
+            &:after {
+                right: 100%;
             }
         }
     }
@@ -470,13 +497,24 @@
     &__data {
         position: relative;
         display: flex;
-        width: 32.33%;
+        flex-direction: row-reverse;
+        flex-grow: 1;
+        /*width: 32.33%;*/
         padding: 20px;
         margin: 0 0 24px;
-        min-width: 300px;
+        /*min-width: 300px;*/
         @mixin shadow-box;
-        background: $color-bg;
+        background: $color-white;
+        
+        @mixin responsive-le-xl {
+            padding: 18px;
+        }
 
+        @mixin responsive-le-l {
+            padding: 14px;
+        }
+
+        /*
         &.m--long {
             width: 37.58%;
 
@@ -505,20 +543,31 @@
         @mixin responsive-le-l {
             width: 49%;
         }
-
+        */
         @mixin responsive-le-s {
             width: 100%;
+        }
+
+        &-inner {
+            flex-grow: 1;
         }
 
         &-icon {
             position: relative;
             display: block;
-            width: 64px;
-            min-width: 64px;
-            height: 64px;
-            border-radius: 10px;
+            width: 24px;
+            min-width: 24px;
+            height: 24px;
+            border-radius: 3px;
             background: $color-green;
-            margin-right: 16px;
+            margin-left: 12px;
+
+            @mixin responsive-le-l {
+                width: 16px;
+                min-width: 16px;
+                height: 16px;
+                margin-left: 8px;
+            }
 
             &.m--red {
                 background: $color-red;
@@ -527,67 +576,87 @@
             &:after {
                 content: '';
                 position: absolute;
-                top: 50%;
-                left: 50%;
-                width: 54px;
-                height: 54px;
-                margin-top: -27px;
-                margin-left: -27px;
+                top: 0;
+                left: 0;
+                width: 100%;
+                height: 100%;
             }
 
             &.m--finish:after {
                 background: url('./assets/img/icons/icon-finish.svg') 50% 50% no-repeat;
+                background-size: 82%;
             }
 
             &.m--timer:after {
                 background: url('./assets/img/icons/icon-timer.svg') 50% 50% no-repeat;
+                background-size: 82%;
             }
 
             &.m--status:after {
                 background: url('./assets/img/icons/icon-status.svg') 50% 50% no-repeat;
+                background-size: 82%;
             }
 
             &.m--clock:after {
                 background: url('./assets/img/icons/icon-clock.svg') 50% 50% no-repeat;
+                background-size: 82%;
             }
 
             &.m--complete:after {
                 background: url('./assets/img/icons/icon-complete.svg') 50% 50% no-repeat;
+                background-size: 82%;
             }
 
             &.m--wall-clock:after {
                 background: url('./assets/img/icons/icon-wall-clock.svg') 50% 50% no-repeat;
+                background-size: 82%;
             }
 
             &.m--winner:after {
                 background: url('./assets/img/icons/icon-winner.svg') 50% 50% no-repeat;
+                background-size: 82%;
             }
         }
 
         &-title {
-            font-weight: 700;
+            font-weight: 600;
             font-size: 20px;
             line-height: 24px;
             text-transform: uppercase;
             color: $color-gray-T3;
-            margin-bottom: 8px;
+            margin-bottom: 12px;
+            white-space: nowrap;
+            /*
+            hyphens: auto;
+            word-break: break-word;
+            */
+            @mixin responsive-le-xl {
+                font-size: 16px;
+                margin-bottom: 10px;
+            }
+
+            @mixin responsive-le-l {
+                font-size: 11px;
+                margin-bottom: 8px;
+            }
+        }
+        &-info {
+            font-weight: 600;
+            font-size: 22px;
+            line-height: 27px;
+            text-transform: uppercase;
             hyphens: auto;
             word-break: break-word;
             @mixin responsive-le-xl {
                 font-size: 18px;
                 line-height: 22px;
+                margin-right: -36px;
             }
-        }
-        &-info {
-            font-weight: 700;
-            font-size: 22px;
-            line-height: 30px;
-            text-transform: uppercase;
-            hyphens: auto;
-            word-break: break-word;
-            @mixin responsive-le-xl {
-                font-size: 20px;
-                line-height: 28px;
+
+            @mixin responsive-le-l {
+                font-size: 12px;
+                line-height: 15px;
+                margin-right: -24px;
             }
 
             span {

@@ -6,29 +6,33 @@
         <div class="lots__filter">
             <div class="lots__filter-block">
                 Фильтр:
-                <a
-                    v-for="(item, key) in filters"
-                    :key="`filter-${key}`"
-                    href="#"
-                    class="lots__filter-item"
-                    :class="key === currentFilter ? 'is-active' : ''"
-                    @click.prevent="changeFilter(key)"
-                >
-                    {{ item }}
-                </a>
+                <div>
+                    <a
+                        v-for="(item, key) in filters"
+                        :key="`filter-${key}`"
+                        href="#"
+                        class="lots__filter-item"
+                        :class="key === currentFilter ? 'is-active' : ''"
+                        @click.prevent="changeFilter(key)"
+                    >
+                        {{ item }}
+                    </a>
+                </div>
             </div>
-            <div class="lots__filter-block m--right">
+            <div class="lots__filter-block">
                 Сортировка:
-                <a
-                    v-for="(item, key) in sorting"
-                    :key="`sorting-${key}`"
-                    href="#"
-                    class="lots__filter-item"
-                    :class="key === currentSorting ? 'is-active' : ''"
-                    @click.prevent="changeSorting(key)"
-                >
-                    {{ item }}
-                </a>
+                <div>
+                    <a
+                        v-for="(item, key) in sorting"
+                        :key="`sorting-${key}`"
+                        href="#"
+                        class="lots__filter-item"
+                        :class="key === currentSorting ? 'is-active' : ''"
+                        @click.prevent="changeSorting(key)"
+                    >
+                        {{ item }}
+                    </a>
+                </div>
             </div>
         </div>
 

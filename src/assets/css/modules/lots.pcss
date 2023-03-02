@@ -7,14 +7,21 @@
 
     &__filter {
         display: flex;
+        flex-wrap: wrap;
         justify-content: space-between;
         margin-bottom: 16px;
+        column-gap: 16px;
 
         &-block {
             display: flex;
             font-weight: 500;
             font-size: 16px;
             line-height: 24px;
+
+            @mixin responsive-le-xs {
+                flex-direction: column;
+                margin-bottom: 12px;
+            }
 
             &.m--right {
                 margin-left: auto;
@@ -31,6 +38,11 @@
             &:hover,
             &.is-active {
                 color: $color-green;
+            }
+
+            @mixin responsive-le-xs {
+                margin-left: 0;
+                margin-right: 16px;
             }
         }
     }
