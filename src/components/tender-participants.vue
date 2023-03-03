@@ -24,14 +24,16 @@
                     </div>
                 </div>
                 <div class="tender__participants-item-status">
-                    {{ statuses[participant.status] }}
+                    <span>
+                        {{ statuses[participant.status] }}
+                    </span>
+                    <div 
+                        class="tender__participants-item-more"
+                        :class="{'tender__participants-item-more--active': participant.isShowMore}"
+                        @click="participant.isShowMore = !participant.isShowMore"
+                        v-text="participant.isShowMore ? 'Свернуть' : 'Подробнее'"
+                    />
                 </div>
-                <div 
-                    class="tender__participants-item-more"
-                    :class="{'tender__participants-item-more--active': participant.isShowMore}"
-                    @click="participant.isShowMore = !participant.isShowMore"
-                    v-text="participant.isShowMore ? 'Свернуть' : 'Подробнее'"
-                />
             </div>
             <Transition name="">
                 <div
@@ -39,14 +41,6 @@
                     class="tender__participants-item-info partipation m--100"
                 >
                     <div class="partipation__info">
-                        <div class="partipation__info-organization">
-                            <div class="partipation__info-item">
-                                <span>ИНН:</span> {{ participant.organization.inn }}
-                            </div>
-                            <div class="partipation__info-item">
-                                <span>КПП:</span> {{ participant.organization.kpp }}
-                            </div>
-                        </div>
                         <div class="partipation__info-person">
                             <div class="partipation__info-item">
                                 <span>Менеджер:</span> {{ participant.contact_person.full_name }}
@@ -58,6 +52,14 @@
                                 <span>Email:</span> {{ participant.contact_person.email }}
                             </div>
                         </div>
+                        <div class="partipation__info-organization">
+                            <div class="partipation__info-item">
+                                <span>ИНН:</span> {{ participant.organization.inn }}
+                            </div>
+                            <div class="partipation__info-item">
+                                <span>КПП:</span> {{ participant.organization.kpp }}
+                            </div>
+                        </div>
                     </div>
                     <div
                         class="partipation__docs m--underline"
@@ -66,28 +68,19 @@
                             Документация
                         </div>
                         <div class="partipation__docs-list">
-                            <div class="partipation__docs-item">
-                                <div class="partipation__docs-cell m--title">
-                                    Файл
-                                </div>
-                                <div class="partipation__docs-cell m--title">
-                                    Описание
-                                </div>
-                            </div>
                             <div ref="documents">
                                 <div
                                     v-for="(file, idx) in participant.documents"
                                     :key="idx"
                                     class="partipation__docs-item"
                                 >
-                                    <div class="partipation__docs-cell m--file">
-                                        <a
-                                            :href="file.file"
-                                        >
-                                            {{ file.name || $helpers.getFilename(file.file) }}
-                                        </a>
-                                    </div>
-                                    <div class="partipation__docs-cell">
+                                    <a
+                                        :href="file.file"
+                                        class="partipation__docs-item-name"
+                                    >
+                                        {{ file.name || $helpers.getFilename(file.file) }}
+                                    </a>
+                                    <div class="partipation__docs-item-info">
                                         {{ file.description }}
                                     </div>
                                 </div>                            

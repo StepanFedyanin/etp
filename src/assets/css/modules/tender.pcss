@@ -420,14 +420,10 @@
         }
 
         &-title {
+            @mixin h2;
             position: relative;
             display: flex;
             align-items: center;
-            font-weight: 700;
-            font-size: 20px;
-            line-height: 24px;
-            text-transform: uppercase;
-            color: $color-black;
             margin-bottom: 16px;
         }
         /*
@@ -670,7 +666,7 @@
         margin-bottom: 48px;
 
         &-title {
-            @mixin h2
+            @mixin h2;
             margin-bottom: 20px;
         }
     }
@@ -689,27 +685,40 @@
             @mixin shadow-box;
 
             &-block {
-                display: grid;
+                display: flex;
+                flex-direction: column;
+                /*
                 grid-template-columns: auto 300px 170px;
                 grid-template-areas: 'A B C';
+                */
                 gap: 12px;
             }
 
             &-name {
-                font-weight: 700;
+                display: flex;
+                font-weight: 600;
                 color: $color-green;
-                align-self: center;
+                justify-content: space-between;
+                width: 100%;
+                gap: 16px;
+
                 span {
-                    padding-right: 16px;
+                    font-weight: 600;
                 }
             }
             &-status {
+                display: flex;
                 font-weight: 600;
-                font-size: 18px;
-                line-height: 22px;
+                font-size: 16px;
+                line-height: 20px;
                 text-transform: uppercase;
-                text-align: center;
-                align-self: center;
+                justify-content: space-between;
+                width: 100%;
+                gap: 16px;
+
+                span {
+                    align-self: center;
+                }
             }
             &-more {
                 @mixin show-hide-mode-toggler;
@@ -721,7 +730,7 @@
                 display: inline-block;
                 padding-left: 26px;
                 font-weight: 500;
-                font-size: 20px;
+                font-size: 16px;
                 line-height: 24px;
                 text-transform: uppercase;
                 color: $color-gray-T3;
@@ -774,8 +783,8 @@
         @mixin shadow-box;
 
         &-title {
-            @mixin h2
-            margin-bottom: 24px;
+            @mixin h2;
+            margin-bottom: 24px !important;
             span {
                 color: $color-black;
             }
@@ -825,18 +834,24 @@
 
     &__bids {
         display: flex;
+        flex-wrap: wrap;
+        justify-content: space-between;
         padding: 4px 20px;
         margin-bottom: 48px;
         @mixin shadow-box;
 
+        @mixin responsive-le-s {
+            flex-direction: column;
+        }
+
         &-left {
             display: flex;
             flex-direction: column;
-            padding: 16px 0;
+            padding: 16px 24px 16px 0;
         }
 
         &-title {
-            @mixin h2
+            @mixin h2;
             margin-bottom: 4px;
             span {
                 color: $color-black;
@@ -845,17 +860,27 @@
 
         &-block {
             display: flex;
-            flex-wrap: wrap;
+            flex-wrap: nowrap;
             justify-content: flex-end;
-            margin-left: auto;
-            padding: 8px 0 8px 36px;
+            padding: 16px 0;
+            gap: 24px;
+
+            @mixin responsive-le-s {
+                flex-direction: column;
+                justify-content: center;
+                gap: 16px;
+                padding-top: 8px;
+            }
 
             .button {
-                margin: 8px 0 8px 36px;
-                width: 300px;
-                padding: 4px 16px 4px 16px;
+                width: auto;
+                /*padding: 4px 16px 4px 16px;*/
                 align-self: center;
-                min-height: 54px;
+                /*min-height: 54px;*/
+
+                @mixin responsive-le-s {
+                    width: 100%;
+                }
             }
         }
 
@@ -892,83 +917,4 @@
         }
     }
 }
-.inviteTender__form {
-    display: flex;
 
-    @mixin responsive-le-s {
-        flex-direction: column;
-    }
-
-    .modal-form__field .modal-form__input {
-        width:100%;
-    }
-
-    .form__block {
-        margin-right: 24px;
-        width: 50%;
-        min-width: 300px;
-
-        @mixin responsive-le-s {
-            width: 100%;
-
-            .field {
-                margin-right: 0;
-            }
-        }
-    }
-
-    .multiselect-dropdown {
-        transform: translateY(-46px);
-        max-height: 36rem;
-        .multiselect-options {
-            max-height: 36rem;
-        }
-    }
-
-    .multiselect-option:not(:last-child) .multiselect-inn {
-        border-bottom: 1.5px solid transparent;   
-    }
-}
-.invites {
-    &__title {
-        @mixin h2
-        margin-bottom: 20px;
-    }
-    &__list {
-        margin-bottom: 48px;
-    }
-    .invite {
-        &__item {
-            @mixin shadow-box;
-            display: flex;
-            align-items: center;
-            padding: 15px 26px;
-        }
-        &__item:not(:last-child){
-            margin-bottom: 24px;
-        }
-        &__title {
-            flex: 1;
-            font-weight: 700;
-            font-size: 16px;
-            line-height: 24px;
-            cursor: pointer;
-            color: $color-green;
-            text-decoration: underline;
-            &:hover{
-                color: $color-green-dark;
-            }
-        }
-        &__status {
-            padding: 15px;
-            margin: 0 20px;
-            font-weight: 600;
-            font-size: 18px;
-            line-height: 22px;
-            text-transform: uppercase;
-        }
-    }
-    &__list .button{
-        width: 142px;
-    }
-}

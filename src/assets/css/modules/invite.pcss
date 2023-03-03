@@ -1,3 +1,98 @@
+.invites {
+    &__title {
+        @mixin h2;
+        margin-bottom: 20px;
+    }
+    
+    &__list {
+        margin-bottom: 48px;
+    }
+
+    &__form {
+        display: flex;
+
+        @mixin responsive-le-s {
+            flex-direction: column;
+        }
+
+        .form__block {
+            margin-right: 24px;
+            width: 50%;
+            min-width: 300px;
+
+            @mixin responsive-le-s {
+                width: 100%;
+
+                .field {
+                    margin-right: 0;
+                }
+            }
+        }
+
+        .modal-form__field .modal-form__input {
+            width:100%;
+        }
+
+        &s-submit {
+
+        }
+
+        &-button {
+            @mixin responsive-le-s {
+                width: 100%;
+                margin-right: 0 !important;
+            }
+        }
+
+        .multiselect-dropdown {
+            transform: translateY(-46px);
+            max-height: 36rem;
+            .multiselect-options {
+                max-height: 36rem;
+            }
+        }
+
+        .multiselect-option:not(:last-child) .multiselect-inn {
+            border-bottom: 1.5px solid transparent;   
+        }
+    }
+
+    .invite {
+        &__item {
+            @mixin shadow-box;
+            display: flex;
+            align-items: center;
+            padding: 15px 26px;
+        }
+        &__item:not(:last-child){
+            margin-bottom: 24px;
+        }
+        &__title {
+            flex: 1;
+            font-weight: 600;
+            font-size: 16px;
+            line-height: 24px;
+            cursor: pointer;
+            color: $color-green;
+            text-decoration: underline;
+            &:hover{
+                color: $color-green-dark;
+            }
+        }
+        &__status {
+            padding: 15px;
+            margin: 0 20px;
+            font-weight: 600;
+            font-size: 18px;
+            line-height: 22px;
+            text-transform: uppercase;
+        }
+    }
+    &__list .button{
+        width: 142px;
+    }
+}
+
 .invite {
     &__form {
         .form__block {

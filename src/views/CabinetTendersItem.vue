@@ -609,14 +609,14 @@
                     </div>
                     <div class="tender__bids-block">
                         <button 
-                            class="button button-outline-green m--right"
+                            class="button button-green m--right"
                             :disabled="sendingBets"
                             @click="onClickRapidBets('lose')"
                         >
                             По проигрывающим лотам
                         </button>
                         <button 
-                            class="button button-outline-green"
+                            class="button button-green"
                             :disabled="sendingBets"
                             @click="onClickRapidBets('all')"
                         >
@@ -636,7 +636,7 @@
                     :participants="participants"
                     @getTenderData="getTenderData"
                 />
-                <inviteTender 
+                <TenderInvite 
                     v-if="user.id === tender.creator && tender.status === 'bid_accept' && tender.publication"
                     :tender="tender"
                 />
@@ -655,7 +655,7 @@
     import TenderLotsExtended from '@/components/tender-lots-extended';
     import TenderBids from '@/components/tender-bids';
     import Timer from '@/components/timer';
-    import inviteTender from '@/components/invite-tender.vue';
+    import TenderInvite from '@/components/tender-invite.vue';
     import ModalCloseTenderConfirm from '@/components/modal-close-tender-confirm';
     import ModalCloseAheadTenderConfirm from '@/components/modal-close-ahead-tender-confirm';
     import ModalCancelTenderConfirm from '@/components/modal-cancel-tender-confirm';
@@ -670,8 +670,8 @@
             TenderLots,
             TenderLotsExtended,
             TenderBids,
+            TenderInvite,
             Timer,
-            inviteTender,
             ModalCloseTenderConfirm,
             ModalCloseAheadTenderConfirm,
             ModalCancelTenderConfirm,

@@ -21,7 +21,7 @@
                 
                 <div 
                     :class="invite.status"
-                    class="invite__status "
+                    class="invite__status"
                 >
                     {{ invite.status_detail }}
                 </div>
@@ -55,13 +55,13 @@
             preserve
             type="form"
             data-loading="loading"
-            form-class="$reset inviteTender__form form"
+            form-class="$reset invites__form form"
             submit-label="Отправить приглашение"
             :disabled="loading"
             :loading="loading ? true : undefined"
             :submit-attrs="{
-                inputClass: '$reset button button-green',
-                wrapperClass: '$reset form__submit',
+                inputClass: '$reset button button-green invites__form-button',
+                wrapperClass: '$reset form__submit invites__form-submit',
                 outerClass: '$reset',
             }"
             @submit="submitHandler"
