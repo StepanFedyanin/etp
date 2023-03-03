@@ -4,7 +4,7 @@
         <div class="cabinet">
             <div class="container">
                 <div class="h1">
-                    Добро пожаловать на бизнес-платформу Tugan!
+                    Добро пожаловать на бизнес-платформу TUGAN!
                 </div>
                 <div 
                     v-if="user && user.id"

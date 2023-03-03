@@ -125,6 +125,7 @@
 
             @mixin responsive-le-m {
                 width: 100%;
+                max-width: none;
                 border-right: none;
                 padding-right: 0;
                 margin-bottom: 16px;
@@ -242,11 +243,8 @@
         @mixin shadow-box;
 
         &-title {
-            font-weight: 700;
-            font-size: 20px;
-            text-transform: uppercase;
-            color: $color-black;
-            margin-bottom: 24px;
+            @mixin h2
+            margin-bottom: 20px;
         }
 
         &-buttons {
@@ -256,8 +254,14 @@
             .button {
                 margin-right: 24px;
                 margin-bottom: 16px;
+                width: auto;
+
+                &:last-child {
+                    margin-right: 0;
+                }
 
                 @mixin responsive-le-xs {
+                    width: 300px;
                     margin-right: 0;
                 }
             }
@@ -287,11 +291,8 @@
         }
 
         &-title {
-            font-weight: 700;
-            font-size: 20px;
-            text-transform: uppercase;
-            color: $color-black;
-            margin-bottom: 16px;
+            @mixin h2
+            margin-bottom: 20px;
         }
 
         &-item {
@@ -669,11 +670,7 @@
         margin-bottom: 48px;
 
         &-title {
-            font-weight: 700;
-            font-size: 20px;
-            line-height: 24px;
-            text-transform: uppercase;
-            color: $color-gray-T3;
+            @mixin h2
             margin-bottom: 20px;
         }
     }
@@ -682,11 +679,7 @@
         margin-bottom: 48px;
 
         &-title {
-            font-weight: 700;
-            font-size: 20px;
-            line-height: 24px;
-            text-transform: uppercase;
-            color: $color-gray-T3;
+            @mixin h2
             margin-bottom: 20px;
         }
 
@@ -781,10 +774,7 @@
         @mixin shadow-box;
 
         &-title {
-            font-weight: 700;
-            font-size: 20px;
-            text-transform: uppercase;
-            color: $color-gray-T3;
+            @mixin h2
             margin-bottom: 24px;
             span {
                 color: $color-black;
@@ -846,10 +836,7 @@
         }
 
         &-title {
-            font-weight: 700;
-            font-size: 20px;
-            text-transform: uppercase;
-            color: $color-gray-T3;
+            @mixin h2
             margin-bottom: 4px;
             span {
                 color: $color-black;
@@ -885,11 +872,7 @@
             cursor: pointer;
         }
         &-title {
-            font-weight: 700;
-            font-size: 20px;
-            line-height: 24px;
-            text-transform: uppercase;
-            color: $color-gray-T3;
+            @mixin h2
             margin-bottom: 20px;
         }
         &-item {
@@ -948,11 +931,7 @@
 }
 .invites {
     &__title {
-        font-weight: 700;
-        font-size: 20px;
-        line-height: 24px;
-        text-transform: uppercase;
-        color: $color-gray-T3;
+        @mixin h2
         margin-bottom: 20px;
     }
     &__list {
