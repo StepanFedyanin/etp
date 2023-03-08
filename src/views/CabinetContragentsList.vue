@@ -4,6 +4,11 @@
             <div class="contragents__title h1">
                 Контрагенты
             </div>
+            <div class="contragents__search">
+                <SearchContragents
+                    @startSearch="getOrganizations"
+                />
+            </div>
             <template
                 v-if="showLoaderSending"
             >
@@ -14,31 +19,27 @@
             <template
                 v-else-if="contragents && contragents.length"
             >
-                <BlockContragents 
-                    :contragents="contragents"
-                    :hideHeader="true"
-                />
                 <div class="contragents__block">
                     <div
                         v-if="contragents && contragents.length"
-                        class="tenders__pagination"
+                        class="contragents__pagination"
                     >
-                        <div class="tenders__pagination-left">
-                            <div class="tenders__pagination-count">
+                        <div class="contragents__pagination-left">
+                            <div class="contragents__pagination-count">
                                 Всего: <span>{{ count }}</span>
                             </div>
                         </div>
-                        <!--div class="tenders__pagination-left">
-                            <div class="tenders__pagination-count">
+                        <!--div class="contragents__pagination-left">
+                            <div class="contragents__pagination-count">
                                 Отобрано: <span>{{ contragents.length }}</span>
                             </div>
                         </div-->
-                        <div class="tenders__pagination-right">
-                            <div class="tenders__pagination-perpage">
+                        <div class="contragents__pagination-right">
+                            <div class="contragents__pagination-perpage">
                                 <span>Выводить на страницу :</span>
                                 <select
                                     v-model="limit"
-                                    class="tenders__pagination-select"
+                                    class="contragents__pagination-select"
                                     name="limit"
                                 >
                                     <option
@@ -62,6 +63,61 @@
                                 :total="count"
                                 :limit="Number(limit)"
                                 :currentPage="Number($route.query.page || 1)"
+                                :query="$route.query"
+                                :url="$route.path"
+                            />
+                        </div>
+                    </div>
+                </div>
+                <BlockContragents 
+                    :contragents="contragents"
+                    :hideHeader="true"
+                />
+                <div class="contragents__block">
+                    <div
+                        v-if="contragents && contragents.length"
+                        class="contragents__pagination m--no-margin"
+                    >
+                        <div class="contragents__pagination-left">
+                            <div class="contragents__pagination-count">
+                                Всего: <span>{{ count }}</span>
+                            </div>
+                        </div>
+                        <!--div class="contragents__pagination-left">
+                            <div class="contragents__pagination-count">
+                                Отобрано: <span>{{ contragents.length }}</span>
+                            </div>
+                        </div-->
+                        <div class="contragents__pagination-right">
+                            <div class="contragents__pagination-perpage">
+                                <span>Выводить на страницу :</span>
+                                <select
+                                    v-model="limit"
+                                    class="contragents__pagination-select"
+                                    name="limit"
+                                >
+                                    <option
+                                        value="10"
+                                        selected="selected"
+                                    >
+                                        10 контрагентов
+                                    </option>
+                                    <option value="20">
+                                        20 контрагентов
+                                    </option>
+                                    <option value="50">
+                                        50 контрагентов
+                                    </option>
+                                    <option value="100">
+                                        100 контрагентов
+                                    </option>
+                                </select>
+                            </div>
+                            <Pagination
+                                :total="count"
+                                :limit="Number(limit)"
+                                :currentPage="Number($route.query.page || 1)"
+                                :query="$route.query"
                                 :url="$route.path"
                             />
                         </div>
@@ -83,11 +139,13 @@
     import { user as api } from "@/services";
     import BlockContragents from '@/components/block-contragents.vue';
     import Pagination from '@/components/pagination.vue';
+    import SearchContragents from '@/components/app-search-contragents.vue';
 
     export default {
         components: {
             BlockContragents,
             Pagination,
+            SearchContragents
         },
         props: {
             id: {
@@ -117,12 +175,12 @@
                 if (this.$route.query.page) {
                     this.$router.replace({ query: {} })
                 } else {
-                    this.getOrganizations()
+                    this.getOrganizations(this.$route.query)
                 }
             },
             '$route.query.page': {
                 handler() {
-                    this.getOrganizations()
+                    this.getOrganizations(this.$route.query)
                 },
             }
         },
@@ -131,15 +189,15 @@
         beforeDestroy() {
         },
         created() {
-            this.getOrganizations();
+            this.getOrganizations(this.$route.query);
         },
         methods: {
-            getOrganizations(){
-                let limit = Number(this.limit)
-                let params = {
-                    limit,
-                    offset: this.offset
-                };
+            getOrganizations(formData) {
+                console.log(formData);
+                let limit = Number(this.limit);
+                let params = Object.assign({}, formData);
+                params.limit = this.limit;
+                params.offset = this.offset;
                 this.showLoaderSending = true;
                 api.getOrganizations(params).then(res => {
                     this.contragents = res.results;

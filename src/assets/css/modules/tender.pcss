@@ -897,7 +897,7 @@
             cursor: pointer;
         }
         &-title {
-            @mixin h2
+            @mixin h2;
             margin-bottom: 20px;
         }
         &-item {
@@ -914,6 +914,21 @@
         &-block {
             @mixin shadow-box;
             padding: 20px;
+        }
+    }
+
+    &__chat {
+        margin-bottom: 48px;
+
+        &-title {
+            @mixin h2;
+            margin-bottom: 20px;
+        }
+
+        &-block {
+            padding: 20px 10px;
+            height: 80vh;
+            @mixin shadow-box;
         }
     }
 }

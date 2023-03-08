@@ -583,6 +583,10 @@
                     :tender="tender"
                     @getTenderData="getTenderData"
                 />
+                <TenderChat 
+                    v-if="tender.publication && (user.id === tender.creator || user.is_staff || user.organization.id === tender.organization.id || (tender.user_participation && tender.user_participation.status === 'participant'))"
+                    :tender="tender"
+                />
                 <TenderLots
                     v-if="tender.lots && tender.lots.length"
                     :tender="tender"
@@ -651,6 +655,7 @@
     import TenderOrganizationStatus from '@/components/tender-organization-status';
     import TenderParticipants from '@/components/tender-participants';
     import TenderRelatedTenders from '@/components/tender-related-tenders.vue';
+    import TenderChat from '@/components/tender-chat';
     import TenderLots from '@/components/tender-lots';
     import TenderLotsExtended from '@/components/tender-lots-extended';
     import TenderBids from '@/components/tender-bids';
@@ -667,6 +672,7 @@
             TenderOrganizationStatus,
             TenderParticipants,
             TenderRelatedTenders,
+            TenderChat,
             TenderLots,
             TenderLotsExtended,
             TenderBids,

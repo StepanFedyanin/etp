@@ -37,9 +37,9 @@
                     <button
                         type="button"
                         class="button button-red"
-                        @click="$emit('hideModal')"
+                        @click.stop="clearSearchForm"
                     >
-                        Отменить
+                        Сбросить
                     </button>
                     <button
                         type="submit"
@@ -312,6 +312,10 @@
                 delete formData.owner_type
                 this.$emit('advSearch', formData)
                 this.$emit('hideModal')
+            },
+            clearSearchForm() {
+                this.$emit('hideModal');
+                this.$router.replace({});
             },
             checkType(values, node) {
                 if (values.length > 1) {

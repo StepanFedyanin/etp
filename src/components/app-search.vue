@@ -8,7 +8,7 @@
                 <div class="search__form-group">
                     <div class="search__form-field">
                         <input
-                            ref="query"
+                            v-model="formData.query"
                             type="text"
                             name="query"
                             class="search__form-input"
@@ -56,11 +56,23 @@
         },
         data() {
             return {
+                formData: {
+                    query: this.$route.query.query
+                },
                 showSearchModal: false,
                 modalFormData: null
             };
         },
         computed: {
+        },
+        watch: {
+            '$route.query.query': {
+                handler() {
+                    this.formData = {
+                        query: this.$route.query.query
+                    }
+                },
+            }
         },
         methods: {
             onClickShowSearchModal() {
@@ -73,9 +85,12 @@
                 this.modalFormData = formData
             },
             searchTenders(event) {
-                let formData = Object.assign({}, this.modalFormData)
-                formData.query = this.$refs.query.value
-                this.$emit('startSearch', formData)
+                //let query = this.$route.query;
+                //delete query.page;
+                //this.$router.replace({});
+                this.$route.query = Object.assign({}, this.formData, this.modalFormData);
+                this.formData = Object.assign({}, this.modalFormData, this.formData);
+                this.$emit('startSearch', this.formData)
             }
         }
     };

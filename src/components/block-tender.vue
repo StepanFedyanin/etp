@@ -220,7 +220,6 @@
             <template
                 v-if="invites"
             >
-                <!-- <pre>{{tender.user_invite.status }}</pre> -->
                 <div
                     v-if="tender.user_invite.status === 'sent'"
                     class="tenders__item-participate"

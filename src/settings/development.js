@@ -63,6 +63,13 @@ const chat = {
     token: 'c7d63a2e58d186ae3760a5f7c690293e973c08c4'
 };
 
+const tenderChat = {
+    url: `${urlPath}/tender`,
+    wsUrl: `ws://${urlPath}/ws/chat`,
+    wsUrlPush: `${urlPath}/push`,
+    token: 'c7d63a2e58d186ae3760a5f7c690293e973c08c4'
+};
+
 const push = {
     url: `${urlPath}/push`,
     token: 'c7d63a2e58d186ae3760a5f7c690293e973c08c4'
@@ -134,6 +141,7 @@ export {
     cache,
 
     tender,
+    tenderChat,
     event,
     user,
     category,

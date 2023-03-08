@@ -4,7 +4,7 @@
             <div class="tenders__search">
                 <div class="tenders__search-form">
                     <Search
-                        @startSearch="startSearch"
+                        @startSearch="getTenders"
                     />
                 </div>
                 <div
@@ -151,35 +151,43 @@
         },
         watch: {
             limit () {
+                if (this.$route.query.page) {
+                    this.$router.replace({ query: {} })
+                } else {
+                    this.getTenders(this.$route.query)
+                }
+                /*
                 if (this.$route.query) {
                     this.$router.replace({ query: Object.assign({}, this.$route.query, { page: 1 }) })
                 }
-                this.getTenders()
+                this.getTenders(this.$route.query)
+                */
             },
             '$route.query.page': {
                 handler() {
-                    this.getTenders()
+                    this.getTenders(this.$route.query)
                 },
             }
         },
         mounted() {
-            this.getTenders();
+            this.getTenders(this.$route.query);
         },
         beforeDestroy() {
         },
         created() {
         },
         methods: {
-            getTenders() {
-                //let limit = Number(this.limit)
-                let params = {};
+            getTenders(formData) {
+                console.log(formData);
+                let limit = Number(this.limit);
+                let params = Object.assign({}, formData);
+                params.limit = this.limit;
+                params.offset = this.offset;
                 if (this.$route.query && this.$route.query.category) {
                     params.category = [this.$route.query.category];
                 }
-                this.startSearch(params);
-                /*
                 this.showLoaderSending = true;
-                api.getTenders(params).then(tenders => {
+                api.searchTenders(params).then(tenders => {
                     this.tenders = tenders
                     this.showLoaderSending = false;
                     console.log(tenders)
@@ -187,8 +195,8 @@
                     this.showLoaderSending = false;
                     console.error(err)
                 })
-                */
             },
+            /*
             startSearch(formData) {
                 formData.limit = Number(this.limit)
                 formData.offset = this.offset
@@ -203,6 +211,7 @@
                     console.error(err)
                 })
             }
+            */
         }
     };
 </script>
