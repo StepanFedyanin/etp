@@ -12,24 +12,26 @@
                 v-for="invite in invites"
                 class="invite__item"
             >
-                <div 
-                    class="invite__title"
-                    @click="onClickContragent(invite.organization.id)"
-                >
-                    {{ invite.organization.name }}
-                </div>
-                
-                <div 
-                    :class="invite.status"
-                    class="invite__status"
-                >
-                    {{ invite.status_detail }}
+                <div class="invite__item-info">
+                    <div 
+                        class="invite__item-title"
+                        @click="onClickContragent(invite.organization.id)"
+                    >
+                        {{ invite.organization.name }}
+                    </div>
+                    
+                    <div 
+                        :class="invite.status"
+                        class="invite__item-status"
+                    >
+                        {{ invite.status_detail }}
+                    </div>
                 </div>
                 <template
                     v-if="invite.status === 'sent' || invite.status ==='accepted'"
                 >
                     <button 
-                        class="button button-outline-red "
+                        class="button button-red"
                         @click="cancelInvitation(invite.id)"
                     >
                         Отменить
@@ -56,7 +58,7 @@
             type="form"
             data-loading="loading"
             form-class="$reset invites__form form"
-            submit-label="Отправить приглашение"
+            submit-label="Отправить"
             :disabled="loading"
             :loading="loading ? true : undefined"
             :submit-attrs="{

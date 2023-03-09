@@ -62,30 +62,39 @@
             @mixin shadow-box;
             display: flex;
             align-items: center;
-            padding: 15px 20px;
+            padding: 20px;
+            justify-content: space-between;
+            gap: 24px;
+
+            @mixin responsive-le-s {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+
+            &-info {
+            }
+
+            &-title {
+                font-weight: 600;
+                font-size: 16px;
+                line-height: 24px;
+                cursor: pointer;
+                color: $color-green;
+                margin-bottom: 12px;
+
+                &:hover{
+                    color: $color-green-dark;
+                }
+            }
+            &-status {
+                font-weight: 600;
+                font-size: 16px;
+                line-height: 20px;
+                text-transform: uppercase;
+            }
         }
         &__item:not(:last-child){
             margin-bottom: 24px;
-        }
-        &__title {
-            flex: 1;
-            font-weight: 600;
-            font-size: 16px;
-            line-height: 24px;
-            cursor: pointer;
-            color: $color-green;
-            text-decoration: underline;
-            &:hover{
-                color: $color-green-dark;
-            }
-        }
-        &__status {
-            padding: 15px;
-            margin: 0 20px;
-            font-weight: 600;
-            font-size: 18px;
-            line-height: 22px;
-            text-transform: uppercase;
         }
     }
     &__list .button{
