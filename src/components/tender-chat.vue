@@ -4,7 +4,10 @@
             Чат тендера
         </div>
 
-        <div class="tender__chat-block chat">
+        <div 
+            class="tender__chat-block chat"
+            :class="messages.length ? '' : 'm--empty'"
+        >
             <div class="chat__board m--100">
                 <div
                     ref="board"

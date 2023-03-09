@@ -238,7 +238,7 @@
     }       
 
     &__actions {
-        padding: 30px 30px 14px;
+        padding: 30px 20px 14px;
         margin: 0 0 48px;
         @mixin shadow-box;
 
@@ -927,8 +927,16 @@
 
         &-block {
             padding: 20px 10px;
-            height: 80vh;
+            height: 75vh;
             @mixin shadow-box;
+
+            &.m--empty {
+                height: auto;
+            }
+
+            @mixin responsive-le-m {
+                height: 80vh;
+            }
         }
     }
 }

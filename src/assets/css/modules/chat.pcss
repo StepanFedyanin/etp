@@ -202,12 +202,15 @@
                 filter: none;
                 box-shadow: none;
                 margin: 0;
+                min-height: 80px;
+                height: 80px;
+                padding: 12px 52px 12px 12px;
             }
 
             &-button {
                 position: absolute;
                 top: 50%;
-                right: 16px;
+                right: 12px;
                 width: 48px;
                 height: 48px;
                 background: url('./assets/img/icons/icon-send.svg') 50% 50% no-repeat;
@@ -216,6 +219,12 @@
                 margin: -24px 0 0;
                 border: none;
                 cursor: pointer;
+            }
+
+            &.m--tender &-button {
+                width: 32px;
+                height: 32px;
+                margin: -16px 0 0;
             }
         }
     }
