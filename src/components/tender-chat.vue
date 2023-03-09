@@ -29,34 +29,50 @@
                                 :class="[{'is-unread': !message.seen}, message.user_status === 'participant' ? 'is-right' : 'is-left']"
                             >
                                 <div class="chat__messages-item-inner">
-                                    <div class="chat__messages-item-top">
-                                        <div class="chat__messages-item-member">
-                                            <span
-                                                :class="`m--${message.user_status}`"
-                                            >
-                                                {{ message.user_status_detail }}
-                                            </span>
-                                            <a
-                                                v-if="message.organization" 
-                                                href="#"
-                                            >
-                                                {{ message.organization.name }}
-                                            </a>
+                                    <template
+                                        v-if="message.deleted"
+                                    >
+                                        <div class="chat__messages-item-text m--deleted">
+                                            Сообщение удалено
                                         </div>
-                                        <div class="chat__messages-item-time">
-                                            {{ $helpers.formatDate(new Date(message.date_publication), 'HH:mm:ss') }} МСК
+                                    </template>
+                                    <template
+                                        v-else
+                                    >
+                                        <div class="chat__messages-item-top">
+                                            <div class="chat__messages-item-member">
+                                                <span
+                                                    :class="`m--${message.user_status}`"
+                                                >
+                                                    {{ message.user_status_detail }}
+                                                </span>
+                                                <a
+                                                    v-if="message.organization" 
+                                                    href="#"
+                                                >
+                                                    {{ message.organization.name }}
+                                                </a>
+                                            </div>
+                                            <div class="chat__messages-item-time">
+                                                {{ $helpers.formatDate(new Date(message.date_publication), 'HH:mm:ss') }} МСК
+                                            </div>
+                                            <button
+                                                v-if="user.id === tender.creator || user.is_staff || user.id === message.id_user"
+                                                class="chat__messages-item-delete"
+                                                @click.prevent="onDeleteMessage(message.id)"
+                                            />
                                         </div>
-                                        <button
-                                            class="chat__messages-item-delete"
-                                        />
-                                    </div>
-                                    <div class="chat__messages-item-name">
-                                        {{ message.user_name }}
-                                    </div>
-                                    <div 
-                                        class="chat__messages-item-text"
-                                        v-html="message.text"
-                                    />
+                                        <div 
+                                            v-if="message.user_name"
+                                            class="chat__messages-item-name"
+                                        >
+                                            {{ message.user_name }}
+                                        </div>
+                                        <div 
+                                            class="chat__messages-item-text"
+                                            v-html="message.text"
+                                        />                                        
+                                    </template>
                                 </div>
                             </div>
                         </template>
@@ -238,6 +254,22 @@
                                 behavior: 'smooth'
                             });
                         });
+                    }).catch(err => {
+                        console.error(err);
+                    });
+                }
+            },
+            onDeleteMessage(id) {
+                if (id) {
+                    let params = {
+                        tender: this.tender.id,
+                        message: id
+                    }
+                    Chat.deleteTenderChatMessage(params).then((res) => {
+                        this.chat_messages.filter(item => {
+                            return item.id === id;
+                        })[0].deleted = 1;
+                        console.log(res);
                     }).catch(err => {
                         console.error(err);
                     });

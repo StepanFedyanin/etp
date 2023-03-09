@@ -2,17 +2,17 @@
     /*padding: 64px 0 48px;*/
     width: 100%;
 
-    &__board-empty{
+    &__board-empty {
         /* margin: 0 auto; */
         max-width: 740px;
         background: white;
         border-radius: 28px;
         padding: 25px 20px 35px 20px;
         
-        button{
+        button {
             margin-top: 25px;
         }
-        b{
+        b {
             font-weight: 700;
         }
     }
@@ -249,6 +249,11 @@
                 flex-direction: column;
                 border-radius: 20px;
                 max-width: 80%;
+
+                @mixin responsive-le-m {
+                    width: 100%;                    
+                    max-width: 100%;
+                }
             }
 
             &-top {
@@ -321,6 +326,10 @@
                 margin-bottom: 6px;
                 word-wrap: break-word;
                 word-break: break-all;
+
+                &.m--deleted {
+                    font-style: italic;
+                }
             }
 
             &-member {
@@ -328,12 +337,21 @@
                 font-size: 14px;
                 line-height: 17px;
 
+                @mixin responsive-xxs {
+                    display: flex;
+                    flex-direction: column;
+                }
+
                 span {
                     padding-right: 8px;
                     font-weight: 500;
 
                     &.m--creator {
                         color: $color-green;
+                    }
+
+                    &.m--admin {
+                        color: $color-red;
                     }
                 }
 
