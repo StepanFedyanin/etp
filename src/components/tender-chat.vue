@@ -1,5 +1,8 @@
 <template>
-    <div class="tender__chat">
+    <div 
+        v-if="tender.status !== 'closed' || (tender.status === 'closed' && messages.length)"
+        class="tender__chat"
+    >
         <div class="tender__chat-title">
             Чат тендера
         </div>

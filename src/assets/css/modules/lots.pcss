@@ -173,14 +173,38 @@
         display: flex;
         flex-wrap: wrap;
         margin: 0 -15px;
+        justify-content: center;
 
         &-item&-item {
             @mixin shadow-box;
             padding: 20px;
             margin: 0 15px 48px;
             width: calc(33.33% - 30px);
-            min-width: 360px;
+            /*min-width: 420px;*/
+            max-width: 480px;
             background: $color-white !important;
+
+            @mixin responsive-le-xl {
+                width: calc(50% - 30px);
+                min-width: 420px;
+            }
+
+            @mixin responsive-le-l {
+                min-width: 320px;
+            }
+
+            @mixin responsive-le-m {
+                min-width: 400px;
+            }
+
+            @mixin responsive-le-m {
+                max-width: 480px;
+                min-width: 280px;
+            }
+
+            @mixin responsive-le-s {
+                width: 100%;
+            }
         }
     }
 

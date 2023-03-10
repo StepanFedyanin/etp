@@ -62,6 +62,7 @@
                         </div>
                     </div>
                     <div
+                        v-if="participant.documents.length"
                         class="partipation__docs m--underline"
                     >
                         <div class="partipation__docs-title">
