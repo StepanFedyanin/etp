@@ -52,12 +52,11 @@
                                                 >
                                                     {{ message.user_status_detail }}
                                                 </span>
-                                                <a
-                                                    v-if="message.organization" 
-                                                    href="#"
+                                                <router-link
+                                                    :to="{ name: 'contragent', params: { id: message.organization.id } }"
                                                 >
                                                     {{ message.organization.name }}
-                                                </a>
+                                                </router-link>
                                             </div>
                                             <div class="chat__messages-item-time">
                                                 {{ $helpers.formatDate(new Date(message.date_publication), 'HH:mm:ss') }} МСК
