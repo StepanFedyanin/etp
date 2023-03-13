@@ -53,6 +53,7 @@
                                                     {{ message.user_status_detail }}
                                                 </span>
                                                 <router-link
+                                                    v-if="message.user_status !== 'admin' && message.organization && message.organization.id"
                                                     :to="{ name: 'contragent', params: { id: message.organization.id } }"
                                                 >
                                                     {{ message.organization.name }}
