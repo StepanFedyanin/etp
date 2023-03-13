@@ -165,7 +165,8 @@
             this.clearChat();
         },
         created() {
-            this.connectionChat();
+            //this.connectionChat();
+            this.appendMessages(this.tender.id);
         },
         methods: {
             dateDiff(oldDate, newDate) {
