@@ -2,6 +2,14 @@
     <div class="lot__history">
         <div class="lot__history-title m--title">
             История предложений
+            <a
+                v-if="((user.id === tender.creator || user.is_staff) && tender.kind === 'tender' && lot.last_bet)"
+                href="#"
+                class="lot__history-title-link"
+                @click.prevent="onClickCancelLotOffer()"
+            >
+                Отменить последнюю ставку
+            </a>
         </div>
         <div class="lot__history-list">
             <template
@@ -49,22 +57,32 @@
                 </template>
             </template>
         </div>
+        <ModalCancelLotOfferStaff
+            v-if="lot.last_bet"
+            :tender="tender || {}"
+            :lot="lot || {}"
+            :showModal="showCancelLotOfferModal"
+            @hideModal="hideCancelLotOfferModal"
+        />
     </div>
 </template>
 
 <script>
     import { tender as tenderApi } from "@/services";
+    import ModalCancelLotOfferStaff from '@/components/modal-cancel-lot-offer-staff';
     export default {
         components: {
+            ModalCancelLotOfferStaff
         },
+        emits: ['getTenderLot'],
         props: {
-            tenderId: {
-                type: [Number, String],
-                default() { return null; }
+            tender: {
+                type: Object,
+                default() { return {}; }
             },
-            lotId: {
-                type: [Number, String],
-                default() { return null; }
+            lot: {
+                type: Object,
+                default() { return {}; }
             },
         },
         data() {
@@ -72,6 +90,7 @@
                 user: this.$store.state.user,
                 history: [],
                 access: true,
+                showCancelLotOfferModal: false,
                 showLoaderSending: false,
             }
         },
@@ -80,12 +99,12 @@
         created() {
         },
         mounted() {
-            this.getTenderLotBets(this.tenderId, this.lotId);
+            this.getTenderLotBets();
         },
         methods: {
-            getTenderLotBets(tenderId, lotId) {
+            getTenderLotBets() {
                 this.showLoaderSending = true;
-                tenderApi.getTenderLotBets(tenderId, lotId).then(res => {
+                tenderApi.getTenderLotBets(this.tender.id, this.lot.id).then(res => {
                     console.log(res);
                     this.history = res;
                     //this.$emit('setParticipants', this.participants);
@@ -98,6 +117,16 @@
                     }
                     this.showLoaderSending = false;
                 });
+            },
+            onClickCancelLotOffer(lot) {
+                this.showCancelLotOfferModal = true;
+            },
+            hideCancelLotOfferModal(updateData) {
+                this.showCancelLotOfferModal = false;
+                if (updateData) {
+                    //this.getTenderLotBets();
+                    this.$emit('getTenderLot');
+                }
             },
         },
     };

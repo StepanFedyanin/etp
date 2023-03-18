@@ -2,88 +2,102 @@
     <div 
         class="lot"
     >
-        <div class="lot__info">
-            <div class="lot__info-top">
-                <div class="lot__info-number m--title">
-                    Лот №{{ lot.num }}
-                </div>
-                <div 
-                    class="lot__info-participants"
-                    :class="participants ? 'm--color-green' : 'm--color-red'"
-                >
-                    {{ participants ? $helpers.stringForNumber(participants, ['участник', 'участника', 'участников']) : 'Нет участников' }}
-                </div>
+        <template
+            v-if="showLoaderSending"
+        >
+            <div class="tender__loader loader">
+                <div class="spinner" /> Обновление данных лота
             </div>
-            <div class="lot__info-name">
-                {{ lot.name }}
-            </div>
-            <div class="lot__info-data">
-                <div class="lot__info-unit">
-                    <span>{{ lot.quantity }}</span> {{ lot.unit }}
-                </div>
-                <div class="lot__info-price">
-                    <span>{{ $helpers.toPrice(lot.price, { sign: tender.currency_detail, pointer: ',' }) }}</span>/{{ lot.unit }} (в т. ч. <span>НДС: {{ lot.nds > 0 ? lot.nds_detail : '—' }}</span>)
-                </div>
-            </div>
-
-            <div class="lot__info-params">
-                <div class="lot__info-param">
-                    Начальная цена (с НДС):
-                    <span>{{ $helpers.toPrice(lot.price * lot.quantity, { sign: tender.currency_detail, pointer: ',' }) }}</span>
-                </div>
-                <div 
-                    v-if="tender.kind === 'tender'"
-                    class="lot__info-param"
-                >
-                    Лучшая ставка:
-                    <span
-                        v-if="lot.last_price"
+        </template>
+        <template
+            v-else
+        >
+            <div class="lot__info">
+                <div class="lot__info-top">
+                    <div class="lot__info-number m--title">
+                        Лот №{{ lotData.num }}
+                    </div>
+                    <div 
+                        class="lot__info-participants"
+                        :class="participants ? 'm--color-green' : 'm--color-red'"
                     >
-                        {{ $helpers.toPrice(lot.last_price, { sign: tender.currency_detail, pointer: ',' }) }}
-                    </span>
-                    <span
-                        v-else
-                    >
-                        —
-                    </span>
+                        {{ participants ? $helpers.stringForNumber(participants, ['участник', 'участника', 'участников']) : 'Нет участников' }}
+                    </div>
+                </div>
+                <div class="lot__info-name">
+                    {{ lotData.name }}
+                </div>
+                <div class="lot__info-data">
+                    <div class="lot__info-unit">
+                        <span>{{ lotData.quantity }}</span> {{ lotData.unit }}
+                    </div>
+                    <div class="lot__info-price">
+                        <span>{{ $helpers.toPrice(lotData.price, { sign: tender.currency_detail, pointer: ',' }) }}</span>/{{ lotData.unit }} (в т. ч. <span>НДС: {{ lotData.nds > 0 ? lotData.nds_detail : '—' }}</span>)
+                    </div>
                 </div>
 
-                <div 
-                    v-if="tender.kind === 'tender'"
-                    class="lot__info-param"
-                >
-                    Снижение:
-                    <span
-                        v-if="priceDecline(lot)"
+                <div class="lot__info-params">
+                    <div class="lot__info-param">
+                        Начальная цена (с НДС):
+                        <span>{{ $helpers.toPrice(lotData.price * lotData.quantity, { sign: tender.currency_detail, pointer: ',' }) }}</span>
+                    </div>
+                    <div 
+                        v-if="tender.kind === 'tender'"
+                        class="lot__info-param"
                     >
-                        {{ $helpers.toPrice(priceDeclinePercent(lot), { sign: '%', pointer: ',' }) }} / <i class="m--color-green">{{ $helpers.toPrice(priceDecline(lot), { sign: tender.currency_detail, pointer: ',' }) }}</i>
-                    </span>
-                    <span
-                        v-else
-                    >
-                        —
-                    </span>
-                </div>
-            </div>
+                        Лучшая ставка:
+                        <span
+                            v-if="lotData.last_price"
+                        >
+                            {{ $helpers.toPrice(lotData.last_price, { sign: tender.currency_detail, pointer: ',' }) }}
+                        </span>
+                        <span
+                            v-else
+                        >
+                            —
+                        </span>
+                    </div>
 
-            <TenderLotParticipants
+                    <div 
+                        v-if="tender.kind === 'tender'"
+                        class="lot__info-param"
+                    >
+                        Снижение:
+                        <span
+                            v-if="priceDecline(lot)"
+                        >
+                            {{ $helpers.toPrice(priceDeclinePercent(lot), { sign: '%', pointer: ',' }) }} / <i class="m--color-green">{{ $helpers.toPrice(priceDecline(lot), { sign: tender.currency_detail, pointer: ',' }) }}</i>
+                        </span>
+                        <span
+                            v-else
+                        >
+                            —
+                        </span>
+                    </div>
+                </div>
+
+                <TenderLotParticipants
+                    :tenderId="tender.id"
+                    :lotId="lotData.id"
+                    :winnerBet="lotData.winner_bet"
+                    @setParticipants="setParticipants"
+                />
+            </div>
+            <TenderLotHistory
+                :tender="tender"
+                :lot="lotData"
                 :tenderId="tender.id"
-                :lotId="lot.id"
-                :winnerBet="lot.winner_bet"
-                @setParticipants="setParticipants"
+                :lotId="lotData.id"
+                @getTenderLot="getTenderLot"
             />
-        </div>
-        <TenderLotHistory
-            :tenderId="tender.id"
-            :lotId="lot.id"
-        />
-        <ModalWinnerLot
-            v-if="lotWinner"
-            :tender="tender"
-            :lot="lotWinner"
-            :showModal="showWinnerLotModal"
-            @hideModal="hideWinnerLotModal"
-        />
+            <ModalWinnerLot
+                v-if="lotWinner"
+                :tender="tender"
+                :lot="lotWinner"
+                :showModal="showWinnerLotModal"
+                @hideModal="hideWinnerLotModal"
+            />            
+        </template>
     </div>
 </template>
 
@@ -113,8 +127,9 @@
                 user: this.$store.state.user,
                 participants: null,
                 lotWinner: null,
+                lotData: this.lot,
                 showWinnerLotModal: false,
-                showLoadingSeding: false,
+                showLoaderSending: false,
             }
         },
         computed: {
@@ -124,6 +139,19 @@
         mounted() {
         },
         methods: {
+            getTenderLot() {
+                console.log('BLA BLA BLA BLA');
+                this.showLoaderSending = true;
+                tenderApi.getTenderLot(this.tender.id, this.lotData.id).then(res => {
+                    console.log(res);
+                    this.lotData = res;
+                    //this.$emit('setParticipants', this.participants);
+                    this.showLoaderSending = false;
+                }).catch(err => {
+                    console.error(err);
+                    this.showLoaderSending = false;
+                });
+            },
             setParticipants(participants) {
                 this.participants = participants.length;
             },

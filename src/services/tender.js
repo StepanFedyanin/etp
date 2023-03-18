@@ -214,6 +214,14 @@ export default class extends REST {
         })
     }
 
+    static cancelTenderLotBetByStaff(tenderId, lotId, betId, params) {
+        return this._delete(`${tenderId}/lots/${lotId}/bets/${betId}/delete_bet`, {}, params).then((data) => {
+            return data
+        }).catch((error) => {
+            throw new RESTError(error, 'Ошибка при удалении ставки лота организатором/администратором');
+        })
+    }
+
     static getTenderLotBets(tenderId, lotId) {
         return this._get(`${tenderId}/lots/${lotId}/bets`, {}, {}).then((data) => {
             return data
