@@ -7,6 +7,7 @@
     background-size: 100% 100%;
     padding: 120px 0 20px;
     box-sizing: border-box;
+    margin-bottom: 44px;
 
     @mixin responsive-le-xl {
         padding: 120px 40px 20px;
@@ -36,48 +37,61 @@
     }
 
     &__title {
-        font-weight: 900;
-        font-size: 54px;
+        font-weight: 600;
+        font-size: 36px;
+        line-height: 44px;
         color: $color-white;
-        margin-bottom: 16px;
+        margin-bottom: 12px;
         @mixin responsive-le-m {
-            font-size: 44px;
+            font-size: 32px;
+            line-height: 40px;
         }
         @mixin responsive-le-s {
-            font-size: 34px;
+            font-size: 28px;
+            line-height: 36px;
         }
         @mixin responsive-le-xs {
-            font-size: 28px;
+            font-size: 24px;
+            line-height: 32px;
         }
     }
 
     &__subtitle {
-        font-weight: 700;
-        font-size: 24px;
+        font-weight: 600;
+        font-size: 20px;
+        line-height: 24px;
         text-transform: uppercase;
         color: $color-white;
         margin-bottom: 32px;
         @mixin responsive-le-m {
-            font-size: 22px;
+            font-size: 19px;
+            line-height: 23px;
         }
         @mixin responsive-le-s {
-            font-size: 20px;
+            font-size: 18px;
+            line-height: 22px;
         }
         @mixin responsive-le-xs {
-            font-size: 18px;
+            font-size: 17px;
+            line-height: 21px;
         }
     }
 
     &__description {
-        font-weight: 400;
+        font-weight: 500;
         font-size: 16px;
-        line-height: 24px;
+        line-height: 20px;
         color: $color-white;
-        margin-bottom: 24px;
+        margin-bottom: 32px;
+
+        p {
+            margin-bottom: 16px;
+        }
     }
 
     &__register {
-        width: 320px;
+        display: inline-block;
+        width: auto;
     }
 
     &__right {

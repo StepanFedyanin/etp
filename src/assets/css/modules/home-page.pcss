@@ -1,0 +1,48 @@
+.home-page {
+    &__alert {
+        background: $color-green;
+        color: $color-white;
+        padding: 32px 0;
+        border-top: 2px solid $color-white;
+        border-bottom: 2px solid $color-white;
+        margin-bottom: 48px;
+
+        &.m--white {
+            background: $color-white;
+            color: $color-gray-T1;
+            border-top: 2px solid $color-green;
+            border-bottom: 2px solid $color-green;
+
+        }
+
+        &-title {
+            font-weight: 600;
+            font-size: 20px;
+            line-height: 24px;
+            text-transform: uppercase;
+            margin-bottom: 16px;
+        }
+
+        &-content {
+            font-weight: 500;
+            font-size: 16px;
+            line-height: 20px;
+
+            &.m--flex {
+                display: flex;
+                gap: 36px;
+                align-items: center; 
+            }
+
+            @mixin responsive-le-s {
+                flex-direction: column;
+                gap: 24px;
+            }
+        }
+
+        &-buttons {
+            display: flex;
+            gap: 24px;
+        }
+    }
+}

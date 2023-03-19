@@ -146,7 +146,7 @@
             },
         },
         methods: {
-            submitHandler(data, node) {
+            submitHandler() {
                 this.showLoaderSending = true;
                 this.loading = true;
                 let params = {};

@@ -11,10 +11,11 @@
         /* grid-template-columns: repeat(3, 1fr); */
         gap: 36px;
         grid-template-columns: repeat(auto-fill, minmax(345px, 1fr));
+        margin-bottom: 48px;
     }
     &__item {
         @mixin shadow-box;
-        padding: 25px 20px 35px 20px;
+        padding: 24px;
         display: flex;
         flex-direction: column;
         /*max-width: 460px;*/
@@ -25,25 +26,45 @@
         }
 
         &-description {
-            /* padding-bottom: 10px; */
+            font-size: 16px;
+            line-height: 20px;
+            font-weight: 400;
             flex: 1;
+
             ul {
-                padding-left: 30px;
+                padding-left: 32px;
                 font-weight: 400;
             }
-            li:not(:last-child) {
-                padding-bottom: 24px;
-            }
+
             li {
-                list-style-image: svg-load('assets/img/icons/icon-list.svg', fill=$color-red);
+                position: relative;
+            }
+
+            li:not(:last-child) {
+                margin-bottom: 16px;
+            }
+
+            li:before {
+                content: '';
+                position: absolute;
+                top: 50%;
+                margin-top: -8px;
+                left: -32px;
+                width: 16px;
+                height: 16px;
+                background-position: 50% 50%;
+                background-size: contain;
+                background-repeat: no-repeat;
+                background-image: svg-load('assets/img/icons/icon-list.svg', fill=$color-red);
             }
         }
         &-title {
             font-weight: 600;
             font-size: 20px;
             line-height: 24px;
-            padding-bottom: 16px;
+            margin-bottom: 24px;
             text-transform: uppercase;
+            color: $color-gray-T3;
         }
         &-subtitle {
             font-weight: 600;
@@ -58,6 +79,11 @@
             font-weight: 600;
             font-size: 20px;
             line-height: 24px;
+        }
+
+        &-button {
+            margin-top: 32px;
+            width: 100%;
         }
     }
 }

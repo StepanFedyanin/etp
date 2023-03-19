@@ -22,8 +22,8 @@ export default class extends REST {
         });
     }
 
-    static getTenderList() {
-        return this._get('list', {}).then((data) => {
+    static getTenderList(params) {
+        return this._get('list', params, {}).then((data) => {
             return data;
         }).catch((error) => {
             throw new RESTError(error, 'Ошибка при получении минималистичного списка тендеров');
