@@ -276,6 +276,7 @@
                             </div>
                         </div>
                         <div 
+                            v-if="tender.fulfilment"
                             class="tender__info-param"
                         >
                             <span class="tender__info-param-name m--light">Исполнение договора</span> 

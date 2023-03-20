@@ -171,6 +171,7 @@
                 </div>
             </div>
             <div 
+                v-if="tender.fulfilment"
                 class="tenders__item-param"
             >
                 <span 
