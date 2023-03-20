@@ -17,10 +17,10 @@
                                 <p>Присоединяйтесь к нам, продавайте и покупайте.</p>
                             </div>
                             <router-link
-                                :to="{ name: 'registration' }"
+                                :to="{ name: user && user.id ? 'cabinet' : 'registration' }"
                                 class="button button-green banner__register"
                             >
-                                Зарегистрироваться
+                                {{ user && user.id ? 'Мой кабинет' : 'Зарегистрироваться' }}
                             </router-link>
                         </div>
                         <div class="banner__right">
@@ -234,10 +234,10 @@
                             </ul>
                         </div>
                         <router-link
-                            :to="{ name: 'registration' }"
+                            :to="{ name: user && user.id ? 'cabinet' : 'registration' }"
                             class="button capabilities__item-button button-green"
                         >
-                            К регистрации
+                            {{ user && user.id ? 'Мой кабинет' : 'К регистрации' }}
                         </router-link>
                     </div>
                 </div>
@@ -399,7 +399,9 @@
                                 Вход
                             </router-link>
                         </div>
-                        Мы создаем платформу для всех представителей малого и среднего бизнеса, основанную на взаимопомощи и качественных поставках друг другу.
+                        <p>
+                            Если возникнут трудности, вопросы или предложения по сотрудничеству — обратитесь к нам по телефону <a href="tel:+73433448383">+7 (343) 344-83-83</a>.
+                        </p>
                     </div>
                 </div>
             </div>
@@ -435,6 +437,9 @@
             };
         },
         computed: {
+            user() {
+                return this.$store.state.user;
+            },
             offset() {
                 let limit = Number(this.limit)
                 return (this.page - 1) * limit

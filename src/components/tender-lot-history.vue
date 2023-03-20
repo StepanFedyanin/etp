@@ -12,50 +12,52 @@
             </a>
         </div>
         <div class="lot__history-list">
-            <template
-                v-if="showLoaderSending"
-            >
-                <div class="tender__loader loader">
-                    <div class="spinner" /> Загрузка данных истории ставок
-                </div>
-            </template>
-            <template
-                v-else-if="history.length"
-            >
-                <div 
-                    v-for="item in history"
-                    :key="`history-${item.id}`"
-                    class="lot__history-item"
-                    :class="item.publication ? '' : 'm--deleted'"
-                >
-                    <div class="lot__history-item-date">
-                        {{ $helpers.formatDate(new Date(item.date_publication), 'HH:mm:ss', 'Europe/Moscow') }} МСК<br>
-                        <span>{{ $helpers.formatDate(new Date(item.date_publication), 'DD.MM.YYYY', 'Europe/Moscow') }}</span>
-                    </div>
-                    <div class="lot__history-item-name">
-                        {{ item.organization.name }}
-                    </div>
-                    <div 
-                        class="lot__history-item-bet"
-                    >
-                        {{ $helpers.toPrice(item.price, { sign: item.currency_detail, pointer: ',' }) }}
-                    </div>
-                </div>
-            </template>
-            <template
-                v-else
-            >
+            <div class="lot__history-list-inner">
                 <template
-                    v-if="access"
+                    v-if="showLoaderSending"
                 >
-                    <p>Участники тендера не сделали ни одного предложения по данному лоту.</p>   
+                    <div class="tender__loader loader">
+                        <div class="spinner" /> Загрузка данных истории ставок
+                    </div>
+                </template>
+                <template
+                    v-else-if="history.length"
+                >
+                    <div 
+                        v-for="item in history"
+                        :key="`history-${item.id}`"
+                        class="lot__history-item"
+                        :class="item.publication ? '' : 'm--deleted'"
+                    >
+                        <div class="lot__history-item-date">
+                            {{ $helpers.formatDate(new Date(item.date_publication), 'HH:mm:ss', 'Europe/Moscow') }} МСК<br>
+                            <span>{{ $helpers.formatDate(new Date(item.date_publication), 'DD.MM.YYYY', 'Europe/Moscow') }}</span>
+                        </div>
+                        <div class="lot__history-item-name">
+                            {{ item.organization.name }}
+                        </div>
+                        <div 
+                            class="lot__history-item-bet"
+                        >
+                            {{ $helpers.toPrice(item.price, { sign: item.currency_detail, pointer: ',' }) }}
+                        </div>
+                    </div>
                 </template>
                 <template
                     v-else
                 >
-                    <p class="m--color-red">Доступ на получение данных запрещен.</p>                    
+                    <template
+                        v-if="access"
+                    >
+                        <p>Участники тендера не сделали ни одного предложения по данному лоту.</p>   
+                    </template>
+                    <template
+                        v-else
+                    >
+                        <p class="m--color-red">Доступ на получение данных запрещен.</p>                    
+                    </template>
                 </template>
-            </template>
+            </div>
         </div>
         <ModalCancelLotOfferStaff
             v-if="lot.last_bet"

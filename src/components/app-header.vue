@@ -15,7 +15,7 @@
 
                     <div class="header__logo">
                         <router-link
-                            :to="{ name: user && user.id ? 'cabinet' : 'home' }"
+                            :to="{ name: 'home' }"
                             class="header__logo-link"
                         >
                             <img
