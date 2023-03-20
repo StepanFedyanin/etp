@@ -386,18 +386,32 @@
                 <div class="container m--1460">
                     <div class="home-page__alert-content m--flex">
                         <div class="home-page__alert-buttons">
-                            <router-link
-                                :to="{ name: 'registration' }"
-                                class="button button-green button-width-auto"
+                            <template
+                                v-if="user && user.id"
                             >
-                                Регистрация
-                            </router-link>
-                            <router-link
-                                :to="{ name: 'auth' }"
-                                class="button button-green button-width-auto"
+                                <router-link
+                                    :to="{ name: 'cabinet' }"
+                                    class="button button-green button-width-auto"
+                                >
+                                    Мой кабинет
+                                </router-link>
+                            </template>
+                            <template
+                                v-else
                             >
-                                Вход
-                            </router-link>
+                                <router-link
+                                    :to="{ name: 'registration' }"
+                                    class="button button-green button-width-auto"
+                                >
+                                    Регистрация
+                                </router-link>
+                                <router-link
+                                    :to="{ name: 'auth' }"
+                                    class="button button-green button-width-auto"
+                                >
+                                    Вход
+                                </router-link>
+                            </template>
                         </div>
                         <p>
                             Если возникнут трудности, вопросы или предложения по сотрудничеству — обратитесь к нам по телефону <a href="tel:+73433448383">+7 (343) 344-83-83</a>.
