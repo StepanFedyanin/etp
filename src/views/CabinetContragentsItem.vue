@@ -132,11 +132,9 @@
     import blockTenderMini from '@/components/block-tender-mini.vue';
     import ContragentGoods from '@/components/contragent-goods.vue';
     import { user as api } from "@/services";
-    // import { number } from '@formkit/inputs';
 
     export default {
         components: {
-            //blockOrganization,
             blockContragent,
             blockPersons,
             blockTenderMini,

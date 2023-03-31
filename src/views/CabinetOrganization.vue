@@ -1,7 +1,7 @@
 <template>
     <div class="app__main">
         <div 
-            v-if=" profile"
+            v-if="profile"
             class="cabinet organization"
         >
             <div class="container">
@@ -20,18 +20,6 @@
                             {{ item.label }}
                         </button>
                     </div>
-                    <!--
-                    <div class="organization__subtitle h2">
-                        Информация о компании
-                    </div>
-                    <svg 
-                        v-if=" profile.is_staff || profile.is_master && profile.organization.id == $store._state.data.user.organization.id"
-                        class="svg-icon svg-icon__edit"
-                        @click="onClickEditOrganization()"
-                    >
-                        <use xlink:href="../assets/img/icons/icons.svg#edit" />
-                    </svg>
-                    -->
                 </div>
                 <div 
                     v-if="currentTabsItem === 'public'"
@@ -80,18 +68,6 @@
                     v-if="currentTabsItem === 'persons'"
                     class="organization__tab"
                 >
-                    <!--
-                    <h2 class="organization__subtitle h2">
-                        Представители организации
-                    </h2>
-                    <svg 
-                        v-if=" profile.is_staff || profile.is_master && profile.organization.id == $store._state.data.user.organization.id"
-                        class="svg-icon svg-icon__addPerson"
-                        @click="onClickAddStaff()"
-                    >
-                        <use xlink:href="../assets/img/icons/icons.svg#addPerson" />
-                    </svg>
-                    -->
                     <div class="organization__persons">
                         <blockPersons 
                             :organization="organization"
@@ -117,7 +93,7 @@
                     class="organization__tab"
                 >
                     <div class="contragent__subtitle h2">
-                        Заказчик <span class="m--color-green">{{ createdTenders.count }} {{ getNoun(createdTenders.count) }}</span>
+                        Заказчик <span class="m--color-green">{{ $helpers.stringForNumber(createdTenders.count, ['тендера', 'тендеров', 'тендеров']) }}</span>
                     </div>
                     <div class="contragent__tenders tenders">
                         <blockTenderMini
@@ -136,7 +112,7 @@
                         </button>
                     </div>
                     <div class="contragent__subtitle h2">
-                        Участник <span class="m--color-green">{{ participationTenders.count }} {{ getNoun(participationTenders.count) }}</span>
+                        Участник <span class="m--color-green">{{ $helpers.stringForNumber(participationTenders.count, ['тендера', 'тендеров', 'тендеров']) }}</span>
                     </div>
                     <div class="contragent__tenders tenders">
                         <blockTenderMini
@@ -221,13 +197,6 @@
         },
         created() {
             this.getMyProfile();
-            /*
-            api.getMyOrganizationMembers().then(res => {
-                this.persons = res;
-            }).catch(err => {
-                console.error(err);
-            });
-            */
             this.getMembers();
         },
         methods: {
@@ -282,18 +251,6 @@
             changeTab(name) {
                 this.currentTabsItem = name;
             },
-            getNoun(number) {
-                let n = Math.abs(number);
-                n %= 100;
-                if (n === 0 || n >= 2 && n <= 20) {
-                    return "тендеров";
-                }
-                n %= 10;
-                if (n === 1) {
-                    return "тендера";
-                }
-                return "тендеров";
-            }
         }
     }
 </script>

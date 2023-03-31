@@ -178,7 +178,6 @@
         },
         methods: {
             getTenders(formData) {
-                console.log(formData);
                 let limit = Number(this.limit);
                 let params = Object.assign({}, formData);
                 params.limit = this.limit;
@@ -190,28 +189,11 @@
                 api.searchTenders(params).then(tenders => {
                     this.tenders = tenders
                     this.showLoaderSending = false;
-                    console.log(tenders)
                 }).catch(err => {
                     this.showLoaderSending = false;
                     console.error(err)
                 })
             },
-            /*
-            startSearch(formData) {
-                formData.limit = Number(this.limit)
-                formData.offset = this.offset
-                console.log(formData)
-                this.showLoaderSending = true;
-                api.searchTenders(formData).then(tenders => {
-                    this.tenders = tenders
-                    this.showLoaderSending = false;
-                    console.log(tenders)
-                }).catch(err => {
-                    this.showLoaderSending = false;
-                    console.error(err)
-                })
-            }
-            */
         }
     };
 </script>

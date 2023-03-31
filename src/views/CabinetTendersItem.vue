@@ -436,7 +436,6 @@
                         @hideModal="hideDeleteTenderConfirmModal"
                     />
                 </div>
-
                 <div class="tender__block">
                     <div
                         v-if="((tender.creator === user.id || user.is_staff) && tender.status === 'bid_accept') || tender.documents.length"
@@ -595,7 +594,7 @@
                     @getTenderData="getTenderData"
                 />
                 <TenderLotsExtended
-                    v-if="(user.id === tender.creator || user.is_staff) && tender.status !== 'bid_accept' && tender.lots && tender.lots.length"
+                    v-if="(user.id === tender.creator || user.is_staff || (user.organization.id === tender.organization.id && user.is_master)) && tender.status !== 'bid_accept' && tender.lots && tender.lots.length"
                     :tender="tender"
                     :lots="tender.lots"
                     @getTenderData="getTenderData"
@@ -919,7 +918,6 @@
                     formData.append("description", this.tender.documents[idx].description)
                     tenderApi.updateTenderDocument(this.tender.id, this.tender.documents[idx].id, formData)
                         .then(newFile => {
-                            // console.log(newFile)
                             this.tender.documents[idx] = newFile
                             // this.defaultTender.documents = this.documents
                         }).catch(err => {
@@ -932,12 +930,11 @@
                 if (idx >= 0) {
                     tenderApi.deleteTenderDocument(this.tender.id, this.tender.documents[idx].id)
                         .then(res => {
-                            //this.documents.splice(idx, 1)
-                            this.tender.documents.splice(idx, 1)
+                            this.tender.documents.splice(idx, 1);
                             console.log(res);
                             // this.defaultTender.documents = this.documents
                         }).catch(err => {
-                            console.error(err)
+                            console.error(err);
                         })
                 }
             },
