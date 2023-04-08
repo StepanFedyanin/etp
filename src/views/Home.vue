@@ -178,7 +178,7 @@
                         Больше возможностей
                     </div>
                     <div class="home-page__alert-content">
-                        Мы работаем над нововведениями, которые позволят нам построить настоящую бизнес-платформу с массой возможностей для бизнеса.<br>Некоторые из них вы можете увидеть уже сейчас!
+                        Мы работаем над нововведениями, которые позволят нам построить настоящую бизнес-платформу с массой<br>возможностей для бизнеса.<br>Некоторые из них вы можете увидеть уже сейчас!
                     </div>
                 </div>
             </div>
@@ -334,7 +334,7 @@
                         Социальная бизнес-платформа
                     </div>
                     <div class="home-page__alert-content">
-                        Мы создаем платформу для всех представителей малого и среднего бизнеса, основанную на взаимопомощи и качественных поставках друг другу.
+                        Мы создаем платформу для всех представителей малого и среднего бизнеса, основанную на взаимопомощи и<br>качественных поставках друг другу.
                     </div>
                 </div>
             </div>
@@ -382,7 +382,7 @@
                 </div>
             </div>
 
-            <div class="home-page__alert m--white">
+            <div class="home-page__alert">
                 <div class="container m--1460">
                     <div class="home-page__alert-content m--flex">
                         <div class="home-page__alert-buttons">
@@ -391,7 +391,7 @@
                             >
                                 <router-link
                                     :to="{ name: 'cabinet' }"
-                                    class="button button-green button-width-auto"
+                                    class="button button-outline-green button-width-auto"
                                 >
                                     Мой кабинет
                                 </router-link>
@@ -401,20 +401,20 @@
                             >
                                 <router-link
                                     :to="{ name: 'registration' }"
-                                    class="button button-green button-width-auto"
+                                    class="button button-outline-green button-width-auto"
                                 >
                                     Регистрация
                                 </router-link>
                                 <router-link
                                     :to="{ name: 'auth' }"
-                                    class="button button-green button-width-auto"
+                                    class="button button-outline-green button-width-auto"
                                 >
                                     Вход
                                 </router-link>
                             </template>
                         </div>
                         <p>
-                            Если возникнут трудности, вопросы или предложения по сотрудничеству — обратитесь к нам по телефону <a href="tel:+73433448383">+7 (343) 344-83-83</a>.
+                            Если возникнут трудности, вопросы или предложения по сотрудничеству —<br>обратитесь к нам по телефону <a href="tel:+73433448383">+7 (343) 344-83-83</a>.
                         </p>
                     </div>
                 </div>

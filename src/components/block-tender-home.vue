@@ -3,6 +3,12 @@
         :class="blockClass" 
         class="tenders__item"
     >
+        <div
+            v-if="user && user.id"
+            class="tenders__item-favorite"
+            :class="{ 'm--favorite': favorite }"
+            @click="toggleFavorite"
+        />
         <div class="tenders__item-left">
             <div class="tenders__item-top">
                 <div class="tenders__item-name">
@@ -137,7 +143,7 @@
                 class="tenders__item-participate"
             >
                 <button
-                    class="button button-green button-width-100"
+                    class="button button-green button-center"
                     @click="$router.push({ name: 'registration' })"
                 >
                     {{ new Date() <= new Date(tender.date_start) ? 'Участвовать' : 'Подробнее' }}
@@ -175,9 +181,13 @@
             return {
                 urlPath,
                 isShowPositions: false,
+                favorite: this.tender.favorite,
             };
         },
         computed: {
+            user() {
+                return this.$store.state.user;
+            },
             restTime() {
                 let rest = new Date(this.tender.date_end) - new Date()
                 return (rest < 0) ? false : true;
@@ -187,6 +197,15 @@
             // this.getInviteStatus();
         },
         methods: {
+            toggleFavorite() {
+                this.favorite = !this.favorite;
+                tenderApi.switchFavoriteTender(this.tender.id).then(res => {
+                    console.log(res);
+                }).catch(err => {
+                    this.$store.dispatch('showError', err);
+                    console.error(err);
+                });
+            },
         },
     };
 </script>
