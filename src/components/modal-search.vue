@@ -191,15 +191,14 @@
                         inn: true,
                         minChars: 3,
                         options: async () => {
-                            return await userApi.getOrganizations().then(orgs => {
-                                console.log(orgs)
+                            return await userApi.getOrganizations({limit: 1000}).then(orgs => {
                                 return orgs.results.map((org) => {
                                     return {
                                         label: `${org.inn}, ${org.name}`,
                                         inn: org.inn,
                                         kpp: org.kpp,
                                         name: org.name,
-                                        city: 'Город',
+                                        city: org.city,
                                         principal_activity: org.principal_activity,
                                         value: org.id,
                                     }
