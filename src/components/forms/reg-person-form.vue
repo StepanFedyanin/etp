@@ -110,8 +110,9 @@
                         name: 'phone',
                         label: 'Телефон (контактный)',
                         placeholder: "x-xxx-xxx-xxxx",
+                        validation: 'required',
                         validationVisibility: 'dirty',
-                        outerClass: 'field--inline'
+                        outerClass: 'field--inline field--required'
                     }
                 ],
             }

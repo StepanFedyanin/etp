@@ -143,6 +143,14 @@
                 class="tenders__item-participate"
             >
                 <button
+                    v-if="user && user.id"
+                    class="button button-green button-center"
+                    @click="$router.push({ name: 'tender', params: { id: tender.id } })"
+                >
+                    {{ new Date() <= new Date(tender.date_start) ? 'Участвовать' : 'Подробнее' }}
+                </button>
+                <button
+                    v-else
                     class="button button-green button-center"
                     @click="$router.push({ name: 'registration' })"
                 >
