@@ -112,7 +112,8 @@
                                 })
                                 return items.map((org) => {
                                     return {
-                                        label: org.inn,
+                                        label: `${org.inn}, ${org.name}`,
+                                        inn: org.inn,
                                         kpp: org.kpp,
                                         name: org.name,
                                         // city: org.city,

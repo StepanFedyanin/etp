@@ -30,7 +30,7 @@
             >
                 <div class="multiselect-inn__inner">
                     <div class="multiselect-inn__left">
-                        <div class="multiselect-inn__inn">ИНН <span>{{ option.label }}</span></div>
+                        <div class="multiselect-inn__inn">ИНН <span>{{ option.inn }}</span></div>
                         <div class="multiselect-inn__kpp">КПП <span>{{ option.kpp }}</span></div>
                     </div>
                     <div class="multiselect-inn__right">

@@ -195,7 +195,8 @@
                                 console.log(orgs)
                                 return orgs.results.map((org) => {
                                     return {
-                                        label: org.inn,
+                                        label: `${org.inn}, ${org.name}`,
+                                        inn: org.inn,
                                         kpp: org.kpp,
                                         name: org.name,
                                         city: 'Город',
