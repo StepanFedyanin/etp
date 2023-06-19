@@ -186,6 +186,19 @@
                         outerClass: '$reset modal-form__field m--type',
                     }, {
                         $formkit: 'multiselect',
+                        mode: 'single',
+                        name: 'type',
+                        label: 'Доступ к тендеру',
+                        closeOnSelect: false,
+                        options: [
+                            { label: 'Открытый', value: 'reduction_opened' },
+                            { label: 'Закрытый', value: 'reduction_closed' },
+                        ],
+                        inputClass: 'modal-form__select',
+                        labelClass: '$reset modal-form__label',
+                        outerClass: '$reset modal-form__field m--type',
+                    }, {
+                        $formkit: 'multiselect',
                         name: 'creator',
                         searchable: true,
                         inn: true,
@@ -214,19 +227,6 @@
                         innerClass: 'modal-form__input',
                         labelClass: '$reset modal-form__label',
                         outerClass: '$reset modal-form__field m--inn',
-                    }, {
-                        $formkit: 'multiselect',
-                        mode: 'single',
-                        name: 'type',
-                        label: 'Доступ к тендеру',
-                        closeOnSelect: false,
-                        options: [
-                            { label: 'Открытый', value: 'reduction_opened' },
-                            { label: 'Закрытый', value: 'reduction_closed' },
-                        ],
-                        inputClass: 'modal-form__select',
-                        labelClass: '$reset modal-form__label',
-                        outerClass: '$reset modal-form__field m--type',
                     }, {
                         $formkit: 'multiselect',
                         name: 'region',

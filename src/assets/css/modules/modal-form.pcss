@@ -10,24 +10,37 @@
         column-gap: 30px;
         row-gap: 16px;
         justify-content: space-between;
+
+        @mixin responsive-le-xl {
+            column-gap: 20px;
+        }
+
+        @mixin responsive-le-l {
+            justify-content: flex-start;
+            row-gap: 8px;
+        }
+
+        @mixin responsive-le-m {
+            row-gap: 0;
+        }
     }
 
     &__field {
         position: relative;
         margin-bottom: 16px;
-        width: calc(20% - 30px);
-        min-width: 250px;
+        width: calc(20% - 30px / 5 * 4);
+        min-width: 200px;
 
         &.m--width-100 {
             width: 100%;
         }
 
         @mixin responsive-le-xl {
-            width: calc(25% - 30px);
+            width: calc(25% - 20px / 4 * 3);
         }
 
         @mixin responsive-le-l {
-            width: calc(33.33% - 30px);
+            width: calc(33.33% - 20px / 3 * 2);
         }
 
         @mixin responsive-le-m {
@@ -38,8 +51,39 @@
             width: 100%;
         }
     
+        &.m--category {
+            width: calc(50% - 30px / 3 * 2);
+
+            @mixin responsive-le-xl {
+                width: calc(50% - 20px / 3 * 2);
+            }
+
+            @mixin responsive-le-m {
+                width: 100%;
+            }
+        }
+        &.m--type {
+            width: calc(25% - 30px / 3 * 2);
+
+            @mixin responsive-le-xl {
+                width: calc(25% - 20px / 3 * 2);
+            }
+
+            @mixin responsive-le-l {
+                width: calc(50% - 20px / 2);
+            }
+
+            @mixin responsive-le-m {
+                width: calc(50% - 20px / 2);
+            }
+
+            @mixin responsive-le-s {
+                width: 100%;
+            }
+        }
+
         &.m--inn {
-            width: calc(60% - 15px);
+            width: calc(50% - 30px / 2);
 
             @mixin responsive-le-m {
                 width: 100%;
@@ -49,26 +93,18 @@
                 width: 100%;
             }
         }
-        &.m--category {
-            width: calc(60% - 15px);
-            @mixin responsive-le-m {
-                width: 100%;
-            }
-        }
-        &.m--type {
-            width: calc(40% - 23px);
-            @mixin responsive-le-m {
-                width: calc(50% - 15px);
-            }
-            @mixin responsive-le-s {
-                width: 100%;
-            }
-        }
+
         &.m--region {
-            width: calc(60% - 15px);
-            @mixin responsive-le-m {
-                width: calc(50% - 15px);
+            width: calc(50% - 30px / 2);
+
+            @mixin responsive-le-xl {
+                width: calc(25% - 20px / 3 * 2);
             }
+
+            @mixin responsive-le-m {
+                width: 100%;
+            }
+
             @mixin responsive-le-s {
                 width: 100%;
             }
@@ -77,7 +113,11 @@
             width: 100%;
 
             & .modal-form__option {
-                margin-right: 10%;
+                margin-right: 30px;
+
+                @mixin responsive-le-xl {
+                    margin-right: 20px;
+                }
 
                 & .field__label {
                     margin: 0 0 0 8px;
@@ -161,19 +201,20 @@
 
     &__label {
         display: block;
-        color: $color-red;
+        /*color: $color-red;*/
         margin-bottom: 8px;
         font-size: 16px;
         line-height: 20px;
+        font-weight: 500;
     }
 
     &__select {
         @mixin select--with-arrow;
-        min-width: 250px;
+        min-width: 200px;
     }
     
     &__input {
-        min-width: 250px;
+        min-width: 200px;
     }
 
     &__actions {
