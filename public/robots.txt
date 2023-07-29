@@ -1,2 +1,12 @@
 User-agent: *
-Allow: /
+Disallow: /auth
+Disallow: /registration
+Disallow: */index.php
+Disallow: /*?*
+Allow: *.css
+Allow: *.gif
+Allow: *.jpg
+Allow: *.js
+Allow: *.png
+Allow: *.webp
+Host: https://etptugan.ru
