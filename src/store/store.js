@@ -15,6 +15,8 @@ export default createStore({
             refreshToken: null,
             user: null,
             regData: null,
+            meta: {},
+            metaScheme: {},
             loader: null,
             error: null
         }
@@ -38,6 +40,12 @@ export default createStore({
         regData(state, data) {
             state.regData = data;
         },
+        metaScheme(state, meta) {
+            state.metaScheme = meta;
+        },
+        meta(state, meta) {
+            state.meta = meta;
+        },
         updateError(state, error) {
             state.error = error;
         }
@@ -59,6 +67,12 @@ export default createStore({
         },
         setRegData(context, data) {
             context.commit('regData', data);
+        },
+        setMetaScheme(context, meta) {
+            context.commit('metaScheme', meta);
+        },
+        setMeta(context, meta) {
+            context.commit('meta', meta);
         },
         showError(context, error) {
             if (error.response && error.response.status !== 401) {

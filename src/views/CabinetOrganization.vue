@@ -28,8 +28,8 @@
                     <div class="organization__content">
                         Ваш профиль виден всем по ссылке:
                         <router-link
-                            :to="{ name: 'contragent', params: { id: organization.id } }"
                             v-slot="{ href, navigate }"
+                            :to="{ name: 'contragent', params: { id: organization.id } }"
                         >
                             <a 
                                 :href="href"

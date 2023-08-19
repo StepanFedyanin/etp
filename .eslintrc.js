@@ -15,6 +15,7 @@ module.exports = {
             'error',
             4
         ],
+        'vue/no-setup-props-destructure': 'warn',
         'vue/attribute-hyphenation': 'off',
         'vue/require-v-for-key': 'off',
         'vue/require-default-prop': 'warn',

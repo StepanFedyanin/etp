@@ -43,15 +43,18 @@
             <div class="organization__form-logo">
                 <div class="field">
                     <div class="field__inner">
-                        <label class="field__label" for="logo">Логотип</label>
+                        <label
+                            class="field__label"
+                            for="logo"
+                        >Логотип</label>
                         <div class="field__input m--hidden">
                             <input
-                                ref="logoInput"
+                                id="logo"
+                                ref="logoInput" 
                                 accept=".jpg,.png,.svg" 
                                 class="input" 
                                 type="file" 
-                                name="logo" 
-                                id="logo"
+                                name="logo"
                             >
                         </div>
                     </div>
@@ -89,7 +92,7 @@
                         v-if="organization.logo"
                         :src="organization.logo" 
                         alt="" 
-                    />
+                    >
                 </div>
             </div>
         </div>

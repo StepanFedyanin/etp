@@ -1,8 +1,12 @@
 <template>
     <div class="cabinet__block cabinet__block-item">
-        <div class="block__title">Пригласить партнеров</div>
+        <div class="block__title">
+            Пригласить партнеров
+        </div>
         <div class="block__description">
-            <p class="block__subtitle">Упростите собственный процесс закупок</p>
+            <p class="block__subtitle">
+                Упростите собственный процесс закупок
+            </p>
             <ul>
                 <li>пригласите на площадку тех, с кем ваша компания уже торгует;</li>
                 <li>сделайте ваш процесс закупок более прозрачным и удобным;</li>

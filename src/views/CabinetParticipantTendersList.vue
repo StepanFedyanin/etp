@@ -69,7 +69,9 @@
             <template
                 v-else
             >
-                <div class="tenders__empty">В данный момент у вас нет ни одного тендера</div> 
+                <div class="tenders__empty">
+                    В данный момент у вас нет ни одного тендера
+                </div> 
             </template>
             <div
                 v-if="!showLoaderSending && tenders && tenders.count"

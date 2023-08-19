@@ -34,8 +34,9 @@
                             <router-link
                                 :to="{ name: item.name }"
                                 class="header__menu-link"
-                                v-text="item.title"
-                            />
+                            >
+                                {{ item.title }}
+                            </router-link>
                         </li>
                     </ul>
                 </div>
@@ -77,8 +78,8 @@
                         <transition name="fade">
                             <div 
                                 v-if="showPopup"
-                                class="header__popup"
                                 v-click-out="onClickPopup"
+                                class="header__popup"
                             >
                                 <div class="header__popup-title">
                                     {{ user.last_name }} {{ user.first_name ? user.first_name[0] + '.' : '' }} {{ user.patronymic ? user.patronymic[0] + '.' : '' }}
@@ -163,7 +164,7 @@
     import { headerMenu, headerMenuUser } from '@/settings';
 
     export default {
-        name: 'Header',
+        name: 'AppHeader',
         props: {
             showSidebar: {
                 type: Boolean,

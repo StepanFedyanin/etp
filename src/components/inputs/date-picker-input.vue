@@ -6,7 +6,7 @@
         is24hr
         @update:modelValue="handleInput"
     >
-        <template v-slot="{ inputValue, inputEvents }">
+        <template #default="{ inputValue, inputEvents }">
             <input
                 ref="pickerInput"
                 :value="inputValue"
@@ -42,7 +42,7 @@
         //let v = props.context._value
         //updateValue(v, {});
         value = props.context._value;
-        pickerInput._value.select(value);
-        console.log('onUpdated DatePicker', pickerInput._value.select(value));
+        pickerInput.value._value.select(value);
+        console.log('onUpdated DatePicker', pickerInput.value._value.select(value));
     })
 </script>

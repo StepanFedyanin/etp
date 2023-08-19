@@ -18,11 +18,11 @@
         components: {
             //Header,
         },
-        created() {
-        },
         data() {
             return {
             };
+        },
+        created() {
         },
     };
 </script>

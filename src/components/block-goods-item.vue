@@ -15,7 +15,7 @@
                     <img 
                         :src="`${urlPath}${good.photo}`"
                         :alt="good.name"
-                    />
+                    >
                 </template>
             </div>
         </router-link>

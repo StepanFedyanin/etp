@@ -22,7 +22,7 @@
         @search-change="searchChange"
         @open="handleOpen"
     >
-        <template v-slot:option="{ option }">
+        <template #option="{ option }">
             <div 
                 v-if="inn"
                 class="multiselect-inn"
@@ -30,8 +30,12 @@
             >
                 <div class="multiselect-inn__inner">
                     <div class="multiselect-inn__left">
-                        <div class="multiselect-inn__inn">ИНН <span>{{ option.inn }}</span></div>
-                        <div class="multiselect-inn__kpp">КПП <span>{{ option.kpp }}</span></div>
+                        <div class="multiselect-inn__inn">
+                            ИНН <span>{{ option.inn }}</span>
+                        </div>
+                        <div class="multiselect-inn__kpp">
+                            КПП <span>{{ option.kpp }}</span>
+                        </div>
                     </div>
                     <div class="multiselect-inn__right">
                         <div class="multiselect-inn__name-city">
@@ -56,8 +60,12 @@
                 class="multiselect-bet"
             >
                 <div class="multiselect-bet__inner">
-                    <div class="multiselect-bet__name">{{ option.label }}</div>
-                    <div class="multiselect-bet__price">{{ $helpers.toPrice(option.price || 0, { sign: option.currency_detail, pointer: ',' }) }}</div>
+                    <div class="multiselect-bet__name">
+                        {{ option.label }}
+                    </div>
+                    <div class="multiselect-bet__price">
+                        {{ $helpers.toPrice(option.price || 0, { sign: option.currency_detail, pointer: ',' }) }}
+                    </div>
                 </div>
             </div>
             <div 
@@ -65,8 +73,12 @@
                 class="multiselect-tender"
             >
                 <div class="multiselect-tender__inner">
-                    <div class="multiselect-tender__number">№{{ option.value }}</div>
-                    <div class="multiselect-tender__name">{{ option.label }}</div>
+                    <div class="multiselect-tender__number">
+                        №{{ option.value }}
+                    </div>
+                    <div class="multiselect-tender__name">
+                        {{ option.label }}
+                    </div>
                 </div>
             </div>
             <div 
@@ -74,8 +86,12 @@
                 class="multiselect-lot"
             >
                 <div class="multiselect-lot__inner">
-                    <div class="multiselect-lot__number">№{{ option.num }}</div>
-                    <div class="multiselect-lot__name">{{ option.label }}</div>
+                    <div class="multiselect-lot__number">
+                        №{{ option.num }}
+                    </div>
+                    <div class="multiselect-lot__name">
+                        {{ option.label }}
+                    </div>
                 </div>
             </div>
         </template>
@@ -120,8 +136,8 @@
     function handleOpen(select$) {
         console.log('handleOpen')
         if (props.context.attrs.bet) {
-            multiselect._value.clear();
-            multiselect._value.refreshOptions();
+            multiselect.value._value.clear();
+            multiselect.value._value.refreshOptions();
         }
         /*
         if (props.context.attrs.lot) {
@@ -147,15 +163,15 @@
         console.log('onUpdated');
         let v = props.context._value;
         if (v && v.fromParent) {
-            multiselect._value.clear()
+            multiselect.value._value.clear()
 
             if (searchable)
-                multiselect._value.clearSearch()
+                multiselect.value._value.clearSearch()
 
             if (Array.isArray(v.value) && !v.value.length)
                 return
             if (v.value) {
-                multiselect._value.select(v.value)
+                multiselect.value._value.select(v.value)
             }
         }
     })

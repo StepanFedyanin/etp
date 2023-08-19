@@ -6,8 +6,9 @@
                     <router-link
                         :to="{ name: 'home' }"
                         class="app__breadcrumbs-link"
-                        v-text="`Главная`"
-                    />
+                    >
+                        Главная
+                    </router-link>
                 </div>
             </div>
             <div class="container">
@@ -57,8 +58,9 @@
                                     >
                                         <router-link
                                             :to="{ name: 'group', params: { parentslug: group.slug, slug: category.slug } }"
-                                            v-text="category.name"
-                                        />
+                                        >
+                                            {{ category.name }}
+                                        </router-link>
                                     </li>
                                 </ul>
                             </div>
@@ -74,8 +76,9 @@
                                 <router-link 
                                     :to="{ name: 'products' }"
                                     class="groups__last-title"
-                                    v-text="`Новые предложения`"
-                                />
+                                >
+                                    Новые предложения
+                                </router-link>
                                 <div class="groups__last-goods goods">
                                     <blockGoodsItem
                                         v-for="good in goods"
@@ -90,8 +93,9 @@
                                 <router-link 
                                     :to="{ name: 'tenders' }"
                                     class="groups__last-title"
-                                    v-text="`Новые тендеры`"
-                                />
+                                >
+                                    Новые тендеры
+                                </router-link>
                                 <div class="groups__last-tenders tenders">
                                     <div 
                                         v-for="tender in tenders"

@@ -49,8 +49,8 @@
                                 </label>
                                 <div class="field__input m--hidden">
                                     <input
-                                        ref="photoInput"
                                         id="photo"
+                                        ref="photoInput"
                                         accept=".jpg,.png,.svg" 
                                         class="input" 
                                         type="file" 
@@ -92,7 +92,7 @@
                                 v-if="formValues.small_photo"
                                 :src="formValues.small_photo" 
                                 alt="" 
-                            />
+                            >
                         </div>
                     </div>
 

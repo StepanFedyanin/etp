@@ -37,4 +37,12 @@ export default class extends REST {
             throw new RESTError(error, 'Ошибка при получении страницы');
         });
     }
+
+    static getMetaScheme(slug) {
+        return this._get(`seo_scheme`, {}, {}).then((data) => {
+            return data;
+        }).catch((error) => {
+            throw new RESTError(error, 'Ошибка при получении схемы мета-тегов');
+        });
+    }
 }

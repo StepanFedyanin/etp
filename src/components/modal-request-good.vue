@@ -28,7 +28,10 @@
                         v-if="good.organization.website"
                         class="good__request-organization-item"
                     >
-                        <span>Сайт</span> <a :href="good.organization.website" target="_blank">{{ good.organization.website }}</a>
+                        <span>Сайт</span> <a
+                            :href="good.organization.website"
+                            target="_blank"
+                        >{{ good.organization.website }}</a>
                     </div>
                     <div 
                         v-if="good.organization.contact_phone"
@@ -60,7 +63,11 @@
             class="modal__content"
         >
             <div class="text">
-                <p>Организация <router-link :to="{ name: 'contragent', params: { id: good.organization.id } }">{{ good.organization.name }}</router-link> получит уведомление о том, что вам интересен товар <strong>{{ good.name }}</strong>.</p>
+                <p>
+                    Организация <router-link :to="{ name: 'contragent', params: { id: good.organization.id } }">
+                        {{ good.organization.name }}
+                    </router-link> получит уведомление о том, что вам интересен товар <strong>{{ good.name }}</strong>.
+                </p>
                 <p>Также вы можете оставить комментарий — например, какой объем товара вам нужен, или как вам будет удобнее связаться для дальнейшего сотрудничества.</p>
             </div>
 

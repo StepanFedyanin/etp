@@ -24,8 +24,9 @@
                     <div class="lot__info-contragent">
                         <router-link
                             :to="{ name: 'contragent', params: {id: participant.organization.id} }"
-                            v-text="participant.organization.name"
-                        />
+                        >
+                            {{ participant.organization.name }}
+                        </router-link>
                         <span
                             :class="winnerBet && winnerBet.price === participant.price ? 'm--color-green' : ''"
                         >

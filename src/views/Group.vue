@@ -6,23 +6,27 @@
                 class="container"
             >
                 <div
-                    class="app__breadcrumbs">
+                    class="app__breadcrumbs"
+                >
                     <router-link
                         :to="{ name: 'home' }"
                         class="app__breadcrumbs-link"
-                        v-text="`Главная`"
-                    />
+                    >
+                        Главная
+                    </router-link>
                     <router-link
                         :to="{ name: 'groups' }"
                         class="app__breadcrumbs-link"
-                        v-text="`Товары и услуги`"
-                    />
+                    >
+                        Товары и услуги
+                    </router-link>
                     <router-link
                         v-if="parentslug"
                         :to="{ name: 'group', params: { slug: group.parent.slug } }"
                         class="app__breadcrumbs-link"
-                        v-text="group.parent.name"
-                    />
+                    >
+                        {{ group.parent.name }}
+                    </router-link>
                 </div>
             </div>
             <div class="container">
@@ -55,8 +59,9 @@
                             >
                                 <router-link
                                     :to="{ name: 'group', params: { parentslug: group.slug, slug: category.slug } }"
-                                    v-text="category.name"
-                                />
+                                >
+                                    {{ category.name }}
+                                </router-link>
                             </li>
                         </ul>
                     </div>
@@ -74,7 +79,9 @@
                     <template
                         v-else-if="goods && countGoods"
                     >    
-                        <div class="goods__title">Товары <span>({{ countGoods }})</span></div>
+                        <div class="goods__title">
+                            Товары <span>({{ countGoods }})</span>
+                        </div>
                         <div class="goods__block">
                             <blockGoodsItem
                                 v-for="item in goods"
@@ -83,7 +90,6 @@
                                 :showOrganization="true"
                             />
                         </div>
-
                     </template>
                     <div
                         v-if="countGoods"
@@ -140,7 +146,9 @@
                     <template
                         v-else-if="tenders && countTenders"
                     >
-                        <div class="tenders__title">Тендеры <span>({{ countTenders }})</span></div>    
+                        <div class="tenders__title">
+                            Тендеры <span>({{ countTenders }})</span>
+                        </div>    
                         <blockTenderMini
                             v-for="(tender, index) in tenders"
                             :key="`tender-${index}`"
@@ -254,7 +262,8 @@
                 this.countTenders = null;
                 if (!this.parentslug) {
                     api.getCategory(this.slug).then(res => {
-                        this.group = res
+                        this.group = res;
+                        this.$store.dispatch('setMeta', this.group);
                         this.getGoods();
                         this.getTenders();
                         this.showLoaderSending['group'] = false;
@@ -265,6 +274,7 @@
                 } else {
                     api.getSubCategory(this.parentslug, this.slug).then(res => {
                         this.group = res
+                        this.$store.dispatch('setMeta', this.group);
                         this.getGoods();
                         this.getTenders();
                         this.showLoaderSending['group'] = false;

@@ -7,6 +7,9 @@ import { vfmPlugin } from 'vue-final-modal';
 import { ru } from '@formkit/i18n';
 import Maska from 'maska';
 import VueYandexMetrika from 'vue3-yandex-metrika';
+import { createHead } from '@vueuse/head';
+//import { createMetaManager } from 'vue-meta';
+//import { plugin as vueMetaPlugin } from 'vue-meta';
 
 import App from './App.vue';
 
@@ -23,6 +26,9 @@ app.use(helpers);
 
 app.use(vfmPlugin);
 app.use(Maska);
+
+app.use(createHead());
+//app.use(createMetaManager());
 
 const confFormKit = {
     locales: { ru },

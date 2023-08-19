@@ -467,8 +467,6 @@ const routes = [
                 meta: {
                     name: 'Контрагент',
                     title: '%name% (ИНН %inn%). Реквизиты, КПП, ОГРН %city%', 
-                    description: 'Реквизиты %name%: ИНН %inn%, ОГРН %ogrn%. Руководитель: %head_name%. Информация об %name%: Юр. адрес - %legal_address%. Официальный сайт, телефон, контакты, вид деятельности - узнать на etptugan.ru',
-                    keywords: '%name%, %full_name%, %head_name%, ИНН %inn%, ОГРН %ogrn%, проверка контрагента, проверка директора,  компания, предприятие, организация, адрес, телефон, официальный сайт, почта, email, веб-сайт, схема проезда, карта',
                     breadcrumbs: ['contragents'],
                     showSidebarAuth: true,
                     //requiresAuth: true 
@@ -556,12 +554,15 @@ const router = createRouter({
 });
 
 router.beforeEach((to, from, next) => {
+    store.dispatch('setMeta', {});
     if (!from.name || to.fullPath !== from.fullPath) {
+        /*
         document.title = to.meta.title + ' | ЭТП TUGAN' || 'ЭТП TUGAN';
         const description = document.querySelector('head meta[name="description"]');
         const keywords = document.querySelector('head meta[name="keywords"]');
         description.setAttribute('content', to.meta.description || '');
         keywords.setAttribute('content', to.meta.keywords || '');
+        */
     }
     if (to.matched.some(record => record.meta.requiresAuth)) {
         if (store.state.user && store.state.user.id) {

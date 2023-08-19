@@ -245,7 +245,9 @@
             <div
                 class="container m--1460 goods"
             >
-                <div class="goods__title h1">Новые товары</div>
+                <div class="goods__title h1">
+                    Новые товары
+                </div>
                 <template
                     v-if="showLoaderGoods"
                 >

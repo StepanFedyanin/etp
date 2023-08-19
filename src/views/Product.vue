@@ -8,23 +8,27 @@
                 <router-link
                     :to="{ name: 'home' }"
                     class="app__breadcrumbs-link"
-                    v-text="`Главная`"
-                />
+                >
+                    Главная
+                </router-link>
                 <router-link
                     :to="{ name: 'groups' }"
                     class="app__breadcrumbs-link"
-                    v-text="`Товары и услуги`"
-                />
+                >
+                    Товары и услуги
+                </router-link>
                 <router-link
                     :to="{ name: 'group', params: { slug: good.category_detail.parent.slug } }"
                     class="app__breadcrumbs-link"
-                    v-text="good.category_detail.parent.name"
-                />
+                >
+                    {{ good.category_detail.parent.name }}
+                </router-link>
                 <router-link
                     :to="{ name: 'group', params: { parentslug: good.category_detail.parent.slug, slug: good.category_detail.slug } }"
                     class="app__breadcrumbs-link"
-                    v-text="good.category_detail.name"
-                />
+                >
+                    {{ good.category_detail.name }}
+                </router-link>
             </div>
         </div>
         <div class="good">
@@ -127,7 +131,7 @@
                                         <img 
                                             :src="good.photo"
                                             :alt="good.name"
-                                        />
+                                        >
                                     </template>
                                 </div>
                             </div>
@@ -293,6 +297,7 @@
                 productApi.getProduct(this.slug, params).then(res => {
                     console.log(res);
                     this.good = res;
+                    this.$store.dispatch('setMeta', this.good);
                     this.showLoaderSending['product'] = false;
                     this.getOrganizationGoods();
                     this.getCategoryGoods();

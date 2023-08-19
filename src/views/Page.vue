@@ -46,8 +46,6 @@
         components: {
             //Header,
         },
-        created() {
-        },
         props: {
             slug: {
                 type: String,
@@ -59,6 +57,8 @@
                 page: {},
                 showLoaderSending: false
             };
+        },
+        created() {
         },
         mounted() {
             if (this.slug) {
@@ -72,8 +72,7 @@
                 this.showLoaderSending = true;
                 api.getPage(this.slug).then(res => {
                     this.page = res;
-                    this.$helpers.setDocumentTitle(this.page);
-                    this.$helpers.setDocumentMeta(this.page);
+                    this.$store.dispatch('setMeta', this.page);
                     this.showLoaderSending = false;
                 }).catch(err => {
                     this.$router.push({ name: 'page404' });

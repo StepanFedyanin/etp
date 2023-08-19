@@ -124,7 +124,8 @@
                     </div>
                     <div
                         v-if="tender.status === 'bid_accept'" 
-                        class="tender__actions-buttons">
+                        class="tender__actions-buttons"
+                    >
                         <button 
                             class="button button-red"
                             @click.stop="onClickCancelTender"
@@ -140,7 +141,8 @@
                     </div>
                     <div
                         v-else-if="tender.status === 'bidding_process'" 
-                        class="tender__actions-buttons">
+                        class="tender__actions-buttons"
+                    >
                         <button 
                             class="button button-red"
                             @click.stop="onClickFinishTender(true)"

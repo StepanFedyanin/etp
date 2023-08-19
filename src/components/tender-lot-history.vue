@@ -54,7 +54,9 @@
                     <template
                         v-else
                     >
-                        <p class="m--color-red">Доступ на получение данных запрещен.</p>                    
+                        <p class="m--color-red">
+                            Доступ на получение данных запрещен.
+                        </p>                    
                     </template>
                 </template>
             </div>
@@ -76,7 +78,6 @@
         components: {
             ModalCancelLotOfferStaff
         },
-        emits: ['getTenderLot'],
         props: {
             tender: {
                 type: Object,
@@ -87,6 +88,7 @@
                 default() { return {}; }
             },
         },
+        emits: ['getTenderLot'],
         data() {
             return {
                 user: this.$store.state.user,

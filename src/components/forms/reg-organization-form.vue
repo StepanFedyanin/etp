@@ -1,7 +1,7 @@
 <template>
     <FormKit
-        v-model="formValues"
         id="form-organization"
+        v-model="formValues"
         name="form-organization"
         type="form"
         data-loading="loading"

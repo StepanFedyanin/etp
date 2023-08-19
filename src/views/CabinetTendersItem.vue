@@ -752,6 +752,7 @@
                 tenderApi.getTender(this.id).then(res => {
                     this.showLoaderSending = false;
                     this.tender = res;
+                    this.$store.dispatch('setMeta', this.tender);
                     let duration = new Date(this.tender.date_end) - new Date(this.tender.date_start);
                     this.tender.duration = Math.ceil(duration / 1000);
                     // let limit = (new Date(this.tender.date_end) - new Date()) / 1000;
@@ -777,7 +778,6 @@
                         console.error(err);
                     });
                     */
-                    this.$helpers.setDocumentTitle(this.tender);
                 }).catch(err => {
                     this.showLoaderSending = false;
                     if (err.response && err.response.status === 404) {

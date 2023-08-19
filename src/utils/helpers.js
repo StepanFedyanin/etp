@@ -1,5 +1,6 @@
 //import _keys from 'lodash/keys';
 import { parse, format } from 'fecha';
+import store from '../store/store';
 
 const helpers = {
     parseDate: (value, template) => {
@@ -121,6 +122,7 @@ const helpers = {
         let string = helpers.stringForNumber(days, ['день', 'дня', 'дней']) + ' ' + helpers.toHHMMSS(time);
         return string;
     },
+
     setDocumentTitle(obj) {
         let title = document.title;
         let description = document.querySelector('head meta[name="description"]');
@@ -152,6 +154,38 @@ const helpers = {
             }
         }
     },
+    createTitle: (obj, route) => {
+        if (obj && obj.title) return obj.title;
+        let metaTemplates = store.state.metaScheme;
+        let title = (metaTemplates.commonPfx?.title || '') + (metaTemplates[route.name]?.title || obj.name || route.meta.title) + ' ' + (metaTemplates.commonSfx?.title || '');
+        Object.keys(obj).map((key) => {
+            title = title.replace(`%${key}%`, obj[key]);
+        });
+        title = title.replace(/%.*%/, '');
+        return title;
+    },
+
+    createDescription: (obj, route) => {
+        if (obj && obj.description) return obj.description;
+        let metaTemplates = store.state.metaScheme;
+        let description = (metaTemplates.commonPfx?.description || '') + (metaTemplates[route.name]?.description || '') + ' ' + (metaTemplates.commonSfx?.description || '');
+        Object.keys(obj).map((key) => {
+            description = description.replace(`%${key}%`, obj[key]);
+        });
+        description = description.replace(/%.*%/, '');
+        return description;
+    },
+
+    createKeywords: (obj, route) => {
+        if (obj && obj.keywords) return obj.keywords;
+        let metaTemplates = store.state.metaScheme;
+        let keywords = (metaTemplates.commonPfx?.keywords || '') + (metaTemplates[route.name]?.keywords || '') + ' ' + (metaTemplates.commonSfx.keywords || '');
+        Object.keys(obj).map((key) => {
+            keywords = keywords.replace(`%${key}%`, obj[key]);
+        });
+        keywords = keywords.replace(/%.*%/, '');
+        return keywords;
+    },
     curDateMSK() {
         return parse(new Date().toLocaleString('ru', { timeZone: 'Europe/Moscow' }), 'DD.MM.YYYY, HH:mm:ss');
     }
@@ -162,4 +196,7 @@ export default {
         app.helpers = helpers
         app.config.globalProperties.$helpers = helpers
     }
+}
+export {
+    helpers    
 }

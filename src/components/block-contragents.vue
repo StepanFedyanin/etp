@@ -40,7 +40,7 @@
                                 v-if="contragent.logo"
                                 :src="contragent.logo" 
                                 :alt="contragent.name"
-                            />
+                            >
                         </div>
                         <div class="contragents__item-info">
                             <div class="m--name-name">

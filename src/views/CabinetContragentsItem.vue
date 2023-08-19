@@ -110,7 +110,7 @@
                                     v-if="item.logo"
                                     :src="item.logo" 
                                     :alt="item.name"
-                                />
+                                >
                             </div>
                             <div class="contragent__siblings-item-name">
                                 {{ item.name }}    
@@ -146,22 +146,6 @@
                 default() { return null; }
             },
         },
-        computed: {
-            user() {
-                return this.$store.state.user;
-            },
-        },
-        watch: {
-            'id': {
-                immediate: true,
-                handler() {
-                    this.getOrganization();
-                    this.getCreatedTenders();
-                    this.getParticipationTenders();
-                    this.getMembers();
-                },
-            }
-        },
         data() {
             return {
                 contragent: {},
@@ -179,6 +163,22 @@
                 showLoaderSending: false,
             }
         },
+        computed: {
+            user() {
+                return this.$store.state.user;
+            },
+        },
+        watch: {
+            'id': {
+                immediate: true,
+                handler() {
+                    this.getOrganization();
+                    this.getCreatedTenders();
+                    this.getParticipationTenders();
+                    this.getMembers();
+                },
+            }
+        },
         mounted() {
             
         },
@@ -191,8 +191,7 @@
                 this.showLoaderSending = true;
                 api.getOrganization(this.id).then(res => {
                     this.contragent = res;
-                    this.$helpers.setDocumentTitle(this.contragent);
-                    this.$helpers.setDocumentMeta(this.contragent);
+                    this.$store.dispatch('setMeta', this.contragent);
                     this.showLoaderSending = false;
                 }).catch(err => {
                     console.error(err);

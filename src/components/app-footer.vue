@@ -40,8 +40,9 @@
                                 :key="key"
                                 :to="{ name: item.name, params: item.params }"
                                 class="footer__link"
-                                v-text="item.title"
-                            />
+                            >
+                                {{ item.title }}
+                            </router-link>
                         </div>
                     </div>
                     <!--
@@ -83,7 +84,7 @@
 <script>
     //import { footerMenu, footerMenuUser } from '@/settings';
     export default {
-        name: 'Footer',
+        name: 'AppFooter',
         data() {
             return {
                 phone: '+7 (343) 344-83-83',

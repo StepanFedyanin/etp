@@ -7,14 +7,17 @@
                 <router-link
                     :to="{ name: 'home' }"
                     class="app__breadcrumbs-link"
-                    v-text="`Главная`"
-                />
+                >
+                    Главная
+                </router-link>
             </div>
         </div>
         <div
             class="goods container"
         >
-            <h1 class="h1">Все товары и услуги</h1>
+            <h1 class="h1">
+                Все товары и услуги
+            </h1>
             <template
                 v-if="showLoaderSending"
             >
