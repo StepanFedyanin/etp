@@ -136,8 +136,8 @@
     function handleOpen(select$) {
         console.log('handleOpen')
         if (props.context.attrs.bet) {
-            multiselect.value._value.clear();
-            multiselect.value._value.refreshOptions();
+            multiselect.value.clear();
+            multiselect.value.refreshOptions();
         }
         /*
         if (props.context.attrs.lot) {
@@ -163,15 +163,16 @@
         console.log('onUpdated');
         let v = props.context._value;
         if (v && v.fromParent) {
-            multiselect.value._value.clear()
+            console.log('BLA', multiselect.value);
+            multiselect.value.clear()
 
             if (searchable)
-                multiselect.value._value.clearSearch()
+                multiselect.value.clearSearch()
 
             if (Array.isArray(v.value) && !v.value.length)
                 return
             if (v.value) {
-                multiselect.value._value.select(v.value)
+                multiselect.value.select(v.value)
             }
         }
     })

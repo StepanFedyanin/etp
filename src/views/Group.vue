@@ -95,44 +95,13 @@
                         v-if="countGoods"
                         class="goods__pagination"
                     >
-                        <div class="goods__pagination-left">
-                            <div class="goods__pagination-count">
-                                Товаров: <span>{{ countGoods }}</span>
-                            </div>
-                        </div>
-                        <div class="tenders__pagination-right">
-                            <div class="tenders__pagination-perpage">
-                                <span>На страницу :</span>
-                                <select
-                                    v-model="limitGoods"
-                                    class="tenders__pagination-select"
-                                    name="limit"
-                                >
-                                    <option
-                                        value="18"
-                                        selected="selected"
-                                    >
-                                        18 товаров
-                                    </option>
-                                    <option value="36">
-                                        36 товаров
-                                    </option>
-                                    <option value="54">
-                                        54 товара
-                                    </option>
-                                    <option value="72">
-                                        72 товара
-                                    </option>
-                                </select>
-                            </div>
-                            <Pagination
-                                :total="countGoods"
-                                :limit="limitGoods"
-                                :currentPage="Number($route.query.page || 1)"
-                                :query="$route.query"
-                                :url="$route.path"
-                            />
-                        </div>
+                        <Pagination
+                            :total="countGoods"
+                            :limit="limitGoods"
+                            :currentPage="Number($route.query.page || 1)"
+                            :query="$route.query"
+                            :url="$route.path"
+                        />
                     </div>
                 </div>
                 <div class="tenders">

@@ -1,7 +1,26 @@
 
 .pagination {
+    width: 100%;
     display: flex;
     align-items: center;
+
+    @mixin responsive-le-s {
+        flex-direction: column;
+        gap: 16px;
+    }
+
+    &__left {
+        display: flex;
+        align-items: center;
+    }
+
+    &__right {
+        margin-left: auto;
+
+        @mixin responsive-le-s {
+            margin-left: 0;
+        }
+    }
 
     &__list {
         display: flex;
@@ -12,7 +31,7 @@
     }
   
     &__item {
-        width: 24px;
+        min-width: 32px;
         height: 24px;
         line-height: 22px;
         color: $color-black;
@@ -27,12 +46,13 @@
             border-color: $color-green;
         }
 
+        &--first,
+        &--last,
         &--prev,
         &--next {
             vertical-align: bottom;
-            background-color: $color-white;
             background-position: center center;
-            background-size: 7px 10px;
+            /*background-size: 7px 10px;*/
             background-repeat: no-repeat;
 
             &.m--disabled {
@@ -46,11 +66,27 @@
             }
         }
 
+        &--first {
+            background-image: svg-load('assets/img/icons/icon-arrow-pagination-first.svg', fill=$color-black);
+
+            &.m--disabled {
+                opacity: 0.5;
+            }
+        }
+
+        &--last {
+            background-image: svg-load('assets/img/icons/icon-arrow-pagination-last.svg', fill=$color-black);
+
+            &.m--disabled {
+                opacity: 0.5;
+            }
+        }
+
         &--prev {
             background-image: svg-load('assets/img/icons/icon-arrow-pagination-prev.svg', fill=$color-black);
 
             &.m--disabled {
-                background-image: svg-load('assets/img/icons/icon-arrow-pagination-prev.svg', fill=$color-gray-T6);
+                opacity: 0.5;
             }
         }
 
@@ -58,7 +94,7 @@
             background-image: svg-load('assets/img/icons/icon-arrow-pagination-next.svg', fill=$color-black);
 
             &.m--disabled {
-                background-image: svg-load('assets/img/icons/icon-arrow-pagination-next.svg', fill=$color-gray-T6);
+                opacity: 0.5;
             }
         }
 

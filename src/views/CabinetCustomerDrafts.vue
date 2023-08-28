@@ -11,43 +11,12 @@
                     v-if="tenders && tenders.count"
                     class="tenders__pagination"
                 >
-                    <div class="tenders__pagination-left">
-                        <div class="tenders__pagination-count">
-                            Найдено: <span>{{ tenders.count }}</span>
-                        </div>
-                    </div>
-                    <div class="tenders__pagination-right">
-                        <div class="tenders__pagination-perpage">
-                            <span>На страницу :</span>
-                            <select
-                                v-model="limit"
-                                class="tenders__pagination-select"
-                                name="limit"
-                            >
-                                <option
-                                    value="10"
-                                    selected="selected"
-                                >
-                                    10 тендеров
-                                </option>
-                                <option value="20">
-                                    20 тендеров
-                                </option>
-                                <option value="50">
-                                    50 тендеров
-                                </option>
-                                <option value="100">
-                                    100 тендеров
-                                </option>
-                            </select>
-                        </div>
-                        <Pagination
-                            :total="tenders.count"
-                            :limit="Number(limit)"
-                            :currentPage="Number($route.query.page || 1)"
-                            :url="$route.path"
-                        />
-                    </div>
+                    <Pagination
+                        :total="tenders.count"
+                        :limit="Number(limit)"
+                        :currentPage="Number($route.query.page || 1)"
+                        :url="$route.path"
+                    />
                 </div>
                 <div v-else-if="!showLoaderSending">
                     У вас нет черновиков тендеров.

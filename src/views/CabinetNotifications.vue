@@ -111,44 +111,13 @@
                     v-if="!showLoaderSending && notifications && totalCount"
                     class="notifications__pagination"
                 >
-                    <div class="notifications__pagination-left">
-                        <div class="notifications__pagination-count">
-                            Всего: <span>{{ totalCount }}</span>
-                        </div>
-                    </div>
-                    <div class="notifications__pagination-right">
-                        <div class="notifications__pagination-perpage">
-                            <span>На страницу :</span>
-                            <select
-                                v-model="limit"
-                                class="notifications__pagination-select"
-                                name="limit"
-                            >
-                                <option
-                                    value="10"
-                                    selected="selected"
-                                >
-                                    10 уведомлений
-                                </option>
-                                <option value="20">
-                                    20 уведомлений
-                                </option>
-                                <option value="50">
-                                    50 уведомлений
-                                </option>
-                                <option value="100">
-                                    100 уведомлений
-                                </option>
-                            </select>
-                        </div>
-                        <Pagination
-                            :total="totalCount"
-                            :limit="Number(limit)"
-                            :currentPage="Number($route.query.page || 1)"
-                            :query="$route.query"
-                            :url="$route.path"
-                        />
-                    </div>
+                    <Pagination
+                        :total="totalCount"
+                        :limit="Number(limit)"
+                        :currentPage="Number($route.query.page || 1)"
+                        :query="$route.query"
+                        :url="$route.path"
+                    />
                 </div>
             </div>
         </div>

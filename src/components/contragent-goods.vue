@@ -43,12 +43,10 @@
     //import { urlPath } from '@/settings'
     import { user as userApi, product as productApi } from "@/services"
     import blockGoodsItem from '@/components/block-goods-item.vue';
-    //import Pagination from '@/components/pagination.vue';
 
     export default {
         components: {
             blockGoodsItem,
-            //Pagination,
         },
         props: {
             blockClass: {

@@ -24,49 +24,13 @@
                         v-if="contragents && contragents.length"
                         class="contragents__pagination"
                     >
-                        <div class="contragents__pagination-left">
-                            <div class="contragents__pagination-count">
-                                Всего: <span>{{ count }}</span>
-                            </div>
-                        </div>
-                        <!--div class="contragents__pagination-left">
-                            <div class="contragents__pagination-count">
-                                Отобрано: <span>{{ contragents.length }}</span>
-                            </div>
-                        </div-->
-                        <div class="contragents__pagination-right">
-                            <div class="contragents__pagination-perpage">
-                                <span>Выводить на страницу :</span>
-                                <select
-                                    v-model="limit"
-                                    class="contragents__pagination-select"
-                                    name="limit"
-                                >
-                                    <option
-                                        value="10"
-                                        selected="selected"
-                                    >
-                                        10 контрагентов
-                                    </option>
-                                    <option value="20">
-                                        20 контрагентов
-                                    </option>
-                                    <option value="50">
-                                        50 контрагентов
-                                    </option>
-                                    <option value="100">
-                                        100 контрагентов
-                                    </option>
-                                </select>
-                            </div>
-                            <Pagination
-                                :total="count"
-                                :limit="Number(limit)"
-                                :currentPage="Number($route.query.page || 1)"
-                                :query="$route.query"
-                                :url="$route.path"
-                            />
-                        </div>
+                        <Pagination
+                            :total="count"
+                            :limit="Number(limit)"
+                            :currentPage="Number($route.query.page || 1)"
+                            :query="$route.query"
+                            :url="$route.path"
+                        />
                     </div>
                 </div>
                 <BlockContragents 
@@ -78,49 +42,13 @@
                         v-if="contragents && contragents.length"
                         class="contragents__pagination m--no-margin"
                     >
-                        <div class="contragents__pagination-left">
-                            <div class="contragents__pagination-count">
-                                Всего: <span>{{ count }}</span>
-                            </div>
-                        </div>
-                        <!--div class="contragents__pagination-left">
-                            <div class="contragents__pagination-count">
-                                Отобрано: <span>{{ contragents.length }}</span>
-                            </div>
-                        </div-->
-                        <div class="contragents__pagination-right">
-                            <div class="contragents__pagination-perpage">
-                                <span>Выводить на страницу :</span>
-                                <select
-                                    v-model="limit"
-                                    class="contragents__pagination-select"
-                                    name="limit"
-                                >
-                                    <option
-                                        value="10"
-                                        selected="selected"
-                                    >
-                                        10 контрагентов
-                                    </option>
-                                    <option value="20">
-                                        20 контрагентов
-                                    </option>
-                                    <option value="50">
-                                        50 контрагентов
-                                    </option>
-                                    <option value="100">
-                                        100 контрагентов
-                                    </option>
-                                </select>
-                            </div>
-                            <Pagination
-                                :total="count"
-                                :limit="Number(limit)"
-                                :currentPage="Number($route.query.page || 1)"
-                                :query="$route.query"
-                                :url="$route.path"
-                            />
-                        </div>
+                        <Pagination
+                            :total="count"
+                            :limit="Number(limit)"
+                            :currentPage="Number($route.query.page || 1)"
+                            :query="$route.query"
+                            :url="$route.path"
+                        />
                     </div>
                 </div>
             </template>
