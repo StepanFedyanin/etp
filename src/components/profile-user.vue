@@ -12,20 +12,16 @@
         >
             Профиль сотрудника
         </h2>
-        <svg 
+        <div 
             v-if="user.is_active" 
             class="svg-icon svg-icon__edit"
             @click="onClickEditProfile()"
-        >
-            <use xlink:href="../assets/img/icons/icons.svg#edit" />
-        </svg>
-        <svg 
+        />
+        <div 
             v-if="user.is_active" 
             class="svg-icon svg-icon__changePassword"
             @click="onClickEditPassword()"
-        >
-            <use xlink:href="../assets/img/icons/icons.svg#changePassword" />
-        </svg>
+        />
         <div class="profile__table table">
             <div class="table__column">
                 <div class="table__item">

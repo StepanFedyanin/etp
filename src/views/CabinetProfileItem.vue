@@ -20,13 +20,11 @@
                     <pre>{{ profile.is_master }}</pre>
                     <pre>{{ profile.organization.id }}</pre>
                     <pre>{{ $store._state.data.user.organization.id }}</pre> -->
-                    <svg 
+                    <div 
                         v-if=" profile.is_staff || profile.organization && profile.is_master && profile.organization.id == $store._state.data.user.organization.id"
                         class="svg-icon svg-icon__edit"
                         @click="onClickEditOrganization()"
-                    >
-                        <use xlink:href="../assets/img/icons/icons.svg#edit" />
-                    </svg>
+                    />
                     <div class="cabinet__block">
                         <blockOrganization 
                             :organization="organization"

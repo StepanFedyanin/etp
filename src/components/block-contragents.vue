@@ -61,15 +61,11 @@
                         </div>
                     </div>
                     <div class="contragents__item-cell m--customer">
-                        <svg class="svg-icon svg-icon__hammer">
-                            <use xlink:href="../assets/img/icons/icons.svg#hammer" />
-                        </svg>
+                        <div class="svg-icon svg-icon__hammer" />
                         <span>{{ contragent.created_tenders_count }}</span>
                     </div>
                     <div class="contragents__item-cell m--member">
-                        <svg class="svg-icon svg-icon__briefcase">
-                            <use xlink:href="../assets/img/icons/icons.svg#briefcase" />
-                        </svg>
+                        <div class="svg-icon svg-icon__briefcase" />
                         <span>{{ contragent.participation_tenders_count }}</span>
                     </div>
                     <div 

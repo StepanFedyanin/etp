@@ -16,13 +16,11 @@
                 >   
                     <div class="item__title">
                         Приглашение №{{ index }} 
-                        <svg 
+                        <div 
                             v-if="index && invitesCount > 1" 
                             class="svg-icon svg-icon__crossCircle"
                             @click="deleteInviteForm(index - 1, list)"
-                        >
-                            <use xlink:href="../../assets/img/icons/icons.svg#crossCircle" />
-                        </svg>
+                        />
                     </div> 
                     <FormKit type="group">
                         <FormKit

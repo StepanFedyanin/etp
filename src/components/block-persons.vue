@@ -50,27 +50,20 @@
                     v-if="user.is_staff || (user.is_master && organization && user.organization && organization.id == user.organization.id)"
                     class="cell-icons"
                 >
-                    <svg 
+                    <div 
                         class="svg-icon svg-icon__edit"
                         @click="onClickEditPerson(item.id)"
-                    >
-                        <use xlink:href="../assets/img/icons/icons.svg#edit" />
-                    </svg>
-
-                    <svg 
+                    />
+                    <div
                         v-if="item.is_active && item.id !== user.id && !item.is_staff"
                         class="svg-icon svg-icon__delete"
                         @click="onClickDeletePerson(item.id)"
-                    >
-                        <use xlink:href="../assets/img/icons/icons.svg#delete" />
-                    </svg>
-                    <svg 
+                    />
+                    <div 
                         v-else-if="!item.is_active"
                         class="svg-icon svg-icon__activate"
                         @click="onClickActivatePerson(item.id)"
-                    >
-                        <use xlink:href="../assets/img/icons/icons.svg#activate" />
-                    </svg>
+                    />
                 </div>
             </div>
         </template>

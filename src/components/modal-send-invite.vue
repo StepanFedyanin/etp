@@ -11,9 +11,7 @@
         >
             <span />
         </button>
-        <svg class="svg-icon svg-icon__sent">
-            <use xlink:href="../assets/img/icons/icons.svg#sent" />
-        </svg>
+        <div class="svg-icon svg-icon__sent" />
         <div class="modal__content">
             <div class="modal__title">
                 {{ text }}

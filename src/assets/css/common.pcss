@@ -295,27 +295,32 @@ input[type='number'] {
 .svg-icon {
     height: 24px; 
     width: 24px;
+    min-width: 24px;
     cursor: pointer;
 
     &&__edit {
         display: inline-block;
         margin: 0 20px;
-        fill: $color-green;
+        background: $color-green;
+        mask: url('./assets/img/icons/icon-edit.svg') 50% 50% no-repeat;
         &:hover {
-            fill: $color-green-dark;
+            background: $color-green-dark;
         }
     }
     &&__activate {
-        fill: $color-green;
+        display: inline-block;
+        background: url('./assets/img/icons/icon-activate.svg') 50% 50% no-repeat;
+        background-size: 20px;
         &:hover {
-            fill: $color-green-dark;
         }
     }
 
     &&__delete {
-        fill: $color-red;
+        display: inline-block;
+        background: $color-red;
+        mask: url('./assets/img/icons/icon-delete.svg') 50% 50% no-repeat;
         &:hover {
-            fill: $color-red-dark;
+            background: $color-red-dark;
         }
     }
 
@@ -327,41 +332,45 @@ input[type='number'] {
         }
     }
     &&__hammer {
-        fill: none;
-        stroke: $color-gray-T5;
+        display: inline-block;
+        background: $color-gray-T5;
+        mask: url('./assets/img/icons/icon-hammer.svg') 50% 50% no-repeat;
         &:hover {
-            stroke: $color-green;
+            background: $color-green;
         }
     }
     &&__briefcase {
-        fill: none;
-        stroke: $color-gray-T5;
+        display: inline-block;
+        background: $color-gray-T5;
+        mask: url('./assets/img/icons/icon-briefcase.svg') 50% 50% no-repeat;
         &:hover {
-            stroke: $color-green;
+            background: $color-green;
         }
     }
     &&__crossCircle {
-        fill: none;
         height: 20px; 
         width: 20px;
-        stroke: $color-red;
+        display: inline-block;
+        background: $color-red;
+        mask: url('./assets/img/icons/icon-crossCircle.svg') 50% 50% no-repeat;
         &:hover {
-            stroke: $color-red-dark;
+            background: $color-red-dark;
         }
     }
     &&__sent {
-        fill: none;
-        stroke: $color-green;
+        display: inline-block;
+        background: $color-green;
+        mask: url('./assets/img/icons/icon-sent.svg') 50% 50% no-repeat;
         &:hover {
-            stroke: $color-green-dark;
+            background: $color-green-dark;
         }
     }
     &&__changePassword {
-        fill: none;
-        stroke: $color-green;
-        stroke-width: 1.2;
+        display: inline-block;
+        background: $color-green;
+        mask: url('./assets/img/icons/icon-changePassword.svg') 50% 50% no-repeat;
         &:hover {
-            stroke: $color-green-dark;
+            background: $color-green-dark;
         }
     }
     &&__message {
