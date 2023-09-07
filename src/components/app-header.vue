@@ -1,7 +1,7 @@
 <template>
     <div 
         class="header"
-        :class="(!$route.meta.requiresAuth && $route.name !== 'home' && !($route.meta.showSidebarAuth && user && user.id)) ? 'm--seconds' : $route.meta.requiresAuth || ($route.meta.showSidebarAuth && user && user.id) ? 'm--cabinet' : ''"
+        :class="(!$route.meta.requiresAuth && $route.name !== 'home' && !($route.meta.showSidebarAuth && user && user.id)) ? 'm--cabinet' : $route.meta.requiresAuth || ($route.meta.showSidebarAuth && user && user.id) ? 'm--cabinet' : 'm--cabinet'"
     >
         <div class="container m--header">
             <div class="header__content">
@@ -41,7 +41,7 @@
                     </ul>
                 </div>
                 <div class="header__right">
-                    <div class="header__contacts">
+                    <!--div class="header__contacts">
                         <a
                             :href="$helpers.formatTel(phone)"
                             class="header__contacts-phone"
@@ -50,8 +50,8 @@
                             :href="`mailto:${email}`"
                             class="header__contacts-email"
                         >{{ email }}</a>
-                    </div>
-                    <div 
+                    </div-->
+                    <!--div 
                         v-if="user && user.id"
                         class="header__timer"
                     >
@@ -61,16 +61,32 @@
                         <div class="header__timer-date">
                             {{ currentDate }}
                         </div>
-                    </div>
+                    </div-->
                     <template
                         v-if="user && user.id"
                     >
-                        <a 
-                            href="#"
-                            class="header__user"
-                            :class="showPopup ? 'is-active' : ''"
+                        <div 
+                            class="header__info"
                             @click.stop="onClickPopup"
-                        />
+                        >
+                            <div 
+                                v-if="user.organization.name"
+                                class="header__info-organization"
+                            >
+                                {{ user.organization.name }}
+                            </div>
+                            <div class="header__info-user">{{ user.last_name }} {{ user.first_name ? user.first_name[0] + '.' : '' }} {{ user.patronymic ? user.patronymic[0] + '.' : '' }}</div>
+                        </div>
+                        <div 
+                            :class="['header__user', showPopup ? 'is-active' : '', user.organization?.logo ? '' : 'm--no-logo']"
+                            @click.stop="onClickPopup"
+                        >
+                            <img 
+                                v-if="user.organization?.logo"
+                                :src="`http://tugan.flexidev.ru/${user.organization?.logo}`" 
+                                :alt="user.organization.name" 
+                            />
+                        </div>
                         <div 
                             v-if="showPopup"
                             class="app__overlay" 
@@ -78,10 +94,13 @@
                         <transition name="fade">
                             <div 
                                 v-if="showPopup"
-                                v-click-out="onClickPopup"
+                                v-click-out.prevent="onClickPopup"
                                 class="header__popup"
                             >
-                                <div class="header__popup-title">
+                                <div 
+                                    v-if="showPopupHeader"
+                                    class="header__popup-title"
+                                >
                                     {{ user.last_name }} {{ user.first_name ? user.first_name[0] + '.' : '' }} {{ user.patronymic ? user.patronymic[0] + '.' : '' }}
                                     <a 
                                         href="#" 
@@ -90,31 +109,47 @@
                                     />
                                 </div>
                                 <div class="header__popup-body">
-                                    <div class="header__popup-menu">
+                                    <div 
+                                        v-for="(block, index) in menuUser"
+                                        :key="`block-${index}`"
+                                        class="header__popup-menu"
+                                    >
                                         <router-link
-                                            v-for="(item, key) in menuUser"
+                                            v-for="(item, key) in block"
                                             v-slot="{ href, navigate, isActive, isExactActive }"
-                                            :key="key"
-                                            :to="{ name: item.name }"
+                                            :key="`block-${index}-${key}`"
+                                            :to="{ name: item.name, hash: item.hash }"
                                             custom
                                         >
                                             <div 
-                                                class="header__popup-menu-item"
+                                                :class="['header__popup-menu-item', item.name || item.action ? '' : 'm--title']"
                                                 @click="onClickPopupItem"
                                             >
                                                 <a 
+                                                    v-if="item.name"
                                                     :href="href"
-                                                    :class="[isActive && 'is-active', isExactActive && 'is-subactive']"
-                                                    class="header__popup-menu-link"
+                                                    :class="['header__popup-menu-link', (isActive && item.hash === $route.hash) && 'is-active', (isExactActive && item.hash === $route.hash) && 'is-subactive']"
                                                     @click="navigate"
                                                 >
                                                     {{ item.title }}
                                                 </a>
+                                                <div 
+                                                    v-else-if="item.action"
+                                                    @click="onClickAction(item.action)"
+                                                >
+                                                    {{ item.title }}
+                                                </div>
+                                                <div v-else>
+                                                    {{ item.title }}
+                                                </div>
                                             </div>
                                         </router-link>
                                     </div>
                                 </div>
-                                <div class="header__popup-footer">
+                                <div 
+                                    v-if="showPopupFooter"
+                                    class="header__popup-footer"
+                                >
                                     <a 
                                         href="#"
                                         class="button button-outline-red"
@@ -129,17 +164,21 @@
                     <template
                         v-else
                     >
-                        <router-link
-                            :to="{ name: 'auth' }"
-                            class="button header__login"
-                        >
-                            Войти
-                        </router-link>
+                        <div class="header__contacts">
+                            <a
+                                :href="$helpers.formatTel(phone)"
+                                class="header__contacts-link m--phone"
+                            >{{ phone }}</a>
+                            <a
+                                :href="`mailto:${email}`"
+                                class="header__contacts-link m--mail"
+                            >{{ email }}</a>
+                        </div>
                     </template>
                 </div>
             </div>
         </div>
-        <div 
+        <!--div 
             v-if="$route.meta.showSubHeader && !($route.meta.showSidebarAuth && user && user.id)"
             class="header__sub"
         >
@@ -156,13 +195,11 @@
                     {{ $route.meta.name || $route.meta.title }} {{ $route.name === 'registration' ? $store.state.stepRegistration || 1 : '' }}
                 </div>
             </div>
-        </div>
+        </div-->
     </div>
 </template>
 
 <script>
-    import { headerMenu, headerMenuUser } from '@/settings';
-
     export default {
         name: 'AppHeader',
         props: {
@@ -178,22 +215,89 @@
                 timer: null,
                 currentDate: null,
                 currentTime: null,
-                menuUser: [
+                headerMenu: [
                     {
+                        name: 'tenders',
+                        role: 'all',
+                        title: 'Тендеры'
+                    }, {
+                        name: 'contragents',
+                        role: 'all',
+                        title: 'Организации'
+                    }, {
+                        name: 'groups',
+                        role: 'all',
+                        title: 'Товары'
+                    }, {
+                        name: 'registration',
+                        role: 'all',
+                        title: 'Регистрация',
+                    }, {
+                        name: 'auth',
+                        role: 'all',
+                        title: 'Вход',
+                    }
+                ],
+                headerMenuUser: [
+                    {
+                        name: 'tenders',
+                        role: 'all',
+                        title: 'Тендеры'
+                    }, {
+                        name: 'contragents',
+                        role: 'all',
+                        title: 'Организации'
+                    }, {
+                        name: 'groups',
+                        role: 'all',
+                        title: 'Товары'
+                    }, {
+                        name: 'cabinet',
+                        role: 'all',
+                        title: 'Кабинет',
+                    }
+                ],
+                menuUser: [
+                    [{
+                        name: null,
+                        role: 'all',
+                        title: 'Настройки организации',
+                    }, {
+                        name: 'organization',
+                        hash: '#public',
+                        role: 'all',
+                        title: 'Публичный профиль'
+                    }, {
+                        name: 'organization',
+                        hash: '#goods',
+                        role: 'all',
+                        title: 'Товары'
+                    }, {
+                        name: 'organization',
+                        hash: '#persons',
+                        role: 'all',
+                        title: 'Сотрудники'
+                    }],
+                    [{
                         name: 'profile',
+                        hash: '',
                         role: 'all',
                         title: 'Мой профиль'
                     }, {
-                        name: 'organization',
-                        role: 'all',
-                        title: 'Моя организация',
-                    }, {
                         name: 'notifications-settings',
+                        hash: '',
                         role: 'all',
                         title: 'Настройка уведомлений',
-                    }
+                    }, {
+                        name: null,
+                        action: 'onClickExit',
+                        role: 'all',
+                        title: 'Выход',
+                    }]
                 ],
                 showPopup: false,
+                showPopupHeader: false,
+                showPopupFooter: false,
             };
         },
         computed: {
@@ -201,7 +305,7 @@
                 return this.$store.state.user;
             },
             menu() {
-                return (this.$store.state.user && this.$store.state.user.id) ? headerMenuUser : headerMenu;
+                return (this.$store.state.user && this.$store.state.user.id) ? this.headerMenuUser : this.headerMenu;
             }
         },
         mounted() {
@@ -224,10 +328,14 @@
             onClickPopupItem() {
                 this.showPopup = false;
             },
+            onClickAction(action) {
+                this[action];
+            },
             onClickExit() {
                 this.showPopup = false;
                 this.$store.dispatch('deathUser');
                 this.$store.dispatch('setStepRegistration', 1);
+                this.$route.go();
             },
         }
     };

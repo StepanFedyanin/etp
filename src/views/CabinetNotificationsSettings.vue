@@ -27,9 +27,9 @@
                             :key="`settings-group-${index}`"
                             class="notifications__settings-group"
                         >
-                            <div class="notifications__settings-group-name">
+                            <h2 class="notifications__settings-group-name">
                                 {{ group.name }}
-                            </div>
+                            </h2>
                             <div class="notifications__settings-group-block">
                                 <div
                                     v-for="template in group.templates" 

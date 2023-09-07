@@ -3,6 +3,16 @@
         <!-- <Breadcrumbs /> -->
         <div class="cabinet">
             <div class="container">
+                <div
+                    class="app__breadcrumbs"
+                >
+                    <router-link
+                        :to="{ name: 'home' }"
+                        class="app__breadcrumbs-link"
+                    >
+                        Главная
+                    </router-link>
+                </div>
                 <div class="h1">
                     Добро пожаловать на бизнес-платформу TUGAN!
                 </div>

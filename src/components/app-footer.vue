@@ -1,80 +1,63 @@
 <template>
     <div class="footer">
-        <div class="container">
-            <div class="footer__content">
-                <div class="footer__left">
-                    <div class="footer__logo">
-                        <router-link
-                            :to="{ name: 'home' }"
-                            class="footer__logo-link"
-                        >
-                            <img
-                                src="@/assets/img/logo.svg"
-                                alt=""
-                                class="footer__logo-img"
-                            >
-                        </router-link>
-                    </div>
+        <div class="footer__container container">
+            <div class="footer__top">
+                <div class="footer__logo">
                     <router-link
-                        :to="{ name: 'agreement' }"
-                        class="footer__link"
+                        :to="{ name: 'home' }"
+                        class="footer__logo-link"
                     >
-                        Политика конфиденциальности
+                        <img
+                            src="@/assets/img/logo.svg"
+                            alt=""
+                            class="footer__logo-img"
+                        >
                     </router-link>
+                </div>
+                <div class="footer__contacts">
+                    <a
+                        :href="$helpers.formatTel(phone)"
+                        class="footer__contacts-link m--phone"
+                    >{{ phone }}</a>
+                    <a
+                        :href="`mailto:${email}`"
+                        class="footer__contacts-link m--mail"
+                    >{{ email }}</a>
+                </div>
+            </div>
+            <div class="footer__main">
+                <div class="footer__main-title">TUGAN — Социальная платформа Для бизнеса</div>
+                <div class="footer__main-menu">
+                    <router-link
+                        v-for="(item, key) in menu"
+                        :key="key"
+                        :to="{ name: item.name, params: item.params }"
+                        class="footer__main-link"
+                    >
+                        {{ item.title }}
+                    </router-link>
+                </div>
+            </div>
+            <div class="footer__bottom">
+                <div class="footer__bottom-menu">
+                    <router-link
+                        v-for="(item, key) in footerMenuBottom"
+                        :key="key"
+                        :to="{ name: item.name, params: item.params }"
+                        class="footer__bottom-link"
+                    >
+                        {{ item.title }}
+                    </router-link>
+                </div>
+                <div class="footer__bottom-developer">
+                    Разработка площадки - 
                     <a
                         href="//flexites.org"
-                        class="footer__link m--developer"
+                        class="footer__bottom-link m--developer"
                         target="_blank"
                     >
-                        Разработка тендерных площадок - Flexites
+                        Флексайтс
                     </a>
-                </div>
-                <div class="footer__right">
-                    <div class="footer__menu">
-                        <div class="footer__title">
-                            Электронная торговая площадка TUGAN
-                        </div>
-                        <div class="footer__menu-block">
-                            <router-link
-                                v-for="(item, key) in menu"
-                                :key="key"
-                                :to="{ name: item.name, params: item.params }"
-                                class="footer__link"
-                            >
-                                {{ item.title }}
-                            </router-link>
-                        </div>
-                    </div>
-                    <!--
-                    <div class="footer__menu">
-                        <div class="footer__title">
-                            По вопросам работы площадки
-                        </div>
-                        <a
-                            :href="$helpers.formatTel(phoneSupport)"
-                            class="footer__link"
-                        >{{ phoneSupport }}</a>
-                        <a
-                            :href="`mailto:${emailSupport}`"
-                            class="footer__link"
-                        >{{ emailSupport }}</a>
-                    </div>
-                -->
-                    <div class="footer__menu">
-                        <div class="footer__title">
-                            По вопросам работы площадки и сотрудничества
-                        </div>
-                        <a
-                            :href="$helpers.formatTel(phone)"
-                            class="footer__link m--strong"
-                        >{{ phone }}</a>
-                        <a
-                            :href="`mailto:${email}`"
-                            class="footer__link m--strong"
-                        >{{
-                            email
-                        }}</a>
-                    </div>
                 </div>
             </div>
         </div>
@@ -97,10 +80,9 @@
                         role: 'all',
                         title: 'Тендеры'
                     }, {
-                        name: 'page',
-                        params: { slug: 'contacts' },
+                        name: 'contragents',
                         role: 'all',
-                        title: 'Контакты',
+                        title: 'Организации',
                     }, {
                         name: 'groups',
                         role: 'all',
@@ -110,13 +92,21 @@
                         role: 'all',
                         title: 'О площадке',
                     }, {
-                        name: 'contragents',
-                        role: 'all',
-                        title: 'Контрагенты',
-                    }, {
                         name: 'registration',
                         role: 'all',
                         title: 'Регистрация',
+                    }
+                ],
+                footerMenuBottom: [
+                    {
+                        name: 'agreement',
+                        role: 'all',
+                        title: 'Политика конфиденциальности'
+                    }, {
+                        name: 'page',
+                        params: { slug: 'contacts' },
+                        role: 'all',
+                        title: 'Контакты',
                     }
                 ]
             };

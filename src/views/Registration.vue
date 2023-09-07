@@ -1,7 +1,16 @@
 <template>
     <div class="app__main">
         <div class="registration">
-            <div class="container">
+            <div class="container m--1460">
+                <div class="app__breadcrumbs">
+                    <router-link
+                        :to="{ name: 'home' }"
+                        class="app__breadcrumbs-link"
+                    >
+                        Главная
+                    </router-link>
+                </div>
+                <div class="h1">{{ $route.meta.title }}</div>
                 <div
                     v-if="stepRegistration === 1"
                 >

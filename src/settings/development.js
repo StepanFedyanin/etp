@@ -100,42 +100,6 @@ const logger = {
     token: 'c7d63a2e58d186ae3760a5f7c690293e973c08c4'
 };
 
-const headerMenu = [
-    {
-        name: 'tenders',
-        role: 'all',
-        title: 'Тендеры'
-    }, {
-        name: 'groups',
-        role: 'all',
-        title: 'Товары'
-    }, {
-        name: 'about',
-        role: 'all',
-        title: 'О площадке',
-    }, {
-        name: 'registration',
-        role: 'all',
-        title: 'Регистрация',
-    }
-];
-
-const headerMenuUser = [
-    {
-        name: 'tenders',
-        role: 'all',
-        title: 'Тендеры'
-    }, {
-        name: 'groups',
-        role: 'all',
-        title: 'Товары'
-    }, {
-        name: 'cabinet',
-        role: 'all',
-        title: 'Мой кабинет',
-    }
-];
-
 export {
     ajax,
     cache,
@@ -154,9 +118,4 @@ export {
     chat,
     push,
     websocket,
-
-    // mainMenu,
-    // accountMenu,
-    headerMenu,
-    headerMenuUser,
 };

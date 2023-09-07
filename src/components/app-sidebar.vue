@@ -87,6 +87,39 @@
                     </template>
                 </template>
             </div>
+            <div class="sidebar__bottom">
+                <div class="sidebar__bottom-menu">
+                    <router-link
+                        v-for="(item, key) in menuBottom"
+                        :key="key"
+                        v-slot="{ href, isActive }"
+                        :to="{ name: item.name }"
+                        custom
+                    >
+                        <a 
+                            :href="href"
+                            :class="[isActive && 'is-active', `m--icon-${item.icon}`, (item.name === 'chat' && roomUnreadCount) || (item.name === 'notifications' && notificationsCount) ? 'is-alert' : '']"
+                            class="sidebar__bottom-menu-link"
+                            @click.prevent="onClickMenuItem(item)"
+                        >
+                            <template
+                                v-if="item.name === 'chat' && roomUnreadCount"
+                            >
+                                <div class="sidebar__bottom-menu-count">{{ roomUnreadCount }}</div>
+                            </template>
+                            <template
+                                v-if="item.name === 'notifications' && notificationsCount"
+                            >
+                                <div class="sidebar__bottom-menu-count">{{ notificationsCount }}</div>
+                            </template>
+                        </a>
+                    </router-link>
+                </div>
+                <div class="sidebar__bottom-date">
+                    <pre>{{ currentDate }}</pre>
+                    <pre>{{ currentTime }} ({{ this.currentTimeZone }} GMT)</pre>
+                </div>
+            </div>
         </div>
     </div>
 </template>
@@ -110,15 +143,6 @@
                     icon: 'customer',
                     items: [
                         {
-                            name: 'tender-start',
-                            role: 'all',
-                            title: 'Объявить тендер',
-                            icon: 'loudspeaker'
-                        }, {
-                            name: 'customer-drafts',
-                            role: 'all',
-                            title: 'Черновики',
-                        }, {
                             name: 'customer-current',
                             role: 'all',
                             title: 'Текущие торги',
@@ -130,6 +154,15 @@
                             name: 'customer-closed',
                             role: 'all',
                             title: 'Завершенные',
+                        }, {
+                            name: 'customer-drafts',
+                            role: 'all',
+                            title: 'Черновики',
+                        }, {
+                            name: 'tender-start',
+                            role: 'all',
+                            title: 'Объявить тендер',
+                            icon: 'loudspeaker'
                         }
                     ]
                 }, {
@@ -139,6 +172,10 @@
                     icon: 'provider',
                     items: [
                         {
+                            name: 'participant-invites',
+                            role: 'all',
+                            title: 'Приглашения',
+                        }, {
                             name: 'participant-current',
                             role: 'all',
                             title: 'Текущие торги',
@@ -146,17 +183,14 @@
                             name: 'participant-closed',
                             role: 'all',
                             title: 'Завершенные',
-                        }, {
-                            name: 'participant-invites',
-                            role: 'all',
-                            title: 'Приглашения',
                         }
                     ]
                 }, {
                     name: 'contragents',
                     role: 'all',
-                    title: 'Контрагенты',
+                    title: 'Организации',
                     icon: 'peoples'
+                /*
                 }, {
                     name: 'favorites-contragents',
                     role: 'all',
@@ -174,25 +208,37 @@
                         }
                     ]
                 }, {
-                    name: 'devider',
-                }, {
-                    name: 'chat',
-                    role: 'all',
-                    title: 'Чат',
-                    icon: 'loudspeaker'
-                }, {
-                    name: 'notifications',
-                    role: 'all',
-                    title: 'Уведомления',
-                    icon: 'notifications'
-                },
+                        name: 'devider',
+                */
                 // {
                 //     name: 'help',
                 //     role: 'all',
                 //     title: 'Помощь',
                 //     icon: 'info'
-                // }
+                }
                 ],
+                menuBottom: [
+                    {
+                        name: 'chat',
+                        role: 'all',
+                        title: 'Чат',
+                        icon: 'chats'
+                    }, {
+                        name: 'favorites-contragents',
+                        role: 'all',
+                        title: 'Избранное',
+                        icon: 'favorites'
+                    }, {
+                        name: 'notifications',
+                        role: 'all',
+                        title: 'Уведомления',
+                        icon: 'notifications'
+                    },
+                ],
+                timer: null,
+                currentDate: null,
+                currentTime: null,
+                currentTimeZone: null,
                 menuOpenedItems: {},
                 push: undefined,
                 roomUnreadCount: 0,
@@ -217,6 +263,16 @@
         */
         mounted() {
             this.connectToPushWS();
+            this.timer = setInterval(() => {
+                let date = new Date();
+                this.currentTime = date.toLocaleTimeString('ru', { hour: '2-digit', minute: '2-digit', second: '2-digit' });
+                this.currentTimeZone = -1 * date.getTimezoneOffset() / 60;
+                this.currentTimeZone = this.currentTimeZone > 0 ? '+' + this.currentTimeZone : this.currentTimeZone;
+                this.currentDate = date.toLocaleDateString('ru');
+            }, 1000);
+        },
+        unmounted() {
+            clearTimeout(this.timer);
         },
         destroyed() {
             this.push.closePush();

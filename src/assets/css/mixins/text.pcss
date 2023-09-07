@@ -11,8 +11,8 @@
 @define-mixin h1 {
     @mixin __p;
 
-    margin-top: 32px;
-    margin-bottom: 32px;
+    /*margin-top: 32px;*/
+    margin-bottom: 1.5rem;
     font-size: 28px;
     line-height: 1.2;
     font-weight: 500;
@@ -29,20 +29,23 @@
 @define-mixin h2 {
     @mixin __p;
 
-    margin-top: 32px;
-    margin-bottom: 24px;
-    font-size: 20px;
-    line-height: 1.2;
+    display: flex;
+    align-items: center;
+    margin-bottom: 1rem;
+    font-size: 1.25rem;
+    line-height: normal;
     font-weight: 600;
     text-transform: uppercase;
-    color: $color-gray-T3;
+    color: $color-gray-66;
+    min-height: 2.5rem;
+    border-top: 1px solid $color-gray-T6;
 
     @mixin responsive-le-s {
-        font-size: 20px;
+        font-size: 1.1875rem;
     }
 
     @mixin responsive-le-xs {
-        font-size: 18px;
+        font-size: 1.125rem;
     }
 }
 

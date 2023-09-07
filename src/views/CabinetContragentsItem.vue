@@ -1,6 +1,6 @@
 <template>
-    <div class="cabinet contragent">
-        <div class="container">
+    <div :class="['cabinet contragent', user?.id ? 'm--justify-flex-start' : '']">
+        <div :class="['container', user?.id ? '' : 'm--1460']">
             <template
                 v-if="showLoaderSending"
             >

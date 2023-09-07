@@ -2,19 +2,33 @@
     <div class="app__main">
         <div class="cabinet favorites">
             <div class="container">
+                <div class="app__breadcrumbs">
+                    <router-link
+                        :to="{ name: 'home' }"
+                        class="app__breadcrumbs-link"
+                    >
+                        Главная
+                    </router-link>
+                    <router-link
+                        :to="{ name: 'cabinet' }"
+                        class="app__breadcrumbs-link"
+                    >
+                        Кабинет
+                    </router-link>
+                </div>
                 <h1 class="h1">
                     Избранное
                 </h1>
-                <div class="organization__tabs">
-                    <button 
+                <div class="organization__tabs tabs">
+                    <a
+                        href="$" 
                         v-for="item in tabsItems"
                         :key="`tab-${item.name}`"
-                        class="button organization__tabs-item button-width-auto"
-                        :class="$route.name === item.name && 'is-active'"
+                        :class="['tabs__item', $route.name === item.name && 'is-active']"
                         @click.prevent="changeTab(item.name)"
                     >
                         {{ item.label }}
-                    </button>
+                    </a>
                 </div>
                 <routerView />
             </div>

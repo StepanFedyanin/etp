@@ -1,6 +1,16 @@
 <template>
     <div class="cabinet private-tenders">
         <div class="container">
+            <div
+                class="app__breadcrumbs"
+            >
+                <router-link
+                    :to="{ name: 'home' }"
+                    class="app__breadcrumbs-link"
+                >
+                    Главная
+                </router-link>
+            </div>
             <div class="private-tenders__content">
                 <div class="h1">
                     Закрытые тендеры

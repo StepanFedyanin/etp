@@ -31,16 +31,16 @@
         &.m--top {
             position: sticky;
             top: 0;
-            padding: 24px 48px 0;
-            background: $color-white;
-            margin: -48px -48px 24px;
+            padding: 24px 40px 0;
+            /*background: $color-white;*/
+            margin: -48px -40px 24px;
             z-index: 10;
 
             @mixin responsive-le-xl {
-                margin-left: -32px;
-                margin-right: -32px;
-                padding-left: 32px;
-                padding-right: 32px;
+                margin-left: -24px;
+                margin-right: -24px;
+                padding-left: 24px;
+                padding-right: 24px;
             }
 
             @mixin responsive-le-l {
@@ -56,6 +56,19 @@
                 flex-wrap: wrap;
             }
 
+            &:before {
+                content: '';
+                position: absolute;
+                display: block;
+                top: 0;
+                left: 0;
+                right: 0;
+                bottom: 0;
+                background: linear-gradient(180deg, $color-white 30%, rgba($color-white, 0) 100%);
+
+            }
+
+            /*
             &:before,
             &:after {
                 content: '';
@@ -78,6 +91,7 @@
             &:after {
                 right: 100%;
             }
+            */
         }
     }
 

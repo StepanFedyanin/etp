@@ -11,7 +11,7 @@
                             v-model="formData.query"
                             type="text"
                             name="query"
-                            class="search__form-input"
+                            class="search__form-input m--no-shadow"
                             placeholder="Поиск торгово-закупочных процедур"
                         >
                     </div>
@@ -30,7 +30,7 @@
                         type="submit"
                         class="button button-green"
                     >
-                        Поиск
+                        Найти
                     </button>
                 </div>
             </form>

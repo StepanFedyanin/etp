@@ -1,8 +1,12 @@
 .auth {
+    display: flex;
+    justify-content: center;
+
     &__title {
         text-transform: uppercase;
         color: $color-gray-T3;
     }
+
     &__form {
         .form__block {
             max-width: 50%;
@@ -16,17 +20,21 @@
                 max-width: none;
             }
         }
+
         &-submit {
             padding-top: 45px;
+
             &.m--recovery {
                 padding-top: 0;
                 display: flex;
                 justify-content: center;
             }
+
             .button {
                 margin: 0 12px;
             }
         }
+
         & > .field__comment {
             display: none;
         }

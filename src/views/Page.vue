@@ -1,38 +1,37 @@
 <template>
     <div class="app__main">
-        <div class="container m--1460">
-            <div class="app__breadcrumbs">
-                <router-link
-                    :to="{ name: 'home' }"
-                    class="app__breadcrumbs-link"
+        <div class="page">
+            <div :class="['container', user?.id ? '' : 'm--1460']">
+                <div class="app__breadcrumbs">
+                    <router-link
+                        :to="{ name: 'home' }"
+                        class="app__breadcrumbs-link"
+                    >
+                        Главная
+                    </router-link>
+                </div>
+                <template
+                    v-if="showLoaderSending"
                 >
-                    Главная
-                </router-link>
-            </div>
-        </div>
-
-        <div class="container m--1460 page">
-            <template
-                v-if="showLoaderSending"
-            >
-                <div class="page__loader loader">
-                    <div class="spinner" /> Загрузка данных
-                </div>
-            </template>
-            <template
-                v-else-if="page"
-            >
-                <div class="page__content text">
-                    <h1>{{ page.page_name }}</h1>
-                    <div
-                        v-html="page.content"
+                    <div class="page__loader loader">
+                        <div class="spinner" /> Загрузка данных
+                    </div>
+                </template>
+                <template
+                    v-else-if="page"
+                >
+                    <div class="page__content text">
+                        <h1>{{ page.page_name }}</h1>
+                        <div
+                            v-html="page.content"
+                        />
+                    </div>
+                    <div 
+                        class="page__code"
+                        v-html="page.additional_text"
                     />
-                </div>
-                <div 
-                    class="page__code"
-                    v-html="page.additional_text"
-                />
-            </template>
+                </template>
+            </div>
         </div>
     </div>
 </template>

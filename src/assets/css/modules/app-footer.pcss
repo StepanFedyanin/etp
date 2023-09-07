@@ -1,103 +1,176 @@
 .footer {
     margin-top: auto;
-    padding: 30px 0;
+    padding: 1rem 0 1.5rem;
     background: $color-white;
     z-index: 20;
 
-    &__content {
-        display: flex;
-        gap: 115px;
-        @mixin responsive-le-l {
-            gap: 60px;
-        }
-
-        @mixin responsive-le-m {
-            gap: 0;
-            flex-direction: column-reverse;
-        }
+    &__container {
+        position: relative;
+        max-width: none;
+        padding: 0.5rem 0;
     }
 
-    &__right {
+    &__top {
+        position: absolute;
         display: flex;
-        gap: 75px;
+        justify-content: space-between;
+        top: 0;
+        left: 0;
+        right: 0;
+
         @mixin responsive-le-l {
-            gap: 40px;
+            position: relative;
+            row-gap: 2rem;
+            top: auto;
+            left: autp;
+            right: auto;
+            margin-bottom: 1.5rem;
         }
 
-        @mixin responsive-le-m {
-            gap: 20px;
-        }
-
-        @mixin responsive-le-s {
-            gap: 0;
+        @mixin responsive-xxs {
             flex-direction: column;
+            align-items: center;
+            margin-bottom: 2.5rem;
         }
     }
 
     &__logo {
-        margin-bottom: 24px;
+        position: relative;
+        z-index: 1;
+
         &-link {
             display: block;
         }
     }
 
-    &__title {
-        font-weight: 600;
-        font-size: 20px;
-        line-height: 24px;
-        text-transform: uppercase;
-        color: #333;
-        margin-bottom: 24px;
+    &__contacts {
+        position: relative;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-around;
+        gap: 0.5rem;
+        z-index: 1;
 
-        @mixin responsive-le-l {
-            font-size: 16px;
-        }
-    }
-
-    &__menu {
-        max-width: 50%;
-        margin-bottom: 24px;
-
-        @mixin responsive-le-m {
-            width: 50%;
-        }
-
-        @mixin responsive-le-s {
-            max-width: none;
-            width: 100%;
-        }
-        &-block {
+        &-link {
             position: relative;
-            display: grid;
-            grid-column-gap: 32px;
-            grid-template-columns: 50% 50%;
+            display: block;
+            width: 100%;
+            text-align: right;
+            font-size: 1rem;
+            line-height: 1.25rem;
+            font-weight: 500;
+            padding-left: 2rem;
+            text-decoration: none;
+            color: $color-gray-T1;
+
+            &:hover {
+                text-decoration: underline;
+                color: $color-green;
+            }
+
+            &:before {
+                content: '';
+                position: absolute;
+                left: 0;
+                top: 50%;
+                transform: translateY(-50%);
+                width: 1.25rem;
+                height: 1.25rem;
+                background: $color-green;
+            }
+
+            &.m--phone:before {
+                mask: url('./assets/img/icons/icon-phone.svg') 50% 50% no-repeat;
+                mask-size: contain;
+            }
+
+            &.m--mail:before {
+                mask: url('./assets/img/icons/icon-mail.svg') 50% 50% no-repeat;
+                mask-size: contain;
+            }
         }
     }
 
-    &__link {
-        display: block;
-        font-weight: 400;
-        font-size: 16px;
-        color: $color-gray-T1;
-        margin-bottom: 16px;
-        text-decoration: none;
+    &__main {
+        position: relative;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 0.75rem;
+        padding-bottom: 1.5rem;
+        margin-bottom: 0.5rem;
+        border-bottom: 1px solid rgba($color-green-dark, 0.2);
 
-        &.m--strong {
-            font-weight: 600;
-            font-size: 24px;
-            margin-bottom: 12px;
-        }
-
-        &:hover,
-        &.is-active {
+        &-title {
+            font-size: 1.125rem;
+            line-height: normal;
+            text-transform: uppercase;
             color: $color-green;
+            text-align: center;
         }
+
+        &-menu {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            column-gap: 1.5rem;
+            row-gap: 1rem;
+        }
+
+        &-link {
+            font-size: 1rem;
+            font-weight: 400;
+            text-decoration: none;
+            color: $color-gray-T1;
+
+            &:hover,
+            &.is-active {
+                text-decoration: underline;
+                color: $color-gray-T1;
+            }
+        }
+    }
+
+    &__bottom {
+        position: relative;
+        display: flex;
+        gap: 1rem;
+        justify-content: space-between;
+        font-size: 0.875rem;
+        line-height: normal;
+        font-weight: 400;
+        color: $color-gray-T1;
 
         @mixin responsive-le-s {
-            display: inline-block;
-            margin-right: 16px;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+        }
+
+        &-menu {
+            display: flex;
+            gap: 1.5rem;
+
+            @mixin responsive-xxs {
+                flex-direction: column;
+                align-items: center;
+                row-gap: 1rem;
+            }
+        }
+
+        &-link {
+            font-weight: 400;
+            text-decoration: none;
+            color: $color-gray-T1;
+
             &.m--developer {
-                display: block;
+                color: $color-green;
+            }
+
+            &:hover,
+            &.is-active {
+                text-decoration: underline;
+                color: $color-gray-T1;
             }
         }
     }

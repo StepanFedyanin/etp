@@ -1,11 +1,14 @@
 .about {
-    padding: 30px 30px 0;
+    display: flex;
+    justify-content: center;
+
     &__content {
         h2 {
             text-transform: uppercase;
             color: $color-gray-T3;
             font-weight: 600 !important;
         }
+
         ul.m--inline {
             li {
                 display: inline-block;
@@ -16,6 +19,7 @@
             }
         }
     }
+
     &__block {
         padding: 24px;
         @mixin shadow-box;

@@ -1,38 +1,36 @@
 <template>
     <div class="app__main">
-        <div 
-            v-if="!showLoaderSending['product']"
-            class="container"
-        >
-            <div class="app__breadcrumbs">
-                <router-link
-                    :to="{ name: 'home' }"
-                    class="app__breadcrumbs-link"
-                >
-                    Главная
-                </router-link>
-                <router-link
-                    :to="{ name: 'groups' }"
-                    class="app__breadcrumbs-link"
-                >
-                    Товары и услуги
-                </router-link>
-                <router-link
-                    :to="{ name: 'group', params: { slug: good.category_detail.parent.slug } }"
-                    class="app__breadcrumbs-link"
-                >
-                    {{ good.category_detail.parent.name }}
-                </router-link>
-                <router-link
-                    :to="{ name: 'group', params: { parentslug: good.category_detail.parent.slug, slug: good.category_detail.slug } }"
-                    class="app__breadcrumbs-link"
-                >
-                    {{ good.category_detail.name }}
-                </router-link>
-            </div>
-        </div>
-        <div class="good">
-            <div class="container">
+        <div :class="['good contragent', user?.id ? 'm--justify-flex-start' : '']">
+            <div 
+                v-if="!showLoaderSending['product']"
+                :class="['container', user?.id ? '' : 'm--1460']"
+            >
+                <div class="app__breadcrumbs">
+                    <router-link
+                        :to="{ name: 'home' }"
+                        class="app__breadcrumbs-link"
+                    >
+                        Главная
+                    </router-link>
+                    <router-link
+                        :to="{ name: 'groups' }"
+                        class="app__breadcrumbs-link"
+                    >
+                        Товары и услуги
+                    </router-link>
+                    <router-link
+                        :to="{ name: 'group', params: { slug: good.category_detail.parent.slug } }"
+                        class="app__breadcrumbs-link"
+                    >
+                        {{ good.category_detail.parent.name }}
+                    </router-link>
+                    <router-link
+                        :to="{ name: 'group', params: { parentslug: good.category_detail.parent.slug, slug: good.category_detail.slug } }"
+                        class="app__breadcrumbs-link"
+                    >
+                        {{ good.category_detail.name }}
+                    </router-link>
+                </div>
                 <template
                     v-if="showLoaderSending['product']"
                 >
@@ -138,7 +136,7 @@
                         </div>
                     </div>
 
-                    <div class="good__contragent contragent">
+                    <div class="good__contragent">
                         <div class="good__contragent-title">
                             О поставщике
                         </div>

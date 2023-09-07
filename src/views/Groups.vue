@@ -1,7 +1,7 @@
 <template>
     <div class="app__main">
-        <div class="groups">
-            <div class="container">
+        <div :class="['groups', user?.id ? 'm--justify-flex-start' : '']">
+            <div :class="['container', user?.id ? '' : 'm--1460']">
                 <div class="app__breadcrumbs">
                     <router-link
                         :to="{ name: 'home' }"
@@ -10,8 +10,6 @@
                         Главная
                     </router-link>
                 </div>
-            </div>
-            <div class="container">
                 <h1 
                     class="groups__title h1"
                 >

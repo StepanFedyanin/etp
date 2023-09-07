@@ -1,6 +1,17 @@
 <template>
     <div class="cabinet tenders">
         <div class="container">
+            <div
+                class="app__breadcrumbs"
+            >
+                <router-link
+                    :to="{ name: 'home' }"
+                    class="app__breadcrumbs-link"
+                >
+                    Главная
+                </router-link>
+            </div>
+            <div class="h1">&nbsp;</div>
             <div class="tenders__search">
                 <!--div class="tenders__search-form">
                     <Search

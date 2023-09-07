@@ -12,6 +12,13 @@
             display: flex;
             align-items: center;
             width: 100%;
+            border-radius: 0.5rem;
+            box-shadow: 0px 4px 24px rgba(0, 0, 0, 0.06), 0px 2px 6px rgba(0, 0, 0, 0.04), 0px 0px 1px rgba(0, 0, 0, 0.04);
+
+            &:hover,
+            &:focus-within {
+                box-shadow: 0px 4px 24px rgba(84, 154, 60, 0.06), 0px 2px 6px rgba(84, 154, 60, 0.04), 0px 0px 1px rgba(84, 154, 60, 0.04);
+            }
         }
         
         &-filter {
@@ -26,6 +33,7 @@
                 @mixin responsive-le-l {
                     font-size: 0;
                     width: 44px;
+                    min-width: auto;
                     padding-left: 5px;
                     padding-right: 5px;
                 }
@@ -33,16 +41,28 @@
         }
 
         &-field {
+            position: relative;
             flex-basis: 100%;
-            border-right: 1px solid $color-gray-T6;
+            padding-left: 2rem;
+            /*border-right: 1px solid $color-gray-T6;*/
 
             &.m--no-devider {
                 border: none;
             }
+
+            &:before {
+                content: '';
+                position: absolute;
+                top: 50%;
+                left: 0.685rem;
+                transform: translateY(-50%);
+                width: 1.5rem;
+                height: 1.5rem;
+                background: url('./assets/img/icons/icon-search-outline.svg') 50% 50% no-repeat;
+            }
         }
 
         &-input {
-            border-radius: 8px 0 0 8px;
         }
 
         &-submit {

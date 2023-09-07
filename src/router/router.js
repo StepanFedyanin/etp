@@ -54,13 +54,13 @@ const routes = [
         path: '/auth',
         name: 'auth',
         component: auth,
-        meta: { title: 'Вход на платформу', showSubHeader: true },
+        meta: { title: 'Вход на платформу' },
         props: true
     }, {
         path: '/registration',
         name: 'registration',
         component: registration,
-        meta: { title: 'Регистрация аккаунта - Шаг ', showSubHeader: true },
+        meta: { title: 'Регистрация аккаунта' },
         props: true,
     }, {
     //     path: '/bidding',
@@ -84,7 +84,7 @@ const routes = [
         path: '/about',
         name: 'about',
         component: about,
-        meta: { title: 'О площадке', showSubHeader: true },
+        meta: { title: 'О площадке' },
         props: true,
     }, {
         path: '/',

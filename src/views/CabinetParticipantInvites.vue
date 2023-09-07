@@ -3,6 +3,16 @@
     <!-- <Breadcrumbs /> -->
     <div class="cabinet invites">
         <div class="container">
+            <div
+                class="app__breadcrumbs"
+            >
+                <router-link
+                    :to="{ name: 'home' }"
+                    class="app__breadcrumbs-link"
+                >
+                    Главная
+                </router-link>
+            </div>
             <div class="invites__content">
                 <div class="h1">
                     Приглашения к участию в тендерах

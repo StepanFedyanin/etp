@@ -1,9 +1,9 @@
 <template>
     <div class="app__main">
-        <div class="groups">
+        <div :class="['groups', user?.id ? 'm--justify-flex-start' : '']">
             <div 
                 v-if="!showLoaderSending['group']" 
-                class="container"
+                :class="['container', user?.id ? '' : 'm--1460']"
             >
                 <div
                     class="app__breadcrumbs"
@@ -28,8 +28,6 @@
                         {{ group.parent.name }}
                     </router-link>
                 </div>
-            </div>
-            <div class="container">
                 <template
                     v-if="showLoaderSending['group']"
                 >

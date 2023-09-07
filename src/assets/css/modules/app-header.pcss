@@ -1,28 +1,32 @@
 @define-mixin header-link {
+    position: relative;
     display: block;
+    padding: 0.675rem 1.25rem;
     text-decoration: none;
     text-transform: uppercase;
-    font-size: 18px;
-    font-weight: 600;
+    font-size: 1.125rem;
+    font-weight: 500;
     color: $color-white;
+    transition: color 0.5s ease;
 
     @mixin responsive-le-l {
-        font-size: 15px;
-        margin-bottom: 6px;
+        font-size: 1rem;
+        padding: 0.25rem 1.25rem 0.5rem;
     }
 
     @mixin responsive-le-m {
-        font-size: 14px;
+        font-size: 0.875rem;
     }
 
     @mixin responsive-le-xs {
-        font-size: 12px;
+        font-size: 0.75rem;
+        padding: 0.25rem 0.5rem 0.5rem;
     }
 
     a&:hover,
     a&.is-active {
         color: $color-white !important;
-        text-decoration: underline;
+        text-decoration: none;
     }
 }
 
@@ -65,8 +69,12 @@
         position: relative;
         display: flex;
         justify-content: space-between;
-        padding: 15px 0;
+        padding: 1rem 0;
         height: 100px;
+
+        @mixin responsive-le-l {
+            padding: 0.5rem 0;
+        }
 
         @mixin responsive-le-s {
             flex-direction: column-reverse;
@@ -85,12 +93,13 @@
 
     &__left {
         gap: 48px;
+        flex-grow: 1;
 
         @mixin responsive-le-xl {
             gap: 24px;
         }
 
-        @mixin responsive-le-s {
+        @mixin responsive-le-m {
             flex-direction: column;
             gap: 0;
             height: 100%;
@@ -99,21 +108,32 @@
     }
 
     &__right {
-        gap: 48px;
+        gap: 2rem;
+        width: 300px;
+        min-width: 300px;
+        justify-content: flex-end;
 
         @mixin responsive-le-xl {
-            gap: 24px;
+            width: 264px;
+            min-width: 264px;
+            gap: 1rem;
+        }
+
+        @mixin responsive-le-l {
+            width: 224px;
+            min-width: 224px;
+        }
+
+        @mixin responsive-le-m {
+            width: auto;
+            min-width: auto;
         }
 
         @mixin responsive-le-s {
             position: absolute;
-            top: 15px;
+            top: 8px;
             right: 0;
             gap: 0;
-        }
-
-        @mixin responsive-le-xs {
-            top: 18px;
         }
     }
 
@@ -123,9 +143,9 @@
 
     &.m--cabinet &__burger {
         display: none;
-        width: 54px;
-        height: 54px;
-        background-color: $color-red;
+        width: 2.5rem;
+        height: 2.5rem;
+        background-color: $color-green;
         -webkit-mask-position: center;
         mask-position: center;
         -webkit-mask-repeat: no-repeat;
@@ -137,25 +157,24 @@
 
         &:hover,
         &.is-active {
-            background-color: $color-green;
+            background-color: $color-red;
         }
 
         @mixin responsive-le-m {
+            position: absolute;
             display: block;
+            top: 50%;
+            left: 0;
+            transform: translateY(-50%);
         }
 
         @mixin responsive-le-s {
             position: absolute;
             top: 0;
-            left: 0;
-            width: 45px;
-            height: 45px;
+            transform: translateY(0%);
         }
 
         @mixin responsive-le-xs {
-            top: 3px;
-            width: 38px;
-            height: 38px;
         }
     }
 
@@ -173,15 +192,15 @@
         }
 
         @mixin responsive-le-m {
-            width: 180px;
+            width: 160px;
         }
 
         @mixin responsive-le-s {
-            margin-right: auto;
+            /* margin-right: auto; */
         }
 
         @mixin responsive-le-xs {
-            width: 154px;
+            width: 150px;
         }
 
         &-link,
@@ -193,22 +212,13 @@
     &.m--cabinet &__logo {
         @mixin responsive-le-s {
             margin-left: auto;
+            margin-right: auto;
         }
     }
 
     &__contacts {
         @mixin responsive-le-m {
             display: none;
-        }
-
-        &-phone {
-            @mixin header-link;
-            margin-bottom: 8px;
-        }
-
-        &-email {
-            @mixin header-link;
-            margin-bottom: 0 !important;
         }
     }
 
@@ -285,29 +295,30 @@
 
     &__menu {
         display: flex;
-        gap: 24px;
+        /*gap: 2.5rem;*/
         padding: 0;
-        margin: 0 12px 0 0;
+        /*margin: 0 12px 0 0;*/
+        margin: 0 auto;
         list-style: none;
 
         @mixin responsive-le-l {
-            gap: 12px;
+            /*gap: 1rem;*/
         }
 
         @mixin responsive-le-s {
             width: 100%;
-            justify-content: left;
-            margin-right: 0;
-            padding-top: 7px;
+            justify-content: center;
+            /*margin-right: 0;*/
         }
 
         &-item {
+            position: relative;
             margin: 0;
             display: flex;
             align-items: center;
-            
+
             @mixin responsive-le-s {
-                margin: 0;
+                /*margin: 0;*/
             }
 
             @mixin responsive-le-xs {
@@ -317,15 +328,52 @@
 
         &-link {
             @mixin header-link;
+
+            &:before {
+                content: '';
+                position: absolute;
+                top: 100%;
+                margin-top: 0.125rem;
+                left: 0;
+                right: 0;
+                border-bottom: 2px solid rgba($color-white, 0.2);
+                transition: border 0.5s ease;
+            }
+
+            &:hover,
+            &.is-active {
+                &:before {
+                    border-bottom: 2px solid rgba($color-white, 1);
+                }
+            }
         }
     }
 
     &.m--cabinet &__menu {
         &-link {
             color: $color-black;
+
             &:hover,
             &.is-active {
                 color: $color-green !important;
+            }
+
+            &:before {
+                content: '';
+                position: absolute;
+                top: 100%;
+                margin-top: 0.125rem;
+                left: 0;
+                right: 0;
+                border-bottom: 2px solid rgba($color-green, 0.2);
+                transition: border 0.5s ease;
+            }
+
+            &:hover,
+            &.is-active {
+                &:before {
+                    border-bottom: 2px solid rgba($color-green, 1);
+                }
             }
         }
 
@@ -351,32 +399,129 @@
         }
     }
 
+    &__info {
+        font-size: 0.875rem;
+        max-width: 196px;
+        white-space: nowrap;
+        cursor: pointer;
+
+        @mixin responsive-le-l {
+            display: none;
+        }
+
+        &-organization {
+            font-weight: 500;
+            color: $color-gray-T1;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        &-user {
+            color: $color-gray-T3;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+    }
+
     &__user {
-        width: 54px;
-        height: 54px;
-        background-color: $color-red;
-        -webkit-mask-position: center;
-        mask-position: center;
-        -webkit-mask-repeat: no-repeat;
-        mask-repeat: no-repeat;
-        -webkit-mask-size: contain;
-        mask-size: contain;
-        -webkit-mask-image: url('./assets/img/icons/icon-user.svg');
-        mask-image: url('./assets/img/icons/icon-user.svg');
+        width: 3.5rem;
+        min-width: 3.5rem;
+        height: 3.5rem;
+        border: 2px solid $color-green;
+        border-radius: 50%;
+        overflow: hidden;
+        padding: 2px;
+        cursor: pointer;
+        transition: all 0.5s ease;
 
-        &:hover,
-        &.is-active {
-            background-color: $color-green;
+        &:hover {
+            border-color: $color-red;
         }
 
-        @mixin responsive-le-s {
-            width: 45px;
-            height: 45px;
+        &.m--no-logo {
+            border: none;
+            padding: 0;
+            background-color: $color-red;
+            -webkit-mask-position: center;
+            mask-position: center;
+            -webkit-mask-repeat: no-repeat;
+            mask-repeat: no-repeat;
+            -webkit-mask-size: contain;
+            mask-size: contain;
+            -webkit-mask-image: url('./assets/img/icons/icon-user.svg');
+            mask-image: url('./assets/img/icons/icon-user.svg');
+
+            &:hover,
+            &.is-active {
+                background-color: $color-green;
+            }
         }
 
-        @mixin responsive-le-xs {
-            width: 38px;
-            height: 38px;
+        @mixin responsive-le-m {
+            width: 2.5rem;
+            min-width: 2.5rem;
+            height: 2.5rem;
+        }
+
+        img {
+            display: block;
+            width: 100%;
+            height: 100%;
+            max-width: 100%;
+            max-height: 100%;
+            object-fit: contain;
+        }
+    }
+
+    &__contacts {
+        position: relative;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-around;
+        gap: 0.5rem;
+        z-index: 1;
+
+        @mixin responsive-le-l {
+            display: none;
+        }
+
+        &-link {
+            position: relative;
+            display: block;
+            width: 100%;
+            text-align: right;
+            font-size: 1rem;
+            line-height: 1.25rem;
+            font-weight: 500;
+            padding-left: 2rem;
+            text-decoration: none;
+            color: $color-gray-T1;
+
+            &:hover {
+                text-decoration: underline;
+                color: $color-green;
+            }
+
+            &:before {
+                content: '';
+                position: absolute;
+                left: 0;
+                top: 50%;
+                transform: translateY(-50%);
+                width: 1.25rem;
+                height: 1.25rem;
+                background: $color-green;
+            }
+
+            &.m--phone:before {
+                mask: url('./assets/img/icons/icon-phone.svg') 50% 50% no-repeat;
+                mask-size: contain;
+            }
+
+            &.m--mail:before {
+                mask: url('./assets/img/icons/icon-mail.svg') 50% 50% no-repeat;
+                mask-size: contain;
+            }
         }
     }
 
@@ -409,7 +554,7 @@
         color: $color-white;
         margin-top: 0;
     }
-
+    /*
     &__popup {
         position: absolute;
         top: 100%;
@@ -421,6 +566,7 @@
         border-radius: 28px;
         width: 100%;
         max-width: 450px;
+        min-width: 370px;
 
         @mixin responsive-le-m {
             width: 450px;
@@ -489,8 +635,6 @@
 
             .button {
                 width: 260px;
-                padding: 12px 16px;
-                line-height: 22px;
                 margin: 0 auto;
             }
         }
@@ -518,16 +662,65 @@
             }
         }
     }
+    */
+
+    &__popup {
+        position: absolute;
+        top: 100%;
+        right: 0;
+        margin-top: 8px;
+        background: $color-bg;
+        width: 100%;
+        max-width: 450px;
+        min-width: 370px;
+
+        @mixin responsive-le-m {
+            width: 450px;
+        }
+
+        @mixin responsive-le-xs {
+            width: 90vw;
+        }
+
+        &-body {
+            display: flex;
+            flex-direction: column;
+            gap: 2rem;
+            padding: 1.5rem;
+        }
+
+        &-menu {
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start;
+            gap: 1rem;
+            padding-left: 0.5rem;
+            border-left: 1px solid rgba($color-green, 0.2);
+
+
+            &-item {
+                font-weight: 500;
+                font-size: 0.875rem;
+                line-height: normal;
+
+                &.m--title {
+                    color: $color-gray-66;
+                    text-transform: uppercase;    
+                }
+            }
+
+            &-link {
+                color: $color-gray-T1;
+                text-decoration: none;
+                font-weight: 500;
+
+                &:hover,
+                &.is-active {
+                    color: $color-green;
+                }
+            }
+        }
+    }
 }
-/*
-.m--page404.m--with-sidebar .header:after {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    height: 100px;
-    background-color: $color-bg;
-    z-index: -1;
-}
-*/
+
+

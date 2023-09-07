@@ -1,7 +1,18 @@
 <template>
     <div class="app__main">
         <div class="auth">
-            <div class="container">
+            <div 
+                :class="['container', user?.id ? '' : 'm--1460']"
+            >
+                <div class="app__breadcrumbs">
+                    <router-link
+                        :to="{ name: 'home' }"
+                        class="app__breadcrumbs-link"
+                    >
+                        Главная
+                    </router-link>
+                </div>
+                <div class="h1">{{ $route.meta.title }}</div>
                 <div class="auth__title h2">
                     Укажите ваши данные для авторизации
                 </div>

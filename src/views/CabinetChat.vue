@@ -2,6 +2,16 @@
     <div class="app__main">
         <div class="cabinet chat">
             <div class="container">
+                <div
+                    class="app__breadcrumbs"
+                >
+                    <router-link
+                        :to="{ name: 'home' }"
+                        class="app__breadcrumbs-link"
+                    >
+                        Главная
+                    </router-link>
+                </div>
                 <div 
                     v-if="chatId || rooms.length"
                     class="chat__block"

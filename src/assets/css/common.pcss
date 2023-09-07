@@ -29,32 +29,45 @@ body {
 }
 
 .container {
-    max-width: 1556px;
-    margin: auto;
-    padding: 0 48px;
+    width: calc(100% - 80px);
+    max-width: 1200px;
+    margin: 0 40px;
 
     &.m--header {
         max-width: none;
         padding-left: 0;
         margin-left: 0;
+        width: calc(100% - 40px);
+
+        @mixin responsive-le-xl {
+            width: auto;
+        }
     }
 
     &.m--1460 {
+        width: calc(100% - 60px);
         max-width: 1500px;
-        margin: auto !important;
-        padding: 0 30px;
+        margin: 0 30px;
     }
 
+    &.m--1520 {
+        max-width: 1520px;
+    }
+
+    /*
     @mixin responsive-le-xxl {
-        margin: auto 48px;
+        margin: auto 40px;
         padding: 0;
     }
-
+    */
     @mixin responsive-le-xl {
-        margin: auto 32px !important;
+        width: calc(100% - 48px);
+        padding: 0;
+        margin: auto 24px !important;
     }
 
     @mixin responsive-le-l {
+        width: calc(100% - 32px);
         margin: auto 16px !important;
     }
 
@@ -74,11 +87,23 @@ body {
     */
 }
 
+.m--justify-flex-start.m--justify-flex-start {
+    justify-content: flex-start;
+}
+
+.m--align-flex-start.m--align-flex-start {
+    align-items: flex-start;
+}
+
+.m--direction-column {
+    flex-direction: column;
+}
+
 .h1 {
     @mixin h1;
 }
 
-.h2 {
+.h2, h2 {
     @mixin h2;
 }
 
@@ -131,6 +156,10 @@ a {
 .input,
 input {
     @mixin input;
+
+    &.m--no-shadow {
+        box-shadow: none;
+    }
 }
 
 .select,

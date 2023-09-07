@@ -1,6 +1,16 @@
 <template>
-    <div class="cabinet contragents">
-        <div class="container">
+    <div :class="['cabinet contragents', user?.id ? 'm--justify-flex-start' : '']">
+        <div :class="['container', user?.id ? '' : 'm--1460']">
+            <div
+                class="app__breadcrumbs"
+            >
+                <router-link
+                    :to="{ name: 'home' }"
+                    class="app__breadcrumbs-link"
+                >
+                    Главная
+                </router-link>
+            </div>
             <div class="contragents__title h1">
                 Контрагенты
             </div>
@@ -90,6 +100,9 @@
             }
         },
         computed: {
+            user() {
+                return this.$store.state.user;
+            },
             page() {
                 return Number(this.$route.query.page) || 1
             },

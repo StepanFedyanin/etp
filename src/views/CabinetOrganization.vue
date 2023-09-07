@@ -9,11 +9,11 @@
                     <div class="organization__title h1">
                         {{ organization.name }}
                     </div>
-                    <div class="organization__tabs">
+                    <div class="organization__tabs tabs">
                         <button 
                             v-for="item in tabsItems"
                             :key="`tab-${item.name}`"
-                            class="button organization__tabs-item button-width-auto"
+                            class="tabs__item"
                             :class="currentTabsItem === item.name && 'is-active'"
                             @click.prevent="changeTab(item.name)"
                         >
@@ -191,9 +191,17 @@
                     label: 'Сотрудники',
                     name: 'persons'
                 }],
-                currentTabsItem: 'public',
+                currentTabsItem: this.$route.hash?.replace('#', '') || 'public',
                 loading: false
             }
+        },
+        watch: {
+            '$route.hash': {
+                immediate: true,
+                handler() {
+                    this.currentTabsItem = this.$route.hash?.replace('#', '');
+                },
+            },
         },
         created() {
             this.getMyProfile();
@@ -250,6 +258,7 @@
             },
             changeTab(name) {
                 this.currentTabsItem = name;
+                this.$router.push({ name: this.$route.name, hash: `#${name}` });
             },
         }
     }

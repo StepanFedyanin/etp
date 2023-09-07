@@ -1,6 +1,20 @@
 <template>
     <div class="tender-start">
         <div class="container">
+            <div class="app__breadcrumbs">
+                <router-link
+                    :to="{ name: 'home' }"
+                    class="app__breadcrumbs-link"
+                >
+                    Главная
+                </router-link>
+                <router-link
+                    :to="{ name: 'cabinet' }"
+                    class="app__breadcrumbs-link"
+                >
+                    Кабинет
+                </router-link>
+            </div>
             <div class="tender-start__title h1">
                 Создание тендера
             </div>

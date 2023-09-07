@@ -1,5 +1,5 @@
 <template>
-    <div class="contragents">
+    <div class="contragents m--direction-column">
         <template
             v-if="showLoaderSending"
         >
@@ -12,6 +12,7 @@
         >
             <BlockContragents 
                 :contragents="contragents"
+                :hideHeader="true"
             />
             <div class="contragents__block">
                 <div

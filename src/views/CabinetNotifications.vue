@@ -2,6 +2,16 @@
     <div class="app__main">
         <div class="cabinet notifications">
             <div class="container">
+                <div
+                    class="app__breadcrumbs"
+                >
+                    <router-link
+                        :to="{ name: 'home' }"
+                        class="app__breadcrumbs-link"
+                    >
+                        Главная
+                    </router-link>
+                </div>
                 <template
                     v-if="showLoaderSending"
                 >

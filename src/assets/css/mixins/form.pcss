@@ -205,7 +205,8 @@
 
 @define-mixin button {
     font-family: $font-family-base;
-    padding: 12px 16px 12px 16px;
+    padding: 11px 24px;
+    min-width: 240px;
     display: flex;
     flex-direction: row;
     align-items: center;
@@ -217,12 +218,14 @@
     text-decoration: none;
     text-transform: uppercase;
     font-weight: 600;
-    font-size: 18px;
+    font-size: 16px;
     line-height: 24px;
+    border-radius: 24px;
     cursor: pointer;
     border: none;
     width: 300px;
     max-width: 100%;
+    transition: background 0.5s ease, color 0.5s ease;
 
     /* box-shadow: none; */
 
@@ -232,15 +235,15 @@
     }
 
     &:active:not(:disabled) {
-        padding: 13px 16px 12px 16px;
+        /*padding: 11px 24px;*/
     }
 
     &.m--big {
-        padding: 18px 16px;
+        padding: 17px 24px;
     }
 
     &.m--big:active:not(:disabled) {
-        padding: 13px 16px 12px 16px;
+        padding: 17px 24px;
     }
 
     &.m--small {
@@ -255,6 +258,7 @@
 @define-mixin button--color $bg-color, $label-color {
     /* $shadow-color: color($bg-color shade(24%)); */
     /* $border-color: color($bg-color shade(12%)); */
+    border: 1px solid $bg-color;
     background-color: $bg-color;
     color: $label-color;
 
