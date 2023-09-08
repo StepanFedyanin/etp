@@ -83,7 +83,7 @@
                         >
                             <img 
                                 v-if="user.organization?.logo"
-                                :src="`http://tugan.flexidev.ru/${user.organization?.logo}`" 
+                                :src="`${user.organization?.logo}`" 
                                 :alt="user.organization.name" 
                             />
                         </div>
