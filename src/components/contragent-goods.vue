@@ -2,40 +2,42 @@
     <div
         v-if="goods && goodsTotal" 
         :class="blockClass" 
-        class="goods"
+        class="contragent__goods"
     >
         <div
-            class="goods__title h2 m--padding-top"
+            class="contragent__goods-title h2"
         >
-            Товары и услуги <span class="m--color-green">({{ goodsTotal }})</span>
+            Товары и услуги&nbsp;<span class="m--color-green">({{ goodsTotal }})</span>
         </div>
-        <div class="goods__block">
-            <blockGoodsItem
-                v-for="item in goods"
-                :key="`good-${item.id}`"
-                :good="item"
-                :showCategory="true"
-                :showOrganization="false"
-            />
-        </div>
-        <template
-            v-if="showLoaderSending"
-        >
-            <div class="good__loader loader">
-                <div class="spinner" /> Загрузка данных о товарах организации
+        <div class="goods">
+            <div class="goods__block m--no-margin">
+                <blockGoodsItem
+                    v-for="item in goods"
+                    :key="`good-${item.id}`"
+                    :good="item"
+                    :showCategory="true"
+                    :showOrganization="false"
+                />
             </div>
-        </template>
-        <template
-            v-else
-        >
-            <button 
-                v-if="goodsTotal > goods.length"
-                class="button button-outline-green goods__more"
-                @click.prevent="getGoods()"
+            <template
+                v-if="showLoaderSending"
             >
-                показать еще
-            </button>
-        </template>
+                <div class="good__loader loader">
+                    <div class="spinner" /> Загрузка данных о товарах организации
+                </div>
+            </template>
+            <template
+                v-else
+            >
+                <button 
+                    v-if="goodsTotal > goods.length"
+                    class="button button-outline-green goods__more"
+                    @click.prevent="getGoods()"
+                >
+                    показать еще
+                </button>
+            </template>
+        </div>
     </div>
 </template>
 

@@ -9,6 +9,7 @@ import rules from '@/views/Rules';
 import needs from '@/views/Needs';
 /* regs, auth */
 import registration from '@/views/Registration';
+import recovery from '@/views/Recovery';
 import auth from '@/views/Login';
 /* cabinet */
 import cabinet from '@/views/Cabinet';
@@ -61,6 +62,12 @@ const routes = [
         name: 'registration',
         component: registration,
         meta: { title: 'Регистрация аккаунта' },
+        props: true,
+    }, {
+        path: '/recovery',
+        name: 'recovery',
+        component: recovery,
+        meta: { title: 'Восстановление пароля' },
         props: true,
     }, {
     //     path: '/bidding',

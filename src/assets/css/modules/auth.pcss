@@ -2,27 +2,49 @@
     display: flex;
     justify-content: center;
 
+
+    &__block {
+        max-width: 380px;
+        margin: 0 auto;
+
+        &-recovery {
+            padding-top: 1.5rem;
+            text-align: center;
+        }
+
+        &-link {
+            font-weight: 500;
+        }
+    }
+
     &__title {
         text-transform: uppercase;
         color: $color-gray-T3;
     }
 
+    &__tabs {
+        width: 100%;
+        margin-bottom: 3rem;
+    }
+
     &__form {
-        .form__block {
-            max-width: 50%;
-            @mixin responsive-le-l {
-                max-width: 70%;
-            }
-            @mixin responsive-le-m {
-                max-width: 80%;
-            }
-            @mixin responsive-le-s {
-                max-width: none;
-            }
+        display: flex;
+        flex-direction: column;
+        min-height: 350px;
+
+        &-content {
+            text-align: center;
+            font-weight: 400;
+            color: $color-gray-T1;
+            margin-bottom: 2rem;
+        }
+
+        .formkit-actions {
+            margin-top: auto;
         }
 
         &-submit {
-            padding-top: 45px;
+            padding-top: 1rem;
 
             &.m--recovery {
                 padding-top: 0;

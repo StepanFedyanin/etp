@@ -135,6 +135,7 @@
                                                 </a>
                                                 <div 
                                                     v-else-if="item.action"
+                                                    class="header__popup-menu-link"
                                                     @click="onClickAction(item.action)"
                                                 >
                                                     {{ item.title }}
@@ -329,13 +330,13 @@
                 this.showPopup = false;
             },
             onClickAction(action) {
-                this[action];
+                this[action]();
             },
             onClickExit() {
                 this.showPopup = false;
                 this.$store.dispatch('deathUser');
                 this.$store.dispatch('setStepRegistration', 1);
-                this.$route.go();
+                this.$router.go();
             },
         }
     };

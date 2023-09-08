@@ -27,7 +27,7 @@
                 <template
                     v-if="user && user.id"
                 >
-                    <div class="contragent__subtitle h2">
+                    <div class="h2">
                         Представители организации
                     </div>
                     <div class="contragent__block">
@@ -44,8 +44,8 @@
                 <template
                     v-if="createdTenders.count"
                 >
-                    <div class="contragent__subtitle h2">
-                        Заказчик <span class="m--color-green">{{ $helpers.stringForNumber(createdTenders.count, ['тендера', 'тендеров', 'тендеров']) }}</span>
+                    <div class="h2">
+                        Заказчик&nbsp;<span class="m--color-green">{{ $helpers.stringForNumber(createdTenders.count, ['тендера', 'тендеров', 'тендеров']) }}</span>
                     </div>
                     <div class="contragent__tenders tenders tenders__created">
                         <blockTenderMini
@@ -66,8 +66,8 @@
                 <template
                     v-if="participationTenders.count"
                 >
-                    <div class="contragent__subtitle h2">
-                        Участник <span class="m--color-green">{{ $helpers.stringForNumber(participationTenders.count, ['тендера', 'тендеров', 'тендеров']) }}</span>
+                    <div class="h2">
+                        Участник&nbsp;<span class="m--color-green">{{ $helpers.stringForNumber(participationTenders.count, ['тендера', 'тендеров', 'тендеров']) }}</span>
                     </div>
                     <div 
                         v-if="participationTenders && participationTenders.count"
@@ -92,7 +92,7 @@
                 <template
                     v-if="contragent.neighbouring_organizations && contragent.neighbouring_organizations.length"
                 >
-                    <div class="contragent__subtitle h2">
+                    <div class="h2">
                         Другие организации
                     </div>
                     <div class="contragent__siblings">

@@ -64,9 +64,10 @@
         top: auto;
         left: auto;
         background: none;
+        overflow-x: clip;
     }
     &__content {
-        position: relative;
+        /*position: relative;*/
         display: flex;
         justify-content: space-between;
         padding: 1rem 0;
@@ -83,7 +84,6 @@
 
     &__left,
     &__right {
-        position: relative;
         display: flex;
         align-items: center;
         @mixin responsive-le-l {
@@ -92,6 +92,7 @@
     }
 
     &__left {
+        position: relative;
         gap: 48px;
         flex-grow: 1;
 
@@ -132,7 +133,7 @@
         @mixin responsive-le-s {
             position: absolute;
             top: 8px;
-            right: 0;
+            right: 16px;
             gap: 0;
         }
     }
@@ -668,14 +669,18 @@
         position: absolute;
         top: 100%;
         right: 0;
-        margin-top: 8px;
+        margin-top: 0;
         background: $color-bg;
-        width: 100%;
         max-width: 450px;
-        min-width: 370px;
+        min-width: 365px;
 
         @mixin responsive-le-m {
             width: 450px;
+        }
+
+        @mixin responsive-le-s {
+            margin-top: 52px;
+            right: -16px;
         }
 
         @mixin responsive-le-xs {
@@ -713,6 +718,8 @@
                 color: $color-gray-T1;
                 text-decoration: none;
                 font-weight: 500;
+                cursor: pointer;
+                transition: color 0.5s ease;
 
                 &:hover,
                 &.is-active {

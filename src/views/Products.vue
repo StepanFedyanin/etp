@@ -1,59 +1,57 @@
 <template>
     <div class="app__main">
-        <div 
-            class="container"
-        >
-            <div class="app__breadcrumbs">
-                <router-link
-                    :to="{ name: 'home' }"
-                    class="app__breadcrumbs-link"
-                >
-                    Главная
-                </router-link>
-            </div>
-        </div>
-        <div
-            class="goods container"
-        >
-            <h1 class="h1">
-                Все товары и услуги
-            </h1>
-            <template
-                v-if="showLoaderSending"
+        <div :class="['goods', user?.id ? 'm--justify-flex-start' : '']">
+            <div 
+                :class="['container', user?.id ? '' : 'm--1460']"
             >
-                <div class="goods__loader loader">
-                    <div class="spinner" /> Загрузка данных
+                <div class="app__breadcrumbs">
+                    <router-link
+                        :to="{ name: 'home' }"
+                        class="app__breadcrumbs-link"
+                    >
+                        Главная
+                    </router-link>
                 </div>
-            </template>
-            <template
-                v-else-if="goods && count"
-            >    
-                <div class="goods__block">
-                    <blockGoodsItem
-                        v-for="item in goods"
-                        :key="`good-${item.id}`"
-                        :good="item"
-                        :showOrganization="true"
+                <h1 class="h1">
+                    Все товары и услуги
+                </h1>
+                <template
+                    v-if="showLoaderSending"
+                >
+                    <div class="goods__loader loader">
+                        <div class="spinner" /> Загрузка данных
+                    </div>
+                </template>
+                <template
+                    v-else-if="goods && count"
+                >    
+                    <div class="goods__block">
+                        <blockGoodsItem
+                            v-for="item in goods"
+                            :key="`good-${item.id}`"
+                            :good="item"
+                            :showOrganization="true"
+                        />
+                    </div>
+                </template>
+                <template
+                    v-else
+                >
+                    <div class="tenders__empty">
+                        В данный момент у вас нет ни одного товара
+                    </div> 
+                </template>
+                <div
+                    class="goods__pagination"
+                >
+                    <Pagination
+                        :total="count"
+                        :limit="limit"
+                        :currentPage="Number($route.query.page || 1)"
+                        :query="$route.query"
+                        :url="$route.path"
                     />
                 </div>
-            </template>
-            <template
-                v-else
-            >
-                <div class="tenders__empty">
-                    В данный момент у вас нет ни одного товара
-                </div> 
-            </template>
-            <div
-                class="goods__pagination"
-            >
-                <Pagination
-                    :total="count"
-                    :limit="limit"
-                    :currentPage="Number($route.query.page || 1)"
-                    :query="$route.query"
-                    :url="$route.path"
-                />
             </div>
         </div>
     </div>

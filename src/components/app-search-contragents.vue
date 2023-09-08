@@ -6,12 +6,12 @@
                 @submit.prevent="searchTenders"
             >
                 <div class="search__form-group">
-                    <div class="search__form-field m--no-devider">
+                    <div class="search__form-field">
                         <input
                             v-model="formData.query"
                             type="text"
                             name="query"
-                            class=""
+                            class="search__form-input m--no-shadow"
                             placeholder="Поиск контрагентов"
                         >
                     </div>

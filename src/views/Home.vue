@@ -242,31 +242,31 @@
                     </div>
                 </div>
             </div>
-            <div
-                class="container m--1460 goods"
-            >
-                <div class="goods__title h1">
-                    Новые товары
+            <div class="goods">
+                <div class="container m--1460">
+                    <div class="goods__title h1">
+                        Новые товары
+                    </div>
+                    <template
+                        v-if="showLoaderGoods"
+                    >
+                        <div class="goods__loader loader">
+                            <div class="spinner" /> Загрузка данных
+                        </div>
+                    </template>
+                    <template
+                        v-else
+                    >    
+                        <div class="goods__block">
+                            <blockGoodsItem
+                                v-for="item in goods"
+                                :key="`good-${item.id}`"
+                                :good="item"
+                                :showOrganization="true"
+                            />
+                        </div>
+                    </template>
                 </div>
-                <template
-                    v-if="showLoaderGoods"
-                >
-                    <div class="goods__loader loader">
-                        <div class="spinner" /> Загрузка данных
-                    </div>
-                </template>
-                <template
-                    v-else
-                >    
-                    <div class="goods__block">
-                        <blockGoodsItem
-                            v-for="item in goods"
-                            :key="`good-${item.id}`"
-                            :good="item"
-                            :showOrganization="true"
-                        />
-                    </div>
-                </template>
             </div>
             <div 
                 v-if="showFeatures"

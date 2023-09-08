@@ -60,7 +60,7 @@
             <template
                 v-if="contragent.about_company"
             >
-                <div class="contragent__info-title h2">
+                <div class="h2">
                     О компании
                 </div>
                 <div 

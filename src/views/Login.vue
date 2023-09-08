@@ -4,47 +4,47 @@
             <div 
                 :class="['container', user?.id ? '' : 'm--1460']"
             >
-                <div class="app__breadcrumbs">
-                    <router-link
-                        :to="{ name: 'home' }"
-                        class="app__breadcrumbs-link"
-                    >
-                        Главная
-                    </router-link>
-                </div>
-                <div class="h1">{{ $route.meta.title }}</div>
-                <div class="auth__title h2">
-                    Укажите ваши данные для авторизации
-                </div>
-                <FormKit
-                    v-model="formData"
-                    type="form"
-                    data-loading="showLoaderSending"
-                    form-class="$reset auth__form form"
-                    submit-label="Войти"
-                    :disabled="showLoaderSending"
-                    :loading="showLoaderSending ? true : undefined"
-                    :submit-attrs="{
-                        inputClass: '$reset button button-green',
-                        wrapperClass: '$reset form__submit',
-                        outerClass: '$reset',
-                    }"
-                    @submit="submitHandler"
-                >
-                    <div class="form__block">
-                        <FormKitSchema :schema="authForm" />
-                        <div class="field m--offset m--no-margin">
-                            <label class="field__inner">
-                                <a 
-                                    href="#"
-                                    @click.stop="onClickRecoveryPasswordModal"
-                                >
-                                    Забыли пароль?
-                                </a>
-                            </label>
-                        </div>
+                <div class="auth__block">
+                    <div class="auth__tabs tabs-buttons m--50">
+                        <a 
+                            v-for="item in authTabs"
+                            :key="`tab-${item.name}`"
+                            href="#" 
+                            :class="['tabs-buttons__item', item.name === $route.name ? 'is-active' : '']"
+                            @click.prevent="next(item.name)"
+                        >
+                            {{ item.title }}
+                        </a>
                     </div>
-                </FormKit>
+                    <FormKit
+                        v-model="formData"
+                        type="form"
+                        data-loading="showLoaderSending"
+                        form-class="$reset auth__form form"
+                        submit-label="Войти"
+                        :disabled="showLoaderSending"
+                        :loading="showLoaderSending ? true : undefined"
+                        :submit-attrs="{
+                            inputClass: '$reset button button-green m--w-100',
+                            wrapperClass: '$reset auth__form-submit form__submit',
+                            outerClass: '$reset',
+                        }"
+                        @submit="submitHandler"
+                    >
+                        <FormKitSchema :schema="authForm" />
+                    </FormKit>
+                    <div class="auth__block-recovery field">
+                        <label class="field__inner">
+                            <a 
+                                href="#"
+                                class="auth__block-link"
+                                @click.stop="next('recovery')"
+                            >
+                                Восстановить пароль
+                            </a>
+                        </label>
+                    </div>
+                </div>
             </div>
         </div>
         <ModalRecoveryPassword
@@ -67,14 +67,23 @@
                 formData: {},
                 showRecoveryPasswordModal: false,
                 showLoaderSending: false,
+                authTabs: [
+                    {
+                        name: 'auth',
+                        title: 'Вход'
+                    }, {
+                        name: 'registration',
+                        title: 'Регистрация'
+                    }
+                ],
                 authForm: [
                     {
                         $formkit: 'text',
                         name: 'email',
-                        label: 'Ваш E-mail',
+                        label: 'Электронная почта',
                         placeholder: 'Введите ваш e-mail',
                         validation: 'required|email',
-                        outerClass: 'field--inline field--required'
+                        outerClass: 'field--required'
                     }, {
                         $formkit: 'password',
                         name: 'password',
@@ -82,9 +91,9 @@
                         placeholder: 'Введите ваш пароль',
                         validation: 'required|length:5',
                         validationMessages: {
-                            length: 'Минимальная длинна пароля 5 символов',
+                            length: 'Минимальная длинна пароля 8 символов',
                         },
-                        outerClass: 'field--inline field--required'
+                        outerClass: 'field--required'
                     }
                 ]
             }
@@ -103,7 +112,7 @@
                         api.getMyProfile().then(res => {
                             this.showLoaderSending = false;
                             this.$store.dispatch('setUser', res);
-                            this.next();
+                            this.next('cabinet');
                         }).catch(err => {
                             this.showLoaderSending = false;
                             this.$store.dispatch('showError', err);
@@ -113,7 +122,7 @@
                         this.showLoaderSending = false;
                         this.$store.dispatch('showError', 'Ошибка получения токена');
                     }
-                    this.next();
+                    this.next('cabinet');
                 }).catch(err => {
                     node.setErrors(
                         [err.detail],
@@ -133,8 +142,8 @@
             hideRecoveryPasswordModal() {
                 this.showRecoveryPasswordModal = false;
             },
-            next() {
-                this.$router.push({ name: 'cabinet' });
+            next(name) {
+                this.$router.push({ name: name });
             }
         }
     };
