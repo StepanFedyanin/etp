@@ -187,7 +187,7 @@
                 <template
                     v-if="goodsCategoryTotal"
                 >
-                    <div class="good__list goods">
+                    <div class="good__list goods m--block">
                         <div class="goods__title">
                             Товары из категории «{{ good.category_detail.name }}» <span>({{ goodsCategoryTotal }})</span>
                         </div>
