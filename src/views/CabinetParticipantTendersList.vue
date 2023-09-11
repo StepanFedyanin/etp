@@ -11,7 +11,9 @@
                     Главная
                 </router-link>
             </div>
-            <div class="h1">&nbsp;</div>
+            <div class="h1">
+                &nbsp;
+            </div>
             <div class="tenders__search">
                 <!--div class="tenders__search-form">
                     <Search

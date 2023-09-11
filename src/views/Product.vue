@@ -149,7 +149,7 @@
                 <template
                     v-if="goodsOrganizationTotal"
                 >
-                    <div class="good__list goods">
+                    <div class="good__list goods m--block">
                         <div class="goods__title">
                             Все товары поставщика <span>({{ goodsOrganizationTotal }})</span>
                         </div>

@@ -10,7 +10,9 @@
                         Главная
                     </router-link>
                 </div>
-                <div class="h1">{{ $route.meta.title }}</div>
+                <div class="h1">
+                    {{ $route.meta.title }}
+                </div>
                 <div
                     v-if="stepRegistration === 1"
                 >

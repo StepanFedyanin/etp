@@ -1,5 +1,8 @@
 <template>
-    <div class="pagination">
+    <div 
+        v-if="total"
+        class="pagination"
+    >
         <div class="pagination__left">
             <router-link
                 :to="{ path: url, query: Object.assign({}, query, { page: 1 }) }"

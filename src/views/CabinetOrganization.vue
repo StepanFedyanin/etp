@@ -53,6 +53,7 @@
                 >
                     <OrganizationGoods
                         :organization="organization"
+                        blockClass="m--block"
                     />
                 </div>
                 <div 

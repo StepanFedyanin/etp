@@ -15,7 +15,9 @@
                     Кабинет
                 </router-link>
             </div>
-            <div class="h1">&nbsp;</div>
+            <div class="h1">
+                &nbsp;
+            </div>
             <div class="tenders__search">
                 <div class="tenders__search-form">
                     <Search
@@ -131,7 +133,6 @@
         },
         methods: {
             getTenders(formData) {
-                let limit = Number(this.limit);
                 let params = Object.assign({}, formData);
                 params.limit = this.limit;
                 params.offset = this.offset;

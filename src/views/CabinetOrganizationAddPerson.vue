@@ -1,8 +1,8 @@
 <template>
     <div class="app__main">
         <div class="cabinet">
-            <div class="container">
-                <div class="registration">
+            <div class="registration m--block">
+                <div class="container">
                     <div class="registration__title h2">
                         Сведения о пользователе
                     </div>
