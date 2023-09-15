@@ -1,8 +1,8 @@
 <template>
-    <div class="app__main m--no-padding">
+    <div class="app__main">
         <div class="home-page">
-            <div class="banner">
-                <div class="container">
+            <div class="container m--1460">
+                <div class="banner">
                     <div class="banner__content">
                         <div class="banner__left">
                             <div class="banner__title">
@@ -40,8 +40,8 @@
                     </div>
                 </div>
             </div>
-            <div class="home-page__alert">
-                <div class="container m--1460">
+            <div class="container m--1460">
+                <div class="home-page__alert">
                     <div class="home-page__alert-title">
                         Организуйте собственные закупки или участвуйте в тендерах
                     </div>
@@ -172,8 +172,8 @@
                     </div>
                 </div>
             </div>
-            <div class="home-page__alert">
-                <div class="container m--1460">
+            <div class="container m--1460">
+                <div class="home-page__alert">
                     <div class="home-page__alert-title">
                         Больше возможностей
                     </div>
@@ -330,8 +330,8 @@
                 </div>
             </div>
 
-            <div class="home-page__alert">
-                <div class="container m--1460">
+            <div class="container m--1460">
+                <div class="home-page__alert">
                     <div class="home-page__alert-title">
                         Социальная бизнес-платформа
                     </div>
@@ -384,8 +384,8 @@
                 </div>
             </div>
 
-            <div class="home-page__alert">
-                <div class="container m--1460">
+            <div class="container m--1460">
+                <div class="home-page__alert">
                     <div class="home-page__alert-content m--flex">
                         <div class="home-page__alert-buttons">
                             <template
