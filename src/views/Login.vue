@@ -109,7 +109,7 @@
                 api.obtainToken(params).then(res => {
                     if (res.access && res.refresh) {
                         this.$store.dispatch('setToken', res);
-                        api.getMyProfile().then(res => {
+                        api.getUser().then(res => {
                             this.showLoaderSending = false;
                             this.$store.dispatch('setUser', res);
                             this.next('cabinet');

@@ -156,17 +156,18 @@
                             </div>
                         </template>
                         <template
-                            v-else-if="tenderList && tenderList.count"
+                            v-else-if="tenders && tenders.count"
                         >
                             <div
                                 ref="list"
                                 class="auction__list-inner tenders"
                             >
-                                <blockTenderHome
-                                    v-for="(tender, index) in tenderList.results"
+                                <blockTender
+                                    v-for="(tender, index) in tenders.results"
                                     :key="`tender-${index}`"
                                     :tender="tender"
                                 />
+
                             </div>
                         </template>
                     </div>
@@ -428,14 +429,14 @@
 <script>
     import { category, tender, product } from "@/services";
     import Search from '../components/app-search.vue';
-    import BlockTenderHome from '../components/block-tender-home.vue';
+    import BlockTender from '../components/block-tender.vue';
     import blockGoodsItem from '@/components/block-goods-item.vue';
 
     export default {
         name: 'Home',
         components: {
             Search,
-            BlockTenderHome,
+            BlockTender,
             blockGoodsItem
         },
         data() {
@@ -443,7 +444,7 @@
                 groups: null,
                 showLoaderGroups: false,
                 limit: 5,
-                tenderList: null,
+                tenders: null,
                 showLoaderTenders: false,
                 goods: null,
                 showLoaderGoods: false,
@@ -480,7 +481,7 @@
                 tender.searchTenders(formData)
                     .then(tenders => {
                         console.log(tenders)
-                        this.tenderList = tenders
+                        this.tenders = tenders
                     }).catch(err => {
                         console.error(err)
                     })
@@ -506,9 +507,9 @@
                     offset: 0,
                 }
                 this.showLoaderTenders = true;
-                tender.getTenderList(params).then(tenders => {
+                tender.searchTenders(params).then(tenders => {
                     this.showLoaderTenders = false;
-                    this.tenderList = tenders
+                    this.tenders = tenders
                 }).catch(err => {
                     this.showLoaderTenders = false;
                     console.error(err)

@@ -56,7 +56,7 @@ class REST {
     static _request(method, url, params={}, data={}, extraData={}, extraParams={}) {
         return ajax.request({
             method,
-            url: `${this.settings.url}/${url}/`,
+            url: `${this.settings.url}${url ? '/' : ''}${url}/`,
             params,
             data,
             extraData,

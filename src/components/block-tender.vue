@@ -141,7 +141,7 @@
                     Начало приема заявок
                 </span>
                 <div class="tenders__item-param-value">
-                    {{ $helpers.formatDate(new Date(tender.date_publication), 'DD.MM.YYYY HH:mm', 'Europe/Moscow') }} МСК
+                    {{ $helpers.formatDate(new Date(tender.date_publication || null), 'DD.MM.YYYY HH:mm', 'Europe/Moscow') }} МСК
                 </div>
             </div>
             <div 
@@ -375,13 +375,13 @@
         },
         computed: {
             documents() {
-                if (this.tender.documents.length)
+                if (this.tender.documents?.length)
                     return this.tender.documents.filter(file => file.publication)
                 
                 return false
             },
             lots() {
-                if (this.tender.lots.length)
+                if (this.tender.lots?.length)
                     return this.tender.lots //.filter(lot => lot.publication)
                 
                 return false

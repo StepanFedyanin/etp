@@ -69,13 +69,21 @@
                             class="header__info"
                             @click.stop="onClickPopup"
                         >
-                            <div 
-                                v-if="user.organization.name"
-                                class="header__info-organization"
-                            >
-                                {{ user.organization.name }}
-                            </div>
-                            <div class="header__info-user">{{ user.last_name }} {{ user.first_name ? user.first_name[0] + '.' : '' }} {{ user.patronymic ? user.patronymic[0] + '.' : '' }}</div>
+                            <template v-if="user.im_auth_type === 'person'">
+                                <div class="header__info-user">
+                                    <span>{{ user.last_name }}</span> 
+                                    {{ user.first_name }} {{ user.patronymic }}
+                                </div>
+                            </template>
+                            <template v-else>
+                                <div 
+                                    v-if="user.organization?.name"
+                                    class="header__info-organization"
+                                >
+                                    {{ user.organization?.name }}
+                                </div>
+                                <div class="header__info-user">{{ user.last_name }} {{ user.first_name ? user.first_name[0] + '.' : '' }} {{ user.patronymic ? user.patronymic[0] + '.' : '' }}</div>
+                            </template>
                         </div>
                         <div 
                             :class="['header__user', showPopup ? 'is-active' : '', user.organization?.logo ? '' : 'm--no-logo']"
@@ -84,7 +92,7 @@
                             <img 
                                 v-if="user.organization?.logo"
                                 :src="`${user.organization?.logo}`" 
-                                :alt="user.organization.name" 
+                                :alt="user.organization?.name" 
                             />
                         </div>
                         <div 
@@ -110,7 +118,7 @@
                                 </div>
                                 <div class="header__popup-body">
                                     <div 
-                                        v-for="(block, index) in menuUser"
+                                        v-for="(block, index) in menuUser[user.im_auth_type]"
                                         :key="`block-${index}`"
                                         class="header__popup-menu"
                                     >
@@ -122,13 +130,14 @@
                                             custom
                                         >
                                             <div 
-                                                :class="['header__popup-menu-item', item.name || item.action ? '' : 'm--title']"
+                                                v-if="showMenuItem(item.condition)"
+                                                :class="['header__popup-menu-item', item.name || item.action ? '' : 'm--title', item.icon ? `m--icon m--${item.icon}` : '']"
                                                 @click="onClickPopupItem"
                                             >
                                                 <a 
                                                     v-if="item.name"
                                                     :href="href"
-                                                    :class="['header__popup-menu-link', (isActive && item.hash === $route.hash) && 'is-active', (isExactActive && item.hash === $route.hash) && 'is-subactive']"
+                                                    :class="['header__popup-menu-link', (isActive && (item.hash === $route.hash || !item.hash)) && 'is-active', (isExactActive && item.hash === $route.hash) && 'is-subactive']"
                                                     @click="navigate"
                                                 >
                                                     {{ item.title }}
@@ -258,44 +267,107 @@
                         title: 'Кабинет',
                     }
                 ],
-                menuUser: [
-                    [{
-                        name: null,
-                        role: 'all',
-                        title: 'Настройки организации',
-                    }, {
-                        name: 'organization',
-                        hash: '#public',
-                        role: 'all',
-                        title: 'Публичный профиль'
-                    }, {
-                        name: 'organization',
-                        hash: '#goods',
-                        role: 'all',
-                        title: 'Товары'
-                    }, {
-                        name: 'organization',
-                        hash: '#persons',
-                        role: 'all',
-                        title: 'Сотрудники'
-                    }],
-                    [{
-                        name: 'profile',
-                        hash: '',
-                        role: 'all',
-                        title: 'Мой профиль'
-                    }, {
-                        name: 'notifications-settings',
-                        hash: '',
-                        role: 'all',
-                        title: 'Настройка уведомлений',
-                    }, {
-                        name: null,
-                        action: 'onClickExit',
-                        role: 'all',
-                        title: 'Выход',
-                    }]
-                ],
+                menuUser: {
+                    person: [
+                        [{
+                            name: 'cabinet',
+                            role: 'all',
+                            title: 'Мой кабинет',
+                        }], 
+                        [{
+                            name: null,
+                            role: 'all',
+                            title: 'Настройки организации',
+                        }, {
+                            name: 'organization',
+                            hash: '#registration',
+                            icon: 'tugan',
+                            role: 'all',
+                            title: 'Зарегистрировать организацию',
+                            condition: 'organization__null'
+                        }, {
+                            name: 'organization',
+                            hash: '#public',
+                            role: 'all',
+                            title: 'Публичный профиль',
+                            condition: 'organization'
+                        }, {
+                            name: 'organization',
+                            hash: '#goods',
+                            role: 'all',
+                            title: 'Товары',
+                            condition: 'organization'
+                        }, {
+                            name: 'organization',
+                            hash: '#persons',
+                            role: 'all',
+                            title: 'Сотрудники',
+                            condition: 'organization'
+                        }],
+                        [{
+                            name: null,
+                            role: 'all',
+                            title: 'Настройки профиля',
+                        }, {
+                            name: 'profile',
+                            hash: '#public',
+                            role: 'all',
+                            title: 'Мой профиль'
+                        }, {
+                            name: 'profile',
+                            hash: '#notifications',
+                            role: 'all',
+                            title: 'Настройка уведомлений',
+                        }, {
+                            name: null,
+                            action: 'onClickExit',
+                            role: 'all',
+                            title: 'Выход',
+                        }]
+                    ],
+                    organization: [
+                        [{
+                            name: null,
+                            role: 'all',
+                            title: 'Настройки организации',
+                        }, {
+                            name: 'organization',
+                            hash: '#public',
+                            role: 'all',
+                            title: 'Публичный профиль'
+                        }, {
+                            name: 'organization',
+                            hash: '#goods',
+                            role: 'all',
+                            title: 'Товары'
+                        }, {
+                            name: 'organization',
+                            hash: '#persons',
+                            role: 'all',
+                            title: 'Сотрудники'
+                        }],
+                        [{
+                            name: null,
+                            role: 'all',
+                            title: 'Настройки профиля',
+                        }, {
+                            name: 'profile',
+                            hash: '#public',
+                            role: 'all',
+                            title: 'Мой профиль'
+                        }, {
+                            name: 'profile',
+                            hash: '#notifications',
+                            role: 'all',
+                            title: 'Настройка уведомлений',
+                        }, {
+                            name: null,
+                            action: 'onClickExit',
+                            role: 'all',
+                            title: 'Выход',
+                        }]
+                    ],
+                },
                 showPopup: false,
                 showPopupHeader: false,
                 showPopupFooter: false,
@@ -320,6 +392,18 @@
             clearTimeout(this.timer);
         },
         methods: {
+            showMenuItem(condition) {
+                if (!condition) return true;
+                const cond = condition.split('__');
+                if (!cond[1]) {
+                    if (this.user[cond[0]]) return true;
+                } else {
+                    if (cond[1] === 'null') {
+                        if (!this.user[cond[0]]) return true;
+                    }
+                }
+                return false;
+            },
             onClickPopup() {
                 this.showPopup = !this.showPopup;
             },

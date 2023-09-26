@@ -236,7 +236,7 @@ const routes = [
                 meta: { 
                     title: 'Тендеры', 
                     breadcrumbs: [],
-                    requiresAuth: true 
+                    //requiresAuth: true 
                 },
                 props: true,
             }, {
@@ -246,7 +246,7 @@ const routes = [
                 meta: { 
                     title: `%kind_detail% №%id%: %name%`, 
                     breadcrumbs: ['tenders'],
-                    requiresAuth: true 
+                    //requiresAuth: true 
                 },
                 props: true,
             }, {
@@ -285,7 +285,6 @@ const routes = [
         },
         props: true,
         children: [
-            
             {
                 path: 'start',
                 name: 'tender-start',

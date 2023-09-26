@@ -379,18 +379,6 @@
                         label: 'Название тендера',
                         help: 'Напишите краткое описание закупаемых товаров или услуг',
                         validation: 'required',
-                        __raw__sectionsSchema: {
-                            prefix: {
-                                $el: 'div',
-                                attrs: {
-                                    class: 'tender-form__prefix',
-                                },
-                                children: '$help',
-                            },
-                        },
-                        inputClass: 'tender-form__input',
-                        helpClass: 'tender-form__hidden',
-                        labelClass: 'tender-form__label',
                         outerClass: 'tender-form__field',
                         messageClass: 'tender-form__message',
                     }, {
@@ -424,18 +412,6 @@
                                 console.error(err)
                             })
                         },
-                        __raw__sectionsSchema: {
-                            prefix: {
-                                $el: 'div',
-                                attrs: {
-                                    class: 'tender-form__prefix',
-                                },
-                                children: '$help',
-                            },
-                        },
-                        inputClass: 'tender-form__multselect',
-                        helpClass: 'tender-form__hidden',
-                        labelClass: 'tender-form__label',
                         outerClass: 'tender-form__field m--half',
                         optionClass: '$reset tender-form__option',
                     }, {
@@ -448,18 +424,6 @@
                             { label: 'Открытый', value: 'reduction_opened' },
                             { label: 'Закрытый', value: 'reduction_closed' },
                         ],
-                        __raw__sectionsSchema: {
-                            prefix: {
-                                $el: 'div',
-                                attrs: {
-                                    class: 'tender-form__prefix',
-                                },
-                                children: '$help',
-                            },
-                        },
-                        inputClass: 'tender-form__select',
-                        helpClass: 'tender-form__hidden',
-                        labelClass: 'tender-form__label',
                         outerClass: 'tender-form__field m--half',
                     }, {
                         $formkit: 'multiselect',
@@ -484,18 +448,6 @@
                                     console.error(err)
                                 })
                         },
-                        __raw__sectionsSchema: {
-                            prefix: {
-                                $el: 'div',
-                                attrs: {
-                                    class: 'tender-form__prefix',
-                                },
-                                children: '$help',
-                            },
-                        },
-                        inputClass: 'tender-form__select',
-                        helpClass: 'tender-form__hidden',
-                        labelClass: 'tender-form__label',
                         outerClass: 'tender-form__field m--half',
                     /*
                     }, {
@@ -542,9 +494,6 @@
                         name: 'add_related',
                         label: 'Добавить связанный тендер',
                         value: false,
-                        inputClass: 'tender-form__input',
-                        helpClass: 'tender-form__hidden',
-                        labelClass: 'tender-form__label',
                         outerClass: 'tender-form__field m--checkbox',
                     }
                 ],
@@ -574,18 +523,6 @@
                                     console.error(err)
                                 })
                         },
-                        __raw__sectionsSchema: {
-                            prefix: {
-                                $el: 'div',
-                                attrs: {
-                                    class: 'tender-form__prefix',
-                                },
-                                children: '$help',
-                            },
-                        },
-                        inputClass: 'tender-form__select',
-                        helpClass: 'tender-form__hidden',
-                        labelClass: 'tender-form__label',
                         outerClass: 'tender-form__field m--half',
                     }
                 ],
@@ -615,18 +552,6 @@
                                     console.error(err)
                                 })
                         },
-                        __raw__sectionsSchema: {
-                            prefix: {
-                                $el: 'div',
-                                attrs: {
-                                    class: 'tender-form__prefix',
-                                },
-                                children: '$help',
-                            },
-                        },
-                        inputClass: 'tender-form__select',
-                        helpClass: 'tender-form__hidden',
-                        labelClass: 'tender-form__label',
                         outerClass: 'tender-form__field m--half',
                     }
                 ],
@@ -641,18 +566,6 @@
                         label: 'Дата начала этапа торгов',
                         help: 'Укажите дату и время начала начала торгов (новые участники не регистрируются)',
                         validation: `required|date_after:${this.$helpers.formatDate(new Date(new Date(this.$helpers.curDateMSK()).getTime() + 86400000), 'YYYY-MM-DDTHH:mm')}|date_before:2100-01-01`,
-                        __raw__sectionsSchema: {
-                            prefix: {
-                                $el: 'div',
-                                attrs: {
-                                    class: 'tender-form__prefix',
-                                },
-                                children: '$help',
-                            },
-                        },
-                        inputClass: 'tender-form__input',
-                        helpClass: 'tender-form__hidden',
-                        labelClass: 'tender-form__label',
                         outerClass: 'tender-form__field m--half',
                         messageClass: 'tender-form__message',
                     }, {
@@ -664,18 +577,6 @@
                         label: 'Дата завершения торгов и выбор победителя',
                         help: 'Укажите дату и время окончания тендера и объявления предварительных победителей',
                         validation: `required|date_after:${this.$helpers.formatDate(new Date(new Date(this.$helpers.curDateMSK()).getTime() + 2 * 86400000), 'YYYY-MM-DDTHH:mm')}|date_before:2100-01-01`,
-                        __raw__sectionsSchema: {
-                            prefix: {
-                                $el: 'div',
-                                attrs: {
-                                    class: 'tender-form__prefix',
-                                },
-                                children: '$help',
-                            },
-                        },
-                        inputClass: 'tender-form__input',
-                        helpClass: 'tender-form__hidden',
-                        labelClass: 'tender-form__label',
                         outerClass: 'tender-form__field m--half',
                         messageClass: 'tender-form__message',
                     }, {
@@ -688,18 +589,6 @@
                         label: 'Дата исполнения обязательств по договору',
                         help: 'Укажите дату, до которой должны быть исполнены все обязательства по тендеру',
                         validation: `required|date_after:${this.$helpers.formatDate(new Date(new Date(this.$helpers.curDateMSK()).getTime() + 4 * 86400000), 'YYYY-MM-DDTHH:mm')}|date_before:2100-01-01`,
-                        __raw__sectionsSchema: {
-                            prefix: {
-                                $el: 'div',
-                                attrs: {
-                                    class: 'tender-form__prefix',
-                                },
-                                children: '$help',
-                            },
-                        },
-                        inputClass: 'tender-form__input',
-                        helpClass: 'tender-form__hidden',
-                        labelClass: 'tender-form__label',
                         outerClass: 'tender-form__field m--half',
                         messageClass: 'tender-form__message',
                     },
@@ -718,18 +607,6 @@
                             length: 'Минимальный шаг торгов от текущей ставки от 0,1% до 2%',
                         },
                         options: this.$helpers.range(0.1, 2, 0.1, 1),
-                        __raw__sectionsSchema: {
-                            prefix: {
-                                $el: 'div',
-                                attrs: {
-                                    class: 'tender-form__prefix',
-                                },
-                                children: '$help',
-                            },
-                        },
-                        // inputClass: 'tender-form__input',
-                        helpClass: 'tender-form__hidden',
-                        labelClass: 'tender-form__label',
                         outerClass: 'tender-form__field m--half',
                         messageClass: 'tender-form__message',
                     }, {
@@ -738,7 +615,7 @@
                         name: 'currency',
                         closeOnSelect: true,
                         label: 'Валюта тендера',
-                        help: 'Вы можете выбрать рубли или «условные единицы». В комментарии укажите, чему равна 1 у. е.',
+                        help: 'Вы можете выбрать рубли или «условные единицы». В комментарии укажите, чему равна 1 у.е.',
                         placeholder: 'Выберите валюту тендера',
                         searchable: true,
                         minChars: 1,
@@ -757,17 +634,6 @@
                                 console.error(err);
                             })
                         },
-                        __raw__sectionsSchema: {
-                            prefix: {
-                                $el: 'div',
-                                attrs: {
-                                    class: 'tender-form__prefix',
-                                },
-                                children: '$help',
-                            },
-                        },
-                        helpClass: 'tender-form__hidden',
-                        labelClass: 'tender-form__label',
                         outerClass: 'tender-form__field m--half',
                         messageClass: 'tender-form__message',
                     }, {
@@ -776,18 +642,6 @@
                         label: 'Комментарий к тендеру',
                         help: 'Укажите вариант(ы) оплаты и другие особенности сделки (в свободной форме)',
                         placeholder: 'Введите комментарий',
-                        __raw__sectionsSchema: {
-                            prefix: {
-                                $el: 'div',
-                                attrs: {
-                                    class: 'tender-form__prefix',
-                                },
-                                children: '$help',
-                            },
-                        },
-                        inputClass: 'tender-form__input m--half',
-                        helpClass: 'tender-form__hidden',
-                        labelClass: 'tender-form__label',
                         outerClass: 'tender-form__field',
                         messageClass: 'tender-form__message',
                     },

@@ -6,8 +6,8 @@ export default class extends REST {
         return settings;
     }
 
-    static getDraftList() {
-        return this._get('drafts', {}).then((data) => {
+    static getDraftList(params) {
+        return this._get('drafts', params, {}).then((data) => {
             return data;
         }).catch((error) => {
             throw new RESTError(error, 'Ошибка при получении минималистичного списка черновиков');

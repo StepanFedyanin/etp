@@ -76,9 +76,9 @@
 
     &__label {
         display: block;
-        margin: 0 0 8px 8px;
-        color: $color-gray-T2;
-        font-size: 18px;
+        margin: 0 0 0.25rem 0;
+        color: $color-gray-T1;
+        font-size: 1rem;
         font-weight: 500;
     }
 
@@ -111,6 +111,11 @@
         margin-bottom: 24px;
     }
 
+    &--required &__label,
+    &--required &__legend {
+        font-weight: 600;
+    }
+
     &--required &__label::after,
     &--required &__legend::after {
         content: '*';
@@ -127,6 +132,21 @@
         /* max-width: 400px; */
         &.m--hidden {
             display: none;
+        }
+
+        .m--group {
+            display: flex;
+            @mixin input;
+            padding: 0;
+
+            input,
+            .multiselect {
+                box-shadow: none;
+                min-height: 46px;
+            }
+            & > input {
+                padding-left: 0;
+            }
         }
     }
 
@@ -226,14 +246,42 @@
 
     &[data-invalid=true] .input,
     &[data-errors=true] .input,
-    &[data-invalid=true][data-type=select] .multiselect,
-    &[data-errors=true][data-type=select] .multiselect,
+    &[data-invalid=true][data-type=select] .multiselect-single-label,
+    &[data-errors=true][data-type=select] .multiselect-single-label,
     &[data-invalid=true][data-type=multiselect] .multiselect,
     &[data-errors=true][data-type=multiselect] .multiselect {
         border-color: $color-red;
         background-color: rgba($color-red, 0.03);
         color: $color-red;
     }
+
+    &[data-invalid=true] .m--group,
+    &[data-errors=true] .m--group {
+        border-color: $color-red;
+    }
+
+    &[data-invalid=true] .m--group .multiselect,
+    &[data-errors=true] .m--group .multiselect,
+    &[data-invalid=true] .m--group,
+    &[data-errors=true] .m--group {
+        background-color: rgba($color-red, 0.03);
+    }
+
+    &[data-invalid=true] .m--group .input,
+    &[data-errors=true] .m--group .input,
+    &[data-invalid=true] .m--group .multiselect-single-label,
+    &[data-errors=true] .m--group .multiselect-single-label {
+        border: none;
+        color: $color-red;
+    }
+
+    &__help {
+        font-size: 0.75rem;
+        font-weight: 400;
+        color: $color-gray-T1;
+        padding-top: 0.25rem;
+    }
+
     &__comment {
         position: absolute;
         right: 0;
@@ -303,6 +351,7 @@
     &--inline &__option &__label,
     &[data-type=checkbox] &__label {
         grid-column: 2/9;
+        margin-left: 0.375rem;
     }
 
     &--inline &__comment {

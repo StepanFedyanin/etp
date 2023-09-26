@@ -1,53 +1,32 @@
 <template>
-    <!-- <div class="app__main"> -->
-    <!-- <Breadcrumbs /> -->
-    <div class="cabinet invites">
-        <div class="container">
-            <div
-                class="app__breadcrumbs"
-            >
-                <router-link
-                    :to="{ name: 'home' }"
-                    class="app__breadcrumbs-link"
-                >
-                    Главная
-                </router-link>
+    <div class="tenders">
+        <template
+            v-if="showLoaderSending"
+        >
+            <div class="tenders__loader loader">
+                <div class="spinner" /> Загрузка данных
             </div>
-            <div class="invites__content">
-                <div class="h1">
-                    Приглашения к участию в тендерах
-                </div>
-                <!-- {{ tenders }} -->
-                <div class="tenders">
-                    <template
-                        v-if="showLoaderSending"
-                    >
-                        <div class="tenders__loader loader">
-                            <div class="spinner" /> Загрузка данных
-                        </div>
-                    </template>
-                    <!-- <pre>{{ tenders }}</pre> -->
-                    <template
-                        v-else-if="tenders && tenders.length"
-                    >
-                        <blockTender
-                            v-for="(tender, index) in tenders"
-                            :key="`tender-${index}`"
-                            :tender="tender"
-                            :invites="true"
-                            @getListInvitation="getListInvitation"
-                        />
-                    </template>
-                    <template
-                        v-else
-                    >
-                        У вас нет приглашений 
-                    </template>
-                </div>
+        </template>
+        <!-- <pre>{{ tenders }}</pre> -->
+        <template
+            v-else-if="tenders && tenders.length"
+        >
+            <blockTender
+                v-for="(tender, index) in tenders"
+                :key="`tender-${index}`"
+                :tender="tender"
+                :invites="true"
+                @getListInvitation="getListInvitation"
+            />
+        </template>
+        <template
+            v-else
+        >
+            <div class="tenders__content">
+                У вас нет приглашений 
             </div>
-        </div>
+        </template>
     </div>
-    <!-- </div> -->
 </template>
 
 <script>

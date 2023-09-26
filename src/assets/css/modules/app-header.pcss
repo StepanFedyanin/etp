@@ -423,6 +423,13 @@
             color: $color-gray-T3;
             overflow: hidden;
             text-overflow: ellipsis;
+            font-weight: 400;
+
+            span {
+                display: block;
+                font-weight: 500;
+                color: $color-gray-T1;
+            }
         }
     }
 
@@ -717,6 +724,7 @@
             }
 
             &-link {
+                display: block;
                 color: $color-gray-T1;
                 text-decoration: none;
                 font-weight: 500;
@@ -726,6 +734,35 @@
                 &:hover,
                 &.is-active {
                     color: $color-green;
+                }
+            }
+
+            &-item.m--icon &-link {
+                position: relative;
+                padding-left: 1.5rem;
+
+                &:before {
+                    content: '';
+                    position: absolute;
+                    top: 50%;
+                    left: 0;
+                    transform: translateY(-50%);
+                    width: 1rem;
+                    height: 1rem;
+                    background-size: contain;
+                    background-position: 50% 50%;
+                    background-repeat: no-repeat;
+                }
+            }
+
+            &-item.m--tugan &-link {
+                padding-left: 0;
+                padding-right: 1.5rem;
+
+                &:before {
+                    background-image: url('assets/img/icons/icon-list.svg');
+                    left: auto;
+                    right: 0;
                 }
             }
         }

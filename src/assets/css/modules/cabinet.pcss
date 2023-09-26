@@ -1,20 +1,33 @@
 .cabinet{
     /* margin: 36px 49px; */
     &__block {
-        display: grid;
+        display: flex;
+        flex-wrap: wrap;
         /* grid-template-columns: repeat(3, 1fr); */
-        gap: 36px;
-        grid-template-columns: repeat(auto-fill, minmax(345px, 1fr));
+        gap: 2.5rem;
+
         &-item {
+            flex-grow: 1;
             @mixin shadow-box;
-            padding: 25px 20px 35px 20px;
+            padding: 1rem;
             display: flex;
             flex-direction: column;
-            /*max-width: 460px;*/
+            width: calc(50% - 2.5rem / 2);
 
             @mixin responsive-le-s {
                 /*max-width: none;*/
                 width: 100%;
+            }
+
+            &.m--100 {
+                width: 100%;
+            }
+
+            &.m--transparent {
+                background: m--transparent;
+                padding: 0;
+                box-shadow: none;
+                gap: 2.5rem;
             }
 
             .button:active:not(:disabled) {
@@ -34,40 +47,99 @@
             &-description {
                 /* padding-bottom: 10px; */
                 flex: 1;
+                padding-bottom: 1.5rem;
+
                 ul {
-                    padding-left: 30px;
                     font-weight: 400;
                 }
-                li:not(:last-child) {
-                    padding-bottom: 24px;
-                }
+
                 li {
-                    list-style-image: svg-load('assets/img/icons/icon-list.svg', fill=$color-red);
+                    padding-left: 2rem;
+                    position: relative;
+                }
+
+                li:not(:last-child) {
+                    padding-bottom: 1rem;
+                }
+
+                li:before {
+                    content: '';
+                    position: absolute;
+                    display: block;
+                    left: 0;
+                    top: 0.25rem;
+                    width: 1rem;
+                    height: 1rem;
+                    background: url('assets/img/icons/icon-list.svg') 50% 50% no-repeat;
                 }
             }
+
+            &-profile {
+                display: flex;
+            }
+
+            &-logo {
+                margin-left: auto;
+                width: 3.75rem;
+                height: 3.75rem;
+                overflow: hidden;
+                border-radius: 50%;
+                border: 1px solid $color-green;
+
+                &.m--no-logo {
+                    border: none;
+                    padding: 0;
+                    background-color: $color-green;
+                    -webkit-mask-position: center;
+                    mask-position: center;
+                    -webkit-mask-repeat: no-repeat;
+                    mask-repeat: no-repeat;
+                    -webkit-mask-size: contain;
+                    mask-size: contain;
+                    -webkit-mask-image: url('./assets/img/icons/icon-user.svg');
+                    mask-image: url('./assets/img/icons/icon-user.svg');
+                }
+
+                @mixin responsive-le-m {
+                    width: 2.5rem;
+                    min-width: 2.5rem;
+                    height: 2.5rem;
+                }
+
+                img {
+                    display: block;
+                    width: 100%;
+                    height: 100%;
+                    max-width: 100%;
+                    max-height: 100%;
+                    object-fit: cover;
+                }
+        }
+
             &-title {
-                font-weight: 600;
-                font-size: 20px;
-                line-height: 24px;
-                padding-bottom: 16px;
+                font-weight: 500;
+                font-size: 1rem;
+                line-height: 1.25rem;
+                margin-bottom: 1.5rem;
                 text-transform: uppercase;
-            }
-            &-subtitle {
-                font-weight: 600;
-                font-size: 18px;
-                line-height: 22px;
-                padding-bottom: 16px;
-                &.m--uppercase {
-                    text-transform: uppercase;
+                color: $color-gray-66;
+
+                span {
+                    text-transform: none;
+                    display: block;
+                    color: $color-gray-33;
                 }
             }
+
+            &-subtitle {
+                color: $color-gray-33;
+            }
+
             &-link {
                 color: $color-green;
-                padding-top: 20px;
-                padding-bottom: 36px;
-                font-weight: 600;
-                font-size: 20px;
-                line-height: 24px;
+                font-weight: 500;
+                font-size: 1rem;
+                line-height: 1.25rem;
             }
         }
     }

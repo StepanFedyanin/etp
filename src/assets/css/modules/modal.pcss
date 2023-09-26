@@ -9,14 +9,15 @@
         position: relative;
         display: flex;
         flex-direction: column;
-        margin: 0 24px;
-        padding: 24px;
+        margin: 0 1.5rem;
+        padding: 1rem;
         background: $color-bg;
         min-height: 96px;
-        border-radius: 28px;
+        border-radius: 0.5rem;
         max-height: 90vh;
         max-width: 90vw;
         min-width: 440px;
+        border: 1px solid $color-gray-dd;
         box-shadow: 0px 16px 24px rgba(0, 0, 0, 0.06), 0px 2px 6px rgba(0, 0, 0, 0.04), 0px 0px 1px rgba(0, 0, 0, 0.04);
 
         @mixin responsive-le-l {
@@ -39,14 +40,17 @@
     }
 
     &__title {
-        margin: 8px 44px 16px 0;
-        font-weight: 700;
-        font-size: 20px;
-        line-height: 24px;
+        margin: 0 3rem 1.5rem 0;
+        font-weight: 500;
+        font-size: 1rem;
+        line-height: 1.25rem;
         text-transform: uppercase;
+        color: $color-gray-66;
     }
     &__content {
         overflow: auto;
+        margin-left: -10px;
+        padding-left: 10px;
         margin-right: -10px;
         padding-right: 10px;
         min-height: 60px;
@@ -58,39 +62,32 @@
     }
     &__close&__close {
         position: absolute;
-        top: 30px;
-        right: 30px;
-        width: 28px;
-        height: 28px;
+        top: 1rem;
+        right: 1rem;
+        width: 1.5rem;
+        height: 1.5rem;
         cursor: pointer;
         background: none;
-        border: 2px solid $color-green;
-        border-radius: 2px;
+        border: none;
+        padding: 0;
         z-index: 100;
 
         &:before {
             content: '';
             position: absolute;
-            top: 50%;
-            left: 50%;
-            margin-top: -6px;
-            margin-left: -6px;
-            width: 12px;
-            height: 12px;
+            inset: 0px;
             background-color: $color-green;
             -webkit-mask-position: center;
             mask-position: center;
             -webkit-mask-repeat: no-repeat;
             mask-repeat: no-repeat;
             -webkit-mask-size: contain;
-            mask-size: contain;
+            mask-size: 1rem;
             -webkit-mask-image: url('./assets/img/icons/icon-close.svg');
             mask-image: url('./assets/img/icons/icon-close.svg');
         }
 
         &:hover {
-            border: 2px solid $color-red;
-
             &:before {
                 background-color: $color-red;
             }

@@ -54,6 +54,42 @@ export default class extends REST {
         });
     }
 
+    /* New */
+    static addUser(params) {
+        return this._post(``, {}, params).then((data) => {
+            return data;
+        }).catch((error) => {
+            throw new RESTError(error, 'Не удалось зарегистрировать пользователя');
+        });
+    }
+
+    /* New */
+    static updateUserPartial(params) {
+        return this._patch(`${params.id}`, {}, params).then((data) => {
+            return data;
+        }).catch((error) => {
+            throw new RESTError(error, 'Ошибка при обновлении профиля', { request: { params } });
+        });
+    }
+
+    /* New */
+    static updateUserPhoto(id, params) {
+        return this._patch(`${id}`, {}, params).then((data) => {
+            return data;
+        }).catch((error) => {
+            throw new RESTError(error, 'Ошибка при обновлении профиля', { request: { params } });
+        });
+    }
+
+    /* New */
+    static getUser(params) {
+        return this._get(``, {}, {}).then((data) => {
+            return data;
+        }).catch((error) => {
+            throw new RESTError(error, 'Не удалось получить пользователя');
+        });
+    }
+
     static addProfile(params) {
         return this._post(`create_user`, {}, params).then((data) => {
             return data;

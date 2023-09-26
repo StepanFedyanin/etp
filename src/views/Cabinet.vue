@@ -20,9 +20,76 @@
                     v-if="user && user.id"
                     class="cabinet__block"
                 >
+                    <div class="cabinet__block-item m--transparent">
+                        <div class="cabinet__block-item m--100">
+                            <div class="cabinet__block-item-profile">
+                                <div class="cabinet__block-item-title">
+                                    {{ user.last_name }}
+                                    <span>{{ user.first_name }} {{ user.patronymic }}</span>
+                                </div>
+                                <div 
+                                    :class="['cabinet__block-item-logo', user.logo ? '' : 'm--no-logo']"
+                                >
+                                    <img 
+                                        v-if="user.logo"
+                                        :src="`${user.logo}`" 
+                                        :alt="`${user.last_name} ${user.first_name}`" 
+                                    />
+                                </div>
+                            </div>
+                            <router-link
+                                :to="{ name: 'profile'}" 
+                                class="cabinet__block-item-link"
+                            >
+                                Настроить профиль
+                            </router-link>
+                        </div>
+                        <div class="cabinet__block-item m--100">
+                            <div class="cabinet__block-item-profile">
+                                <div class="cabinet__block-item-title">
+                                    Моя организация
+                                    <span>{{ user.organization?.name || '—' }}</span>
+                                </div>
+                                <div 
+                                    :class="['cabinet__block-item-logo', user.organization?.logo ? '' : 'm--no-logo']"
+                                    @click.stop="onClickPopup"
+                                >
+                                    <img 
+                                        v-if="user.organization?.logo"
+                                        :src="`${user.organization?.logo}`" 
+                                        :alt="user.organization?.name" 
+                                    />
+                                </div>
+                            </div>
+                            <router-link
+                                :to="{ name: 'organization', hash: user.organization ? '#public' : '#registration' }" 
+                                class="cabinet__block-item-link"
+                            >
+                                {{ user.organization ? `Управлять организацией` : `Зарегистрировать организацию` }}
+                            </router-link>
+                        </div>
+                    </div>
                     <div class="cabinet__block-item">
                         <div class="cabinet__block-item-title">
-                            Поиск тендеров
+                            Товары и услуги
+                        </div>
+                        <div class="cabinet__block-item-description">
+                            <ul>
+                                <li>размещайте на площадке предложения собственных товаров и услуг;</li>
+                                <li>продвигайте свою продукцию с нашей помощью и с поддержкой сообщества;</li>
+                                <li>оставляйте заявки на товары других поставщиков, которые заинтересовали вас.</li>
+                            </ul>
+                        </div>
+                        <router-link
+                            :to="{ name: 'products'}" 
+                            class="cabinet__block-item-link"
+                        >
+                            В каталог
+                        </router-link>
+                    </div>
+                    <div class="cabinet__block-item">
+                        <div class="cabinet__block-item-title">
+                            Участие в тендерах
                         </div>
                         <div class="cabinet__block-item-description">
                             <ul>
@@ -31,51 +98,35 @@
                                 <li>участвуйте и побеждайте!</li>
                             </ul>
                         </div>
-                        <!--
-                        <a
+                        <router-link
+                            :to="{ name: 'tenders'}" 
                             class="cabinet__block-item-link"
-                            href="#"
                         >
-                            Инструкция по поиску тендера
-                        </a>
-                        -->
-                        <div 
-                            class="button button-green" 
-                            @click="onClickTenders"
-                        >
-                            найти тендер
-                        </div>
+                            Найти тендер
+                        </router-link>
                     </div>
-
                     <div class="cabinet__block-item">
                         <div class="cabinet__block-item-title">
-                            Создание тендера
+                            Проведение тендеров
                         </div>
                         <div class="cabinet__block-item-description">
                             <ul>
                                 <li>объявите собственный тендер или запрос котировок;</li>
                                 <li>пригласите к участию бизнес-партнеров, уже знакомых вам;</li>
-                                <li>принимайте заявки от новых проверенных контрагентов.</li>
+                                <li>принимайте заявки от новых проверенных организаций.</li>
                             </ul>
                         </div>
-                        <!--
-                        <a
+                        <router-link
+                            :to="{ name: 'tender-start'}" 
                             class="cabinet__block-item-link"
-                            href="#"
                         >
-                            Инструкция по созданию тендера
-                        </a>
-                        -->
-                        <div 
-                            class="button button-green" 
-                            @click="onClickAddTender"
-                        >
-                            организовать тендер
-                        </div>
+                            Организовать тендер
+                        </router-link>
                     </div>
+
                     <div class="cabinet__block-item">
                         <div class="cabinet__block-item-title">
-                            Список контрагентов
+                            Организации
                         </div>
                         <div class="cabinet__block-item-description">
                             <ul>
@@ -84,67 +135,12 @@
                                 <li>пригласите интересных контрагентов к участию в ваших тендерах.</li>
                             </ul>
                         </div>
-                        <div 
-                            class="button button-green" 
-                            @click="onClickContragents"
+                        <router-link
+                            :to="{ name: 'contragents'}" 
+                            class="cabinet__block-item-link"
                         >
                             Найти бизнес-партнеров
-                        </div>
-                    </div>
-                    <div class="cabinet__block-item">
-                        <div class="cabinet__block-item-title">
-                            Мой профиль
-                        </div>
-                        <div class="cabinet__block-item-description">
-                            <span>{{ user.first_name }} {{ user.patronymic }}</span>
-                            <p class="cabinet__block-item-subtitle m--uppercase">
-                                {{ user.last_name }}
-                            </p>
-                            <span>{{ user.post }}</span>
-                            <p class="cabinet__block-item-subtitle">
-                                {{ user.organization.name ? user.organization.name : user.organization.full_name }}
-                            </p>
-                            <span>Телефон (контактный):</span>
-                            <p class="cabinet__block-item-subtitle">
-                                {{ user.phone ? user.phone : "—" }}
-                            </p>
-                            <span>Email (контактный):</span>
-                            <p class="cabinet__block-item-subtitle">
-                                {{ user.contact_email ? user.contact_email : "—" }}
-                            </p>
-                        </div>
-                        <div 
-                            class="button button-green" 
-                            @click="onClickProfile"
-                        >
-                            Подробнее
-                        </div>
-                    </div>
-                    <div class="cabinet__block-item">
-                        <div class="cabinet__block-item-title">
-                            Моя организация
-                        </div>
-                        <div class="cabinet__block-item-description">
-                            <p class="cabinet__block-item-subtitle">
-                                {{ userOrganizationName }}{{ userOrganizationFilial }} 
-                            </p>
-                            <p class="cabinet__block-item-subtitle">
-                                ИНН: {{ userOrganization.inn }}
-                            </p>
-                            <p class="cabinet__block-item-subtitle">
-                                КПП: {{ userOrganization.kpp ? userOrganization.kpp : "—" }}
-                            </p>
-                            <span>Руководитель организации</span>
-                            <p class="cabinet__block-item-subtitle">
-                                {{ userOrganization.head_name }}
-                            </p>
-                        </div>
-                        <div 
-                            class="button button-green" 
-                            @click="onClickOrganization"
-                        >
-                            Подробнее
-                        </div>
+                        </router-link>
                     </div>
                     <div class="cabinet__block-item">
                         <div class="cabinet__block-item-title">
@@ -160,12 +156,12 @@
                                 <li>укрепляйте связи с проверенными партнерами.</li>
                             </ul>
                         </div>
-                        <div 
-                            class="button button-green" 
-                            @click="onClickInvite"
+                        <router-link
+                            :to="{ name: 'invite'}" 
+                            class="cabinet__block-item-link"
                         >
-                            Отправить приглашения
-                        </div>
+                            Отправить приглашение
+                        </router-link>
                     </div>
                     <!-- <CabinetBlock /> -->
                     <!-- <div class="sidebar__menu-link" @click="onClickOrganization">Моя организация</div> -->
@@ -210,7 +206,7 @@
                 return this.$store.state.user ? this.$store.state.user : "";
             },
             userOrganization() {
-                return this.user.organization;
+                return this.user.organization || {};
             },
             userOrganizationName() {
                 if(this.user && this.user.organization) {
@@ -229,32 +225,9 @@
         },
         mounted() {
         },
-        beforeDestroy() {
-        },
         created() {
-            return {
-                // store: $store._state.data.user.organization
-            }
         },
         methods: {
-            onClickTenders() {
-                this.$router.push({ name: 'tenders'});
-            },
-            onClickAddTender() {
-                this.$router.push({ name: 'tender-start'});
-            },
-            onClickContragents() {
-                this.$router.push({ name: 'contragents'});
-            },
-            onClickProfile() {
-                this.$router.push({ name: 'profile'});
-            },
-            onClickOrganization() {
-                this.$router.push({ name: 'organization'})
-            },
-            onClickInvite() {
-                this.$router.push({ name: 'invite'});
-            }
         }
     };
 </script>

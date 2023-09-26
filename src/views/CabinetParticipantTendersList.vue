@@ -1,62 +1,13 @@
 <template>
-    <div class="cabinet tenders">
-        <div class="container">
-            <div
-                class="app__breadcrumbs"
-            >
-                <router-link
-                    :to="{ name: 'home' }"
-                    class="app__breadcrumbs-link"
-                >
-                    Главная
-                </router-link>
-            </div>
-            <div class="h1">
-                &nbsp;
-            </div>
-            <div class="tenders__search">
-                <!--div class="tenders__search-form">
-                    <Search
-                        @startSearch="startSearch"
-                    />
-                </div-->
-                <div
-                    v-if="tenders && tenders.count"
-                    class="tenders__pagination"
-                >
-                    <Pagination
-                        :total="tenders.count"
-                        :limit="Number(limit)"
-                        :currentPage="Number($route.query.page || 1)"
-                        :url="$route.path"
-                    />
-                </div>
-            </div>
-            <template
-                v-if="showLoaderSending"
-            >
-                <div class="tenders__loader loader">
-                    <div class="spinner" /> Загрузка данных
-                </div>
-            </template>
-            <template
-                v-else-if="tenders && tenders.count"
-            >
-                <blockTender
-                    v-for="(tender, index) in tenders.results"
-                    :key="`tender-${index}`"
-                    :tender="tender"
+    <div class="tenders">
+        <div class="tenders__search">
+            <!--div class="tenders__search-form">
+                <Search
+                    @startSearch="startSearch"
                 />
-            </template>
-            <template
-                v-else
-            >
-                <div class="tenders__empty">
-                    В данный момент у вас нет ни одного тендера
-                </div> 
-            </template>
+            </div-->
             <div
-                v-if="!showLoaderSending && tenders && tenders.count"
+                v-if="tenders && tenders.count"
                 class="tenders__pagination"
             >
                 <Pagination
@@ -66,6 +17,40 @@
                     :url="$route.path"
                 />
             </div>
+        </div>
+        <template
+            v-if="showLoaderSending"
+        >
+            <div class="tenders__loader loader">
+                <div class="spinner" /> Загрузка данных
+            </div>
+        </template>
+        <template
+            v-else-if="tenders && tenders.count"
+        >
+            <blockTender
+                v-for="(tender, index) in tenders.results"
+                :key="`tender-${index}`"
+                :tender="tender"
+            />
+        </template>
+        <template
+            v-else
+        >
+            <div class="tenders__empty">
+                В данный момент у вас нет ни одного тендера
+            </div> 
+        </template>
+        <div
+            v-if="!showLoaderSending && tenders && tenders.count"
+            class="tenders__pagination"
+        >
+            <Pagination
+                :total="tenders.count"
+                :limit="Number(limit)"
+                :currentPage="Number($route.query.page || 1)"
+                :url="$route.path"
+            />
         </div>
     </div>
 </template>

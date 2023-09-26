@@ -1,329 +1,225 @@
 <template>
     <div class="app__main">
         <div class="registration">
-            <div class="container m--1460">
-                <div class="app__breadcrumbs">
-                    <router-link
-                        :to="{ name: 'home' }"
-                        class="app__breadcrumbs-link"
-                    >
-                        Главная
-                    </router-link>
-                </div>
-                <div class="h1">
-                    {{ $route.meta.title }}
-                </div>
-                <div
-                    v-if="stepRegistration === 1"
-                >
-                    <div class="registration__title h2">
-                        Укажите инн вашей организации
-                    </div>
-                    <div
-                        class="registration__form form registration__step1"
-                    >
-                        <regSearchForm 
-                            :loading="showLoaderSending"
-                            :formData="regData.search"
-                            @submitSearchHandler="submitSearchHandler"
-                            @clearSearchResult="clearSearchResult"
-                        />
-                    </div>
-                    <div 
-                        class="registration__item-wrapper"
-                        :class="[organizations.length === 1 && colorStatusRed ? 'withAlert' : '']"
-                    >
-                        <div 
-                            v-if="organizations.length != 0"
-                            class="registration__organizations"
-                        >  
-                            <template 
-                                v-for="organization in organizations"
-                            >
-                                <regOrganizationItem
-                                    v-if="!organization.error"
-                                    :key="organization.inn"
-                                    :organization="organization"
-                                    @registerCompany="registerCompany"
-                                />
-                                <div 
-                                    v-if="organization.error"
-                                    class="organization__error"
-                                > 
-                                    <p>{{ organization.error.detail }}</p>
-                                </div>
-                            </template>
-                        </div>
-                        <div
-                            v-if="organizations.length === 1 && colorStatusRed"
-                            class="registration__alert alert"
+            <div 
+                :class="['container m--1460']"
+            >
+                <div class="registration__block">
+                    <div class="registration__tabs tabs-buttons m--50">
+                        <a 
+                            v-for="item in regTabs"
+                            :key="`tab-${item.name}`"
+                            href="#" 
+                            :class="['tabs-buttons__item', item.name === $route.name ? 'is-active' : '']"
+                            @click.prevent="next(item.name)"
                         >
-                            <p class="alert__title">
-                                организация не может быть зарегистрирована
-                            </p>
-                            <p class="alert__text">
-                                К сожалению, организация с указанным ИНН имеет «красный» рейтинг в системе Контур.Светофор и не может быть зарегистрирована на платформе. 
-                            </p>
-                            <p class="alert__text">
-                                Организации с «красным» рейтингом Светофора не допускаются на платформу TUGAN.
-                            </p>
-                        </div>
+                            {{ item.title }}
+                        </a>
                     </div>
-                </div>
-                <div
-                    v-if="stepRegistration === 2 && organization"
-                >
-                    <div class="registration__title h2">
-                        Сведения об организации
-                    </div>
-                    <div
-                        class="registration__form form"
+                    <FormKit
+                        v-model="formData"
+                        type="form"
+                        data-loading="showLoaderSending"
+                        form-class="$reset registration__form form"
+                        submit-label="Зарегистрироваться"
+                        :disabled="showLoaderSending"
+                        :loading="showLoaderSending ? true : undefined"
+                        :submit-attrs="{
+                            inputClass: '$reset button button-green m--w-100',
+                            wrapperClass: '$reset registration__form-submit form__submit',
+                            outerClass: '$reset',
+                        }"
+                        @submit="submitHandler"
                     >
-                        <regOrganizationForm 
-                            :loading="showLoaderSending"
-                            :formData="organization"
-                            :disabled="regFormReadOnly"
-                            @prevStep="prevStep"
-                            @submitOrganizationHandler="submitOrganizationHandler"
-                        />
-                    </div>
-                </div>
-                <div
-                    v-if="stepRegistration === 3"
-                >
-                    <div class="registration__title h2">
-                        Сведения о пользователе
-                    </div>
-                    <div
-                        class="registration__form form"
-                    >
-                        <regPersonForm 
-                            :loading="showLoaderSending"
-                            :formData="regData.person"
-                            @prevStep="prevStep"
-                            @submitPersonHandler="submitPersonHandler"
-                        />
-                    </div>
+                        <FormKitSchema :schema="regForm" />
+                    </FormKit>
                 </div>
             </div>
+
         </div>
     </div>
 </template>
 
 <script>
-    import { user as api } from "@/services";
-    import regSearchForm from '@/components/forms/reg-search-form';
-    import regOrganizationForm from '@/components/forms/reg-organization-form';
-    import regPersonForm from '@/components/forms/reg-person-form';
-    import regOrganizationItem from '@/components/reg-organization-item';
+    import { user as api, geo as geoApi } from "@/services";
+//    import regSearchForm from '@/components/forms/reg-search-form';
+//    import regOrganizationForm from '@/components/forms/reg-organization-form';
+//    import regPersonForm from '@/components/forms/reg-person-form';
+//    import regOrganizationItem from '@/components/reg-organization-item';
     
+    function phoneLen(node) {
+        const value = node.value;
+        return value.number?.length === 15;
+    }
 
     export default {
         components: {
-            regSearchForm,
-            regOrganizationForm,
-            regPersonForm,
-            regOrganizationItem,
+            //regSearchForm,
+            //regOrganizationForm,
+            //regPersonForm,
+            //regOrganizationItem,
             //inviteAddForm
         },
         props: {
         },        
         data() {
             return {
-                regData: this.$store.state.regData || { search: {}, organization: {}, person: {} },
-                showLoaderSending: false,
-                regFormReadOnly: false,
-                regInviteForm: [
+                regTabs: [
                     {
-                        $formkit: 'text',
-                        name: 'person',
-                        label: 'ФИО',
-                        placeholder: 'ФИО',
-                        validation: 'required',
-                        outerClass: 'field--inline field--required'
+                        name: 'auth',
+                        title: 'Вход'
                     }, {
-                        $formkit: 'text',
-                        name: 'email',
-                        label: 'Email',
-                        placeholder: 'Email',
-                        validation: 'required',
-                        outerClass: 'field--inline field--required'
+                        name: 'registration',
+                        title: 'Регистрация'
                     }
                 ],
-                stepRegistration: this.$store.state.stepRegistration || 1,
-                inviteNumbers: 1,
-                isValid: false,
-                person: {},
-                organizations: [],
-                // colorStatus: false,
-                colorStatusRed2: false,
-                organization: null,
+                regForm: [
+                    {
+                        $formkit: 'text',
+                        name: 'email',
+                        label: 'Электронная почта',
+                        placeholder: 'mail@domain.ru',
+                        validation: 'required',
+                        outerClass: 'field--required'
+                    }, {
+                        $formkit: 'password',
+                        name: 'password',
+                        label: 'Пароль',
+                        placeholder: 'Не менее 8 символов',
+                        validation: 'required',
+                        outerClass: 'field--required'
+                    }, {
+                        $formkit: 'password',
+                        name: 'password_confirm',
+                        label: 'Повторите пароль',
+                        placeholder: 'Не менее 8 символов',
+                        validation: 'required',
+                        outerClass: 'field--required'
+                    /*
+                    }, {
+                        $formkit: 'multiselect',
+                        name: 'country',
+                        searchable: true,
+                        minChars: 1,
+                        canClear: false,
+                        validation: 'required',
+                        options: async () => {
+                            return await geoApi.getCountries()
+                                .then(countries => {
+                                    if (countries) {
+                                        let options = countries.map( country => {
+                                            if (!this.formData.country && country.name === 'Россия') this.formData.country = country;
+                                            return { label: country.code_phone, value: country, country: country.name }
+                                        })
+                                        return options
+                                    } else {
+                                        console.log('No getCountries data')
+                                    }
+                                }).catch(err => {
+                                    console.error(err)
+                                })
+                        },
+                        country: true,
+                        object: true,
+                        //resolveOnLoad: false,
+                        classes: { multiselect: 'multiselect m--phone-code' },
+                        inputClass: 'tender-form__select',
+                        helpClass: 'tender-form__hidden',
+                        labelClass: 'tender-form__label',
+                        outerClass: 'tender-form__field m--half'
+                    */
+                    }, {
+                        $formkit: 'phoneWithCode',
+                        name: 'phone',
+                        maska: { mask: '(###) ###-##-##' },
+                        label: 'Телефон',
+                        placeholder: '(XXX) XXX-XX-XX',
+                        validationRules: { phoneLen },
+                        validation: 'required|phoneLen',
+                        options: async () => {
+                            return await geoApi.getCountries()
+                                .then(countries => {
+                                    if (countries) {
+                                        let options = countries.map( country => {
+                                            // if (!this.formData.phone?.country && country.name === 'Россия') this.formData.phone.country = { label: country.code_phone, value: country, country: country.name };
+                                            return { label: country.code_phone, 
+                                                value: {
+                                                    id: country.id,
+                                                    name: country.name,
+                                                    code_phone: country.code_phone,
+                                                }, 
+                                                country: country.name 
+                                            }
+                                        })
+                                        return options
+                                    } else {
+                                        console.log('No getCountries data')
+                                    }
+                                }).catch(err => {
+                                    console.error(err)
+                                })
+                        },
+                        classes: { multiselect: 'multiselect m--phone-code' },
+                        outerClass: 'field--required',
+                    }, {
+                        $formkit: 'text',
+                        name: 'last_name',
+                        label: 'Фамилия',
+                        placeholder: 'Иванов',
+                        validation: 'required',
+                        outerClass: 'field--required'
+                    }, {
+                        $formkit: 'text',
+                        name: 'first_name',
+                        label: 'Имя',
+                        placeholder: 'Иван',
+                        validation: 'required',
+                        outerClass: 'field--required'
+                    }, {
+                        $formkit: 'text',
+                        name: 'patronymic',
+                        label: 'Отчество',
+                        placeholder: 'Иванович',
+                        validation: 'required',
+                        outerClass: 'field--required'
+                    }
+                ],
+                formData: {
+                    phone: {
+                        country: {
+                            id: 1,
+                            name: 'Россия',
+                            code_phone: '+7'
+                        }
+                    }
+                },
+                showLoaderSending: false,
             };
         },
         computed: {
-            colorStatusRed: function() {
-                return (this.organizations.filter((item) => {
-                    return item.color_status === "red";
-                })).length > 0
-            }
         },
         created() {
         },
         mounted() {
-            //console.log(!this.regData.organization.created);
-            if (this.stepRegistration === 2) {
-                if (this.regData.organization.created === false) {
-                    this.regFormReadOnly = true;
-                }
-                if (!this.organization) {
-                    this.prevStep();
-                }
-            }
-            //if (this.$metrika) this.$metrika.reachGoal('reg_1');
+            this.$store.dispatch('deathUser');
         },
         methods: {
-            prevStep() {
-                this.$store.dispatch('setStepRegistration', this.stepRegistration - 1);
-                this.stepRegistration = this.$store.state.stepRegistration;
-                if (this.stepRegistration === 1) {
-                    this.regData.organization = {};
-                    this.regData.person = {};
-                } else if (this.stepRegistration === 2) {
-                    this.regData.person = {};
-                    this.organization = this.regData.organization;
-                    if (!this.regData.organization.created) {
-                        this.regFormReadOnly = true;
-                    }
-                }
-                this.$store.dispatch('setRegData', this.regData);
-            },
-            next() {
-                if (this.stepRegistration !== 3) {
-                    this.$store.dispatch('setStepRegistration', this.stepRegistration + 1);
-                    this.stepRegistration = this.$store.state.stepRegistration;
-                    console.log(this.stepRegistration);
-                } else {
-                    this.$store.dispatch('setStepRegistration', null);
-                    this.$store.dispatch('setRegData', null);
-                    this.$router.push({ name: 'cabinet' });
-                }
-            },
-            submitSearchHandler(data, node) {
+            submitHandler(data, node) {
                 this.showLoaderSending = true;
-                let params = Object.assign({}, this.regData.search);
-                delete params.owner_type;
-                api.searchOrganization(params).then(res => {
-                    console.log(res);
-                    this.organizations = res;
-                    console.log(this.organizations);
-                    this.showLoaderSending = false;
-                    // res.forEach(function(item) {
-                    //     if (item.inn) {
-                    // this.regData.organization = Object.assign({}, res);
-                    // this.regFormReadOnly = true;
-                    // } else {
-                    // this.regData.organization = Object.assign({}, params);
-                    // this.regFormReadOnly = false;
-                    // }
-                    // });
-                    this.$store.dispatch('setRegData', this.regData);
-                }).catch(err => {
-                    node.setErrors(
-                        [err.detail],
-                    );
-                    this.showLoaderSending = false;
-                    this.$store.dispatch('showError', err);
-                    console.error(err);
-                });
-            },
-            clearSearchResult() {
-                this.organizations = [];
-            },
-            registerCompany(organization, node) {
-                api.addOrganization(organization).then(res => {
-                    console.log(res);
-                    if(res.id){
-                        this.organization = res;
-                        this.next();
-                        console.log(this.stepRegistration);
-                        if (this.stepRegistration === 2 && !res.created) {
-                            this.regFormReadOnly = true;
-                            console.log(this.regFormReadOnly);
-                        }
-                    }
-                    if (this.$metrika) this.$metrika.reachGoal('reg_1');
-                }).catch(err => {
-                    node.setErrors(
-                        [err.detail],
-                    );
-                    this.showLoaderSending = false;
-                    this.$store.dispatch('showError', err);
-                    console.error(err);
-                });
-                // this.next();
-            },
-            // submitOrganizationHandler(data, node) {
-            //     if (this.regFormReadOnly) {
-            //         this.regData.person = {
-            //             organization: this.regData.organization.id
-            //         };
-            //         this.$store.dispatch('setRegData', this.regData);
-            //         this.next();
-            //     } else {
-            //         this.showLoaderSending = true;
-            //         let params = Object.assign({}, this.regData.organization);
-            //         api.addOrganization(params).then(res => {
-            //             this.showLoaderSending = false;
-            //             console.log(res);
-            //             this.regData.organization = Object.assign({}, res);
-            //             this.regData.person = {
-            //                 organization: res.id
-            //             };
-            //             this.$store.dispatch('setRegData', this.regData);
-            //             this.next();
-            //         }).catch(err => {
-            //             node.setErrors(
-            //                 [err.detail],
-            //             );
-            //             this.showLoaderSending = false;
-            //             this.$store.dispatch('showError', err);
-            //             console.error(err);
-            //         });
-            //     }
-            // },
-            submitOrganizationHandler(data, node){
-                api.applyOrganization(data).then(res => {
-                    this.showLoaderSending = false;
-                    console.log(res);
-                    this.regData.organization = Object.assign({}, res);
-                    this.regData.person = {
-                        organization: res.id
-                    };
-                    this.$store.dispatch('setRegData', this.regData);
-                    if (this.$metrika) this.$metrika.reachGoal('reg_2');
-                    this.next();
-                }).catch(err => {
-                    node.setErrors(
-                        [err.detail],
-                    );
-                    this.showLoaderSending = false;
-                    this.$store.dispatch('showError', err);
-                    console.error(err);
-                });
-            },
-            submitPersonHandler(data, node) {
-                this.showLoaderSending = true;
-                this.$store.dispatch('setRegData', this.regData);
-                let params = Object.assign({}, this.regData.person);
-                api.addProfile(params).then(res => {
+                let params = Object.assign({}, this.formData);
+                params.country = params.phone.country.id;
+                params.phone = params.phone.country.code_phone + params.phone.number;
+                params.phone = params.phone?.replace(/ /g,'').replace(/-/g,'').replace(/\(/g,'').replace(/\)/g,'');
+                console.log(params);
+                api.addUser(params).then(res => {
                     console.log(res);
                     if (res.access && res.refresh) {
                         this.$store.dispatch('setToken', res);
-                        api.getMyProfile().then(res => {
+                        api.getUser().then(res => {
                             this.showLoaderSending = false;
                             this.$store.dispatch('setUser', res);
-                            if (this.$metrika) this.$metrika.reachGoal('reg_3');
-                            this.next();
+                            //if (this.$metrika) this.$metrika.reachGoal('reg_3');
+                            this.next('home');
                         }).catch(err => {
                             this.showLoaderSending = false;
                             this.$store.dispatch('showError', err);
@@ -334,23 +230,15 @@
                         this.$store.dispatch('showError', 'Ошибка получения токена');
                     }
                 }).catch(err => {
-                    console.log(err)
-                    /*
-                    node.setErrors(
-                        [err.detail || ''],
-                        {
-                            email: '',
-                            login: ''
-                        }
-                    );
-                    */
                     node.setErrors(
                         err.response.data
                     );
                     this.showLoaderSending = false;
-                    //this.$store.dispatch('showError', err);
                     console.error(err);
                 });
+            },
+            next(name) {
+                this.$router.push({ name: name });
             },
         }
     };

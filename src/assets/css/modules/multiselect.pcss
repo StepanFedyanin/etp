@@ -63,7 +63,9 @@
 
     &-placeholder {
         color: $color-gray-T4;
-        opacity: 0.5;
+        opacity: 1;
+        font-size: 1rem;
+        font-weight: 300;
     }
 
     &-caret {
@@ -164,6 +166,19 @@
         }
     }
 
+    &.m--phone-code {
+        width: 7rem;
+    }
+
+    &.m--phone-code &-single-label {
+        max-width: calc(100% - 36px);
+    }
+
+    &.m--phone-code &-dropdown {
+        right: auto;
+        min-width: 380px;
+    }
+
 }
 
 .multiselect-search {
@@ -182,6 +197,7 @@
     background: var(--ms-bg, transparent);
     border-radius: var(--ms-radius, 4px);
     padding-left: var(--ms-px, 0.875rem);
+    box-shadow: none;
 }
 
 .multiselect-tags {
@@ -550,6 +566,27 @@
 
     &__price {
         font-weight: 500;
+    }
+}
+
+.multiselect-country {
+    width: 100%;
+    margin-right: 0.675rem;    
+    
+    &__inner {
+        display: flex;
+        gap: 0.5rem;
+        width: 100%;
+        font-weight: 400;
+        font-size: 1rem;
+    }
+
+    &__code {
+        font-weight: 500;
+        min-width: 4.5rem;
+    }
+
+    &__name {
     }
 }
 

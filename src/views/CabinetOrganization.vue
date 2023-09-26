@@ -200,7 +200,7 @@
             '$route.hash': {
                 immediate: true,
                 handler() {
-                    this.currentTabsItem = this.$route.hash?.replace('#', '');
+                    this.currentTabsItem = this.$route.hash?.replace('#', '') || 'public';
                 },
             },
         },
@@ -209,9 +209,9 @@
             this.getMembers();
         },
         methods: {
-            getMyProfile(){
+            getMyProfile() {
                 this.loading = true;
-                api.getMyProfile().then(res => {
+                api.getUser().then(res => {
                     this.profile = res;
                     this.organization = res.organization;
                     this.getCreatedTenders();
@@ -222,10 +222,10 @@
                     console.error(err);
                 });
             },
-            onClickEditOrganization(){
+            onClickEditOrganization() {
                 this.$router.push({ name: 'organization-edit'});
             },
-            onClickAddStaff(){
+            onClickAddStaff() {
                 this.$router.push({ name: 'organization-add-person'});
             },
             getMembers() {

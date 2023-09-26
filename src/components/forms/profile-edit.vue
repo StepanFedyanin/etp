@@ -1,68 +1,116 @@
 <template>
-    <div>
-        <FormKit 
-            id="profileEdit"
-            v-model="formValues"
-            name="form-profile-edit"
-            preserve
-            type="form"
-            data-loading="loading"
-            :value="formData"
-            form-class="$reset profile-edit__form form__edit"
-            :actions="false"
-            :disabled="loading"
-            :loading="loading ? true : undefined"
-            @submit="updateUserProfile"
+    <div class="profile__user">
+        <template
+            v-if="showLoaderSending"
         >
-            <div class="form__block">
-                <FormKitSchema 
-                    :schema="schema" 
-                />
+            <div class="profile__loader loader">
+                <div class="spinner" /> Загрузка данных
             </div>
-            <div   
-                class="form__submit form__button" 
-                data-type="submit"
+        </template>
+        <template
+            v-else
+        >
+            <FormKit 
+                id="profileEdit"
+                v-model="formData"
+                name="form-profile-edit"
+                preserve
+                type="form"
+                data-loading="loading"
+                :value="formData"
+                form-class="$reset profile__form"
+                :actions="false"
+                :disabled="busyForm"
+                :loading="busyForm ? true : undefined"
+                @submit="submitHandler"
             >
-                <button
-                    type="button"
-                    :disabled="loading"
-                    class="button button-red"
-                    @click="onClickCancel"
+                <div class="form profile__form-block">
+                    <div class="profile__form-main">
+                        <FormKitSchema 
+                            :schema="schema" 
+                        />
+                    </div>
+                    <div class="profile__form-logo">
+                        <div class="field__input m--hidden">
+                            <input
+                                id="photo"
+                                ref="photoInput" 
+                                accept=".jpg,.png,.svg" 
+                                class="input" 
+                                type="file" 
+                                name="photo"
+                            >
+                        </div>
+                        <div class="profile__form-logo-block">
+                            <div class="profile__form-logo-inner">
+                                <button
+                                    v-if="!formData.photo"
+                                    href="#"
+                                    class="button button-outline-green button-width-auto m--small"
+                                    @click.prevent="onClickUploadPhoto"
+                                >
+                                    Загрузить фото
+                                </button>
+                                <img 
+                                    v-else
+                                    :src="formData.photo"
+                                />
+                            </div>
+                        </div>
+                        <div 
+                            v-if="formData.photo"
+                            class="profile__form-logo-links" 
+                        >
+                            <a
+                                href="#"
+                                class="profile__form-logo-link"
+                                @click.prevent="onClickUploadPhoto"
+                            >
+                                Изменить фото
+                            </a>
+                            <a
+                                href="#"
+                                class="profile__form-logo-link m--color-red"
+                                @click.prevent="onClickDeletePhoto"
+                            >
+                                Удалить
+                            </a>
+                        </div>
+                        Рекомендуемый размер: 600х600px. jpg, png, svg
+                    </div>
+                </div>
+                <div   
+                    class="form__submit profile__form-submit" 
+                    data-type="submit"
                 >
-                    Отменить
-                </button>
-                <button
-                    type="submit"
-                    :disabled="loading"
-                    class="button button-green"
-                >
-                    Сохранить
-                </button>
-            </div> 
-        </FormKit>
+                    <button
+                        type="submit"
+                        :disabled="busyForm"
+                        class="button button-green"
+                    >
+                        Сохранить изменения
+                    </button>
+                </div> 
+            </FormKit>
+        </template>
     </div>
 </template>
 
 <script>
-    import { user as api } from "@/services";
+    import { user as api, geo as geoApi } from "@/services";
+
+    function phoneLen(node) {
+        const value = node.value;
+        return value.number?.length === 15 || value.number?.length === 0;
+    }
 
     export default {
         name: 'ProfileEdit',
-        props: {
-            loading: {
-                type: Boolean,
-                default() { return false; }
-            },
-            item: {
-                type: Object,
-                default() { return {} }
-            },
-        },
         data() {
             return {
-                formData: undefined,
-                // showLoaderSending: false,
-                formValues: this.formData,
+                formData: {},
+                busyForm: false,
+                showLoaderSending: false,
                 schema: [
                     {
                         $formkit: 'text',
@@ -83,59 +131,157 @@
                         // validation: 'required',
                         // outerClass: 'field--inline'
                     }, {
-                        $formkit: 'text',
-                        name: 'post',
-                        label: 'Должность',
-                        validation: 'required',
-                        outerClass: 'field--required'
-                    }, {
                         $formkit: 'email',
                         name: 'contact_email',
-                        label: 'Email (контактный)',
+                        label: 'Контактный email',
                         placeholder: "info@example.ru",
                         //validation: 'required',
                         // outerClass: 'field--inline'
                     }, {
+                        $formkit: 'phoneWithCode',
+                        name: 'contact_phone',
+                        maska: { mask: '(###) ###-##-##' },
+                        label: 'Контактный телефон',
+                        placeholder: '(XXX) XXX-XX-XX',
+                        validationRules: { phoneLen },
+                        validation: 'phoneLen',
+                        options: async () => {
+                            return await geoApi.getCountries()
+                                .then(countries => {
+                                    if (countries) {
+                                        let options = countries.map( country => {
+                                            // if (!this.formData.phone?.country && country.name === 'Россия') this.formData.phone.country = { label: country.code_phone, value: country, country: country.name };
+                                            return { label: country.code_phone, 
+                                                value: {
+                                                    id: country.id,
+                                                    name: country.name,
+                                                    code_phone: country.code_phone,
+                                                }, 
+                                                country: country.name 
+                                            }
+                                        })
+                                        return options
+                                    } else {
+                                        console.log('No getCountries data')
+                                    }
+                                }).catch(err => {
+                                    console.error(err)
+                                })
+                        },
+                        classes: { multiselect: 'multiselect m--phone-code' },
+                    }, {
                         $formkit: 'text',
-                        name: 'phone',
-                        label: 'Телефон (контактный)',
-                        // outerClass: 'field--inline',
-                        placeholder: "x-xxx-xxx-xxxx",
-                        validationVisibility: 'dirty',
-                        // validation: 'matches:/^[0-9]{1}-[0-9]{3}-[0-9]{3}-[0-9]{4}$/',
-                        // help: 'Телефон должен быть в формате x-xxx-xxx-xxxx',
-                        // validationMessages: {
-                        //     min: 'Телефон должен быть в формате x-xxx-xxx-xxxx'
-                        // }
-                        // :validation-messages: "{
-                        //     matches: 'Телефон должен быть в формате x-xxx-xxx-xxxx',
-                        // }",
-                        // validation-visibility: "dirty"
+                        name: 'city',
+                        label: 'Город',
+                    }, {
+                        $formkit: 'text',
+                        name: 'post',
+                        label: 'Должность/специализация',
                     }
                 ],
             }
         },
-
+        computed: {
+            user() {
+                return this.$store.state.user;
+            },
+        },
         created() {
-            this.formData = this.item
+            this.getMyProfile();
         },
         methods: {
-
-            onClickCancel() {
-                this.$router.go(-1);
+            getMyProfile() {
+                this.showLoaderSending = true;
+                api.getUser().then(res => {
+                    this.formData = res;
+                    if (!this.formData.contact_phone?.number) {
+                        this.formData.contact_phone = {
+                            country: {
+                                id: this.formData.country
+                            },
+                            number: this.formData.contact_phone?.substring(2)
+                        };
+                    }
+                    this.showLoaderSending = false;
+                }).catch(err => {
+                    this.showLoaderSending = false;
+                    console.error(err);
+                });
             },
-            updateUserProfile(formData, node) {
-                api.updateProfile(formData).then(res => {
-                    this.$router.go(-1);
-                    console.log(res);
+            onClickUploadPhoto() {
+                let photoInput = this.$refs.photoInput;
+                let click = new MouseEvent('click');
+
+                photoInput.onchange = this.uploaPhotoComplete;
+                photoInput.dispatchEvent(click);
+            },
+            onClickDeletePhoto() {
+                const data = new FormData();
+                data.append('photo', '');
+                this.busyForm = true;
+                api.updateUserPhoto(this.formData.id, data).then(res => {
+                    api.getUser().then(res => {
+                        this.busyForm = false;
+                        this.$store.dispatch('setUser', res);
+                        this.formData.photo = res.photo;
+                    }).catch(err => {
+                        this.busyForm = false;
+                        this.$store.dispatch('showError', err);
+                        console.error(err);
+                    });
+                }).catch(err => {
+                    this.busyForm = false;
+                    this.$store.dispatch('showError', err);
+                    console.error(err);
+                });
+            },
+            uploaPhotoComplete(event) {
+                console.log(event.target);
+                let file = event.target.files ? event.target.files[0] : null
+                if (file) {
+                    const data = new FormData();
+                    data.append('photo', file);
+                    this.busyForm = true;
+                    api.updateUserPhoto(this.formData.id, data).then(res => {
+                        api.getUser().then(res => {
+                            this.busyForm = false;
+                            this.$store.dispatch('setUser', res);
+                            this.formData.photo = res.photo;
+                        }).catch(err => {
+                            this.busyForm = false;
+                            this.$store.dispatch('showError', err);
+                            console.error(err);
+                        });
+                    }).catch(err => {
+                        this.busyForm = false;
+                        this.$store.dispatch('showError', err);
+                        console.error(err);
+                    });
+                }
+            },
+            submitHandler(data, node) {
+                this.busyForm = true;
+                let params = Object.assign({}, this.formData);
+                delete params.photo;
+                params.country = params.contact_phone.country.id;
+                params.contact_phone = params.contact_phone.country.code_phone + params.contact_phone.number;
+                params.contact_phone = params.contact_phone?.replace(/ /g,'').replace(/-/g,'').replace(/\(/g,'').replace(/\)/g,'');
+                api.updateUserPartial(params).then(res => {
+                    api.getUser().then(res => {
+                        this.busyForm = false;
+                        this.$store.dispatch('setUser', res);
+                    }).catch(err => {
+                        this.busyForm = false;
+                        this.$store.dispatch('showError', err);
+                        console.error(err);
+                    });
                 }).catch(err => {
                     node.setErrors(
                         err.response.data
                     );
-                    //this.$store.dispatch('showError', err);
+                    this.busyForm = false;
                 });
             },
-
         },
     }
 </script>

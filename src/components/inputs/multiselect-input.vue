@@ -9,6 +9,7 @@
         :searchable="searchable"
         :minChars="minChars"
         :canDeselect="canDeselect"
+        :canClear="canClear"
         :groups="groups"
         :groupSelect="groupSelect"
         :class="context.classes.multiselect"
@@ -94,6 +95,19 @@
                     </div>
                 </div>
             </div>
+            <div 
+                v-else-if="country"
+                class="multiselect-country"
+            >
+                <div class="multiselect-country__inner">
+                    <span class="multiselect-country__code">
+                        {{ option.label }}
+                    </span>
+                    <span class="multiselect-country__name">
+                        {{ option.country }}
+                    </span>
+                </div>
+            </div>
         </template>
     </Multiselect>
 </template>
@@ -113,6 +127,7 @@
     const multiselect = ref(null)
     const mode = props.context.mode || 'single';
     const canDeselect = mode === 'single' ? false : true;
+    const canClear = props.context.attrs.canClear;
     const searchable = props.context.searchable || false;
     const minChars = props.context.attrs.minChars;
     const searchChange = props.context.attrs["search-change"] || handleSearchChange;
@@ -127,6 +142,7 @@
     const bet = props.context.attrs.bet !== undefined ? true : false;
     const tender = props.context.attrs.tender !== undefined ? true : false;
     const lot = props.context.attrs.lot !== undefined ? true : false;
+    const country = props.context.attrs.country !== undefined ? true : false;
     // let vModelValue = reactive({})
 
     // const optionsComuted = computed(() => {
@@ -163,7 +179,6 @@
         console.log('onUpdated');
         let v = props.context._value;
         if (v && v.fromParent) {
-            console.log('BLA', multiselect.value);
             multiselect.value.clear()
 
             if (searchable)

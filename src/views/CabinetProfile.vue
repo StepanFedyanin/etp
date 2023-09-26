@@ -1,29 +1,55 @@
 <template>
     <div class="app__main">
         <!-- <Breadcrumbs /> -->
-        <div class="cabinet">
+        <div class="cabinet profile">
             <div class="container">
-                <div 
-                    v-if="profile"
-                    class="cabinet__content"
-                >
-                    <h1 class="h1">
-                        Сотрудник организации
-                    </h1>
-                    <template
-                        v-if="showLoaderSending"
+                <div class="app__breadcrumbs">
+                    <router-link
+                        :to="{ name: 'home' }"
+                        class="app__breadcrumbs-link"
                     >
-                        <div class="cabinet__loader loader">
-                            <div class="spinner" /> Загрузка данных
-                        </div>
-                    </template>
-                    <template
-                        v-else
+                        Главная
+                    </router-link>
+                    <router-link
+                        :to="{ name: 'cabinet' }"
+                        class="app__breadcrumbs-link"
                     >
-                        <ProfileUser
+                        Кабинет
+                    </router-link>
+                </div>
+
+                <div class="profile__info">
+                    <div class="profile__title h1">
+                        {{ user.last_name }} {{ user.first_name }} {{ user.patronymic }}
+                    </div>
+                    <div class="profile__tabs tabs">
+                        <button 
+                            v-for="item in tabsItems"
+                            :key="`tab-${item.name}`"
+                            class="tabs__item"
+                            :class="currentTabsItem === item.name && 'is-active'"
+                            @click.prevent="changeTab(item.name)"
+                        >
+                            {{ item.label }}
+                        </button>
+                    </div>
+                </div>
+                <div class="cabinet__content">
+                    <div 
+                        v-if="currentTabsItem === 'public'"
+                        class="profile__tab"
+                    >
+                        <ProfileEdit />
+                        <!--ProfileUser
                             :user="profile"
-                        />
-                    </template>
+                        /-->
+                    </div>
+                    <div 
+                        v-if="currentTabsItem === 'notifications'"
+                        class="profile__tab"
+                    >
+                        <ProfileNotifications />
+                    </div>
                 </div>
             </div>
         </div>
@@ -32,40 +58,49 @@
 
 <script>
     import { user as api } from "@/services";
-    import ProfileUser from '@/components/profile-user.vue';
+    import ProfileEdit from '@/components/forms/profile-edit.vue';
+    import ProfileNotifications from '@/components/forms/profile-notifications.vue';
 
     export default {
         components: {
-            ProfileUser,
+            ProfileEdit,
+            ProfileNotifications
         },
         data() {
             return {
-                profile: {},
-                organization: {},
+                tabsItems: [{
+                    label: 'Аккаунт',
+                    name: 'account'
+                }, {
+                    label: 'Публичный профиль',
+                    name: 'public'
+                }, {
+                    label: 'Уведомления',
+                    name: 'notifications'
+                }],
+                currentTabsItem: this.$route.hash?.replace('#', '') || 'public',
                 showLoaderSending: false,
             }
         },
-        mounted() {
-            this.showLoaderSending = true;
-            api.getMyProfile().then(res => {
-                this.profile = res;
-                this.$store.dispatch('setUser', res);
-                if(this.organization) {
-                    this.organization = res.organization;
-                }
-                this.showLoaderSending = false;
-            }).catch(err => {
-                this.showLoaderSending = false;
-                console.error(err);
-            });
+        watch: {
+            '$route.hash': {
+                immediate: true,
+                handler() {
+                    this.currentTabsItem = this.$route.hash?.replace('#', '') || 'public';
+                },
+            },
         },
-        beforeDestroy() {
+        computed: {
+            user() {
+                return this.$store.state.user;
+            },
         },
         created() {
         },
         methods: {
-            onClickEditOrganization() {
-                this.$router.push({ name: 'organization-edit'});
+            changeTab(name) {
+                this.currentTabsItem = name;
+                this.$router.push({ name: this.$route.name, hash: `#${name}` });
             },
         }
     }

@@ -53,7 +53,7 @@
                                 >
                                     <transition name="fade">
                                         <div 
-                                            v-if="menuOpenedItems[item.name]"
+                                            v-if="menuOpened(item.name, isActive)"
                                             class="sidebar__menu-item-block"
                                         >
                                             <router-link
@@ -137,7 +137,7 @@
                     title: 'Поиск тендеров',
                     icon: 'search'
                 }, {
-                    name: 'customer-current',
+                    name: 'customer',
                     role: 'all',
                     title: 'Я - заказчик',
                     icon: 'customer',
@@ -166,7 +166,7 @@
                         }
                     ]
                 }, {
-                    name: 'participant-current',
+                    name: 'participant',
                     role: 'all',
                     title: 'Я - поставщик',
                     icon: 'provider',
@@ -278,6 +278,10 @@
             this.push.closePush();
         },
         methods: {
+            menuOpened(name, active) {
+                if (active) this.menuOpenedItems[name] = 1;
+                return this.menuOpenedItems[name];
+            },
             onClickMenuItem(item) {
                 if (!this.menuOpenedItems[item.name]) {
                     this.menuOpenedItems[item.name] = 1;

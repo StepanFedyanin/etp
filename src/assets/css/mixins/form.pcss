@@ -11,7 +11,9 @@
     width: 100%;
     outline: none;
     /*filter: drop-shadow(0px 4px 24px rgba(0, 0, 0, 0.06)) drop-shadow(0px 2px 6px rgba(0, 0, 0, 0.04)) drop-shadow(0px 0px 1px rgba(0, 0, 0, 0.04));*/
-    box-shadow: 0px 4px 24px rgba(0, 0, 0, 0.06), 0px 2px 6px rgba(0, 0, 0, 0.04), 0px 0px 1px rgba(0, 0, 0, 0.04);
+    /*box-shadow: 0px 4px 24px rgba(0, 0, 0, 0.06), 0px 2px 6px rgba(0, 0, 0, 0.04), 0px 0px 1px rgba(0, 0, 0, 0.04);*/
+    box-shadow: 4px 8px 20px 0px rgba(0, 0, 0, 0.06);
+    transition: all 0.5s ease;
 }
 
 @define-mixin input {
@@ -19,6 +21,9 @@
 
     &::placeholder {
         color: $color-gray-T4;
+        opacity: 1;
+        font-size: 1rem;
+        font-weight: 300;
     }
 
     &.is-valid {
@@ -35,7 +40,8 @@
     &:hover,
     &:focus {
         /*filter: drop-shadow(0px 4px 24px rgba(84, 154, 60, 0.06)) drop-shadow(0px 2px 6px rgba(84, 154, 60, 0.04)) drop-shadow(0px 0px 1px rgba(84, 154, 60, 0.04));*/
-        box-shadow: 0px 4px 24px rgba(84, 154, 60, 0.06), 0px 2px 6px rgba(84, 154, 60, 0.04), 0px 0px 1px rgba(84, 154, 60, 0.04);
+        /*box-shadow: 0px 4px 24px rgba(84, 154, 60, 0.06), 0px 2px 6px rgba(84, 154, 60, 0.04), 0px 0px 1px rgba(84, 154, 60, 0.04);*/
+        box-shadow: 2px 4px 20px 0px rgba(0, 0, 0, 0.06);
     }
 
     &:disabled {

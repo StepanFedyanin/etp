@@ -245,7 +245,7 @@
                             </div>
                         </div>
                         <TenderOrganizationStatus
-                            v-if="user.id !== tender.creator && !user.is_staff && user.organization.id !== tender.organization.id"
+                            v-if="user.id !== tender.creator && !user.is_staff && user.organization?.id !== tender.organization.id"
                             modifierClass="tender__info-status"
                             :tender="tender"
                             @getTenderData="getTenderData"
@@ -608,7 +608,7 @@
                     @getTenderData="getTenderData"
                 /-->
                 <TenderChat 
-                    v-if="tender.publication && (user.id === tender.creator || user.is_staff || user.organization.id === tender.organization.id || (tender.user_participation && tender.user_participation.status === 'participant'))"
+                    v-if="tender.publication && (user.id === tender.creator || user.is_staff || user.organization?.id === tender.organization.id || (tender.user_participation && tender.user_participation.status === 'participant'))"
                     :tender="tender"
                 />
                 <TenderLots
@@ -618,7 +618,7 @@
                     @getTenderData="getTenderData"
                 />
                 <TenderLotsExtended
-                    v-if="(user.id === tender.creator || user.is_staff || (user.organization.id === tender.organization.id && user.is_master)) && tender.status !== 'bid_accept' && tender.lots && tender.lots.length"
+                    v-if="(user.id === tender.creator || user.is_staff || (user.organization?.id === tender.organization.id && user.is_master)) && tender.status !== 'bid_accept' && tender.lots && tender.lots.length"
                     :tender="tender"
                     :lots="tender.lots"
                     @getTenderData="getTenderData"

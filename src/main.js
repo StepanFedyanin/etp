@@ -2,6 +2,7 @@ import { createApp } from 'vue';
 import datePickerInput from '@/components/inputs/date-picker-input';
 import maskaInput from '@/components/inputs/maska-input';
 import multiselectInput from '@/components/inputs/multiselect-input';
+import phoneWithCodeInput from '@/components/inputs/phone-with-code-input';
 import { plugin, defaultConfig, createInput } from '@formkit/vue';
 import { vfmPlugin } from 'vue-final-modal';
 import { ru } from '@formkit/i18n';
@@ -39,6 +40,7 @@ const confFormKit = {
             outer: '$reset field',
             wrapper: '$reset field__inner',
             label: '$reset field__label',
+            help: '$reset field__help',
             inner: '$reset field__input',
             input: '$reset input',
             messages: '$reset field__comment',
@@ -80,6 +82,9 @@ const confFormKit = {
         }),
         maska: createInput(maskaInput, {
             props: ['maska', 'placeholder', 'disabled', 'readonly'],
+        }),
+        phoneWithCode: createInput(phoneWithCodeInput, {
+            props: ['options', 'placeholder', 'mode', 'searchable', 'maska', 'placeholder', 'disabled', 'readonly'],
         }),
     },
 };

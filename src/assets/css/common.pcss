@@ -210,6 +210,12 @@ input[type='number'] {
         margin-left: auto;
     }
 
+    &.m--small,
+    &.m--small:active {
+        min-width: 185px;
+        font-size: 0.875rem;
+    }
+
     &-green {
         @mixin button--color $color-green, $color-white;
 
