@@ -1,6 +1,6 @@
 <template>
-    <div class="cabinet tenders">
-        <div class="container">
+    <div :class="['cabinet tenders', user?.id ? 'm--justify-flex-start' : '']">
+        <div :class="['container', user?.id ? '' : 'm--1460']">
             <div class="app__breadcrumbs">
                 <router-link
                     :to="{ name: 'home' }"
@@ -37,7 +37,7 @@
                     />
                 </div>
             </div>
-            <div class="tenders">
+            <div class="tenders__block">
                 <template
                     v-if="showLoaderSending"
                 >

@@ -1,5 +1,5 @@
 <template>
-    <div class="tenders">
+    <div class="tenders m--block">
         <div class="tenders__search">
             <div
                 v-if="tenders && tenders.length"
@@ -14,7 +14,7 @@
                 />
             </div>
         </div>
-        <div class="tenders">
+        <div class="tenders__block">
             <template
                 v-if="showLoaderSending"
             >

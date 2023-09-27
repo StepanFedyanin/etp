@@ -1,31 +1,33 @@
 <template>
-    <div class="tenders">
-        <template
-            v-if="showLoaderSending"
-        >
-            <div class="tenders__loader loader">
-                <div class="spinner" /> Загрузка данных
-            </div>
-        </template>
-        <!-- <pre>{{ tenders }}</pre> -->
-        <template
-            v-else-if="tenders && tenders.length"
-        >
-            <blockTender
-                v-for="(tender, index) in tenders"
-                :key="`tender-${index}`"
-                :tender="tender"
-                :invites="true"
-                @getListInvitation="getListInvitation"
-            />
-        </template>
-        <template
-            v-else
-        >
-            <div class="tenders__content">
-                У вас нет приглашений 
-            </div>
-        </template>
+    <div class="tenders m--block">
+        <div class="tenders__block">
+            <template
+                v-if="showLoaderSending"
+            >
+                <div class="tenders__loader loader">
+                    <div class="spinner" /> Загрузка данных
+                </div>
+            </template>
+            <!-- <pre>{{ tenders }}</pre> -->
+            <template
+                v-else-if="tenders && tenders.length"
+            >
+                <blockTender
+                    v-for="(tender, index) in tenders"
+                    :key="`tender-${index}`"
+                    :tender="tender"
+                    :invites="true"
+                    @getListInvitation="getListInvitation"
+                />
+            </template>
+            <template
+                v-else
+            >
+                <div class="tenders__content">
+                    У вас нет приглашений 
+                </div>
+            </template>
+        </div>
     </div>
 </template>
 

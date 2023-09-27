@@ -160,7 +160,7 @@
                         >
                             <div
                                 ref="list"
-                                class="auction__list-inner tenders"
+                                class="auction__list-inner tenders__block"
                             >
                                 <blockTender
                                     v-for="(tender, index) in tenders.results"

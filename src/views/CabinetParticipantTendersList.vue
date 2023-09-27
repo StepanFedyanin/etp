@@ -1,5 +1,5 @@
 <template>
-    <div class="tenders">
+    <div class="tenders m--block">
         <div class="tenders__search">
             <!--div class="tenders__search-form">
                 <Search
@@ -18,29 +18,31 @@
                 />
             </div>
         </div>
-        <template
-            v-if="showLoaderSending"
-        >
-            <div class="tenders__loader loader">
-                <div class="spinner" /> Загрузка данных
-            </div>
-        </template>
-        <template
-            v-else-if="tenders && tenders.count"
-        >
-            <blockTender
-                v-for="(tender, index) in tenders.results"
-                :key="`tender-${index}`"
-                :tender="tender"
-            />
-        </template>
-        <template
-            v-else
-        >
-            <div class="tenders__empty">
-                В данный момент у вас нет ни одного тендера
-            </div> 
-        </template>
+        <div class="tenders__block">
+            <template
+                v-if="showLoaderSending"
+            >
+                <div class="tenders__loader loader">
+                    <div class="spinner" /> Загрузка данных
+                </div>
+            </template>
+            <template
+                v-else-if="tenders && tenders.count"
+            >
+                <blockTender
+                    v-for="(tender, index) in tenders.results"
+                    :key="`tender-${index}`"
+                    :tender="tender"
+                />
+            </template>
+            <template
+                v-else
+            >
+                <div class="tenders__empty">
+                    В данный момент у вас нет ни одного тендера
+                </div> 
+            </template>
+        </div>
         <div
             v-if="!showLoaderSending && tenders && tenders.count"
             class="tenders__pagination"

@@ -48,19 +48,21 @@
                         Заказчик&nbsp;<span class="m--color-green">{{ $helpers.stringForNumber(createdTenders.count, ['тендера', 'тендеров', 'тендеров']) }}</span>
                     </div>
                     <div class="contragent__tenders tenders tenders__created">
-                        <blockTenderMini
-                            v-for="(tender, index) in createdTenders.results"
-                            :key="`tender-${index}`"
-                            :tender="tender"
-                            :whole="true"
-                        />
-                        <button 
-                            v-if="createdTenders.count > countCreatedTenders"
-                            class="button button-outline-green tenders__more"
-                            @click="getCreatedTenders()"
-                        >
-                            показать еще
-                        </button>
+                        <div class="tenders__block">
+                            <blockTenderMini
+                                v-for="(tender, index) in createdTenders.results"
+                                :key="`tender-${index}`"
+                                :tender="tender"
+                                :whole="true"
+                            />
+                            <button 
+                                v-if="createdTenders.count > countCreatedTenders"
+                                class="button button-outline-green tenders__more"
+                                @click="getCreatedTenders()"
+                            >
+                                показать еще
+                            </button>
+                        </div>
                     </div>
                 </template>
                 <template
@@ -73,20 +75,21 @@
                         v-if="participationTenders && participationTenders.count"
                         class="contragent__tenders tenders participation__created"
                     >
-                        <blockTenderMini
-                            v-for="(tender, index) in participationTenders.results"
-                            :key="`tender-${index}`"
-                            :tender="tender"
-                            :whole="true"
-                        />
-
-                        <button 
-                            v-if="participationTenders.count > countParticipationTenders"
-                            class="button button-outline-green tenders__more"
-                            @click="getParticipationTenders()"
-                        >
-                            показать еще
-                        </button>
+                        <div class="tenders__block">
+                            <blockTenderMini
+                                v-for="(tender, index) in participationTenders.results"
+                                :key="`tender-${index}`"
+                                :tender="tender"
+                                :whole="true"
+                            />
+                            <button 
+                                v-if="participationTenders.count > countParticipationTenders"
+                                class="button button-outline-green tenders__more"
+                                @click="getParticipationTenders()"
+                            >
+                                показать еще
+                            </button>
+                        </div>
                     </div>
                 </template>
                 <template
