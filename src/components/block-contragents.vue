@@ -73,7 +73,7 @@
                         class="contragents__item-cell m--favorite"
                     >
                         <div
-                            v-if="user.organization.id !== contragent.id"
+                            v-if="user.organization?.id !== contragent.id"
                             class="contragents__item-favorite"
                             :class="{ 'm--favorite': contragent.is_favorite }"
                             @click.stop="toggleFavorite(contragent)"

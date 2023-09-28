@@ -71,7 +71,7 @@
         </div>
         <div class="contragent__info-right">
             <div 
-                v-if="user && user.id && user.organization.id !== contragent.id"
+                v-if="user && user.id && user.organization?.id !== contragent.id"
                 class="contragent__info-favorite"
                 :class="contragent.is_favorite && 'm--favorite'"
                 @click.prevent="toggleFavorite()"

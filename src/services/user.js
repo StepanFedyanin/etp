@@ -65,7 +65,9 @@ export default class extends REST {
 
     /* New */
     static updateUserPartial(params) {
-        return this._patch(`${params.id}`, {}, params).then((data) => {
+        let id = params.id;
+        delete params.id;
+        return this._patch(`${id}`, {}, params).then((data) => {
             return data;
         }).catch((error) => {
             throw new RESTError(error, 'Ошибка при обновлении профиля', { request: { params } });
@@ -226,6 +228,24 @@ export default class extends REST {
             return data;
         }).catch((error) => {
             throw new RESTError(error, 'Не удалось получить представителей организации');
+        });
+    }
+
+    /* new */
+    static updateOrganizationLogo(id, params) {
+        return this._patch(`organizations/${id}`, {}, params).then((data) => {
+            return data;
+        }).catch((error) => {
+            throw new RESTError(error, 'Ошибка при обновлении профиля организации');
+        });
+    }
+
+    /* new */
+    static updateOrganizationPartial(id, params) {
+        return this._patch(`organizations/${id}`, {}, params).then((data) => {
+            return data;
+        }).catch((error) => {
+            throw new RESTError(error, 'Ошибка при обновлении профиля организации');
         });
     }
 

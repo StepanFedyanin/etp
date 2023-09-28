@@ -28,11 +28,11 @@
                                     <span>{{ user.first_name }} {{ user.patronymic }}</span>
                                 </div>
                                 <div 
-                                    :class="['cabinet__block-item-logo', user.logo ? '' : 'm--no-logo']"
+                                    :class="['cabinet__block-item-logo', user.photo ? '' : 'm--no-logo']"
                                 >
                                     <img 
-                                        v-if="user.logo"
-                                        :src="`${user.logo}`" 
+                                        v-if="user.photo"
+                                        :src="`${user.photo}`" 
                                         :alt="`${user.last_name} ${user.first_name}`" 
                                     />
                                 </div>

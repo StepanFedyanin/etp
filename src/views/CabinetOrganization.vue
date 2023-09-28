@@ -25,21 +25,6 @@
                     v-if="currentTabsItem === 'public'"
                     class="organization__tab"
                 >
-                    <div class="organization__content">
-                        Ваш профиль виден всем по ссылке:
-                        <router-link
-                            v-slot="{ href, navigate }"
-                            :to="{ name: 'contragent', params: { id: organization.id } }"
-                        >
-                            <a 
-                                :href="href"
-                                target="_blank"
-                                @click="navigate"
-                            >
-                                {{ selfPath }}{{ href }}
-                            </a>
-                        </router-link>
-                    </div>
                     <OrganizationPublic
                         v-if="organization"
                         :loading="loading"
@@ -78,10 +63,10 @@
                     </div>
                     <button
                         v-if=" profile.is_staff || profile.is_master && profile.organization.id == $store._state.data.user.organization.id"
-                        class="button button-green"
+                        class="button button-outline-green button-width-auto m--medium"
                         @click="onClickAddStaff()"
                     >
-                        Добавить сотрудника
+                        Создать аккаунт для сотрудника
                     </button>
                     <div class="organization__tab-content text">
                         <p>Вы можете добавлять новых сотрудников (представителей компании), редактировать и деактивировать их.</p>
@@ -138,7 +123,6 @@
 </template>
 
 <script>
-    import { selfPath } from '@/settings'
     import { user as api } from "@/services";
     //import blockOrganization from '@/components/block-organization.vue';
     import blockPersons from '@/components/block-persons.vue';
@@ -158,7 +142,6 @@
         },
         data() {
             return {
-                selfPath,
                 profile: undefined,
                 contragents: [],
                 contragent:{},

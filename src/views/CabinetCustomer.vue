@@ -20,7 +20,10 @@
                     <div class="participant__title h1">
                         Я - Заказчик
                     </div>
-                    <div class="participant__tabs tabs">
+                    <div 
+                        v-if="!$route.name.match(/^start-/)"
+                        class="participant__tabs tabs"
+                    >
                         <button 
                             v-for="item in tabsItems"
                             :key="`tab-${item.name}`"

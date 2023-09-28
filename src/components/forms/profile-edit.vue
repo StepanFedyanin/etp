@@ -17,7 +17,6 @@
                 preserve
                 type="form"
                 data-loading="loading"
-                :value="formData"
                 form-class="$reset profile__form"
                 :actions="false"
                 :disabled="busyForm"
@@ -236,7 +235,6 @@
                 });
             },
             uploaPhotoComplete(event) {
-                console.log(event.target);
                 let file = event.target.files ? event.target.files[0] : null
                 if (file) {
                     const data = new FormData();

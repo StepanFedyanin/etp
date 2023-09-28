@@ -33,9 +33,14 @@
 
         &-logo {
             width: 240px;
+
+            &.m--big {
+                width: 360px;
+            }
+
             &-block {
                 position: relative;
-                width: 240px;
+                width: 100%;
                 @mixin shadow-box;
                 margin-bottom: 1rem;
                 overflow: hidden;
@@ -74,6 +79,12 @@
 
             &-link {
                 font-weight: 400;
+            }
+
+            p {
+                margin-top: 3rem;
+                padding: 0.75rem 0 0.75rem 0.75rem;
+                border-left: 1px solid $color-gray-dd;
             }
         }
     }

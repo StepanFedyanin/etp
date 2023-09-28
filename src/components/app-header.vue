@@ -86,13 +86,18 @@
                             </template>
                         </div>
                         <div 
-                            :class="['header__user', showPopup ? 'is-active' : '', user.organization?.logo ? '' : 'm--no-logo']"
+                            :class="['header__user', showPopup ? 'is-active' : '', user.photo || user.organization?.logo ? '' : 'm--no-logo']"
                             @click.stop="onClickPopup"
                         >
                             <img 
                                 v-if="user.organization?.logo"
                                 :src="`${user.organization?.logo}`" 
                                 :alt="user.organization?.name" 
+                            />
+                            <img 
+                                v-else-if="user.photo"
+                                :src="`${user.photo}`" 
+                                :alt="`${user.last_name} ${user.first_name}`" 
                             />
                         </div>
                         <div 

@@ -1,52 +1,35 @@
 <template>
-    <div>
-        <FormKit 
-            id="organizationEdit"
-            v-model="formValues"
-            name="organizationEdit"
-            preserve
-            type="form"
-            data-loading="loading"
-            form-class="$reset organization__form form__public"
-            :actions="false"
-            :disabled="loading || busyForm"
-            :loading="loading || busyForm ? true : undefined"
-            @submit="updateOrganization"
+    <div class="profile__user">
+        <template
+            v-if="showLoaderSending"
         >
-            <div class="form__block">
-                <FormKitSchema 
-                    :schema="schema" 
-                />
+            <div class="profile__loader loader">
+                <div class="spinner" /> Загрузка данных
             </div>
-            <div 
-                class="form__submit edit__form-submit" 
-                data-type="submit"
+        </template>
+        <template
+            v-else
+        >
+            <FormKit 
+                id="organizationEdit"
+                v-model="formData"
+                name="organizationEdit"
+                preserve
+                type="form"
+                data-loading="loading"
+                form-class="$reset profile__form"
+                :actions="false"
+                :disabled="busyForm"
+                :loading="busyForm ? true : undefined"
+                @submit="submitHandler"
             >
-                <button
-                    type="reset"
-                    :disabled="loading || busyForm"
-                    class="button button-red"
-                    @click.prevent="onClickCancel"
-                >
-                    Отменить
-                </button>
-                <button
-                    type="submit"
-                    :disabled="loading || busyForm"
-                    class="button button-green"
-                >
-                    Сохранить
-                </button>
-            </div> 
-        </FormKit>
-        <div class="organization__form form__public">
-            <div class="organization__form-logo">
-                <div class="field">
-                    <div class="field__inner">
-                        <label
-                            class="field__label"
-                            for="logo"
-                        >Логотип</label>
+                <div class="form profile__form-block">
+                    <div class="profile__form-main">
+                        <FormKitSchema 
+                            :schema="schema" 
+                        />
+                    </div>
+                    <div class="profile__form-logo m--big">
                         <div class="field__input m--hidden">
                             <input
                                 id="logo"
@@ -57,75 +40,94 @@
                                 name="logo"
                             >
                         </div>
-                    </div>
-                    <div 
-                        class="form__submit edit__form-submit m--start" 
-                    >
-                        <button
-                            :disabled="loading || busyForm"
-                            class="button button-outline-green button-width-auto"
-                            @click.prevent="onClickUploadLogo"
+                        <div class="profile__form-logo-block">
+                            <div class="profile__form-logo-inner">
+                                <button
+                                    v-if="!formData.logo"
+                                    href="#"
+                                    class="button button-outline-green button-width-auto m--small"
+                                    @click.prevent="onClickUploadLogo"
+                                >
+                                    Загрузить лого
+                                </button>
+                                <img 
+                                    v-else
+                                    :src="formData.logo"
+                                />
+                            </div>
+                        </div>
+                        <div 
+                            v-if="formData.logo"
+                            class="profile__form-logo-links" 
                         >
-                            Загрузить новый
-                        </button>
-                        <button
-                            v-if="organization.logo"
-                            :disabled="loading || busyForm"
-                            class="button button-outline-red button-width-auto"
-                            @click.prevent="onClickDeleteLogo"
-                        >
-                            Удалить
-                        </button>
-                    </div>
-                    <div 
-                        v-if="organization.logo"
-                        class="field__text m--color-green"
-                    >
-                        Загружен файл: {{ organization.logo.split('/').at(-1) }}
-                    </div>
-                    <div class="field__text">
+                            <a
+                                href="#"
+                                class="profile__form-logo-link"
+                                @click.prevent="onClickUploadLogo"
+                            >
+                                Изменить лого
+                            </a>
+                            <a
+                                href="#"
+                                class="profile__form-logo-link m--color-red"
+                                @click.prevent="onClickDeleteLogo"
+                            >
+                                Удалить
+                            </a>
+                        </div>
                         Рекомендуемый размер: 600х600px. jpg, png, svg
+                        <p>
+                            Ваш профиль виден всем по ссылке:<br>
+                            <router-link
+                                v-slot="{ href, navigate }"
+                                :to="{ name: 'contragent', params: { id: organization.id } }"
+                            >
+                                <a 
+                                    :href="href"
+                                    target="_blank"
+                                    @click="navigate"
+                                >
+                                    {{ selfPath }}{{ href }}
+                                </a>
+                            </router-link>
+                        </p>
+
                     </div>
                 </div>
-                <div class="organization__form-logo-pic">
-                    <img
-                        v-if="organization.logo"
-                        :src="organization.logo" 
-                        alt="" 
+                <div   
+                    class="form__submit profile__form-submit" 
+                    data-type="submit"
+                >
+                    <button
+                        type="submit"
+                        :disabled="busyForm"
+                        class="button button-green"
                     >
-                </div>
-            </div>
-        </div>
+                        Сохранить изменения
+                    </button>
+                </div> 
+            </FormKit>
+        </template>
     </div>
 </template>
 <script>
-    import { user as api } from "@/services";
+    import { selfPath } from '@/settings';
+    import { user as api } from '@/services';
     export default {
         name: 'OrganizationEdit',
         props: {
-            loading: {
-                type: Boolean,
-                default() { return false; }
-            },
             readonly: {
                 type: Boolean,
                 default() { return false; }
             },
-            user: {
-                type: Object,
-                default() { 
-                    return {} 
-                }
-            },
-            organization: {
-                type: Object,
-                default() { return {}; }
-            },
         },
         data() {
             return {
-                formValues: this.organization,
+                selfPath,
+                formData: {},
                 addressMatches: false,
+                busyForm: false,
+                showLoaderSending: false,
                 schema: [
                     {
                         $formkit: 'hidden',
@@ -145,16 +147,6 @@
                         disabled: false,
                         label: 'Совпадает с юридическим',
                         outerClass: 'm--left'
-                    /*
-                    }, {
-                        $formkit: 'file',
-                        name: 'logo',
-                        label: 'Логотип',
-                        accept: '.jpg,.png,.svg',
-                        help: 'Рекомендуемый размер: 600х600px. jpg, png, svg',
-                        // placeholder: 'https://example.ru',
-                        // outerClass: 'field--required',
-                    */
                     }, {
                         $formkit: 'text',
                         name: 'website',
@@ -213,40 +205,44 @@
                         ],
                     }
                 ],
-                busyForm: false
             };
         },
+        computed: {
+            organization() {
+                return this.$store.state.user.organization;
+            },
+        },
         watch: {
-            'formValues.address_matches': {
+            'formData.address_matches': {
                 handler() {
-                    this.addressMatches = this.formValues.address_matches;
+                    this.addressMatches = this.formData.address_matches;
                     const node = this.$formkit.get('address');
                     if (node) {
                         node.props.disabled = this.addressMatches;
                     }
                     if (this.addressMatches) {
-                        this.formValues.actual_address = this.formValues.legal_address;
+                        this.formData.actual_address = this.formData.legal_address;
                     }
                 },
             },
-            'loading': {
-                handler() {
-                    if (!this.loading) {
-                        this.formValues = Object.assign({}, this.organization);
-                        if (this.formValues.actual_address === this.formValues.legal_address) {
-                            this.formValues.address_matches = true;
-                        }
-                    }
-                }
-            }
         },
-        mounted() {
-            console.log('MOUNTED');
-            if (this.formValues.actual_address === this.formValues.legal_address) {
-                this.formValues.address_matches = true;
-            }
+        created() {
+            this.getMyProfile();
         },
         methods: {
+            getMyProfile() {
+                this.showLoaderSending = true;
+                api.getUser().then(res => {
+                    this.formData = res.organization;
+                    if (this.formData.actual_address === this.formData.legal_address) {
+                        this.formData.address_matches = true;
+                    }
+                    this.showLoaderSending = false;
+                }).catch(err => {
+                    this.showLoaderSending = false;
+                    console.error(err);
+                });
+            },
             onClickUploadLogo() {
                 let logoInput = this.$refs.logoInput;
                 let click = new MouseEvent('click');
@@ -255,13 +251,19 @@
                 logoInput.dispatchEvent(click);
             },
             onClickDeleteLogo() {
-                console.log('onClickDeleteLogo');
                 const data = new FormData();
                 data.append('logo', '');
                 this.busyForm = true;
-                api.updateOrganization(this.organization.id, data).then(res => {
-                    this.$emit('getMyProfile');
-                    this.busyForm = false;
+                api.updateOrganizationLogo(this.formData.id, data).then(res => {
+                    api.getUser().then(res => {
+                        this.busyForm = false;
+                        this.$store.dispatch('setUser', res);
+                        this.formData.logo = res.logo;
+                    }).catch(err => {
+                        this.busyForm = false;
+                        this.$store.dispatch('showError', err);
+                        console.error(err);
+                    });
                 }).catch(err => {
                     this.busyForm = false;
                     this.$store.dispatch('showError', err);
@@ -269,15 +271,21 @@
                 });
             },
             uploaLogoComplete(event) {
-                console.log(event.target);
                 let file = event.target.files ? event.target.files[0] : null
                 if (file) {
                     const data = new FormData();
                     data.append('logo', file);
                     this.busyForm = true;
-                    api.updateOrganization(this.organization.id, data).then(res => {
-                        this.$emit('getMyProfile');
-                        this.busyForm = false;
+                    api.updateOrganizationLogo(this.formData.id, data).then(res => {
+                        api.getUser().then(res => {
+                            this.busyForm = false;
+                            this.$store.dispatch('setUser', res);
+                            this.formData.logo = res.logo;
+                        }).catch(err => {
+                            this.busyForm = false;
+                            this.$store.dispatch('showError', err);
+                            console.error(err);
+                        });
                     }).catch(err => {
                         this.busyForm = false;
                         this.$store.dispatch('showError', err);
@@ -285,41 +293,33 @@
                     });
                 }
             },
-            onClickCancel() {
-                this.$emit('getMyProfile');
-            },
-            updateOrganization(formData, node) {
-                console.log(formData);
-
+            submitHandler(formData, node) {
+                this.busyForm = true;
                 const data = new FormData();
-                //formData.append("file", file)
-                //formData.append("description", this.tenderForm[`description_${file.id}`] || file.name)
-                //formData.append("publication", true)
                 this.schema.forEach(item => {
-                    //if (formData[item.name] && formData[item.name].length) {
                     if (item.name) {
                         data.append(item.name, formData[item.name]);
                     }
                     if (item.children && Array.isArray(item.children)) {
                         item.children.forEach(sitem => {
-                            //console.log(sitem.name, formData[sitem.name]);
                             data.append(sitem.name, formData[sitem.name]);
                         });
                     }
                 });
-                console.log(data);
-                this.busyForm = true;
-                api.updateOrganization(formData.id, data).then(res => {
-                    this.$emit('getMyProfile');
-                    this.busyForm = false;
+                api.updateOrganizationPartial(formData.id, data).then(res => {
+                    api.getUser().then(res => {
+                        this.busyForm = false;
+                        this.$store.dispatch('setUser', res);
+                    }).catch(err => {
+                        this.busyForm = false;
+                        this.$store.dispatch('showError', err);
+                        console.error(err);
+                    });
                 }).catch(err => {
-                    console.log(err.response);
                     node.setErrors(
                         err.response.data,
                     );
                     this.busyForm = false;
-                    this.$store.dispatch('showError', err);
-                    console.error(err);
                 });
             },
         }

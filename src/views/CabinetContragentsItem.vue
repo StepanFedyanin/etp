@@ -49,11 +49,10 @@
                     </div>
                     <div class="contragent__tenders tenders tenders__created">
                         <div class="tenders__block">
-                            <blockTenderMini
+                            <blockTender
                                 v-for="(tender, index) in createdTenders.results"
                                 :key="`tender-${index}`"
                                 :tender="tender"
-                                :whole="true"
                             />
                             <button 
                                 v-if="createdTenders.count > countCreatedTenders"
@@ -76,11 +75,10 @@
                         class="contragent__tenders tenders participation__created"
                     >
                         <div class="tenders__block">
-                            <blockTenderMini
+                            <blockTender
                                 v-for="(tender, index) in participationTenders.results"
                                 :key="`tender-${index}`"
                                 :tender="tender"
-                                :whole="true"
                             />
                             <button 
                                 v-if="participationTenders.count > countParticipationTenders"
@@ -132,7 +130,7 @@
 <script>
     import blockContragent from '@/components/block-contragent.vue';
     import blockPersons from '@/components/block-persons.vue';
-    import blockTenderMini from '@/components/block-tender-mini.vue';
+    import blockTender from '@/components/block-tender.vue';
     import ContragentGoods from '@/components/contragent-goods.vue';
     import { user as api } from "@/services";
 
@@ -140,7 +138,7 @@
         components: {
             blockContragent,
             blockPersons,
-            blockTenderMini,
+            blockTender,
             ContragentGoods
         },
         props: {
