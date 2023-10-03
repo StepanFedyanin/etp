@@ -92,7 +92,7 @@
                 const count = Math.ceil(this.total / this.limit);
                 let items = [];
                 [ ...Array(count).keys() ].map(i => i + 1).forEach(item => {
-                    console.log(item);
+                    //console.log(item);
                     if (count <= 7) {
                         items.push({ text: item, value: item });
                     } else {

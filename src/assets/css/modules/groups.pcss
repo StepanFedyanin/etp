@@ -9,7 +9,8 @@
 
     &__main {
         display: flex;
-        gap: 32px;
+        flex-direction: column;
+        gap: 2rem;
     }
     
     &__blocks {
@@ -23,8 +24,6 @@
         position: relative;
         display: flex;
         flex-direction: column;
-        @mixin simple-box;
-        max-width: 560px;
         width: 100%;
         margin-bottom: auto;
         padding: 20px;

@@ -11,6 +11,12 @@
                     >
                         Главная
                     </router-link>
+                    <router-link
+                        :to="{ name: 'cabinet' }"
+                        class="app__breadcrumbs-link"
+                    >
+                        Кабинет
+                    </router-link>
                 </div>
                 <div 
                     v-if="chatId || rooms.length"
@@ -212,7 +218,7 @@
     import _find from 'lodash/find';
 
     export default {
-        name: "Chat",
+        name: 'CabinetChat',
         props: {
             chatId: {
                 type: Number,

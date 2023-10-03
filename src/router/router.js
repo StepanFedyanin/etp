@@ -12,26 +12,34 @@ import registration from '@/views/Registration';
 import recovery from '@/views/Recovery';
 import auth from '@/views/Login';
 /* cabinet */
-import cabinet from '@/views/Cabinet';
 import cabinetInvite from '@/views/CabinetInvite';
-import cabinetChat from '@/views/CabinetChat';
-import cabinetCustomer from '@/views/CabinetCustomer';
-import cabinetCustomerTendersList from '@/views/CabinetCustomerTendersList';
-import cabinetCustomerPrivateTenders from '@/views/CabinetCustomerPrivateTenders';
-import cabinetCustomerDrafts from '@/views/CabinetCustomerDrafts';
-import cabinetParticipant from '@/views/CabinetParticipant';
-import cabinetParticipantInvites from '@/views/CabinetParticipantInvites';
-import cabinetParticipantTendersList from '@/views/CabinetParticipantTendersList';
-import cabinetFavorites from '@/views/CabinetFavorites';
-import cabinetFavoritesContragents from '@/views/CabinetFavoritesContragents';
-import cabinetFavoritesTenders from '@/views/CabinetFavoritesTenders';
-import cabinetProfile from '@/views/CabinetProfile';
+
+
+import Cabinet from '@/views/Cabinet';
+import CabinetChat from '@/views/cabinet/chat';
+import CabinetCustomer from '@/views/cabinet/customer';
+import CabinetCustomerDrafts from '@/views/cabinet/customer-drafts.vue';
+import CabinetCustomerPrivates from '@/views/cabinet/customer-privates.vue';
+import CabinetCustomerTenders from '@/views/cabinet/customer-tenders.vue';
+import CabinetFavorites from '@/views/cabinet/favorites';
+import CabinetFavoritesContragents from '@/views/cabinet/favorites-contragents.vue';
+import CabinetFavoritesTenders from '@/views/cabinet/favorites-tenders.vue';
+import CabinetOrganization from '@/views/cabinet/organization';
+import CabinetOrganizationPersonAdd from '@/views/cabinet/organization-person-add.vue';
+import CabinetParticipant from '@/views/cabinet/participant';
+import СabinetParticipantInvites from '@/views/cabinet/participant-invites.vue';
+import CabinetParticipantTenders from '@/views/cabinet/participant-tenders.vue';
+import CabinetProfile from '@/views/cabinet/profile';
+import CabinetNotifications from '@/views/cabinet/notifications';
+import CabinetNotificationsSettings from '@/views/cabinet/notifications-settings.vue'; //? Возможно не используется
+
+
 import cabinetProfileEdit from '@/views/CabinetProfileEdit';
 import cabinetProfilePassword from '@/views/CabinetProfilePassword';
 import cabinetProfileItem from '@/views/CabinetProfileItem';
 import cabinetProfileItemEdit from '@/views/CabinetProfileItemEdit';
 import cabinetTenders from '@/views/CabinetTenders';
-import cabinetTendersList from '@/views/CabinetTendersList';
+//import cabinetTendersList from '@/views/CabinetTendersList';
 import cabinetTendersItem from '@/views/CabinetTendersItem';
 import cabinetTendersStart from '@/views/CabinetTendersStart';
 import cabinetTendersStartForm from '@/views/CabinetTendersStartForm';
@@ -39,11 +47,7 @@ import cabinetTendersStartForm from '@/views/CabinetTendersStartForm';
 import cabinetContragents from '@/views/CabinetContragents';
 import cabinetContragentsList from '@/views/CabinetContragentsList';
 import cabinetContragentsItem from '@/views/CabinetContragentsItem';
-import cabinetOrganizationAddPerson from '@/views/CabinetOrganizationAddPerson';
-import CabinetOrganization from '@/views/CabinetOrganization';
 import CabinetOrganizationEdit from '@/views/CabinetOrganizationEdit';
-import cabinetNotifications from '@/views/CabinetNotifications';
-import cabinetNotificationsSettings from '@/views/CabinetNotificationsSettings';
 import groups from '@/views/Groups';
 import group from '@/views/Group';
 import product from '@/views/Product';
@@ -135,24 +139,343 @@ const routes = [
     }, {
         path: '/cabinet',
         name: 'cabinet',
-        component: cabinet,
+        component: Cabinet,
         meta: { title: 'Кабинет', requiresAuth: true },
         props: true,
+        children: [
+            {
+                path: 'profile',
+                name: 'profile',
+                component: CabinetProfile,
+                meta: { 
+                    title: 'Мой профиль', 
+                    breadcrumbs: ['cabinet'],
+                    requiresAuth: true 
+                },
+                props: true,
+            }, {
+                path: 'organization',
+                name: 'organization',
+                component: CabinetOrganization,
+                meta: { 
+                    title: 'Моя организация', 
+                    breadcrumbs: ['cabinet'],
+                    requiresAuth: true 
+                },
+                props: true,
+            }, {
+                path: 'person-add',
+                name: 'organization-add-person',
+                component: CabinetOrganizationPersonAdd,
+                meta: { 
+                    title: 'Добавить сотрудника', 
+                    breadcrumbs: [],
+                    requiresAuth: true 
+                },
+                props: true,
+            }, {
+                path: 'chat',
+                name: 'chat',
+                component: CabinetChat,
+                meta: { 
+                    title: 'Чат', 
+                    breadcrumbs: ['cabinet'],
+                    requiresAuth: true,
+                    appClass: 'm--h-100 m--no-footer'
+                },
+                props: true,
+            }, {
+                path: 'favorites',
+                name: 'favorites',
+                component: CabinetFavorites,
+                meta: { 
+                    title: 'Избранные контрагенты', 
+                    requiresAuth: true 
+                },
+                props: true,
+                redirect: { name: 'favorites-contragents' }, 
+                children: [
+                    {
+                        path: 'contragents',
+                        name: 'favorites-contragents',
+                        component: CabinetFavoritesContragents,
+                        meta: { 
+                            title: 'Избранные контрагенты', 
+                            requiresAuth: true 
+                        },
+                        props: true
+                    }, {
+                        path: 'tenders',
+                        name: 'favorites-tenders',
+                        component: CabinetFavoritesTenders,
+                        meta: { 
+                            title: 'Избранные тендеры', 
+                            requiresAuth: true 
+                        },
+                        props: true
+                    }
+                ]
+            }, {
+                path: 'notifications',
+                name: 'notifications',
+                component: CabinetNotifications,
+                meta: { 
+                    title: 'Уведомления',
+                    breadcrumbs: [],
+                    requiresAuth: true 
+                },
+                props: true,
+            }, {
+                path: 'notifications/settings',
+                name: 'notifications-settings',
+                component: CabinetNotificationsSettings,
+                meta: { 
+                    title: 'Настройка уведомлений',
+                    breadcrumbs: [],
+                    requiresAuth: true 
+                },
+                props: true,
+            }, {
+                path: 'customer',
+                name: 'customer',
+                component: CabinetCustomer,
+                meta: { 
+                    title: 'Заказчик', 
+                    breadcrumbs: [],
+                    requiresAuth: true 
+                },
+                props: true,
+                children: [
+                    {
+                        path: 'start',
+                        name: 'tender-start',
+                        component: cabinetTendersStart,
+                        meta: { 
+                            title: 'Объявить тендер', 
+                            breadcrumbs: ['tenders'],
+                            requiresAuth: true 
+                        },
+                        props: true,
+                    }, {
+                        path: 'start-tender',
+                        name: 'start-tender',
+                        component: cabinetTendersStartForm,
+                        meta: { 
+                            title: 'Объявить тендер', 
+                            breadcrumbs: ['tenders', 'tenders-start'],
+                            requiresAuth: true 
+                        },
+                        props: { propType: 0 },
+                    }, {
+                        path: 'start-price',
+                        name: 'start-price',
+                        component: cabinetTendersStartForm,
+                        meta: { 
+                            title: 'Объявить запрос цен без исполнения договора', 
+                            breadcrumbs: ['tenders', 'tenders-start'],
+                            requiresAuth: true 
+                        },
+                        props: { propType: 1 },
+                    }, {
+                        path: 'start-price-fulfilment',
+                        name: 'start-price-fulfilment',
+                        component: cabinetTendersStartForm,
+                        meta: { 
+                            title: 'Объявить запрос цен с исполнением договора', 
+                            breadcrumbs: ['tenders', 'tenders-start'],
+                            requiresAuth: true 
+                        },
+                        props: { propType: 2 },
+                    }, {
+                        path: 'drafts',
+                        name: 'customer-drafts',
+                        component: CabinetCustomerDrafts,
+                        meta: { 
+                            title: 'Черновики тендеров', 
+                            breadcrumbs: ['customer'],
+                            requiresAuth: true 
+                        },
+                        props: true,
+                        children: [
+                            {
+                                path: ':id',
+                                name: 'customer-drafts-tender',
+                                component: cabinetTendersItem,
+                                meta: { 
+                                    title: `%kind_detail% №%id%: %name%`, 
+                                    breadcrumbs: ['customer'],
+                                    requiresAuth: true 
+                                },
+                                props: true,
+                            }, {
+                                path: ':id/edit',
+                                name: 'tender-edit',
+                                component: cabinetTendersStartForm,
+                                meta: { 
+                                    title: 'Редактирование тендера',
+                                    breadcrumbs: ['customer'],
+                                    requiresAuth: true 
+                                },
+                                props: true,
+                            }
+                        ]
+                    }, {
+                        path: 'current',
+                        name: 'customer-current',
+                        component: CabinetCustomerTenders,
+                        meta: { 
+                            title: 'Текущие торги заказчика', 
+                            breadcrumbs: ['customer'],
+                            requiresAuth: true 
+                        },
+                        props: { 
+                            status: 'currents' 
+                        },
+                        children: [
+                            {
+                                path: ':id',
+                                name: 'customer-current-tender',
+                                component: cabinetTendersItem,
+                                meta: { 
+                                    title: `%kind_detail% №%id%: %name%`, 
+                                    breadcrumbs: ['customer'],
+                                    requiresAuth: true 
+                                },
+                                props: true,
+                            }
+                        ]
+                    }, {
+                        path: 'private',
+                        name: 'customer-private',
+                        component: CabinetCustomerPrivates,
+                        meta: { 
+                            title: 'Закрытые торги', 
+                            breadcrumbs: ['customer'],
+                            requiresAuth: true 
+                        },
+                        props: true,
+                        children: [
+                            {
+                                path: ':id',
+                                name: 'customer-private-tender',
+                                component: cabinetTendersItem,
+                                meta: { 
+                                    title: `%kind_detail% №%id%: %name%`, 
+                                    breadcrumbs: ['customer'],
+                                    requiresAuth: true 
+                                },
+                                props: true,
+                            }
+                        ]
+                    }, {
+                        path: 'closed',
+                        name: 'customer-closed',
+                        component: CabinetCustomerTenders,
+                        meta: { 
+                            title: 'Завершенные торги заказчика', 
+                            breadcrumbs: ['customer'],
+                            requiresAuth: true 
+                        },
+                        props: { 
+                            status: 'closed' 
+                        },
+                        children: [
+                            {
+                                path: ':id',
+                                name: 'customer-closed-tender',
+                                component: cabinetTendersItem,
+                                meta: { 
+                                    title: `%kind_detail% №%id%: %name%`, 
+                                    breadcrumbs: ['customer'],
+                                    requiresAuth: true 
+                                },
+                                props: true,
+                            }
+                        ]
+                    }
+                ]
+            }, {
+                path: 'participant',
+                name: 'participant',
+                component: CabinetParticipant,
+                meta: { 
+                    title: 'Поставщик', 
+                    breadcrumbs: [],
+                    requiresAuth: true 
+                },
+                props: true,
+                children: [
+                    {
+                        path: 'current',
+                        name: 'participant-current',
+                        component: CabinetParticipantTenders,
+                        meta: { 
+                            title: 'Текущие торги поставщика', 
+                            breadcrumbs: ['participant'],
+                            requiresAuth: true 
+                        },
+                        props: { 
+                            status: 'currents' 
+                        },
+                        children: [
+                            {
+                                path: ':id',
+                                name: 'participant-current-tender',
+                                component: cabinetTendersItem,
+                                meta: { 
+                                    title: `%kind_detail% №%id%: %name%`, 
+                                    breadcrumbs: ['participant'],
+                                    requiresAuth: true 
+                                },
+                                props: true,
+                            }
+                        ]
+                    }, {
+                        path: 'closed',
+                        name: 'participant-closed',
+                        component: CabinetParticipantTenders,
+                        meta: { 
+                            title: 'Завершенные торги поставщика', 
+                            breadcrumbs: ['participant'],
+                            requiresAuth: true 
+                        },
+                        props: { 
+                            status: 'closed' 
+                        },
+                        children: [
+                            {
+                                path: ':id',
+                                name: 'participant-closed-tender',
+                                component: cabinetTendersItem,
+                                meta: { 
+                                    title: `%kind_detail% №%id%: %name%`, 
+                                    breadcrumbs: ['participant'],
+                                    requiresAuth: true 
+                                },
+                                props: true,
+                            }
+                        ]
+                    }, {
+                        path: 'invites',
+                        name: 'participant-invites',
+                        component: СabinetParticipantInvites,
+                        meta: { 
+                            title: 'Завершенные торги поставщика', 
+                            breadcrumbs: ['participant'],
+                            requiresAuth: true 
+                        },
+                        props: { 
+                            status: 'closed' 
+                        },
+                    }
+                ]
+            },
+        ]
     }, {
         path: '/invite',
         name: 'invite',
         component: cabinetInvite,
         meta: { title: 'Пригласить партнеров', requiresAuth: true },
-        props: true,
-    }, {
-        path: '/profile',
-        name: 'profile',
-        component: cabinetProfile,
-        meta: { 
-            title: 'Мой профиль', 
-            breadcrumbs: [],
-            requiresAuth: true 
-        },
         props: true,
     }, {
         path: '/profile/edit',
@@ -195,16 +518,6 @@ const routes = [
         },
         props: true,
     }, {
-        path: '/organization',
-        name: 'organization',
-        component: CabinetOrganization,
-        meta: { 
-            title: 'Моя организация', 
-            breadcrumbs: [],
-            requiresAuth: true 
-        },
-        props: true,
-    }, {
         path: '/organization/edit',
         name: 'organization-edit',
         component: CabinetOrganizationEdit,
@@ -215,22 +528,19 @@ const routes = [
         },
         props: true,
     }, {
-        path: '/organization/add-person',
-        name: 'organization-add-person',
-        component: cabinetOrganizationAddPerson,
-        meta: { 
-            title: 'Добавить сотрудника', 
-            breadcrumbs: [],
-            requiresAuth: true 
-        },
-        props: true,
-    }, {
         path: '/tenders',
+        name: 'tenders',
         component: cabinetTenders,
+        meta: { 
+            title: 'Тендеры', 
+            breadcrumbs: [],
+            showSidebarAuth: true,
+            //requiresAuth: true 
+        },
         props: true,
         children: [
             {
-                path: '',
+                /*path: '',
                 name: 'tenders',
                 component: cabinetTendersList,
                 meta: { 
@@ -240,7 +550,7 @@ const routes = [
                     //requiresAuth: true 
                 },
                 props: true,
-            }, {
+            }, {*/
                 path: ':id',
                 name: 'tender',
                 component: cabinetTendersItem,
@@ -251,7 +561,7 @@ const routes = [
                     //requiresAuth: true 
                 },
                 props: true,
-            }, {
+                /*}, {
                 path: ':id/edit',
                 name: 'tender-edit',
                 component: cabinetTendersStartForm,
@@ -261,8 +571,8 @@ const routes = [
                     requiresAuth: true 
                 },
                 props: true,
-            /*
-            }, {
+            */
+            /*}, {
                 path: ':id/end',
                 name: 'tender-end',
                 component: cabinetTendersEnd,
@@ -272,185 +582,8 @@ const routes = [
                     requiresAuth: true 
                 },
                 props: true,
-
             */
             }, 
-        ]
-    }, {
-        path: '/customer',
-        name: 'customer',
-        component: cabinetCustomer,
-        meta: { 
-            title: 'Заказчик', 
-            breadcrumbs: [],
-            requiresAuth: true 
-        },
-        props: true,
-        children: [
-            {
-                path: 'start',
-                name: 'tender-start',
-                component: cabinetTendersStart,
-                meta: { 
-                    title: 'Объявить тендер', 
-                    breadcrumbs: ['tenders'],
-                    requiresAuth: true 
-                },
-                props: true,
-            }, {
-                path: 'start-tender',
-                name: 'start-tender',
-                component: cabinetTendersStartForm,
-                meta: { 
-                    title: 'Объявить тендер', 
-                    breadcrumbs: ['tenders', 'tenders-start'],
-                    requiresAuth: true 
-                },
-                props: { propType: 0 },
-            }, {
-                path: 'start-price',
-                name: 'start-price',
-                component: cabinetTendersStartForm,
-                meta: { 
-                    title: 'Объявить запрос цен без исполнения договора', 
-                    breadcrumbs: ['tenders', 'tenders-start'],
-                    requiresAuth: true 
-                },
-                props: { propType: 1 },
-            }, {
-                path: 'start-price-fulfilment',
-                name: 'start-price-fulfilment',
-                component: cabinetTendersStartForm,
-                meta: { 
-                    title: 'Объявить запрос цен с исполнением договора', 
-                    breadcrumbs: ['tenders', 'tenders-start'],
-                    requiresAuth: true 
-                },
-                props: { propType: 2 },
-            }, {
-                path: 'drafts',
-                name: 'customer-drafts',
-                component: cabinetCustomerDrafts,
-                meta: { 
-                    title: 'Черновики тендеров', 
-                    breadcrumbs: ['customer'],
-                    requiresAuth: true 
-                },
-                props: true,
-            }, {
-                path: 'current',
-                name: 'customer-current',
-                component: cabinetCustomerTendersList,
-                meta: { 
-                    title: 'Текущие торги заказчика', 
-                    breadcrumbs: ['customer'],
-                    requiresAuth: true 
-                },
-                props: { 
-                    status: 'currents' 
-                },
-            }, {
-                path: 'private',
-                name: 'private-tender',
-                component: cabinetCustomerPrivateTenders,
-                meta: { 
-                    title: 'Закрытые торги', 
-                    breadcrumbs: ['customer'],
-                    requiresAuth: true 
-                },
-                props: true,
-            }, {
-                path: 'closed',
-                name: 'customer-closed',
-                component: cabinetCustomerTendersList,
-                meta: { 
-                    title: 'Завершенные торги заказчика', 
-                    breadcrumbs: ['customer'],
-                    requiresAuth: true 
-                },
-                props: { 
-                    status: 'closed' 
-                },
-            }
-        ]
-    }, {
-        path: '/participant',
-        name: 'participant',
-        component: cabinetParticipant,
-        meta: { 
-            title: 'Поставщик', 
-            breadcrumbs: [],
-            requiresAuth: true 
-        },
-        props: true,
-        children: [
-            {
-                path: 'current',
-                name: 'participant-current',
-                component: cabinetParticipantTendersList,
-                meta: { 
-                    title: 'Текущие торги поставщика', 
-                    breadcrumbs: ['participant'],
-                    requiresAuth: true 
-                },
-                props: { 
-                    status: 'currents' 
-                },
-            }, {
-                path: 'closed',
-                name: 'participant-closed',
-                component: cabinetParticipantTendersList,
-                meta: { 
-                    title: 'Завершенные торги поставщика', 
-                    breadcrumbs: ['participant'],
-                    requiresAuth: true 
-                },
-                props: { 
-                    status: 'closed' 
-                },
-            }, {
-                path: 'invites',
-                name: 'participant-invites',
-                component: cabinetParticipantInvites,
-                meta: { 
-                    title: 'Завершенные торги поставщика', 
-                    breadcrumbs: ['participant'],
-                    requiresAuth: true 
-                },
-                props: { 
-                    status: 'closed' 
-                },
-            }
-        ]
-    }, {
-        path: '/favorites',
-        name: 'favorites',
-        component: cabinetFavorites,
-        meta: { 
-            title: 'Избранные контрагенты', 
-            requiresAuth: true 
-        },
-        props: true,
-        children: [
-            {
-                path: '/favorites/contragents',
-                name: 'favorites-contragents',
-                component: cabinetFavoritesContragents,
-                meta: { 
-                    title: 'Избранные контрагенты', 
-                    requiresAuth: true 
-                },
-                props: true
-            }, {
-                path: '/favorites/tenders',
-                name: 'favorites-tenders',
-                component: cabinetFavoritesTenders,
-                meta: { 
-                    title: 'Избранные тендеры', 
-                    requiresAuth: true 
-                },
-                props: true
-            }
         ]
     }, {
         path: '/contragents',
@@ -483,38 +616,7 @@ const routes = [
             }
         ]
     }, {
-        path: '/chat',
-        name: 'chat',
-        component: cabinetChat,
-        meta: { 
-            title: 'Чат', 
-            breadcrumbs: [],
-            requiresAuth: true,
-            appClass: 'm--h-100 m--no-footer'
-        },
-        props: true,
-    }, {
-        path: '/notifications',
-        name: 'notifications',
-        component: cabinetNotifications,
-        meta: { 
-            title: 'Уведомления',
-            breadcrumbs: [],
-            requiresAuth: true 
-        },
-        props: true,
-    }, {
-        path: '/notifications-settings',
-        name: 'notifications-settings',
-        component: cabinetNotificationsSettings,
-        meta: { 
-            title: 'Настройка уведомлений',
-            breadcrumbs: [],
-            requiresAuth: true 
-        },
-        props: true,
-    }, {
-        path: '/products',
+        path: '/market',
         name: 'products',
         component: products,
         meta: { 
@@ -524,17 +626,20 @@ const routes = [
             //requiresAuth: true 
         },
         props: true,
-    }, {
-        path: '/products/:slug',
-        name: 'product',
-        component: product,
-        meta: { 
-            title: 'Товар',
-            breadcrumbs: [],
-            showSidebarAuth: true
-            //requiresAuth: true 
-        },
-        props: true,
+        children: [
+            {
+                path: '/market/:slug',
+                name: 'product',
+                component: product,
+                meta: { 
+                    title: 'Товар',
+                    breadcrumbs: [],
+                    showSidebarAuth: true
+                    //requiresAuth: true 
+                },
+                props: true,
+            },
+        ]
     }, {
         path: '/:pathMatch(.*)*',
         name: 'page404',

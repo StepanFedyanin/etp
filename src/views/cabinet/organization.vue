@@ -5,6 +5,12 @@
             class="cabinet organization"
         >
             <div class="container">
+                <app-breadcrumbs 
+                    :breadcrumbs="[
+                        { name: 'Главная', route: { name: 'home' } },
+                        { name: 'Кабинет', route: { name: 'cabinet' } },
+                    ]"
+                />
                 <div class="organization__info">
                     <div class="organization__title h1">
                         {{ organization.name }}
@@ -37,6 +43,7 @@
                     class="organization__tab"
                 >
                     <OrganizationGoods
+                        v-if="organization"
                         :organization="organization"
                         blockClass="m--block"
                     />
@@ -54,25 +61,10 @@
                     v-if="currentTabsItem === 'persons'"
                     class="organization__tab"
                 >
-                    <div class="organization__persons">
-                        <blockPersons 
-                            :organization="organization"
-                            :persons="persons"
-                            @updated="getMembers"
-                        />
-                    </div>
-                    <button
-                        v-if=" profile.is_staff || profile.is_master && profile.organization.id == $store._state.data.user.organization.id"
-                        class="button button-outline-green button-width-auto m--medium"
-                        @click="onClickAddStaff()"
-                    >
-                        Создать аккаунт для сотрудника
-                    </button>
-                    <div class="organization__tab-content text">
-                        <p>Вы можете добавлять новых сотрудников (представителей компании), редактировать и деактивировать их.</p>
-                        <p>Каждый сотрудник будет иметь собственную учетную запись для входа на платформу TUGAN.</p>
-                        <p>Список сотрудников виден только зарегистрированным участникам платформы.</p>
-                    </div>
+                    <OrganizationPersons
+                        v-if="organization"
+                        :organization="organization"
+                    />
                 </div>
                 <div 
                     v-if="currentTabsItem === 'tenders'"
@@ -125,20 +117,20 @@
 <script>
     import { user as api } from "@/services";
     //import blockOrganization from '@/components/block-organization.vue';
-    import blockPersons from '@/components/block-persons.vue';
     import blockTenderMini from '@/components/block-tender-mini.vue';
     import OrganizationGoods from '@/components/organization-goods.vue';
     import OrganizationPublic from '@/components/forms/organization-public.vue';
     import OrganizationProps from '@/components/forms/organization-props.vue';
+    import OrganizationPersons from '@/components/organization-persons.vue';
 
     export default {
         components: {
             //blockOrganization,
-            blockPersons,
-            blockTenderMini,
+            OrganizationPersons,
             OrganizationGoods,
             OrganizationPublic,
             OrganizationProps,
+            blockTenderMini,
         },
         data() {
             return {
@@ -147,7 +139,6 @@
                 contragent:{},
                 organization: {},
                 organizationid: {},
-                persons: [],
                 participationTenders: {},
                 createdTenders: {},
                 limitParticipation: 5,
@@ -189,14 +180,13 @@
         },
         created() {
             this.getMyProfile();
-            this.getMembers();
         },
         methods: {
             getMyProfile() {
                 this.loading = true;
                 api.getUser().then(res => {
                     this.profile = res;
-                    this.organization = res.organization;
+                    this.organization = res.organization || {};
                     this.getCreatedTenders();
                     this.getParticipationTenders();
                     this.loading = false;
@@ -208,20 +198,10 @@
             onClickEditOrganization() {
                 this.$router.push({ name: 'organization-edit'});
             },
-            onClickAddStaff() {
-                this.$router.push({ name: 'organization-add-person'});
-            },
-            getMembers() {
-                api.getMyOrganizationMembers().then(res => {
-                    this.persons = res;
-                }).catch(err => {
-                    console.error(err);
-                });
-            },
             getParticipationTenders(){
                 api.getParticipationTenders(this.organization.id, {limit: this.limit, offset: this.offsetParticipation}).then(res =>{
                     if(this.offsetParticipation===0){
-                        this.participationTenders = res;
+                        this.participationTenders = res || {};
                     }else if(this.participationTenders.results){
                         this.participationTenders = {...this.participationTenders, ...res, results: [...this.participationTenders.results, ...res.results]}
                     }
@@ -232,7 +212,7 @@
             getCreatedTenders(){
                 api.getCreatedTenders(this.organization.id, {limit: this.limit, offset: this.offsetCreated}).then(res =>{
                     if(this.offsetCreated===0){
-                        this.createdTenders = res;
+                        this.createdTenders = res || {};
                     }else if(this.createdTenders.results){
                         this.createdTenders = {...this.createdTenders, ...res, results: [...this.createdTenders.results, ...res.results]}
                     }

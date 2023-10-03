@@ -8,11 +8,10 @@
                     </div>
                     <div class="add-person">
                         <regPersonForm 
-                            class="form__edit"
                             :loading="showLoaderSending"
                             :formData="regData.person"
                             @prevStep="prevStep"
-                            @submitPersonHandler="submitPersonHandler"
+                            @submitPersonHandler="submitHandler"
                         />
                     </div>
                 </div>
@@ -37,9 +36,9 @@
             }
         },
         created() {
-            api.getMyProfile().then(res => {
+            api.getUser().then(res => {
                 this.profile = res;
-                if (res.organization && res.organization.id) {
+                if (res.organization?.id) {
                     this.regData.person.organization = res.organization.id;
                     console.log(res.organization);
                 }
@@ -49,7 +48,7 @@
             });
         },
         methods: {
-            submitPersonHandler(data, node) {
+            submitHandler(data, node) {
                 this.showLoaderSending = true;
                 let params = Object.assign({}, this.regData.person);
                 api.addProfile(params).then(res => {

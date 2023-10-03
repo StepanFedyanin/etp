@@ -1,7 +1,15 @@
 <template>
-    <div class="tenders m--block">
+    <div 
+        v-if="$route.name === 'participant-current' || $route.name === 'participant-closed'"
+        class="tenders m--block"
+    >
         <div class="tenders__search">
-            <div 
+            <!--div class="tenders__search-form">
+                <Search
+                    @startSearch="startSearch"
+                />
+            </div-->
+            <div
                 v-if="tenders && tenders.count"
                 class="tenders__pagination"
             >
@@ -14,25 +22,31 @@
             </div>
         </div>
         <div class="tenders__block">
-            <template v-if="showLoaderSending">
+            <template
+                v-if="showLoaderSending"
+            >
                 <div class="tenders__loader loader">
                     <div class="spinner" /> Загрузка данных
                 </div>
             </template>
-            <template v-else-if="tenders && tenders.count">
+            <template
+                v-else-if="tenders && tenders.count"
+            >
                 <blockTender
                     v-for="(tender, index) in tenders.results"
                     :key="`tender-${index}`"
                     :tender="tender"
                 />
             </template>
-            <template v-else>
+            <template
+                v-else
+            >
                 <div class="tenders__empty">
                     В данный момент у вас нет ни одного тендера
                 </div> 
             </template>
         </div>
-        <div 
+        <div
             v-if="!showLoaderSending && tenders && tenders.count"
             class="tenders__pagination"
         >
@@ -44,6 +58,7 @@
             />
         </div>
     </div>
+    <router-view v-else />
 </template>
 
 <script>
@@ -67,7 +82,7 @@
         data() {
             return {
                 limit: 10,
-                tenders: {},
+                tenders: null,
                 showLoaderSending: false
             }
         },
@@ -99,38 +114,37 @@
                 },
             }
         },
-        created() {
-        },
         mounted() {
             console.log(this.status);
             this.getTenders()
+        },
+        beforeDestroy() {
+        },
+        created() {
         },
         methods: {
             getTenders() {
                 let limit = Number(this.limit)
                 let params = {
                     limit,
-                    offset: this.offset,
-                    organization: 1
+                    offset: this.offset
                 }
                 if (this.status === 'currents') {
                     this.showLoaderSending = true;
-                    api.getMyCurrentsTenders(params).then(tenders => {
+                    api.getCurrentsTenders(params).then(tenders => {
                         this.tenders = tenders
                         this.showLoaderSending = false;
                         console.log(tenders)
                     }).catch(err => {
-                        this.showLoaderSending = false;
                         console.error(err)
                     })
                 } else if (this.status === 'closed') {
                     this.showLoaderSending = true;
-                    api.getMyClosedTenders(params).then(tenders => {
+                    api.getClosedTenders(params).then(tenders => {
                         this.tenders = tenders
                         this.showLoaderSending = false;
                         console.log(tenders)
                     }).catch(err => {
-                        this.showLoaderSending = false;
                         console.error(err)
                     })
                 }
@@ -141,8 +155,8 @@
                 console.log(formData)
                 this.showLoaderSending = true;
                 api.searchTenders(formData).then(tenders => {
-                    this.tenders = tenders
                     this.showLoaderSending = false;
+                    this.tenders = tenders
                     console.log(tenders)
                 }).catch(err => {
                     this.showLoaderSending = false;

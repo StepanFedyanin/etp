@@ -84,7 +84,7 @@
                         role: 'all',
                         title: 'Организации',
                     }, {
-                        name: 'groups',
+                        name: 'products',
                         role: 'all',
                         title: 'Товары'
                     }, {
@@ -99,7 +99,8 @@
                 ],
                 footerMenuBottom: [
                     {
-                        name: 'agreement',
+                        name: 'page',
+                        params: { slug: 'agreement' },
                         role: 'all',
                         title: 'Политика конфиденциальности'
                     }, {

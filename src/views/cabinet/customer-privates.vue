@@ -1,12 +1,10 @@
 <template>
-    <div class="tenders m--block">
+    <div 
+        v-if="$route.name === 'customer-private'"
+        class="tenders m--block"
+    >
         <div class="tenders__search">
-            <!--div class="tenders__search-form">
-                <Search
-                    @startSearch="startSearch"
-                />
-            </div-->
-            <div
+            <div 
                 v-if="tenders && tenders.count"
                 class="tenders__pagination"
             >
@@ -19,31 +17,25 @@
             </div>
         </div>
         <div class="tenders__block">
-            <template
-                v-if="showLoaderSending"
-            >
+            <template v-if="showLoaderSending">
                 <div class="tenders__loader loader">
                     <div class="spinner" /> Загрузка данных
                 </div>
             </template>
-            <template
-                v-else-if="tenders && tenders.count"
-            >
+            <template v-else-if="tenders && tenders.count">
                 <blockTender
                     v-for="(tender, index) in tenders.results"
                     :key="`tender-${index}`"
                     :tender="tender"
                 />
             </template>
-            <template
-                v-else
-            >
+            <template v-else>
                 <div class="tenders__empty">
                     В данный момент у вас нет ни одного тендера
                 </div> 
             </template>
         </div>
-        <div
+        <div 
             v-if="!showLoaderSending && tenders && tenders.count"
             class="tenders__pagination"
         >
@@ -55,31 +47,24 @@
             />
         </div>
     </div>
+    <router-view v-else />
 </template>
 
 <script>
-    import { tender as api } from "@/services";
-    //import Search from '@/components/app-search.vue';
-    import Pagination from '@/components/pagination.vue';
+    import { tender as tenderApi } from "@/services"
     import blockTender from '@/components/block-tender.vue';
+    import Pagination from '@/components/pagination.vue';
 
     export default {
         components: {
-            //Search,
-            Pagination,
-            blockTender
-        },
-        props: {
-            status: {
-                type: String,
-                default() { return null; }
-            },
+            blockTender,
+            Pagination
         },
         data() {
             return {
                 limit: 10,
-                tenders: null,
-                showLoaderSending: false
+                tenders: {},
+                showLoaderSending: false,
             }
         },
         computed: {
@@ -96,69 +81,41 @@
                 if (this.$route.query.page) {
                     this.$router.replace({ query: {} })
                 } else {
-                    this.getTenders()
+                    this.getListPrivateTenders()
                 }
-            },
-            'status': {
-                handler() {
-                    this.getTenders()
-                },
             },
             '$route.query.page': {
                 handler() {
-                    this.getTenders()
+                    this.getListPrivateTenders()
                 },
             }
         },
-        mounted() {
-            console.log(this.status);
-            this.getTenders()
-        },
-        beforeDestroy() {
-        },
         created() {
         },
+        mounted() {
+            this.getListPrivateTenders();
+        },
         methods: {
-            getTenders() {
+            getListPrivateTenders(){
                 let limit = Number(this.limit)
                 let params = {
                     limit,
-                    offset: this.offset
+                    offset: this.offset,
+                    type: 'reduction_closed'
                 }
-                if (this.status === 'currents') {
-                    this.showLoaderSending = true;
-                    api.getCurrentsTenders(params).then(tenders => {
-                        this.tenders = tenders
-                        this.showLoaderSending = false;
-                        console.log(tenders)
-                    }).catch(err => {
-                        console.error(err)
-                    })
-                } else if (this.status === 'closed') {
-                    this.showLoaderSending = true;
-                    api.getClosedTenders(params).then(tenders => {
-                        this.tenders = tenders
-                        this.showLoaderSending = false;
-                        console.log(tenders)
-                    }).catch(err => {
-                        console.error(err)
-                    })
-                }
-            },
-            startSearch(formData) {
-                formData.limit = Number(this.limit)
-                formData.offset = this.offset
-                console.log(formData)
                 this.showLoaderSending = true;
-                api.searchTenders(formData).then(tenders => {
+                tenderApi.getTendersPrivates(params).then(tenders => {
+                    // if (tenders.type==="reduction_closed") {
+                    //     this.tenders = tenders;
+                    // }
+                    this.tenders = tenders;
                     this.showLoaderSending = false;
-                    this.tenders = tenders
-                    console.log(tenders)
+                    console.log(tenders);
                 }).catch(err => {
                     this.showLoaderSending = false;
-                    console.error(err)
+                    console.error(err);
                 })
-            }
+            },
         }
     };
 </script>

@@ -1,55 +1,33 @@
 <template>
     <div class="app__breadcrumbs breadcrumbs">
-        <div class="container">
-            <!-- v-if="$route.fullPath !== '/cabinet'" -->
-            <!-- {{ $route.fullPath }} -->
-            <!-- <router-link
-                :to="{ name: 'profile' }"
-                class="breadcrumbs__link"
-            >
-                Кабинет
-            </router-link> -->
-            <router-link
-                v-for="(item, key) in $route.meta.breadcrumbs"
-                :key="key"
-                v-slot="{ href, route, navigate, isActive, isExactActive }"
-                :to="{ name: item }"
-                custom
-            >
+        <router-link
+            v-for="(item, key) in breadcrumbs"
+            :key="key"
+            v-slot="{ href, navigate }"
+            :to="item.route"
+            custom
+        >
+            <div v-if="item.name" class="breadcrumbs__item">
                 <a 
                     :href="href"
-                    :class="[isActive && 'is-active', isExactActive && 'is-subactive']"
-                    class="breadcrumbs__link"
+                    class="breadcrumbs__item-link"
                     @click="navigate"
                 >
-                    {{ route.meta.title }}
+                    {{ item.name }}
                 </a>
-            </router-link>
-            <span
-                class="breadcrumbs__link is-current"
-            >
-                {{ $route.meta.title }}
-            </span>
-        </div>
-        <!-- <div
-            v-else
-            class="container"
-        >
-            <span
-                class="breadcrumbs__link is-current"
-            >
-                {{ $route.meta.title }}
-            </span>
-        </div> -->
+            </div>
+        </router-link>
     </div>
 </template>
 
 <script>
     export default {
-        name: 'Breadcrumbs',
-        data() {
-            return {
-            };
-        },
+        name: 'AppBreadcrumbs',
+        props: {
+            breadcrumbs: {
+                type: Array,
+                default() { return []; }
+            },
+        }
     };
 </script>

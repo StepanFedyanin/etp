@@ -8,6 +8,7 @@
     }
 
     &__title {
+        /*
         font-weight: 600;
         font-size: 20px;
         line-height: 24px;
@@ -18,9 +19,48 @@
         &.m--padding-top {
             margin-top: 32px;
         }
-
-        span {
+        */
+        & > span {
+            margin-left: 0.5rem;
             color: $color-green;
+        }
+
+        &-more {
+            position: relative;
+            display: block;
+            margin-left: auto;
+            margin-top: -5px;
+            padding: 0.5rem 0.75rem;
+            font-weight: 600;
+            font-size: 0.875rem;
+            line-height: 1.25rem;
+            text-transform: uppercase;
+            color: $color-gray-66;
+            cursor: pointer;
+            align-self: center;
+            border: 1px solid $color-gray-T6;
+
+            > span {
+                position: relative;
+                display: block;
+                padding-right: 1rem;
+
+                &:before {
+                    content: '';
+                    position: absolute;
+                    width: 0.75rem;
+                    height: 0.75rem;
+                    right: 0;
+                    top: 50%;
+                    transform: translateY(-50%);
+                    background-image: url('./assets/img/icons/icon-arrow-right.svg');
+                    background-size: contain;
+                }
+
+                span {
+                    color: $color-green;
+                }
+            }
         }
     }
 
@@ -28,10 +68,12 @@
         position: relative;
         display: flex;
         flex-wrap: wrap;
-        gap: 16px;
+        gap: 1rem;
+        /*
         padding: 24px 28px 8px;
         margin-bottom: 32px;
         @mixin shadow-box;
+        */
 
         &.m--no-margin {
             margin: 0;
@@ -43,13 +85,19 @@
         display: flex;
         flex-direction: column;
         min-width: 180px;
-        width: calc(100% / 6 - 16px * 5 / 6);
-        padding: 0;
-        margin-bottom: 16px;
+        /*width: calc(100% / 6 - 16px * 5 / 6);*/
+        width: calc(100% / 4 - 16px * 3 / 4);
+        padding: 0.75rem;
+        margin-bottom: 1.5rem;
+        cursor: pointer;
+        border: 1px solid $color-gray-dd;
+        border-radius: 0.5rem;
 
+        /*
         @mixin responsive-le-xxl {
             width: calc(100% / 5 - 16px * 4 / 5);
         }
+        */
 
         @mixin responsive-le-xl {
             width: calc(100% / 4 - 16px * 3 / 4);
@@ -75,21 +123,20 @@
         &-photo {
             position: relative;
             display: block;
-            margin-bottom: 8px;
+            margin-bottom: 0.5rem;
 
             &:before {
                 content: '';
                 display: block;
-                padding-top: 100%;
+                padding-top: 85.65%;
             }
 
             &-inner {
                 position: absolute;
                 display: block;
-                top: 0;
-                left: 0;
-                right: 0;
-                bottom: 0;
+                inset: 0;
+                border-radius: 0.5rem;
+                overflow: hidden;
             }
 
             &.m--no-photo &-inner {
@@ -104,33 +151,89 @@
                 height: 100%;
                 max-width: 100%;
                 max-height: 100%;
-                object-fit: contain;
+                object-fit: cover;
             }
         }
 
         &-price {
             font-weight: 500;
-            font-size: 18px;
-            line-height: 24px;
-            margin-bottom: 8px;
+            font-size: 1.125rem;
+            line-height: 1.125rem;
+            margin-bottom: 0.25rem;
+            color: $color-gray-33;
         }
 
         &-desc {
+            font-weight: 500;
+            font-size: 0.875rem;
+            line-height: 1.125rem;
+            height: 3.375rem;
+            margin-bottom: 1rem;
+            color: $color-gray-33;
+            overflow: hidden;
+            display: -webkit-box;
+            white-space: pre-wrap;
+            -webkit-box-orient: vertical;
+            -webkit-line-clamp: 3;
+        }
+
+        &-category {
+            font-size: 0.75rem;
             font-weight: 400;
-            font-size: 14px;
-            line-height: 17px;
-            margin-bottom: 8px;
+            color: $color-gray-66;
+            margin-bottom: 0.5rem;
+            text-decoration: none;
+            white-space: nowrap;
+            text-overflow: ellipsis;
+            overflow: hidden;
+
+            @mixin responsive-xxs {
+                white-space: normal;
+            }
+
+            &:hover {
+                text-decoration: underline;
+            }
+
+            &:before,
+            &:hover:before {
+                content: '/';
+                display: inline-block;
+                margin-right: 0.25rem;
+                text-decoration: none;
+            }
+        }
+
+        &-organozation {
+            font-size: 0.75rem;
+            font-weight: 400;
+            color: $color-gray-66;
+            margin-bottom: 0.5rem;
+            text-decoration: none;
+            white-space: nowrap;
+            text-overflow: ellipsis;
+            overflow: hidden;
+
+            @mixin responsive-xxs {
+                white-space: normal;
+            }
+
+            &:hover {
+                text-decoration: underline;
+            }
         }
 
         &-control {
+            display: flex;
+            justify-content: space-between;
+            gap: 1rem;
             margin-top: auto;
 
             &-link {
                 display: inline-block;
-                font-weight: 600;
-                font-size: 12px;
-                line-height: 15px;
-                margin-right: 12px;
+                font-weight: 400;
+                font-size: 0.875rem;
+                line-height: 1rem;
 
                 &:hover {
                     text-decoration: none;
@@ -144,17 +247,6 @@
                     color: $color-red;
                 }
             }
-        }
-
-        &-category {
-            font-size: 12px;
-        }
-
-        &-organozation {
-            font-size: 12px;
-        }
-
-        @mixin responsive-le-m {
         }
     }
 

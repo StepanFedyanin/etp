@@ -1,17 +1,17 @@
 <template>
     <div class="app__main">
-        <div :class="['goods', user?.id ? 'm--justify-flex-start' : '']">
+        <div 
+            v-if="$route.name === 'products'"
+            :class="['goods', user?.id ? 'm--justify-flex-start' : '']"
+        >
             <div 
                 :class="['container', user?.id ? '' : 'm--1460']"
             >
-                <div class="app__breadcrumbs">
-                    <router-link
-                        :to="{ name: 'home' }"
-                        class="app__breadcrumbs-link"
-                    >
-                        Главная
-                    </router-link>
-                </div>
+                <app-breadcrumbs 
+                    :breadcrumbs="[
+                        { name: 'Главная', route: { name: 'home' } },
+                    ]"
+                />
                 <h1 class="h1">
                     Все товары и услуги
                 </h1>
@@ -54,6 +54,7 @@
                 </div>
             </div>
         </div>
+        <router-view v-else />
     </div>
 </template>
 

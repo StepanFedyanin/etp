@@ -209,7 +209,7 @@
         },
         computed: {
             organization() {
-                return this.$store.state.user.organization;
+                return this.$store.state.user.organization || {};
             },
         },
         watch: {
@@ -233,7 +233,7 @@
             getMyProfile() {
                 this.showLoaderSending = true;
                 api.getUser().then(res => {
-                    this.formData = res.organization;
+                    this.formData = res.organization || {};
                     if (this.formData.actual_address === this.formData.legal_address) {
                         this.formData.address_matches = true;
                     }

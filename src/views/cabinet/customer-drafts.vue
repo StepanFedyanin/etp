@@ -1,5 +1,8 @@
 <template>
-    <div class="tenders m--block">
+    <div 
+        v-if="$route.name === 'customer-drafts'"
+        class="tenders m--block"
+    >
         <div class="tenders__search">
             <div 
                 v-if="tenders && tenders.count"
@@ -24,6 +27,7 @@
                     v-for="(tender, index) in tenders.results"
                     :key="`tender-${index}`"
                     :tender="tender"
+                    drafts="true"
                 />
             </template>
             <template v-else>
@@ -44,6 +48,7 @@
             />
         </div>
     </div>
+    <router-view v-else />
 </template>
 
 <script>

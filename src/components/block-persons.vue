@@ -101,11 +101,13 @@
                             <div class="persons__item-more-param field m--inline" data-type="checkbox-switch">
                                 <label class="field__inner">
                                     <span :class="['icon m--perms-org', item.is_access_organization && 'm--on']" />
-                                    Организацией
+                                    <span>Организацией</span>
                                     <div class="field__input">
                                         <input
                                             v-model="item.is_access_organization"
-                                            type="checkbox" 
+                                            type="checkbox"
+                                            :disabled="item.is_master"
+                                            @change="onSwitchPersonParam({ id: item.id, is_access_organization: item.is_access_organization })"
                                         />
                                         <span class="field__decorator" />
                                     </div>
@@ -114,11 +116,13 @@
                             <div class="persons__item-more-param field m--inline" data-type="checkbox-switch">
                                 <label class="field__inner">
                                     <span :class="['icon m--perms-goods', item.is_access_product && 'm--on']" />
-                                    Товарами
+                                    <span>Товарами</span>
                                     <div class="field__input">
                                         <input
                                             v-model="item.is_access_product"
-                                            type="checkbox" 
+                                            type="checkbox"
+                                            :disabled="item.is_master"
+                                            @change="onSwitchPersonParam({ id: item.id, is_access_product: item.is_access_product })"
                                         />
                                         <span class="field__decorator" />
                                     </div>
@@ -127,11 +131,13 @@
                             <div class="persons__item-more-param field m--inline" data-type="checkbox-switch">
                                 <label class="field__inner">
                                     <span :class="['icon m--perms-tenders', item.is_access_tender && 'm--on']" />
-                                    Тендерами
+                                    <span>Тендерами</span>
                                     <div class="field__input">
                                         <input
                                             v-model="item.is_access_tender"
-                                            type="checkbox" 
+                                            type="checkbox"
+                                            :disabled="item.is_master"
+                                            @change="onSwitchPersonParam({ id: item.id, is_access_tenders: item.is_access_tenders })"
                                         />
                                         <span class="field__decorator" />
                                     </div>
@@ -150,7 +156,7 @@
                                     <input
                                         v-model="item.is_master"
                                         type="checkbox"
-                                        @change="onSwitchPersonParam({ id: item.id, is_master: item.is_master })"
+                                        @click.prevent="onSwitchPersonMaster(item)"
                                     />
                                     <span class="field__decorator" />
                                 </div>
@@ -179,12 +185,25 @@
                 </div>
             </div>
         </template>
+        <ModalPersonMaster
+            :key="`modal-master-${person.id}`"
+            :organization="organization"
+            :person="person"
+            :showModal="showPersonMasterModal"
+            @hideModal="hidePersonMasterModal"
+        />            
     </div>
 </template>
 
 <script>
     import { user as api } from "@/services";
+    import ModalPersonMaster from '@/components/modals/person-master';
+
     export default {
+        components: {
+            ModalPersonMaster
+        },
+        emits: ['updateData'],
         props: {
             blockClass: {
                 type: String,
@@ -203,8 +222,10 @@
         },
         data() {
             return {
+                person: {},
                 item: [],
-                openedItem: {}
+                openedItem: {},
+                showPersonMasterModal: false,
             };
         },
         computed: {
@@ -228,10 +249,15 @@
             onSwitchPersonParam(params) {
                 api.updateProfile(params).then(res => {
                     console.log(res);
-                    this.$emit('updated');
+                    //this.$emit('updated');
                 }).catch(err => {
                     console.error(err);
                 });
+            },
+            onSwitchPersonMaster(item) {
+                console.log('onSwitchPersonMaster');
+                this.person = item;
+                this.showPersonMasterModal = true;
             },
             onClickDeletePerson(id) {
                 api.deleteProfile(id).then(res => {
@@ -251,7 +277,12 @@
             },
             onClickEditPerson(id){
                 this.$router.push({ name: 'profile-edit-user', params: { id: id } });
-            }
+            },
+            hidePersonMasterModal(updateData) {
+                this.showPersonMasterModal = false;
+                if (updateData) this.$emit('updateData');
+            },
+
         }
     };
 </script>

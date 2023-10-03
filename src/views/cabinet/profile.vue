@@ -3,21 +3,12 @@
         <!-- <Breadcrumbs /> -->
         <div class="cabinet profile">
             <div class="container">
-                <div class="app__breadcrumbs">
-                    <router-link
-                        :to="{ name: 'home' }"
-                        class="app__breadcrumbs-link"
-                    >
-                        Главная
-                    </router-link>
-                    <router-link
-                        :to="{ name: 'cabinet' }"
-                        class="app__breadcrumbs-link"
-                    >
-                        Кабинет
-                    </router-link>
-                </div>
-
+                <app-breadcrumbs 
+                    :breadcrumbs="[
+                        { name: 'Главная', route: { name: 'home' } },
+                        { name: 'Кабинет', route: { name: 'cabinet' } },
+                    ]"
+                />
                 <div class="profile__info">
                     <div class="profile__title h1">
                         {{ user.last_name }} {{ user.first_name }} {{ user.patronymic }}

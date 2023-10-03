@@ -1,7 +1,9 @@
 <template>
     <div class="app__main">
-        <div class="page404">
-            <div class="container">
+        <div 
+            :class="['page404', user?.id ? 'm--justify-flex-start' : '']"
+        >
+            <div :class="['container', user?.id ? '' : 'm--1460']">
                 <div class="page404__block">
                     <div 
                         class="page404__logo"

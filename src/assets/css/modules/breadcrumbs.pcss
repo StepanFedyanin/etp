@@ -1,34 +1,28 @@
-.breadcrumbs {
-    position: relative;
-    display: block;
-    margin-bottom: 24px;
 
-    &__link {
+.breadcrumbs {
+    font-size: 1rem;
+    line-height: 1.25rem;
+    margin-bottom: 0.5rem;
+
+    &__item {
         position: relative;
         display: inline-block;
-        text-decoration: underline;
-        font-weight: 300;
-        font-size: 14px;
-        line-height: 24px;
-        font-style: italic;
-        color: $color-gray-T4;
 
         &:after {
-            content: '';
+            content: '—';
             position: relative;
             display: inline-block;
-            width: 14px;
-            height: 14px;
-            background: url('./assets/img/icons/icon-breadcrumb.svg') 50% 50% no-repeat;
-            vertical-align: middle;
-            margin: 0 12px;
+            margin: 0 0.675rem;
         }
 
-        &.is-current {
-            color: $color-gray-T1;
-            &:after {
-                display: none;
-            }
+        &:last-child:after {
+            display: none;
+        }
+
+        &-link {
+            position: relative;
+            color: $color-gray-T3;
+            font-weight: 400;
         }
     }
 }

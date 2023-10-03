@@ -1,11 +1,7 @@
 <template>
-    <div
-        :class="blockClass" 
-        class="tenders__item"
-    >
+    <div :class="['tenders__item', blockClass]">
         <div
-            class="tenders__item-favorite"
-            :class="{ 'm--favorite': favorite }"
+            :class="['tenders__item-favorite', favorite && 'm--favorite']"
             @click="toggleFavorite"
         />
         <div class="tenders__item-left">
@@ -14,12 +10,9 @@
                     {{ tender.kind_detail }} №{{ tender.id }}
                 </div>
                 <div class="tenders__item-top-right">
-                    <template
-                        v-if="tender.publication"
-                    >
+                    <template v-if="tender.publication">
                         <div 
-                            class="tenders__item-top-status"
-                            :class="restTime ? 'm--devider' : ''"
+                            :class="['tenders__item-top-status', restTime && 'm--devider']"
                         >
                             {{ tender.status_detail || tender.status }}
                         </div>
@@ -27,31 +20,23 @@
                             v-if="restTime"
                             class="tenders__item-top-timer"
                         >
-                            <template
-                                v-if="tender.status === 'bid_accept'"
-                            >
+                            <template v-if="tender.status === 'bid_accept'">
                                 ({{ $helpers.dateRangeToDaysHours(new Date(new Date(tender.date_request).toLocaleString('EN-en', { timeZone: 'Europe/Moscow' })).getTime(), new Date(new Date(tender.date_start).toLocaleString('EN-en', { timeZone: 'Europe/Moscow' })).getTime()) }})
                             </template>
-                            <template
-                                v-else
-                            >
+                            <template v-else>
                                 ({{ $helpers.dateRangeToDaysHours(new Date(new Date(tender.date_request).toLocaleString('EN-en', { timeZone: 'Europe/Moscow' })).getTime(), new Date(new Date(tender.date_end).toLocaleString('EN-en', { timeZone: 'Europe/Moscow' })).getTime()) }})
                             </template>
                         </div>
                     </template>
-                    <template
-                        v-else
-                    >
-                        <div 
-                            class="tenders__item-top-status"
-                        >
+                    <template v-else>
+                        <div class="tenders__item-top-status">
                             Черновик
                         </div>
                     </template>
                 </div>
             </div>
             <router-link
-                :to="{ name: 'tender', params: { id: tender.id } }"
+                :to="{ name: ($route.name === 'home' || $route.name === 'participant-invites' || $route.name === 'favorites-tenders' || $route.name === 'tenders' || $route.name === 'contragent' || $route.name === 'group') ? 'tender' : `${$route.name.replace('-tender', '')}-tender`, params: { id: tender.id } }"
                 class="tenders__item-title"
             >
                 {{ tender.name }}
@@ -132,12 +117,8 @@
             <div class="tenders__item-price">
                 {{ tender.price ? $helpers.toPrice(tender.price, {sign: tender.currency_detail}) : 'Цена не указана' }}
             </div>
-            <div 
-                class="tenders__item-param"
-            >
-                <span 
-                    class="tenders__item-param-name m--light"
-                >
+            <div class="tenders__item-param">
+                <span class="tenders__item-param-name m--light">
                     Начало приема заявок
                 </span>
                 <div class="tenders__item-param-value">
@@ -148,9 +129,7 @@
                 v-if="tender.date_start" 
                 class="tenders__item-param"
             >
-                <span 
-                    class="tenders__item-param-name m--light"
-                >
+                <span class="tenders__item-param-name m--light">
                     Окончание приема заявок
                 </span> 
                 <div class="tenders__item-param-value">
@@ -161,9 +140,7 @@
                 v-if="tender.date_end" 
                 class="tenders__item-param"
             >
-                <span 
-                    class="tenders__item-param-name m--light"
-                >
+                <span class="tenders__item-param-name m--light">
                     Этап торгов
                 </span>
                 <div class="tenders__item-param-value">
@@ -174,9 +151,7 @@
                 v-if="tender.fulfilment"
                 class="tenders__item-param"
             >
-                <span 
-                    class="tenders__item-param-name m--light"
-                >
+                <span class="tenders__item-param-name m--light">
                     Исполнение договора
                 </span>
                 <div class="tenders__item-param-value">

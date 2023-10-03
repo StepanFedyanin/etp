@@ -1,12 +1,13 @@
 <template>
     <div 
-        class="goods__item"
-        :class="blockClass"
+        :class="['goods__item', blockClass]"
+        @click.prevent="$router.push({ name: 'product', params: { slug: good.slug || '404' } })"
     >
         <router-link
             :to="{ name: 'product', params: { slug: good.slug || '404' } }"
             class="goods__item-photo"
-            :class="good.photo ? '' : 'm--no-photo'"
+            :class="['goods__item-photo', !good.photo && 'm--no-photo']"
+            @click.stop=""
         >
             <div class="goods__item-photo-inner">
                 <template
@@ -19,27 +20,27 @@
                 </template>
             </div>
         </router-link>
-        <div 
-            class="goods__item-info"
-        >
-            <div class="goods__item-price">
-                {{ $helpers.toPrice(good.price, { sign: good.currency_detail }) }}
-            </div>
-            <div class="goods__item-desc">
-                {{ good.name }}
-            </div>
-        </div>
         <router-link 
             v-if="showOrganization"
             :to="{ name: 'contragent', params: { id: good.organization.id } }"
             class="goods__item-organozation"
+            @click.stop=""
         >
             {{ good.organization.name }}
         </router-link>
+        <div class="goods__item-info">
+            <div class="goods__item-desc">
+                {{ good.name }}
+            </div>
+            <div class="goods__item-price">
+                {{ $helpers.toPrice(good.price, { sign: good.currency_detail }) }}
+            </div>
+        </div>
         <router-link
             v-if="showCategory"
-            :to="{ name: 'group', params: { parentslug: good.category_detail.parent.slug, slug: good.category_detail.slug } }"
+            :to="{ name: 'group', params: { parentslug: good.category_detail.parent?.slug || 0, slug: good.category_detail.slug } }"
             class="goods__item-category"
+            @click.stop=""
         >
             {{ good.category_detail.name }}
         </router-link>
@@ -50,14 +51,14 @@
             <a 
                 href="#" 
                 class="goods__item-control-link m--change"
-                @click.prevent="addGood(good.slug)"
+                @click.stop.prevent="addGood(good.slug)"
             >
-                Изменить
+                Изменить товар
             </a>
             <a 
                 href="#" 
                 class="goods__item-control-link m--delete"
-                @click.prevent="deleteGood(good.slug)"
+                @click.stop.prevent="deleteGood(good.slug)"
             >
                 Удалить
             </a>
@@ -68,6 +69,7 @@
 <script>
     import { urlPath } from '@/settings'
     export default {
+        emits: ['addGood', 'deleteGood'],
         props: {
             blockClass: {
                 type: String,

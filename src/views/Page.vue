@@ -2,14 +2,11 @@
     <div class="app__main">
         <div class="page">
             <div :class="['container', user?.id ? '' : 'm--1460']">
-                <div class="app__breadcrumbs">
-                    <router-link
-                        :to="{ name: 'home' }"
-                        class="app__breadcrumbs-link"
-                    >
-                        Главная
-                    </router-link>
-                </div>
+                <app-breadcrumbs 
+                    :breadcrumbs="[
+                        { name: 'Главная', route: { name: 'home' } },
+                    ]"
+                />
                 <template
                     v-if="showLoaderSending"
                 >
@@ -21,14 +18,14 @@
                     v-else-if="page"
                 >
                     <div class="page__content text">
-                        <h1>{{ page.page_name }}</h1>
+                        <h1>{{ page.name }}</h1>
                         <div
                             v-html="page.content"
                         />
                     </div>
                     <div 
                         class="page__code"
-                        v-html="page.additional_text"
+                        v-html="page.sub_content"
                     />
                 </template>
             </div>

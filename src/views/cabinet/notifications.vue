@@ -2,16 +2,12 @@
     <div class="app__main">
         <div class="cabinet notifications">
             <div class="container">
-                <div
-                    class="app__breadcrumbs"
-                >
-                    <router-link
-                        :to="{ name: 'home' }"
-                        class="app__breadcrumbs-link"
-                    >
-                        Главная
-                    </router-link>
-                </div>
+                <app-breadcrumbs 
+                    :breadcrumbs="[
+                        { name: 'Главная', route: { name: 'home' } },
+                        { name: 'Кабинет', route: { name: 'cabinet' } },
+                    ]"
+                />
                 <template
                     v-if="showLoaderSending"
                 >
@@ -80,21 +76,13 @@
                     v-else
                 >
                     <div class="notifications__block">
-                        <div
-                            class="notifications__item m--no-notifications"
-                        >
-                            <div 
-                                class="notifications__item-header"
-                            >
-                                <div 
-                                    class="notifications__item-title"
-                                >
+                        <div class="notifications__item m--no-notifications">
+                            <div class="notifications__item-header">
+                                <div class="notifications__item-title">
                                     Система уведомлений на ЭТП TUGAN
                                 </div>
                             </div>
-                            <div 
-                                class="notifications__item-content content"
-                            >
+                            <div class="notifications__item-content content">
                                 <p>
                                     Здесь вы будете получать уведомления о всех важных событиях на платформе.<br>
                                     <strong>Email-уведомления</strong> отправляются на ваш контактный адрес.<br>
@@ -104,11 +92,9 @@
                                     Любой тип уведомлений можно включить или отключить в настройках.
                                 </p>
                             </div>
-                            <div 
-                                class="notifications__item-footer"
-                            >
+                            <div class="notifications__item-footer">
                                 <router-link
-                                    :to="{ name: 'notifications-settings' }"
+                                    :to="{ name: 'profile', hash: '#notifications' }"
                                     class="button button-outline-green m--width-auto"
                                 >
                                     Настроить уведомления

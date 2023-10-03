@@ -13,6 +13,8 @@ import { createHead } from '@vueuse/head';
 //import { plugin as vueMetaPlugin } from 'vue-meta';
 
 import App from './App.vue';
+import AppBreadcrumbs from '@/components/app-breadcrumbs.vue';
+
 
 import router from './router/router';
 import store from './store/store';
@@ -20,6 +22,9 @@ import helpers from './utils/helpers';
 
 
 const app = createApp(App);
+
+
+app.component('app-breadcrumbs', AppBreadcrumbs);
 
 app.use(store);
 app.use(router);

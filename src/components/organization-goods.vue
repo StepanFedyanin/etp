@@ -1,8 +1,5 @@
 <template>
-    <div
-        :class="blockClass" 
-        class="goods"
-    >
+    <div :class="['goods', blockClass]">
         <template
             v-if="showLoaderSending"
         >
@@ -13,7 +10,7 @@
         <template
             v-else-if="goods && count"
         >    
-            <div class="goods__title">
+            <div class="goods__title h2">
                 Загруженные товары <span>({{ count }})</span>
             </div>
             <div class="goods__block">
@@ -64,7 +61,7 @@
     //import { urlPath } from '@/settings'
     import { user as userApi, product as productApi } from "@/services"
     import blockGoodsItem from '@/components/block-goods-item.vue';
-    import ModalAddGood from '@/components/modal-add-good.vue';
+    import ModalAddGood from '@/components/modals/good-add.vue';
     import Pagination from '@/components/pagination.vue';
 
     export default {

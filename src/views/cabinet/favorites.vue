@@ -2,26 +2,18 @@
     <div class="app__main">
         <div class="cabinet favorites">
             <div class="container">
-                <div class="app__breadcrumbs">
-                    <router-link
-                        :to="{ name: 'home' }"
-                        class="app__breadcrumbs-link"
-                    >
-                        Главная
-                    </router-link>
-                    <router-link
-                        :to="{ name: 'cabinet' }"
-                        class="app__breadcrumbs-link"
-                    >
-                        Кабинет
-                    </router-link>
-                </div>
+                <app-breadcrumbs 
+                    :breadcrumbs="[
+                        { name: 'Главная', route: { name: 'home' } },
+                        { name: 'Кабинет', route: { name: 'cabinet' } },
+                    ]"
+                />
                 <h1 class="h1">
                     Избранное
                 </h1>
                 <div class="organization__tabs tabs">
                     <a
-                        href="$" 
+                        href="#" 
                         v-for="item in tabsItems"
                         :key="`tab-${item.name}`"
                         :class="['tabs__item', $route.name === item.name && 'is-active']"

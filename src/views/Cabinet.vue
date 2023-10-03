@@ -1,18 +1,16 @@
 <template>
-    <div class="app__main">
+    <div 
+        v-if="$route.name === 'cabinet'"
+        class="app__main"
+    >
         <!-- <Breadcrumbs /> -->
         <div class="cabinet">
             <div class="container">
-                <div
-                    class="app__breadcrumbs"
-                >
-                    <router-link
-                        :to="{ name: 'home' }"
-                        class="app__breadcrumbs-link"
-                    >
-                        Главная
-                    </router-link>
-                </div>
+                <app-breadcrumbs 
+                    :breadcrumbs="[
+                        { name: 'Главная', route: { name: 'home' } },
+                    ]"
+                />
                 <div class="h1">
                     Добро пожаловать на бизнес-платформу TUGAN!
                 </div>
@@ -169,6 +167,7 @@
             </div>
         </div>
     </div>
+    <router-view v-else />
 </template>
 
 <script>

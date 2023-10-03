@@ -92,13 +92,13 @@
                     <router-link
                         v-for="(item, key) in menuBottom"
                         :key="key"
-                        v-slot="{ href, isActive }"
+                        v-slot="{ href, isActive, isExactActive }"
                         :to="{ name: item.name }"
                         custom
                     >
                         <a 
                             :href="href"
-                            :class="[isActive && 'is-active', `m--icon-${item.icon}`, (item.name === 'chat' && roomUnreadCount) || (item.name === 'notifications' && notificationsCount) ? 'is-alert' : '']"
+                            :class="[(isActive || isExactActive) && 'is-active', `m--icon-${item.icon}`, (item.name === 'chat' && roomUnreadCount) || (item.name === 'notifications' && notificationsCount) ? 'is-alert' : '']"
                             class="sidebar__bottom-menu-link"
                             @click.prevent="onClickMenuItem(item)"
                         >
@@ -147,7 +147,7 @@
                             role: 'all',
                             title: 'Текущие торги',
                         }, {
-                            name: 'private-tender',
+                            name: 'customer-private',
                             role: 'all',
                             title: 'Закрытые торги',
                         }, {
@@ -224,7 +224,7 @@
                         title: 'Чат',
                         icon: 'chats'
                     }, {
-                        name: 'favorites-contragents',
+                        name: 'favorites',
                         role: 'all',
                         title: 'Избранное',
                         icon: 'favorites'

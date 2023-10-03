@@ -21,7 +21,7 @@
                         type="form"
                         data-loading="showLoaderSending"
                         form-class="$reset auth__form form"
-                        submit-label="Отправить новый пароль"
+                        :submit-label="passwordSended ? 'Войти' : 'Отправить новый пароль'"
                         :disabled="showLoaderSending"
                         :loading="showLoaderSending ? true : undefined"
                         :submit-attrs="{
@@ -93,6 +93,7 @@
         },
         methods: {
             submitHandler(data, node) {
+                if (this.passwordSended) this.$router.push({ name: 'auth' })
                 this.showLoaderSending = true;
                 this.loading = true;
                 let params = this.formData;

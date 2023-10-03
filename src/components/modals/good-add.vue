@@ -138,7 +138,7 @@
                         $formkit: 'multiselect',
                         mode: 'single',
                         name: 'category',
-                        groups: true,
+                        //groups: true,
                         closeOnSelect: true,
                         label: 'Категория',
                         placeholder: 'Выберите категорию товара',
@@ -146,8 +146,9 @@
                         minChars: 1,
                         validation: 'required',
                         options: async () => {
-                            return await categoryApi.getCategoryList({ limit: 9999 }).then(groups => {
+                            return await categoryApi.getCategoryListProduct({ limit: 9999 }).then(groups => {
                                 if (groups.results) {
+                                    /*
                                     let options = []
                                     groups.results.map( (group) => {
                                         options.push({
@@ -157,7 +158,8 @@
                                             })
                                         })
                                     })
-                                    return options
+                                    */
+                                    return this.prepareCategoryTree(groups.results);
                                 } else {
                                     console.log('No getCategoryList data')
                                 }
@@ -314,6 +316,20 @@
                     delete this.formValues.photo;
                     delete this.formValues.small_photo;
                 }
+            },
+            prepareCategoryTree(list, parent = null, level = 0) {
+                let categoryList = [];
+                list.filter(el => { return el.parent === parent }).forEach(item => {
+                    item.name = '\xa0'.repeat(level * 4) + item.name;
+                    categoryList.push({ 
+                        label: item.name,
+                        value: item.id
+                    });
+                    let childs = list.filter(el => { return el.parent !== parent; });
+                    if (childs.length) categoryList.concat(this.prepareCategoryTree(childs, item.id, level + 1));
+                });
+                console.log(categoryList);
+                return categoryList;
             },
             uploaPhotoComplete(event) {
                 let file = event.target.files ? event.target.files[0] : null

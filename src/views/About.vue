@@ -2,14 +2,11 @@
     <div class="app__main">
         <div class="about">
             <div class="container m--1460">
-                <div class="app__breadcrumbs">
-                    <router-link
-                        :to="{ name: 'home' }"
-                        class="app__breadcrumbs-link"
-                    >
-                        Главная
-                    </router-link>
-                </div>
+                <app-breadcrumbs 
+                    :breadcrumbs="[
+                        { name: 'Главная', route: { name: 'home' } },
+                    ]"
+                />
                 <div class="h1">{{ $route.meta.title }}</div>
                 <div class="about__block">
                     <div class="about__content text">

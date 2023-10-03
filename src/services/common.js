@@ -22,6 +22,22 @@ export default class extends REST {
         });
     }
 
+    static getNewsList(params) {
+        return this._get('news', {}, params).then((data) => {
+            return data;
+        }).catch((error) => {
+            throw new RESTError(error, 'Ошибка при получении списка новостей');
+        });
+    }
+
+    static getNews(slug) {
+        return this._get(`news/${slug}`, {}, {}).then((data) => {
+            return data;
+        }).catch((error) => {
+            throw new RESTError(error, 'Ошибка при получении новости');
+        });
+    }
+
     static getPageList(params) {
         return this._get('pages', {}, params).then((data) => {
             return data;

@@ -1,14 +1,11 @@
 <template>
     <div :class="['cabinet contragents', user?.id ? 'm--justify-flex-start' : '']">
         <div :class="['container', user?.id ? '' : 'm--1460']">
-            <div class="app__breadcrumbs">
-                <router-link
-                    :to="{ name: 'home' }"
-                    class="app__breadcrumbs-link"
-                >
-                    Главная
-                </router-link>
-            </div>
+            <app-breadcrumbs 
+                :breadcrumbs="[
+                    { name: 'Главная', route: { name: 'home' } },
+                ]"
+            />
             <div class="contragents__title h1">
                 Контрагенты
             </div>

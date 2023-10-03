@@ -35,30 +35,37 @@
         &.m--top {
             position: sticky;
             top: 0;
-            padding: 24px 40px 0;
             /*background: $color-white;*/
-            margin: -48px -40px 24px;
+            /*padding: 24px 40px 0;*/
+            /*margin: -48px -40px 24px;*/
+            padding: 0;
+            margin: 0 0 24px;
             z-index: 10;
 
+
+            /*
             @mixin responsive-le-xl {
                 margin-left: -24px;
                 margin-right: -24px;
                 padding-left: 24px;
                 padding-right: 24px;
             }
-
+            */
             @mixin responsive-le-l {
                 position: relative;
                 top: auto;
+                /*
                 margin-left: -16px;
                 margin-right: -16px;
                 padding-left: 16px;
                 padding-right: 16px;
+                */
             }
 
             @mixin responsive-le-xs {
                 flex-wrap: wrap;
             }
+
 
             &:before {
                 content: '';

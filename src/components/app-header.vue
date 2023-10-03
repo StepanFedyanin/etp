@@ -240,7 +240,7 @@
                         role: 'all',
                         title: 'Организации'
                     }, {
-                        name: 'groups',
+                        name: 'products',
                         role: 'all',
                         title: 'Товары'
                     }, {
@@ -263,7 +263,7 @@
                         role: 'all',
                         title: 'Организации'
                     }, {
-                        name: 'groups',
+                        name: 'products',
                         role: 'all',
                         title: 'Товары'
                     }, {

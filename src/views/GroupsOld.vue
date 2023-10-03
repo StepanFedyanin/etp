@@ -2,11 +2,14 @@
     <div class="app__main">
         <div :class="['groups', user?.id ? 'm--justify-flex-start' : '']">
             <div :class="['container', user?.id ? '' : 'm--1460']">
-                <app-breadcrumbs 
-                    :breadcrumbs="[
-                        { name: 'Главная', route: { name: 'home' } },
-                    ]"
-                />
+                <div class="app__breadcrumbs">
+                    <router-link
+                        :to="{ name: 'home' }"
+                        class="app__breadcrumbs-link"
+                    >
+                        Главная
+                    </router-link>
+                </div>
                 <h1 
                     class="groups__title h1"
                 >
@@ -23,26 +26,6 @@
                     v-else-if="groups && groups.count"
                 >
                     <div class="groups__main">
-                        <div class="groups__goods goods m--block">
-                            <div class="goods__title h2">
-                                Новые товары
-                                <div
-                                    class="goods__title-more"
-                                    @click="$router.push({ name: 'products' })"
-                                >
-                                    <span>Показать все <span>({{ goods.count }})</span></span>
-                                </div>
-                            </div>
-                            <div class="goods__block">
-                                <blockGoodsItem
-                                    v-for="good in goods.results"
-                                    :key="`good-${good.id}`"
-                                    :good="good"
-                                    :showCategory="true"
-                                    :showOrganization="true"
-                                />
-                            </div>                            
-                        </div>
                         <div class="groups__blocks">
                             <div
                                 v-for="group in groups.results"
@@ -63,7 +46,9 @@
                                         Товаров: <span class="group__info-red">{{ group.product_count }}</span>
                                     </div>
                                 </div>
-                                <ul class="group__products">
+                                <ul
+                                    class="group__products"
+                                >
                                     <li
                                         v-for="category in group.categories"
                                         :key="category.id"
@@ -83,6 +68,57 @@
                                 :currentPage="Number($route.query.page || 1)"
                                 :url="$route.path"
                             />
+                        </div>
+                        <div class="groups__last">
+                            <div class="groups__last-block">
+                                <router-link 
+                                    :to="{ name: 'products' }"
+                                    class="groups__last-title"
+                                >
+                                    Новые предложения
+                                </router-link>
+                                <div class="groups__last-goods goods">
+                                    <blockGoodsItem
+                                        v-for="good in goods"
+                                        :key="`good-${good.id}`"
+                                        :good="good"
+                                        :blockClass="`m--50`"
+                                        :showOrganization="true"
+                                    />
+                                </div>                            
+                            </div>
+                            <div class="groups__last-block">
+                                <router-link 
+                                    :to="{ name: 'tenders' }"
+                                    class="groups__last-title"
+                                >
+                                    Новые тендеры
+                                </router-link>
+                                <div class="groups__last-tenders tenders">
+                                    <div 
+                                        v-for="tender in tenders"
+                                        :key="`tender-${tender.id}`"
+                                        class="tenders__item m--small"
+                                    >
+                                        <router-link
+                                            :to="{ name: 'contragent', params: { id: tender.organization.id } }"
+                                            target="_blank"
+                                            class="tenders__item-organization"
+                                        >
+                                            {{ tender.organization.full_name ? tender.organization.full_name : '-' }}
+                                        </router-link>
+                                        <router-link
+                                            :to="{ name: 'tender', params: { id: tender.id } }"
+                                            class="tenders__item-title"
+                                        >
+                                            {{ tender.name }}
+                                        </router-link>
+                                        <div class="tenders__item-price">
+                                            {{ tender.price ? $helpers.toPrice(tender.price, {sign: tender.currency_detail}) : 'Цена не указана' }}
+                                        </div>
+                                    </div>
+                                </div>                            
+                            </div>
                         </div>
                     </div>
                 </template>
@@ -104,8 +140,8 @@
         },
         data() {
             return {
-                groups: {},
-                goods: {},
+                groups: null,
+                goods: null,
                 tenders: null,
                 limit: 10,
                 showLoaderSending: false,
@@ -147,12 +183,12 @@
             getGoods() {
                 console.log('getGoods');
                 let params = {
-                    limit: 12,
+                    limit: 6,
                     offset: 0
                 };
                 //this.showLoaderSending = true;
                 productApi.getProducts(params).then(res => {
-                    this.goods = res;
+                    this.goods = res.results;
                     //this.showLoaderSending = false;
                     console.log(res)
                 }).catch(err => {

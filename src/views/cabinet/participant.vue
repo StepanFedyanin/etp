@@ -2,20 +2,12 @@
     <div class="app__main">
         <div class="cabinet participant">
             <div class="container">
-                <div class="app__breadcrumbs">
-                    <router-link
-                        :to="{ name: 'home' }"
-                        class="app__breadcrumbs-link"
-                    >
-                        Главная
-                    </router-link>
-                    <router-link
-                        :to="{ name: 'cabinet' }"
-                        class="app__breadcrumbs-link"
-                    >
-                        Кабинет
-                    </router-link>
-                </div>
+                <app-breadcrumbs 
+                    :breadcrumbs="[
+                        { name: 'Главная', route: { name: 'home' } },
+                        { name: 'Кабинет', route: { name: 'cabinet' } },
+                    ]"
+                />
                 <div class="participant__info">
                     <div class="participant__title h1">
                         Я - поставщик

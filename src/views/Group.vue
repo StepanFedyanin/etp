@@ -5,29 +5,14 @@
                 v-if="!showLoaderSending['group']" 
                 :class="['container', user?.id ? '' : 'm--1460']"
             >
-                <div
-                    class="app__breadcrumbs"
-                >
-                    <router-link
-                        :to="{ name: 'home' }"
-                        class="app__breadcrumbs-link"
-                    >
-                        Главная
-                    </router-link>
-                    <router-link
-                        :to="{ name: 'groups' }"
-                        class="app__breadcrumbs-link"
-                    >
-                        Товары и услуги
-                    </router-link>
-                    <router-link
-                        v-if="parentslug"
-                        :to="{ name: 'group', params: { slug: group.parent.slug } }"
-                        class="app__breadcrumbs-link"
-                    >
-                        {{ group.parent.name }}
-                    </router-link>
-                </div>
+                <app-breadcrumbs 
+                    v-if="!showLoaderSending.group"
+                    :breadcrumbs="[
+                        { name: 'Главная', route: { name: 'home' } },
+                        { name: 'Товары и услуги', route: { name: 'groups' } },
+                        { name: group.parent?.name, route: { name: 'group', params: { slug: group.parent?.slug || 0 } } },
+                    ]"
+                />
                 <template
                     v-if="showLoaderSending['group']"
                 >
@@ -38,18 +23,14 @@
                 <template
                     v-else-if="group"
                 >
-                    <h1 
-                        class="groups__title h1"
-                    >
+                    <h1 class="groups__title h1">
                         {{ group.name }}
                     </h1>
                     <div
                         v-if="!parentslug"
                         class="group m--margin"
                     >
-                        <ul
-                            class="group__products"
-                        >
+                        <ul class="group__products">
                             <li
                                 v-for="category in group.categories"
                                 :key="category.id"
@@ -65,7 +46,7 @@
                     </div>
                 </template>
                 <div
-                    class="goods"
+                    class="goods m--block"
                 >
                     <template
                         v-if="showLoaderSending['goods']"
@@ -77,7 +58,7 @@
                     <template
                         v-else-if="goods && countGoods"
                     >    
-                        <div class="goods__title">
+                        <div class="goods__title h2">
                             Товары <span>({{ countGoods }})</span>
                         </div>
                         <div class="goods__block">
@@ -85,6 +66,7 @@
                                 v-for="item in goods"
                                 :key="`good-${item.id}`"
                                 :good="item"
+                                :showCategory="true"
                                 :showOrganization="true"
                             />
                         </div>
@@ -102,7 +84,7 @@
                         />
                     </div>
                 </div>
-                <div class="tenders">
+                <div class="tenders m--block">
                     <template
                         v-if="showLoaderSending['tenders'] && !tenders"
                     >
@@ -113,14 +95,13 @@
                     <template
                         v-else-if="tenders && countTenders"
                     >
-                        <div class="tenders__title">
+                        <div class="tenders__title h2">
                             Тендеры <span>({{ countTenders }})</span>
                         </div>    
-                        <blockTenderMini
+                        <blockTender
                             v-for="(tender, index) in tenders"
                             :key="`tender-${index}`"
                             :tender="tender"
-                            :whole="true"
                         />
                         <template
                             v-if="showLoaderSending['tenders']"
@@ -150,14 +131,14 @@
 <script>
     import { category as api } from "@/services"
     import blockGoodsItem from '@/components/block-goods-item.vue';
-    import blockTenderMini from '@/components/block-tender-mini.vue';
+    import blockTender from '@/components/block-tender.vue';
     import Pagination from '@/components/pagination.vue'
 
     export default {
         name: 'Group',
         components: {
             blockGoodsItem,
-            blockTenderMini,
+            blockTender,
             Pagination,
         },
         props: {

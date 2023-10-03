@@ -1,33 +1,25 @@
 <template>
     <div class="app__main">
-        <div class="cabinet participant">
+        <div class="cabinet customer">
             <div class="container">
-                <div class="app__breadcrumbs">
-                    <router-link
-                        :to="{ name: 'home' }"
-                        class="app__breadcrumbs-link"
-                    >
-                        Главная
-                    </router-link>
-                    <router-link
-                        :to="{ name: 'cabinet' }"
-                        class="app__breadcrumbs-link"
-                    >
-                        Кабинет
-                    </router-link>
-                </div>
-                <div class="participant__info">
-                    <div class="participant__title h1">
+                <app-breadcrumbs 
+                    :breadcrumbs="[
+                        { name: 'Главная', route: { name: 'home' } },
+                        { name: 'Кабинет', route: { name: 'cabinet' } },
+                    ]"
+                />
+                <div class="customer__info">
+                    <div class="customer__title h1">
                         Я - Заказчик
                     </div>
                     <div 
                         v-if="!$route.name.match(/^start-/)"
-                        class="participant__tabs tabs"
+                        class="customer__tabs tabs"
                     >
                         <button 
                             v-for="item in tabsItems"
                             :key="`tab-${item.name}`"
-                            :class="['tabs__item', item.class, currentTabsItem === item.name && 'is-active']"
+                            :class="['tabs__item', item.class, (currentTabsItem === item.name || $route.matched.some(record => record.name === item.name)) && 'is-active']"
                             @click.prevent="changeTab(item.name)"
                         >
                             {{ item.label }}
@@ -57,7 +49,7 @@
                     name: 'customer-current'
                 }, {
                     label: 'Закрытые',
-                    name: 'private-tender',
+                    name: 'customer-private',
                     icon: 'm--private'
                 }, {
                     label: 'Завершенные',
@@ -71,14 +63,14 @@
                     name: 'tender-start',
                     class: 'm--right button'
                 }],
-                currentTabsItem: this.$route.name || 'participant-invites',
+                currentTabsItem: this.$route.name || 'customer-current',
             }
         },
         watch: {
             '$route.name': {
                 immediate: true,
                 handler() {
-                    this.currentTabsItem = this.$route.name || 'participant-invites';
+                    this.currentTabsItem = this.$route.name || 'customer-current';
                 },
             },
         },

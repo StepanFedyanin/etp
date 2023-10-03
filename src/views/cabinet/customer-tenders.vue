@@ -1,5 +1,8 @@
 <template>
-    <div class="tenders m--block">
+    <div 
+        v-if="$route.name === 'customer-current' || $route.name === 'customer-closed'"
+        class="tenders m--block"
+    >
         <div class="tenders__search">
             <div 
                 v-if="tenders && tenders.count"
@@ -44,23 +47,32 @@
             />
         </div>
     </div>
+    <router-view v-else />
 </template>
 
 <script>
-    import { tender as tenderApi } from "@/services"
-    import blockTender from '@/components/block-tender.vue';
+    import { tender as api } from "@/services";
+    //import Search from '@/components/app-search.vue';
     import Pagination from '@/components/pagination.vue';
+    import blockTender from '@/components/block-tender.vue';
 
     export default {
         components: {
-            blockTender,
-            Pagination
+            //Search,
+            Pagination,
+            blockTender
+        },
+        props: {
+            status: {
+                type: String,
+                default() { return null; }
+            },
         },
         data() {
             return {
                 limit: 10,
                 tenders: {},
-                showLoaderSending: false,
+                showLoaderSending: false
             }
         },
         computed: {
@@ -77,41 +89,70 @@
                 if (this.$route.query.page) {
                     this.$router.replace({ query: {} })
                 } else {
-                    this.getListPrivateTenders()
+                    this.getTenders()
                 }
+            },
+            'status': {
+                handler() {
+                    this.getTenders()
+                },
             },
             '$route.query.page': {
                 handler() {
-                    this.getListPrivateTenders()
+                    this.getTenders()
                 },
             }
         },
         created() {
         },
         mounted() {
-            this.getListPrivateTenders();
+            console.log(this.status);
+            this.getTenders()
         },
         methods: {
-            getListPrivateTenders(){
+            getTenders() {
                 let limit = Number(this.limit)
                 let params = {
                     limit,
                     offset: this.offset,
-                    type: 'reduction_closed'
+                    organization: 1
                 }
+                if (this.status === 'currents') {
+                    this.showLoaderSending = true;
+                    api.getMyCurrentsTenders(params).then(tenders => {
+                        this.tenders = tenders
+                        this.showLoaderSending = false;
+                        console.log(tenders)
+                    }).catch(err => {
+                        this.showLoaderSending = false;
+                        console.error(err)
+                    })
+                } else if (this.status === 'closed') {
+                    this.showLoaderSending = true;
+                    api.getMyClosedTenders(params).then(tenders => {
+                        this.tenders = tenders
+                        this.showLoaderSending = false;
+                        console.log(tenders)
+                    }).catch(err => {
+                        this.showLoaderSending = false;
+                        console.error(err)
+                    })
+                }
+            },
+            startSearch(formData) {
+                formData.limit = Number(this.limit)
+                formData.offset = this.offset
+                console.log(formData)
                 this.showLoaderSending = true;
-                tenderApi.getTendersPrivates(params).then(tenders => {
-                    // if (tenders.type==="reduction_closed") {
-                    //     this.tenders = tenders;
-                    // }
-                    this.tenders = tenders;
+                api.searchTenders(formData).then(tenders => {
+                    this.tenders = tenders
                     this.showLoaderSending = false;
-                    console.log(tenders);
+                    console.log(tenders)
                 }).catch(err => {
                     this.showLoaderSending = false;
-                    console.error(err);
+                    console.error(err)
                 })
-            },
+            }
         }
     };
 </script>
