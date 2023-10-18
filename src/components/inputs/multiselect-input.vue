@@ -18,6 +18,7 @@
         :close-on-select="closeOnSelect"
         :resolve-on-load="resolveOnLoad"
         :noOptionsText="noOptionsText"
+        :readonly="props.context.attrs.readonly"
         noResultsText="Результатов не найдено"
         @change="handleSelect"
         @search-change="searchChange"
@@ -184,8 +185,12 @@
             if (searchable)
                 multiselect.value.clearSearch()
 
-            if (Array.isArray(v.value) && !v.value.length)
-                return
+            if (Array.isArray(v.value) && !v.value.length) {
+                if (v.value) {
+                    multiselect.value.select(v.value)
+                }
+                return;
+            }
             if (v.value) {
                 multiselect.value.select(v.value)
             }

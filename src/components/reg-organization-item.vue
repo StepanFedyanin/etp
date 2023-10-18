@@ -1,36 +1,31 @@
 <template>
-    <div class="organization__item">
+    <div 
+        :class="['organization__item', organization.color_status === 'red' ? 'm--disabled' : '']"
+    >
         <div 
-            class="organization__box"
-            :class="organization.color_status"
+            :class="['organization__item-box', `m--${organization.color_status}`]"
+            @click.prevent="organization.color_status !== 'red' ? onClickRegister() : null"
         >
-            <div class="organization__options ">
-                <div class="option">
-                    <span>ИНН </span><span class="option--bold">{{ organization.inn }}</span> 
+            <div class="organization__item-options">
+                <div class="organization__item-option">
+                    <span>ИНН </span><strong>{{ organization.inn }}</strong> 
                 </div>
                 <div
                     v-if="organization.kpp" 
-                    class="option"
+                    class="organization__item-option"
                 >
-                    <span>КПП </span><span class="option--bold"> {{ organization.kpp }}</span>
+                    <span>КПП </span><strong> {{ organization.kpp }}</strong>
                 </div>
             </div>
-            <div class="organization__options">
-                <div class="option">
+            <div class="organization__item-options">
+                <div class="organization__item-option">
                     {{ organization.name }}{{ organization.filial ? ", филиал" : "" }}
                 </div>
-                <div class="option">
+                <div class="organization__item-option">
                     {{ organization.legal_address }}
                 </div>
             </div>
         </div>
-        <button
-            v-if="organization.color_status !== 'red'"
-            class="button button-green"
-            @click="onClickRegister"
-        >
-            Зарегистрироваться
-        </button>
     </div>
 </template>
 <script>
@@ -46,6 +41,7 @@
         },
         methods: {
             onClickRegister() {
+                console.log('onClickRegister');
                 this.$emit('registerCompany', this.organization);
             },
         }

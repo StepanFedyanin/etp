@@ -27,6 +27,12 @@
                 </div>
                 <div class="cabinet__content">
                     <div 
+                        v-if="currentTabsItem === 'account'"
+                        class="profile__tab"
+                    >
+                        <ProfileAccount />
+                    </div>
+                    <div 
                         v-if="currentTabsItem === 'public'"
                         class="profile__tab"
                     >
@@ -49,11 +55,13 @@
 
 <script>
     import { user as api } from "@/services";
+    import ProfileAccount from '@/components/profile-account.vue';
     import ProfileEdit from '@/components/forms/profile-edit.vue';
     import ProfileNotifications from '@/components/forms/profile-notifications.vue';
 
     export default {
         components: {
+            ProfileAccount,
             ProfileEdit,
             ProfileNotifications
         },

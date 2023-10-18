@@ -6,6 +6,14 @@ export default class extends REST {
         return settings;
     }
 
+    static addUser(params) {
+        return this._post(``, {}, params).then((data) => {
+            return data;
+        }).catch((error) => {
+            throw new RESTError(error, 'Не удалось зарегистрировать пользователя');
+        });
+    }
+
     static obtainToken(params) {
         return this._post('token/create', {}, params).then((data) => {
             return data;
@@ -22,14 +30,6 @@ export default class extends REST {
         });
     }
 
-    static updatePassword(params) {
-        return this._post('update_password', {}, params).then((data) => {
-            return data;
-        }).catch((error) => {
-            throw new RESTError(error, 'Ошибка при смене пароля', { request: { params } });
-        });
-    }
-
     static recoveryPassword(params) {
         return this._post('password_reset_user', {}, params).then((data) => {
             return data;
@@ -38,30 +38,63 @@ export default class extends REST {
         });
     }
 
-    static getMyProfile() {
-        return this._get('profile', {}).then((data) => {
+
+    /* Организации */
+
+    static getOrganizations(params) {
+        return this._get(`organizations`, params, params).then((data) => {
             return data;
         }).catch((error) => {
-            throw new RESTError(error, 'Ошибка при получении профиля');
+            throw new RESTError(error, 'Не удалось получить организации');
         });
     }
 
-    static updateMyProfile(params) {
-        return this._patch('update_user', {}, params).then((data) => {
+    static getOrganization(id, params) {
+        return this._get(`organizations/${id}`, {}, params).then((data) => {
             return data;
         }).catch((error) => {
-            throw new RESTError(error, 'Ошибка при обновлении профиля');
+            throw new RESTError(error, 'Не удалось получить организацию');
         });
     }
 
-    /* New */
-    static addUser(params) {
-        return this._post(``, {}, params).then((data) => {
+    /* ????????  */
+    static getCreatedTenders(id, params) {
+        return this._get(`organizations/${id}/created_tenders`, {}, params).then((data) => {
             return data;
         }).catch((error) => {
-            throw new RESTError(error, 'Не удалось зарегистрировать пользователя');
+            throw new RESTError(error, 'Ошибка при получении тендеров организации');
         });
     }
+
+    /* ????????  */
+    static getParticipationTenders(id, params) {
+        return this._get(`organizations/${id}/participation_tenders`, {}, params).then((data) => {
+            return data;
+        }).catch((error) => {
+            throw new RESTError(error, 'Ошибка при получении тендеров организации участника');
+        });
+    }
+
+    /* ????????  */
+    static getOrganizationProducts(id, params) {
+        return this._get(`organizations/${id}/products`, {}, params).then((data) => {
+            return data;
+        }).catch((error) => {
+            throw new RESTError(error, 'Не удалось получить товары организации');
+        });
+    }
+
+    static getOrganizationMembers(id, params) {
+        return this._get(`organizations/${id}/members`, {}, params).then((data) => {
+            return data;
+        }).catch((error) => {
+            throw new RESTError(error, 'Не удалось получить представителей организации');
+        });
+    }
+
+
+
+
 
     /* New */
     static updateUserPartial(params) {
@@ -75,15 +108,7 @@ export default class extends REST {
     }
 
     /* New */
-    static updateUserPhoto(id, params) {
-        return this._patch(`${id}`, {}, params).then((data) => {
-            return data;
-        }).catch((error) => {
-            throw new RESTError(error, 'Ошибка при обновлении профиля', { request: { params } });
-        });
-    }
-
-    /* New */
+    /*
     static getUser(params) {
         return this._get(``, {}, {}).then((data) => {
             return data;
@@ -91,6 +116,7 @@ export default class extends REST {
             throw new RESTError(error, 'Не удалось получить пользователя');
         });
     }
+    */
 
     static addProfile(params) {
         return this._post(`create_user`, {}, params).then((data) => {
@@ -132,29 +158,10 @@ export default class extends REST {
         });
     }
 
-    static searchOrganization(params) {
-        return this._post(`organizations/search`, {}, params).then((data) => {
-            return data;
-        }).catch((error) => {
-            throw new RESTError(error, 'Не удалось осуществить поиск');
-        });
-    }
 
-    static getOrganizationRelatedTenders() {
-        return this._get(`organizations/related_tenders`, {}, {}).then((data) => {
-            return data;
-        }).catch((error) => {
-            throw new RESTError(error, 'Не удалось получить связанные тендеры');
-        });
-    }
 
-    static getOrganizationRelatedLots(params) {
-        return this._get(`organizations/related_lots`, {}, params).then((data) => {
-            return data;
-        }).catch((error) => {
-            throw new RESTError(error, 'Не удалось получить лоты связанного тендера');
-        });
-    }
+
+
 
     static addOrganization(params) {
         return this._post(`organizations`, {}, params).then((data) => {
@@ -172,73 +179,7 @@ export default class extends REST {
         });
     }
 
-    static getOrganizations(params) {
-        return this._get(`organizations`, params, params).then((data) => {
-            return data;
-        }).catch((error) => {
-            throw new RESTError(error, 'Не удалось получить организации');
-        });
-    }
 
-    static getFavoritesOrganizations(params) {
-        return this._get(`organizations/get_favorites`, params, params).then((data) => {
-            return data;
-        }).catch((error) => {
-            throw new RESTError(error, 'Не удалось получить избранные организации');
-        });
-    }
-
-    static getOrganization(id, params) {
-        return this._get(`organizations/${id}`, {}, params).then((data) => {
-            return data;
-        }).catch((error) => {
-            throw new RESTError(error, 'Не удалось получить организацию');
-        });
-    }
-
-    static switchFavoriteOrganization(id) {
-        let params = {
-            organization_id: id
-        }
-        return this._post(`organizations/set_unset_favorite`, {}, params).then((data) => {
-            return data;
-        }).catch((error) => {
-            throw new RESTError(error, 'Ошибка при изменении статуса избранной организации');
-        });
-    }
-
-    // static getMyOrganization(){
-    //     return this._get('organization', {}).then((data) => {
-    //         return data;
-    //     }).catch((error) => {
-    //         throw new RESTError(error, 'Ошибка при получении моей организации');
-    //     });
-    // }
-
-    static getMyOrganizationMembers(params) {
-        return this._get(`organization/profiles`, {}, params).then((data) => {
-            return data;
-        }).catch((error) => {
-            throw new RESTError(error, 'Не удалось получить представителей моей организации');
-        });
-    }
-
-    static getOrganizationMembers(id, params) {
-        return this._get(`organizations/${id}/members`, {}, params).then((data) => {
-            return data;
-        }).catch((error) => {
-            throw new RESTError(error, 'Не удалось получить представителей организации');
-        });
-    }
-
-    /* new */
-    static updateOrganizationLogo(id, params) {
-        return this._patch(`organizations/${id}`, {}, params).then((data) => {
-            return data;
-        }).catch((error) => {
-            throw new RESTError(error, 'Ошибка при обновлении профиля организации');
-        });
-    }
 
     /* new */
     static updateOrganizationPartial(id, params) {
@@ -257,38 +198,6 @@ export default class extends REST {
         });
     }
 
-    static getParticipationTenders(id, params) {
-        return this._get(`organizations/${id}/participation_tenders`, {}, params).then((data) => {
-            return data;
-        }).catch((error) => {
-            throw new RESTError(error, 'Ошибка при получении тендеров');
-        });
-    }
-
-    static getCreatedTenders(id, params) {
-        return this._get(`organizations/${id}/created_tenders`, {}, params).then((data) => {
-            return data;
-        }).catch((error) => {
-            throw new RESTError(error, 'Ошибка при обновлении созданных тендеров');
-        });
-    }
-
-    static getOrganizationProducts(id, params) {
-        return this._get(`organizations/${id}/products`, {}, params).then((data) => {
-            return data;
-        }).catch((error) => {
-            throw new RESTError(error, 'Не удалось получить представителей организации');
-        });
-    }
-
-
-    static sendInvites(params) {
-        return this._post(`send_invites`, {}, params).then((data) => {
-            return data;
-        }).catch((error) => {
-            throw new RESTError(error, 'Не удалось отправить приглашения');
-        });
-    }
 
 
 

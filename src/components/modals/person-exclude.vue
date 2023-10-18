@@ -16,20 +16,20 @@
             class="modal__content text"
         >
             <p 
-                v-if="person.is_master"
+                v-if="excludedSended"
                 class="m--mb-3"
             >
-                <strong>{{ person.full_name }}</strong> лишится прав администратора <strong>{{ organization.name }}</strong>.
+                <strong>{{ person.full_name }}</strong> больше не состоит в организации <strong>{{ organization.name }}</strong>!
             </p>
             <p 
                 v-else
                 class="m--mb-3"
             >
-                <strong>{{ person.full_name }}</strong> станет администратором <strong>{{ organization.name }}</strong> и получит все права на управление организацией.
+                <strong>{{ person.full_name }}</strong> покинет организацию <strong>{{ organization.name }}</strong> и потеряет все имеющиеся права.
             </p>
             <FormKit
-                v-model="formValues"
-                name="form-master"
+                v-model="formData"
+                name="form-exclude"
                 preserve
                 type="form"
                 data-loading="loading"
@@ -44,6 +44,14 @@
                     data-type="submit"
                 >
                     <button
+                        v-if="excludedSended"
+                        :disabled="showLoaderSending"
+                        class="button button-green button-center"
+                    >
+                        Закрыть окно
+                    </button>
+                    <button
+                        v-else
                         type="submit"
                         :disabled="showLoaderSending"
                         class="button button-red button-center"
@@ -75,8 +83,9 @@
         },
         data() {
             return {
-                formValues: {},
+                formData: {},
                 showLoaderSending: false,
+                excludedSended: false,
                 updateData: false,
             };
         },
@@ -88,14 +97,7 @@
         methods: {
             submitHandler(data, node) {
                 this.showLoaderSending = true;
-                let params = {
-                    id: this.person.id,
-                    is_master: !this.person.is_master,
-                    is_access_tender: !this.person.is_master,
-                    is_access_product: !this.person.is_master,
-                    is_access_organization: !this.person.is_master,
-                };
-                cabinet.updateMyOrganizationMemberPartial(params).then(res => {
+                cabinet.excludeMyOrganizationMember(this.person.id).then(res => {
                     console.log(res);
                     this.showLoaderSending = false;
                     this.$emit('hideModal', true);
@@ -106,21 +108,6 @@
                     );
                     this.showLoaderSending = false;
                 });
-
-                /*
-                tenderApi.deleteDraft(this.tender.id).then(res => {
-                    this.showLoaderSending = false;
-                    this.loading = false;
-                    this.deleteSended = true;
-                    this.updateData = true;
-                    console.log(res);
-                }).catch(err => {
-                    this.showLoaderSending = false;
-                    this.loading = false;
-                    this.$store.dispatch('showError', err);
-                    console.error(err);
-                });
-                */
             }
         }
     };

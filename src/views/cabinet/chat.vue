@@ -2,22 +2,12 @@
     <div class="app__main">
         <div class="cabinet chat">
             <div class="container">
-                <div
-                    class="app__breadcrumbs"
-                >
-                    <router-link
-                        :to="{ name: 'home' }"
-                        class="app__breadcrumbs-link"
-                    >
-                        Главная
-                    </router-link>
-                    <router-link
-                        :to="{ name: 'cabinet' }"
-                        class="app__breadcrumbs-link"
-                    >
-                        Кабинет
-                    </router-link>
-                </div>
+                <app-breadcrumbs 
+                    :breadcrumbs="[
+                        { name: 'Главная', route: { name: 'home' } },
+                        { name: 'Кабинет', route: { name: 'cabinet' } },
+                    ]"
+                />
                 <div 
                     v-if="chatId || rooms.length"
                     class="chat__block"

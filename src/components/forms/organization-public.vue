@@ -1,15 +1,11 @@
 <template>
     <div class="profile__user">
-        <template
-            v-if="showLoaderSending"
-        >
+        <template v-if="showLoaderSending">
             <div class="profile__loader loader">
                 <div class="spinner" /> Загрузка данных
             </div>
         </template>
-        <template
-            v-else
-        >
+        <template v-else>
             <FormKit 
                 id="organizationEdit"
                 v-model="formData"
@@ -19,7 +15,7 @@
                 data-loading="loading"
                 form-class="$reset profile__form"
                 :actions="false"
-                :disabled="busyForm"
+                :disabled="busyForm || !user.is_access_organization"
                 :loading="busyForm ? true : undefined"
                 @submit="submitHandler"
             >
@@ -43,7 +39,7 @@
                         <div class="profile__form-logo-block">
                             <div class="profile__form-logo-inner">
                                 <button
-                                    v-if="!formData.logo"
+                                    v-if="!formData.logo && user.is_access_organization"
                                     href="#"
                                     class="button button-outline-green button-width-auto m--small"
                                     @click.prevent="onClickUploadLogo"
@@ -51,13 +47,13 @@
                                     Загрузить лого
                                 </button>
                                 <img 
-                                    v-else
+                                    v-else-if="formData.logo"
                                     :src="formData.logo"
                                 />
                             </div>
                         </div>
                         <div 
-                            v-if="formData.logo"
+                            v-if="formData.logo && user.is_access_organization"
                             class="profile__form-logo-links" 
                         >
                             <a
@@ -100,7 +96,7 @@
                 >
                     <button
                         type="submit"
-                        :disabled="busyForm"
+                        :disabled="busyForm || !this.user.is_access_organization"
                         class="button button-green"
                     >
                         Сохранить изменения
@@ -112,7 +108,13 @@
 </template>
 <script>
     import { selfPath } from '@/settings';
-    import { user as api } from '@/services';
+    import { cabinet, geo as geoApi } from '@/services';
+
+    function phoneLen(node) {
+        const value = node.value;
+        return value.number?.length === 15 || value.number?.length === 0;
+    }
+
     export default {
         name: 'OrganizationEdit',
         props: {
@@ -126,6 +128,7 @@
                 selfPath,
                 formData: {},
                 addressMatches: false,
+                disabledCountry: false,
                 busyForm: false,
                 showLoaderSending: false,
                 schema: [
@@ -137,14 +140,13 @@
                         $formkit: 'textarea',
                         id: 'address',
                         name: 'actual_address',
-                        disabled: !this.addressMatches ? false : true,
+                        disabled: this.addressMatches ? true : this.$store.state.user.is_access_organization ? false : true,
                         label: 'Фактический адрес организации',
                         placeholder: 'Свердловская обл., г. Артемовский, ул. Дзержинского, Д. 1, К. Д, 623784',
                     }, {
                         $formkit: 'checkbox',
                         id: 'address_matches',
                         name: 'address_matches',
-                        disabled: false,
                         label: 'Совпадает с юридическим',
                         outerClass: 'm--left'
                     }, {
@@ -154,13 +156,16 @@
                         placeholder: 'https://example.ru',
                         // outerClass: 'field--required',
                     }, {
-                        $formkit: 'maska',
+                        $formkit: 'phoneWithCode',
                         name: 'contact_phone',
+                        maska: { mask: '(###) ###-##-##' },
                         label: 'Контактный телефон организации',
-                        placeholder: '+7 (999) 999 99 99',
-                        // disabled: this.busyForm,
-                        // outerClass: 'field--required',
-                        maska: { mask: 'P*', tokens: { 'P': { pattern: /\+|-|\(|\)|[0-9]/ }}}
+                        placeholder: '(XXX) XXX-XX-XX',
+                        validationRules: { phoneLen },
+                        validation: 'phoneLen',
+                        options: async () => { return await this.getCountryList() },
+                        disabledCountry: this.$store.state.user.organization.country ? true : false,
+                        classes: { multiselect: 'multiselect m--phone-code' },
                     }, {
                         $formkit: 'text',
                         name: 'contact_email',
@@ -211,6 +216,9 @@
             organization() {
                 return this.$store.state.user.organization || {};
             },
+            user() {
+                return this.$store.state.user || {};
+            },
         },
         watch: {
             'formData.address_matches': {
@@ -219,6 +227,7 @@
                     const node = this.$formkit.get('address');
                     if (node) {
                         node.props.disabled = this.addressMatches;
+                        if (!this.user.is_access_organization) node.props.disabled = true;
                     }
                     if (this.addressMatches) {
                         this.formData.actual_address = this.formData.legal_address;
@@ -230,14 +239,52 @@
             this.getMyProfile();
         },
         methods: {
+            async getCountryList() {
+                return await geoApi.getCountries().then(countries => {
+                    if (countries) {
+                        let options = countries.map( country => {
+                            return { 
+                                label: country.code_phone, 
+                                value: {
+                                    id: country.id,
+                                    name: country.name,
+                                    code_phone: country.code_phone,
+                                }, 
+                            }
+                        });
+                        return options;
+                    } else {
+                        console.log('No getCountries data')
+                    }
+                }).catch(err => {
+                    console.error(err)
+                })
+            },
             getMyProfile() {
                 this.showLoaderSending = true;
-                api.getUser().then(res => {
+                cabinet.getMyProfile().then(res => {
                     this.formData = res.organization || {};
-                    if (this.formData.actual_address === this.formData.legal_address) {
-                        this.formData.address_matches = true;
+                    let organization = Object.assign({}, res.organization);
+                    if (!this.formData.contact_phone?.number) {
+                        this.formData.contact_phone = {
+                            country: {
+                                label: organization.contact_phone?.substring(0, organization.contact_phone?.length - 10),
+                                value: {
+                                    id: organization.country,
+                                    code_phone: organization.contact_phone?.substring(0, organization.contact_phone?.length - 10),
+                                    name: organization.country_name
+                                }
+                            },
+                            number: organization.contact_phone?.substring(organization.contact_phone?.length - 10)
+                        };
+                        if (organization.country) this.disabledCountry = true;
                     }
                     this.showLoaderSending = false;
+                    this.$nextTick(() => {
+                        if (this.formData.actual_address === this.formData.legal_address) {
+                            this.formData.address_matches = true;
+                        }
+                    });
                 }).catch(err => {
                     this.showLoaderSending = false;
                     console.error(err);
@@ -254,8 +301,8 @@
                 const data = new FormData();
                 data.append('logo', '');
                 this.busyForm = true;
-                api.updateOrganizationLogo(this.formData.id, data).then(res => {
-                    api.getUser().then(res => {
+                cabinet.updateOrganizationKonturLogo(this.formData.id, data).then(res => {
+                    cabinet.getMyProfile().then(res => {
                         this.busyForm = false;
                         this.$store.dispatch('setUser', res);
                         this.formData.logo = res.logo;
@@ -276,11 +323,11 @@
                     const data = new FormData();
                     data.append('logo', file);
                     this.busyForm = true;
-                    api.updateOrganizationLogo(this.formData.id, data).then(res => {
-                        api.getUser().then(res => {
+                    cabinet.updateOrganizationKonturLogo(this.formData.id, data).then(res => {
+                        cabinet.getMyProfile().then(res => {
                             this.busyForm = false;
                             this.$store.dispatch('setUser', res);
-                            this.formData.logo = res.logo;
+                            this.formData.logo = res.organization.logo;
                         }).catch(err => {
                             this.busyForm = false;
                             this.$store.dispatch('showError', err);
@@ -295,19 +342,28 @@
             },
             submitHandler(formData, node) {
                 this.busyForm = true;
+                let params = Object.assign({}, this.formData);
                 const data = new FormData();
                 this.schema.forEach(item => {
                     if (item.name) {
-                        data.append(item.name, formData[item.name]);
+                        if (item.name === 'contact_phone') {
+                            params.country = params.contact_phone.country?.value?.id;
+                            data.append('country', params.country);
+                            params.contact_phone = params.contact_phone?.country?.value?.code_phone + params.contact_phone?.number;
+                            params.contact_phone = params.contact_phone?.replace(/ /g,'').replace(/-/g,'').replace(/\(/g,'').replace(/\)/g,'');
+                            data.append('contact_phone', params.contact_phone);
+                        } else {
+                            data.append(item.name, params[item.name]);
+                        }
                     }
                     if (item.children && Array.isArray(item.children)) {
                         item.children.forEach(sitem => {
-                            data.append(sitem.name, formData[sitem.name]);
+                            data.append(sitem.name, params[sitem.name]);
                         });
                     }
                 });
-                api.updateOrganizationPartial(formData.id, data).then(res => {
-                    api.getUser().then(res => {
+                cabinet.updateOrganizationKonturPartial(formData.id, data).then(res => {
+                    cabinet.getMyProfile().then(res => {
                         this.busyForm = false;
                         this.$store.dispatch('setUser', res);
                     }).catch(err => {

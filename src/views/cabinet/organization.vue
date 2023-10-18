@@ -115,7 +115,7 @@
 </template>
 
 <script>
-    import { user as api } from "@/services";
+    import { user as api, cabinet } from "@/services";
     //import blockOrganization from '@/components/block-organization.vue';
     import blockTenderMini from '@/components/block-tender-mini.vue';
     import OrganizationGoods from '@/components/organization-goods.vue';
@@ -139,8 +139,8 @@
                 contragent:{},
                 organization: {},
                 organizationid: {},
-                participationTenders: {},
-                createdTenders: {},
+                //participationTenders: {},
+                //createdTenders: {},
                 limitParticipation: 5,
                 offsetParticipation: 0,
                 limitCreated: 5,
@@ -184,11 +184,11 @@
         methods: {
             getMyProfile() {
                 this.loading = true;
-                api.getUser().then(res => {
+                cabinet.getMyProfile().then(res => {
                     this.profile = res;
                     this.organization = res.organization || {};
-                    this.getCreatedTenders();
-                    this.getParticipationTenders();
+                    //this.getCreatedTenders();
+                    //this.getParticipationTenders();
                     this.loading = false;
                 }).catch(err => {
                     this.loading = false;
@@ -198,6 +198,7 @@
             onClickEditOrganization() {
                 this.$router.push({ name: 'organization-edit'});
             },
+            /*
             getParticipationTenders(){
                 api.getParticipationTenders(this.organization.id, {limit: this.limit, offset: this.offsetParticipation}).then(res =>{
                     if(this.offsetParticipation===0){
@@ -220,6 +221,7 @@
                     this.countCreatedTenders = this.createdTenders.results.length;
                 });
             },
+            */
             changeTab(name) {
                 this.currentTabsItem = name;
                 this.$router.push({ name: this.$route.name, hash: `#${name}` });

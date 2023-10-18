@@ -130,6 +130,19 @@
             margin-bottom: 0;
         }
     }
+
+    &.m--dots {
+        li {
+            padding-left: 1rem;
+            &:before {
+                content: '•';
+                top: 0;
+                height: auto;
+                width: auto;
+                background: none;
+            }
+        }
+    }
 }
 
 @define-mixin ol {

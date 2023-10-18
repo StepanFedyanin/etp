@@ -54,7 +54,7 @@
                 <div class="tender__status-block">
                     <button 
                         class="button button-green"
-                        @click="onClickRequestPartipation()"
+                        @click="user.id ? onClickRequestPartipation() : $router.push({ name: 'registration' })"
                     >
                         Подать заявку
                     </button>
@@ -200,6 +200,9 @@
             }
         },
         computed: {
+            user() {
+                return this.$store.state.user;
+            },
         },
         mounted() {
         },

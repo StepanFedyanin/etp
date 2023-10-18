@@ -245,9 +245,6 @@
             </div>
             <div class="goods">
                 <div class="container m--1460">
-                    <div class="goods__title h1">
-                        Новые товары
-                    </div>
                     <template
                         v-if="showLoaderGoods"
                     >
@@ -258,9 +255,18 @@
                     <template
                         v-else
                     >    
+                        <div class="goods__title h2">
+                            Новые товары
+                            <div
+                                class="goods__title-more"
+                                @click="$router.push({ name: 'products' })"
+                            >
+                                <span>Показать все <span>({{ goods?.count }})</span></span>
+                            </div>
+                        </div>
                         <div class="goods__block">
                             <blockGoodsItem
-                                v-for="item in goods"
+                                v-for="item in goods?.results"
                                 :key="`good-${item.id}`"
                                 :good="item"
                                 :showOrganization="true"
@@ -493,7 +499,7 @@
                 };
                 this.showLoaderGoods = true;
                 product.getProducts(params).then(res => {
-                    this.goods = res.results;
+                    this.goods = res;
                     this.showLoaderGoods = false;
                     console.log(res)
                 }).catch(err => {

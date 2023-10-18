@@ -284,8 +284,8 @@
                             role: 'all',
                             title: 'Настройки организации',
                         }, {
-                            name: 'organization',
-                            hash: '#registration',
+                            name: 'organization-registration',
+                            //hash: '#registration',
                             icon: 'tugan',
                             role: 'all',
                             title: 'Зарегистрировать организацию',
@@ -331,6 +331,11 @@
                         }]
                     ],
                     organization: [
+                        [{
+                            name: 'cabinet',
+                            role: 'all',
+                            title: 'Мой кабинет',
+                        }], 
                         [{
                             name: null,
                             role: 'all',

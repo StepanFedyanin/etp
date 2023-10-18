@@ -2,6 +2,12 @@
     <div class="app__main">
         <div class="cabinet invite">
             <div class="container">
+                <app-breadcrumbs 
+                    :breadcrumbs="[
+                        { name: 'Главная', route: { name: 'home' } },
+                        { name: 'Кабинет', route: { name: 'cabinet' } },
+                    ]"
+                />
                 <h1 class="h1">
                     Пригласить партнеров
                 </h1>

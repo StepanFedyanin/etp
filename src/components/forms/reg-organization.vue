@@ -5,7 +5,7 @@
         name="form-organization"
         type="form"
         data-loading="loading"
-        form-class="$reset registration__form form"
+        form-class="$reset organization__form form"
         :actions="false"
         :disabled="loading"
         :loading="loading ? true : undefined"

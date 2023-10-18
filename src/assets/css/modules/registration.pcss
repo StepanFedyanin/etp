@@ -6,6 +6,24 @@
         display: block;
     }
 
+    &__step {
+        &.m--step-1 {
+            display: flex;
+            flex-direction: row-reverse;
+            gap: 2rem;
+
+            @mixin responsive-le-l {
+                flex-direction: column;
+            }
+        }
+
+        &-alert {
+            @mixin shadow-box;
+            padding: 1rem;
+            margin-bottom: auto;
+            max-width: 640px;
+        }
+    }
 
     &__block {
         max-width: 380px;
@@ -142,6 +160,8 @@
             max-width: inherit;
         }
     }
+
+    /* ???? */
     &__alert{
         background: $color-white;
         padding: 22px 20px;

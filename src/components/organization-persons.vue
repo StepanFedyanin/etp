@@ -37,7 +37,7 @@
 
 <script>
     //import { urlPath } from '@/settings'
-    import { user as api } from '@/services'
+    import { cabinet } from '@/services'
     import blockPersons from '@/components/block-persons.vue';
 
     export default {
@@ -73,7 +73,7 @@
         methods: {
             getMembers() {
                 this.showLoaderSending = true;
-                api.getMyOrganizationMembers().then(res => {
+                cabinet.getMyOrganizationMembers().then(res => {
                     this.showLoaderSending = false;
                     this.persons = res;
                 }).catch(err => {
@@ -82,7 +82,7 @@
                 });
             },
             onClickAddStaff() {
-                this.$router.push({ name: 'organization-add-person'});
+                this.$router.push({ name: 'organization-person-add'});
             },
 
         },

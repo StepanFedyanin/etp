@@ -5,6 +5,12 @@
         width: 100%;
     }
 
+    &.m--no--comments {
+        .field__comment {
+            display: none;
+        }
+    }
+
     &__block {
         &-title {
             width: 100%;
@@ -100,6 +106,7 @@
         -webkit-animation: rotate .75s linear infinite;
         animation: rotate .75s linear infinite;
         width: 1.28571428em;
+        min-width: 1.28571428em;
         border: 3px solid $color-white;
         border-right-color: $color-white;
         border-right-color: transparent;

@@ -55,7 +55,7 @@
 </template>
 
 <script>
-    import { user as api } from "@/services";
+    import { user as api, cabinet } from "@/services";
     import ModalRecoveryPassword from '@/components/modal-recovery-password.vue'
 
     export default {
@@ -98,6 +98,11 @@
                 ]
             }
         },
+        computed: {
+            user() {
+                return this.$store.state.user;
+            },
+        },
         mounted() {
             this.$store.dispatch('deathUser');
         },
@@ -109,7 +114,7 @@
                 api.obtainToken(params).then(res => {
                     if (res.access && res.refresh) {
                         this.$store.dispatch('setToken', res);
-                        api.getUser().then(res => {
+                        cabinet.getMyProfile().then(res => {
                             this.showLoaderSending = false;
                             this.$store.dispatch('setUser', res);
                             this.next('cabinet');

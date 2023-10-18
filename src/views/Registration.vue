@@ -41,7 +41,7 @@
 </template>
 
 <script>
-    import { user as api, geo as geoApi } from "@/services";
+    import { user as api, geo as geoApi, cabinet } from "@/services";
 //    import regSearchForm from '@/components/forms/reg-search-form';
 //    import regOrganizationForm from '@/components/forms/reg-organization-form';
 //    import regPersonForm from '@/components/forms/reg-person-form';
@@ -64,6 +64,15 @@
         },        
         data() {
             return {
+                formData: {
+                    phone: {
+                        country: {
+                            id: 1,
+                            cond_phone: '+7',
+                            name: 'Россия'
+                        }
+                    }
+                },
                 regTabs: [
                     {
                         name: 'auth',
@@ -95,39 +104,6 @@
                         placeholder: 'Не менее 8 символов',
                         validation: 'required',
                         outerClass: 'field--required'
-                    /*
-                    }, {
-                        $formkit: 'multiselect',
-                        name: 'country',
-                        searchable: true,
-                        minChars: 1,
-                        canClear: false,
-                        validation: 'required',
-                        options: async () => {
-                            return await geoApi.getCountries()
-                                .then(countries => {
-                                    if (countries) {
-                                        let options = countries.map( country => {
-                                            if (!this.formData.country && country.name === 'Россия') this.formData.country = country;
-                                            return { label: country.code_phone, value: country, country: country.name }
-                                        })
-                                        return options
-                                    } else {
-                                        console.log('No getCountries data')
-                                    }
-                                }).catch(err => {
-                                    console.error(err)
-                                })
-                        },
-                        country: true,
-                        object: true,
-                        //resolveOnLoad: false,
-                        classes: { multiselect: 'multiselect m--phone-code' },
-                        inputClass: 'tender-form__select',
-                        helpClass: 'tender-form__hidden',
-                        labelClass: 'tender-form__label',
-                        outerClass: 'tender-form__field m--half'
-                    */
                     }, {
                         $formkit: 'phoneWithCode',
                         name: 'phone',
@@ -142,7 +118,8 @@
                                     if (countries) {
                                         let options = countries.map( country => {
                                             // if (!this.formData.phone?.country && country.name === 'Россия') this.formData.phone.country = { label: country.code_phone, value: country, country: country.name };
-                                            return { label: country.code_phone, 
+                                            return { 
+                                                label: country.code_phone, 
                                                 value: {
                                                     id: country.id,
                                                     name: country.name,
@@ -151,6 +128,12 @@
                                                 country: country.name 
                                             }
                                         })
+                                        /*
+                                        console.log(options[0]);
+                                        this.formData.phone = {
+                                            country: options[0].value
+                                        };
+                                        */
                                         return options
                                     } else {
                                         console.log('No getCountries data')
@@ -184,15 +167,6 @@
                         outerClass: 'field--required'
                     }
                 ],
-                formData: {
-                    phone: {
-                        country: {
-                            id: 1,
-                            name: 'Россия',
-                            code_phone: '+7'
-                        }
-                    }
-                },
                 showLoaderSending: false,
             };
         },
@@ -215,7 +189,7 @@
                     console.log(res);
                     if (res.access && res.refresh) {
                         this.$store.dispatch('setToken', res);
-                        api.getUser().then(res => {
+                        cabinet.getMyProfile().then(res => {
                             this.showLoaderSending = false;
                             this.$store.dispatch('setUser', res);
                             //if (this.$metrika) this.$metrika.reachGoal('reg_3');

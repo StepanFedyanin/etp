@@ -11,44 +11,53 @@
         >
             <span />
         </button>
-        <span class="modal__title">Предупреждение</span>
-        <div 
-            class="modal__content text"
-        >
-            <p 
-                v-if="person.is_master"
-                class="m--mb-3"
-            >
-                <strong>{{ person.full_name }}</strong> лишится прав администратора <strong>{{ organization.name }}</strong>.
-            </p>
-            <p 
-                v-else
-                class="m--mb-3"
-            >
-                <strong>{{ person.full_name }}</strong> станет администратором <strong>{{ organization.name }}</strong> и получит все права на управление организацией.
-            </p>
+        <span class="modal__title">Новый пароль сотрудника</span>
+        <div class="modal__content">
+            <div class="text">
+                <p class="m--mb-2">
+                    <strong>{{ person.full_name }}</strong>
+                </p>
+            </div>
             <FormKit
-                v-model="formValues"
-                name="form-master"
+                v-model="formData"
+                name="form-password"
                 preserve
                 type="form"
                 data-loading="loading"
-                form-class="$reset form m--width-100"
+                form-class="$reset form m--width-100 m--no--comments"
                 :actions="false"
                 :disabled="showLoaderSending"
                 :loading="showLoaderSending ? true : undefined"
                 @submit="submitHandler"
             >
+                <div
+                    v-if="changedSended" 
+                    class="text"
+                >
+                    Пароль сотрудника изменен!
+                </div>
+                <FormKitSchema 
+                    v-else
+                    :schema="schema" 
+                />
                 <div 
                     class="form__submit" 
                     data-type="submit"
                 >
                     <button
+                        v-if="changedSended"
+                        :disabled="showLoaderSending"
+                        class="button button-green button-center"
+                    >
+                        Закрыть окно
+                    </button>
+                    <button
+                        v-else
                         type="submit"
                         :disabled="showLoaderSending"
-                        class="button button-red button-center"
+                        class="button button-green button-center"
                     >
-                        Подтвердить
+                        Изменить пароль
                     </button>
                 </div>
             </FormKit>
@@ -75,8 +84,26 @@
         },
         data() {
             return {
-                formValues: {},
+                formData: {},
+                schema: [
+                    {
+                        $formkit: 'password',
+                        name: 'password',
+                        label: 'Новый пароль',
+                        placeholder: "Введите пароль",
+                        validation: 'required|confirm',
+                        outerClass: 'field--required'
+                    }, {
+                        $formkit: 'password',
+                        name: 'password_confirm',
+                        label: 'Подтверждение пароля',
+                        placeholder: "Введите пароль",
+                        validation: 'required|confirm',
+                        outerClass: 'field--required'
+                    }
+                ],
                 showLoaderSending: false,
+                changedSended: false,
                 updateData: false,
             };
         },
@@ -90,10 +117,7 @@
                 this.showLoaderSending = true;
                 let params = {
                     id: this.person.id,
-                    is_master: !this.person.is_master,
-                    is_access_tender: !this.person.is_master,
-                    is_access_product: !this.person.is_master,
-                    is_access_organization: !this.person.is_master,
+                    password: !this.formData.password
                 };
                 cabinet.updateMyOrganizationMemberPartial(params).then(res => {
                     console.log(res);
@@ -106,21 +130,6 @@
                     );
                     this.showLoaderSending = false;
                 });
-
-                /*
-                tenderApi.deleteDraft(this.tender.id).then(res => {
-                    this.showLoaderSending = false;
-                    this.loading = false;
-                    this.deleteSended = true;
-                    this.updateData = true;
-                    console.log(res);
-                }).catch(err => {
-                    this.showLoaderSending = false;
-                    this.loading = false;
-                    this.$store.dispatch('showError', err);
-                    console.error(err);
-                });
-                */
             }
         }
     };

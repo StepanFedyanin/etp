@@ -16,6 +16,11 @@ const serviceUrl = {
 let urlPath = `${serviceUrl.url}`;
 let selfPath = `https:${serviceUrl.selfUrl}`;
 
+const cabinet = {
+    url: `${urlPath}/cabinet`,
+    token: 'c7d63a2e58d186ae3760a5f7c690293e973c08c4'
+};
+
 const tender = {
     url: `${urlPath}/tender`,
     token: 'c7d63a2e58d186ae3760a5f7c690293e973c08c4'
@@ -80,6 +85,7 @@ export {
     tender,
     event,
     user,
+    cabinet,
     category,
     common,
     geo,

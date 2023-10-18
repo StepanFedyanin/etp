@@ -149,6 +149,7 @@
             display: flex;
             @mixin input;
             padding: 0;
+            border: none;
 
             input,
             .multiselect {
@@ -332,6 +333,14 @@
     &[data-errors=true] .m--group .multiselect-single-label {
         border: none;
         color: $color-red;
+    }
+
+    &[data-disabled=true] .m--group {
+        border: 1px solid $color-gray-bd;
+
+        .input:disabled, input:disabled {
+            border: none;
+        }
     }
 
     &__help {

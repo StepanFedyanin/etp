@@ -68,12 +68,7 @@
                 </div>
             </div>
         </div>
-        <div 
-            v-else
-            class="container"
-        >
-            <router-view />
-        </div>
+        <router-view v-else />
     </div>
 </template>
 

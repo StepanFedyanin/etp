@@ -19,16 +19,16 @@
             v-for="(item, index) in persons"
         >
             <div
-                v-if="item.is_active || user.is_staff || (organization?.id == user.organization?.id)"
+                v-if="user.is_staff || (organization?.id == user.organization?.id)"
                 :key="`person-${item.id}`"
-                :class="['persons__item', !item.is_active && 'm--not-active', !showMore && 'm--short']"
+                :class="['persons__item', !showMore && 'm--short']"
             >
                 <div 
                     class="persons__item-inner"
                     @click.prevent="toggleOpenItem(index)"
                 >
                     <div 
-                        v-if="showActions"
+                        v-if="showMore"
                         class="persons__item-cell"
                     >
                         <span :class="['icon', openedItem[index] ? 'm--arrow-up' : 'm--arrow-down']" />
@@ -77,7 +77,7 @@
                                 Email (аккаунт) <span>{{ item.email || '—' }}</span>
                             </div>
                             <div class="persons__item-more-param">
-                                Контактный email <span>{{ item.contacts_email || '—' }}</span>
+                                Контактный email <span>{{ item.contact_email || '—' }}</span>
                             </div>
                             <div class="persons__item-more-param">
                                 Должность / специализация <span>{{ item.post || '—' }}</span>
@@ -88,7 +88,7 @@
                                 Телефон (аккаунт) <span>{{ item.phone || '—' }}</span>
                             </div>
                             <div class="persons__item-more-param">
-                                Контактный телефон <span>{{ item.contacts_phone || '—' }}</span>
+                                Контактный телефон <span>{{ item.contact_phone || '—' }}</span>
                             </div>
                         </div>
                         <div 
@@ -137,7 +137,7 @@
                                             v-model="item.is_access_tender"
                                             type="checkbox"
                                             :disabled="item.is_master"
-                                            @change="onSwitchPersonParam({ id: item.id, is_access_tenders: item.is_access_tenders })"
+                                            @change="onSwitchPersonParam({ id: item.id, is_access_tender: item.is_access_tender })"
                                         />
                                         <span class="field__decorator" />
                                     </div>
@@ -172,12 +172,14 @@
                         <a 
                             href="#" 
                             class="persons__item-more-link"
+                            @click.prevent="onClickPersonPassword(item)"
                         >
                             Изменить пароль
                         </a>
                         <a 
                             href="#" 
                             class="persons__item-more-link m--color-red"
+                            @click.prevent="onClickPersonExclude(item)"
                         >
                             Исключить из организации
                         </a>
@@ -192,16 +194,34 @@
             :showModal="showPersonMasterModal"
             @hideModal="hidePersonMasterModal"
         />            
+        <ModalPersonExclude
+            :key="`modal-exclude-${person.id}`"
+            :organization="organization"
+            :person="person"
+            :showModal="showPersonExcludeModal"
+            @hideModal="hidePersonExcludeModal"
+        />            
+        <ModalPersonPassword
+            :key="`modal-password-${person.id}`"
+            :organization="organization"
+            :person="person"
+            :showModal="showPersonPasswordModal"
+            @hideModal="hidePersonPasswordModal"
+        />            
     </div>
 </template>
 
 <script>
-    import { user as api } from "@/services";
+    import { cabinet } from "@/services";
     import ModalPersonMaster from '@/components/modals/person-master';
+    import ModalPersonExclude from '@/components/modals/person-exclude';
+    import ModalPersonPassword from '@/components/modals/person-password';
 
     export default {
         components: {
-            ModalPersonMaster
+            ModalPersonMaster,
+            ModalPersonExclude,
+            ModalPersonPassword
         },
         emits: ['updateData'],
         props: {
@@ -226,6 +246,8 @@
                 item: [],
                 openedItem: {},
                 showPersonMasterModal: false,
+                showPersonExcludeModal: false,
+                showPersonPasswordModal: false,
             };
         },
         computed: {
@@ -247,7 +269,7 @@
                 this.openedItem[index] ? delete this.openedItem[index] : this.openedItem[index] = 1;
             },
             onSwitchPersonParam(params) {
-                api.updateProfile(params).then(res => {
+                cabinet.updateMyOrganizationMemberPartial(params).then(res => {
                     console.log(res);
                     //this.$emit('updated');
                 }).catch(err => {
@@ -259,8 +281,18 @@
                 this.person = item;
                 this.showPersonMasterModal = true;
             },
+            onClickPersonExclude(item) {
+                console.log('onClickPersonExclude');
+                this.person = item;
+                this.showPersonExcludeModal = true;
+            },
+            onClickPersonPassword(item) {
+                console.log('onClickPersonPassword');
+                this.person = item;
+                this.showPersonPasswordModal = true;
+            },
             onClickDeletePerson(id) {
-                api.deleteProfile(id).then(res => {
+                cabinet.deleteProfile(id).then(res => {
                     console.log(res);
                     this.$emit('updated');
                 }).catch(err => {
@@ -268,21 +300,28 @@
                 });
             },
             onClickActivatePerson(id) {
-                api.activateProfile(id).then(res => {
+                cabinet.activateProfile(id).then(res => {
                     console.log(res);
                     this.$emit('updated');
                 }).catch(err => {
                     console.error(err);
                 });
             },
-            onClickEditPerson(id){
-                this.$router.push({ name: 'profile-edit-user', params: { id: id } });
+            onClickEditPerson(id) {
+                this.$router.push({ name: 'organization-person-edit', params: { personId: id } });
             },
             hidePersonMasterModal(updateData) {
                 this.showPersonMasterModal = false;
                 if (updateData) this.$emit('updateData');
             },
-
+            hidePersonExcludeModal(updateData) {
+                this.showPersonExcludeModal = false;
+                if (updateData) this.$emit('updateData');
+            },
+            hidePersonPasswordModal(updateData) {
+                this.showPersonPasswordModal = false;
+                if (updateData) this.$emit('updateData');
+            },
         }
     };
 </script>

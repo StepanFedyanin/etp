@@ -39,7 +39,7 @@
 </template>
 
 <script>
-    import { user as api } from "@/services";
+    import { cabinet } from "@/services";
     import BlockContragents from '@/components/block-contragents.vue';
     import Pagination from '@/components/pagination.vue';
 
@@ -94,7 +94,7 @@
                     offset: this.offset
                 }
                 this.showLoaderSending = true;
-                api.getFavoritesOrganizations(params).then(res => {
+                cabinet.getMyFavoritesOrganizations(params).then(res => {
                     this.contragents = res.results;
                     //this.contragents = res;
                     this.count = res.count;

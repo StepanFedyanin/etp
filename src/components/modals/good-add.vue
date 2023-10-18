@@ -326,9 +326,8 @@
                         value: item.id
                     });
                     let childs = list.filter(el => { return el.parent !== parent; });
-                    if (childs.length) categoryList.concat(this.prepareCategoryTree(childs, item.id, level + 1));
+                    if (childs.length) categoryList = categoryList.concat(this.prepareCategoryTree(childs, item.id, level + 1));
                 });
-                console.log(categoryList);
                 return categoryList;
             },
             uploaPhotoComplete(event) {

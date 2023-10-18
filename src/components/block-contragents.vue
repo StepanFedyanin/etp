@@ -86,7 +86,7 @@
 </template>
 
 <script>
-    import { user as userApi } from "@/services"
+    import { cabinet } from "@/services"
     export default {
         components: {
         },
@@ -124,7 +124,7 @@
             },
             toggleFavorite(contragent) {
                 contragent.is_favorite = !contragent.is_favorite;
-                userApi.switchFavoriteOrganization(contragent.id).then(res => {
+                cabinet.switchFavoriteOrganization(contragent.id).then(res => {
                     console.log(res);
                 }).catch(err => {
                     this.$store.dispatch('showError', err);

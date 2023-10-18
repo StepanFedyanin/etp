@@ -11,19 +11,13 @@
             v-else
         >
             <div class="tender-start__title h1">
-                <template
-                    v-if="type === 0"
-                >
+                <template v-if="type === 0">
                     Тендер на понижение 
                 </template>
-                <template
-                    v-else-if="type === 1"
-                >
+                <template v-else-if="type === 1">
                     Запрос цен без исполнения договора 
                 </template>
-                <template
-                    v-else-if="type === 2"
-                >
+                <template v-else-if="type === 2">
                     Запрос цен с исполнением договора 
                 </template>
             </div>
@@ -332,7 +326,7 @@
 </template>
 
 <script>
-    import { tender as tenderApi, category as categoryApi, geo as geoApi, user as userApi, common as commonApi } from "@/services"
+    import { tender as tenderApi, category as categoryApi, geo as geoApi, user as userApi, common as commonApi, cabinet } from "@/services"
     import ModalAddLot from '@/components/modal-add-lot.vue'
     import ModalAddLotFile from '@/components/modal-add-lot-file.vue'
     import { urlPath } from '@/settings'
@@ -505,7 +499,7 @@
                         help: 'Выберите тендер, который вы сейчас проводите, и ваши партнеры будут приглашены к участию в нем',
                         validation: 'required',
                         options: async () => {
-                            return await userApi.getOrganizationRelatedTenders()
+                            return await cabinet.getOrganizationRelatedTenders()
                                 .then(tenders => {
                                     if (tenders) {
                                         this.relatedTenders = tenders;
@@ -535,7 +529,7 @@
                         help: 'Выберите лот, для исполнения которого вы организуете собственную закупку',
                         validation: 'required',
                         options: async () => {
-                            return await userApi.getOrganizationRelatedLots({ tender: this.tenderForm.related_tender })
+                            return await cabinet.getOrganizationRelatedLots({ tender: this.tenderForm.related_tender })
                                 .then(lots => {
                                     if (lots) {
                                         let options = lots.map( lot => {
@@ -699,6 +693,12 @@
                             this.type = 2;
                         }
                     }
+                    /*
+                    this.defaultTender.category = {
+                        fromParent: true,
+                        value: this.defaultTender.category
+                    }
+                    */
                     this.showLoaderSending = false;
                 }).catch(err => {
                     this.showLoaderSending = false;
@@ -737,7 +737,7 @@
                     node_step.props.outerClass = 'm--hidden';
                 }
             }
-            userApi.getOrganizationRelatedTenders().then(tenders => {
+            cabinet.getOrganizationRelatedTenders().then(tenders => {
                 this.relatedTenders = tenders;
                 if (!tenders.length) {
                     const node = this.$formkit.get('add_related');
@@ -794,10 +794,12 @@
                 this.tenderForm.id = false
                 this.tenderForm.name = ''
                 this.tenderForm.min_step = null
+                /*
                 this.tenderForm.category = {
                     fromParent: true,
                     value: []
                 }
+                */
                 this.tenderForm.type = {
                     fromParent: true,
                     value: 'reduction_opened'
@@ -949,10 +951,13 @@
                     fromParent: true,
                     value: this.defaultTender.min_step
                 }
+                this.tenderForm.category = this.defaultTender.category;
+                /*
                 this.tenderForm.category = {
                     fromParent: true,
                     value: this.defaultTender.category.map(cat => {return {value: cat}})
                 }
+                */
                 this.tenderForm.type = {
                     fromParent: true,
                     value: this.defaultTender.type

@@ -1,35 +1,37 @@
 <template>
     <div class="profile__user">
-        <template
-            v-if="showLoaderSending"
-        >
+        <template v-if="showLoaderSending">
             <div class="profile__loader loader">
                 <div class="spinner" /> Загрузка данных
             </div>
         </template>
-        <template
-            v-else
-        >
-            <FormKit 
-                id="profileEdit"
+        <template v-else>
+            <FormKit
                 v-model="formData"
-                name="form-profile-edit"
+                name="form-person"
                 preserve
                 type="form"
-                data-loading="loading"
-                form-class="$reset profile__form"
+                autocomplete="off"
+                data-loading="busyForm"
+                form-class="$reset profile__form form"
                 :actions="false"
                 :disabled="busyForm"
                 :loading="busyForm ? true : undefined"
                 @submit="submitHandler"
             >
+                <div v-if="personId" class="h2">
+                    {{ person.last_name }} {{ person.first_name }} {{ person.patronymic }}
+                </div>
                 <div class="form profile__form-block">
                     <div class="profile__form-main">
                         <FormKitSchema 
                             :schema="schema" 
                         />
                     </div>
-                    <div class="profile__form-logo">
+                    <div 
+                        v-if="personId"
+                        class="profile__form-logo"
+                    >
                         <div class="field__input m--hidden">
                             <input
                                 id="photo"
@@ -85,18 +87,17 @@
                     <button
                         type="submit"
                         :disabled="busyForm"
-                        class="button button-green"
+                        class="button button-green m--nowrap"
                     >
-                        Сохранить изменения
+                        {{ personId ? 'Сохранить изменения' : 'Добавить пользователя' }}
                     </button>
-                </div> 
+                </div>  
             </FormKit>
         </template>
     </div>
 </template>
-
 <script>
-    import { cabinet as api, geo as geoApi } from "@/services";
+    import { cabinet, geo as geoApi } from "@/services";
 
     function phoneLen(node) {
         const value = node.value;
@@ -104,15 +105,54 @@
     }
 
     export default {
-        name: 'ProfileEdit',
+        name: 'PersonAdd',
+        props: {
+            personId: {
+                type: [String, Number],
+                default() { return null; }
+            },
+        },
         data() {
             return {
                 formData: {},
                 person: {},
+                countryList: [],
                 busyForm: false,
                 showLoaderSending: false,
                 schema: [
                     {
+                        $formkit: 'email',
+                        name: 'email',
+                        label: 'Email (аккаунт)',
+                        validation: 'required',
+                        disabled: this.personId ? true : false,
+                        outerClass: 'field--required'
+                    }, {
+                        $formkit: 'phoneWithCode',
+                        name: 'phone',
+                        maska: { mask: '(###) ###-##-##' },
+                        label: 'Телефон (аккаунт)',
+                        placeholder: '(XXX) XXX-XX-XX',
+                        validationRules: { phoneLen },
+                        validation: 'required|phoneLen',
+                        options: async () => { return await this.getCountryList() },
+                        outerClass: 'field--required',
+                        classes: { multiselect: 'multiselect m--phone-code' },
+                    }, {
+                    /*
+                        $formkit: 'password',
+                        name: 'password',
+                        label: 'Пароль',
+                        validation: 'required',
+                        outerClass: 'field--required'
+                    }, {
+                        $formkit: 'password',
+                        name: 'password_confirm',
+                        label: 'Повтор пароля',
+                        validation: 'required|confirm',
+                        outerClass: 'field--required'
+                    }, {
+                    */
                         $formkit: 'text',
                         name: 'last_name',
                         label: 'Фамилия',
@@ -128,8 +168,8 @@
                         $formkit: 'text',
                         name: 'patronymic',
                         label: 'Отчество',
-                        // validation: 'required',
-                        // outerClass: 'field--inline'
+                        validation: 'required',
+                        outerClass: 'field--required'
                     }, {
                         $formkit: 'email',
                         name: 'contact_email',
@@ -154,18 +194,23 @@
                     }, {
                         $formkit: 'text',
                         name: 'post',
-                        label: 'Должность/специализация',
+                        label: 'Должность',
+                        validation: 'required',
+                        outerClass: 'field--required'
                     }
                 ],
             }
         },
         computed: {
+            organization() {
+                return this.$store.state.user.organization || {};
+            },
             user() {
-                return this.$store.state.user;
+                return this.$store.state.user || {};
             },
         },
         created() {
-            this.getMyProfile();
+            if (this.personId) this.getPerson();
         },
         methods: {
             async getCountryList() {
@@ -189,27 +234,43 @@
                     console.error(err)
                 })
             },
-            getMyProfile() {
+            getPerson() {
+                console.log('getPerson');
                 this.showLoaderSending = true;
-                api.getMyProfile().then(res => {
+                cabinet.getMyOrganizationMember(this.personId || this.formData.id).then(res => {
                     this.formData = res;
                     this.person = Object.assign({}, res);
+                    if (!this.formData.phone?.number) {
+                        this.formData.phone = {
+                            country: {
+                                label: this.person.phone?.substring(0, this.person.phone?.length - 10),
+                                value: {
+                                    id: this.person.country || this.organization.country,
+                                    code_phone: this.person.phone?.substring(0, this.person.phone?.length - 10),
+                                    name: this.person.country_name || this.organization.country_name
+                                }
+                            },
+                            number: this.person.phone?.substring(this.person.phone?.length - 10)
+                        };
+                    }
                     if (!this.formData.contact_phone?.number) {
                         this.formData.contact_phone = {
                             country: {
                                 label: this.person.contact_phone?.substring(0, this.person.contact_phone?.length - 10),
                                 value: {
-                                    id: this.person.country,
+                                    id: this.person.country || this.organization.country,
                                     code_phone: this.person.contact_phone?.substring(0, this.person.contact_phone?.length - 10),
-                                    name: this.person.country_name
+                                    name: this.person.country_name || this.organization.country_name
                                 }
                             },
                             number: this.person.contact_phone?.substring(this.person.contact_phone?.length - 10)
                         };
                     }
                     this.showLoaderSending = false;
+                    this.busyForm = false;
                 }).catch(err => {
                     this.showLoaderSending = false;
+                    this.busyForm = false;
                     console.error(err);
                 });
             },
@@ -224,16 +285,8 @@
                 const data = new FormData();
                 data.append('photo', '');
                 this.busyForm = true;
-                api.updateMyProfilePhoto(this.formData.id, data).then(res => {
-                    api.getMyProfile().then(res => {
-                        this.busyForm = false;
-                        this.$store.dispatch('setUser', res);
-                        this.formData.photo = res.photo;
-                    }).catch(err => {
-                        this.busyForm = false;
-                        this.$store.dispatch('showError', err);
-                        console.error(err);
-                    });
+                cabinet.updateMyOrganizationMemberPhoto(this.formData.id, data).then(res => {
+                    this.getPerson();
                 }).catch(err => {
                     this.busyForm = false;
                     this.$store.dispatch('showError', err);
@@ -246,16 +299,8 @@
                     const data = new FormData();
                     data.append('photo', file);
                     this.busyForm = true;
-                    api.updateMyProfilePhoto(this.formData.id, data).then(res => {
-                        api.getMyProfile().then(res => {
-                            this.busyForm = false;
-                            this.$store.dispatch('setUser', res);
-                            this.formData.photo = res.photo;
-                        }).catch(err => {
-                            this.busyForm = false;
-                            this.$store.dispatch('showError', err);
-                            console.error(err);
-                        });
+                    cabinet.updateMyOrganizationMemberPhoto(this.formData.id, data).then(res => {
+                        this.getPerson();
                     }).catch(err => {
                         this.busyForm = false;
                         this.$store.dispatch('showError', err);
@@ -265,27 +310,41 @@
             },
             submitHandler(data, node) {
                 this.busyForm = true;
-                let params = Object.assign({}, this.formData);
-                delete params.photo;
-                params.country = params.contact_phone.country?.value?.id;
+                let params = Object.assign({});
+                this.schema.forEach(item => {
+                    params[item.name] = this.formData[item.name];
+                });
+                params.id = this.formData.id;
+                params.country = this.formData.phone?.country?.value?.id;
+                params.phone = params.phone?.country?.value?.code_phone + params.phone?.number;
+                params.phone = params.phone?.replace(/ /g,'').replace(/-/g,'').replace(/\(/g,'').replace(/\)/g,'');
                 params.contact_phone = params.contact_phone?.country?.value?.code_phone + params.contact_phone?.number;
                 params.contact_phone = params.contact_phone?.replace(/ /g,'').replace(/-/g,'').replace(/\(/g,'').replace(/\)/g,'');
-                api.updateMyProfilePartial(params).then(res => {
-                    api.getMyProfile().then(res => {
-                        this.busyForm = false;
-                        this.$store.dispatch('setUser', res);
+                if (this.personId) {
+                    delete params.email;
+                    cabinet.updateMyOrganizationMemberPartial(params).then(res => {
+                        this.getPerson();
                     }).catch(err => {
+                        node.setErrors(
+                            err.response.data
+                        );
                         this.busyForm = false;
-                        this.$store.dispatch('showError', err);
-                        console.error(err);
                     });
-                }).catch(err => {
-                    node.setErrors(
-                        err.response.data
-                    );
-                    this.busyForm = false;
-                });
+                } else {
+                    params.organization = this.organization.id;
+                    cabinet.addMyOrganizationMember(params).then(res => {
+                        //this.formData = res;
+                        //this.getPerson();
+                        this.busyForm = false;
+                        this.$router.push({ name: 'organization', hash: '#persons' })
+                    }).catch(err => {
+                        node.setErrors(
+                            err.response.data
+                        );
+                        this.busyForm = false;
+                    });
+                }
             },
-        },
-    }
+        }
+    };
 </script>

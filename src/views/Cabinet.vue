@@ -60,7 +60,7 @@
                                 </div>
                             </div>
                             <router-link
-                                :to="{ name: 'organization', hash: user.organization ? '#public' : '#registration' }" 
+                                :to="{ name: user.organization ? 'organization' : 'organization-registration' }" 
                                 class="cabinet__block-item-link"
                             >
                                 {{ user.organization ? `Управлять организацией` : `Зарегистрировать организацию` }}
