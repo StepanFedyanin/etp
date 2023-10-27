@@ -17,22 +17,21 @@
                     class="chat__board-inner"
                     @wheel="scroll"
                 >
-                    <div 
-                        class="chat__messages"
-                    >
+                    <div class="chat__messages">
                         <template
                             v-for="(message) in messages"
                         >
                             <div 
                                 v-if="message.type === 'time' "
+                                :key="`message-${message.id}`"
                                 class="chat__messages-date"
                             >
                                 {{ $helpers.formatDate(new Date(message.date), 'DD.MM.YY') }}
                             </div>
                             <div
                                 v-else
-                                class="chat__messages-item m--tender"
-                                :class="[{'is-unread': !message.seen}, message.user_status === 'participant' ? 'is-right' : 'is-left']"
+                                :key="`message-${message.id}`"
+                                :class="['chat__messages-item m--tender', {'is-unread': !message.seen}, message.user_status === 'participant' ? 'is-right' : 'is-left']"
                             >
                                 <div class="chat__messages-item-inner">
                                     <template
@@ -109,8 +108,6 @@
 
 <script>
     import { tenderChat as Chat } from "@/services";
-    //import ModalAddLotOffer from '@/components/modal-add-lot-offer';
-    //import ModalCancelLotOffer from '@/components/modal-cancel-lot-offer';
     export default {
         components: {
         },
@@ -139,7 +136,6 @@
                 touchStartY: 0,
                 touchEndX: 0,
                 touchEndY: 0
-
             }
         },
         computed: {

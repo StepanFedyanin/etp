@@ -1,127 +1,129 @@
 <template>
-    <div class="app__sidebar sidebar">
-        <div class="sidebar__inner">
-            <div class="sidebar__menu">
-                <template
-                    v-for="(item, key) in menu"
-                >
+    <q-no-ssr>
+        <div class="app__sidebar sidebar">
+            <div class="sidebar__inner">
+                <div class="sidebar__menu">
                     <template
-                        v-if="item.name === 'devider'"
+                        v-for="(item, key) in menu"
                     >
-                        <div 
-                            :key="key"
-                            class="sidebar__menu-devider" 
-                        />
+                        <template
+                            v-if="item.name === 'devider'"
+                        >
+                            <div 
+                                :key="key"
+                                class="sidebar__menu-devider" 
+                            />
+                        </template>
+                        <template
+                            v-else
+                        >
+                            <router-link
+                                :key="key"
+                                v-slot="{ href, isActive }"
+                                :to="{ name: item.name }"
+                                custom
+                            >
+                                <div 
+                                    :class="menuOpenedItems[item.name] ? 'is-opened' : ''"
+                                    class="sidebar__menu-item"
+                                >
+                                    <a 
+                                        :href="href"
+                                        :class="[isActive && 'is-active', `m--icon-${item.icon}`]"
+                                        class="sidebar__menu-link"
+                                        @click.prevent="onClickMenuItem(item)"
+                                    >
+                                        {{ item.title }}
+                                        <template
+                                            v-if="item.name === 'chat' && roomUnreadCount"
+                                        >
+                                            <div class="sidebar__menu-count">{{ roomUnreadCount }}</div>
+                                        </template>
+                                        <template
+                                            v-if="item.name === 'notifications' && notificationsCount"
+                                        >
+                                            <div class="sidebar__menu-count">{{ notificationsCount }}</div>
+                                        </template>
+                                        <div
+                                            v-if="item.items"
+                                            class="sidebar__menu-item-arrow"
+                                        />
+                                    </a>
+                                    <template
+                                        v-if="item.items"
+                                    >
+                                        <transition name="fade">
+                                            <div 
+                                                v-if="menuOpened(item.name, isActive)"
+                                                class="sidebar__menu-item-block"
+                                            >
+                                                <router-link
+                                                    v-for="(sitem, skey) in item.items"
+                                                    :key="skey"
+                                                    v-slot="{ href, navigate, isActive }"
+                                                    :to="{ name: sitem.name }"
+                                                    custom
+                                                >
+                                                    <div class="sidebar__menu-subitem">
+                                                        <a 
+                                                            :href="href"
+                                                            :class="[isActive && 'is-active']"
+                                                            class="sidebar__menu-sublink"
+                                                            @click="navigate"
+                                                        >
+                                                            {{ sitem.title }}
+                                                            <template
+                                                                v-if="sitem.name === 'participant-invites' && invitesCount"
+                                                            >
+                                                                <div class="sidebar__menu-count">{{ invitesCount }}</div>
+                                                            </template>
+                                                        </a>
+                                                    </div>
+                                                </router-link>
+                                            </div>
+                                        </transition>
+                                    </template>
+                                </div>
+                            </router-link>
+                        </template>
                     </template>
-                    <template
-                        v-else
-                    >
+                </div>
+                <div class="sidebar__bottom">
+                    <div class="sidebar__bottom-menu">
                         <router-link
+                            v-for="(item, key) in menuBottom"
                             :key="key"
-                            v-slot="{ href, isActive }"
+                            v-slot="{ href, isActive, isExactActive }"
                             :to="{ name: item.name }"
                             custom
                         >
-                            <div 
-                                :class="menuOpenedItems[item.name] ? 'is-opened' : ''"
-                                class="sidebar__menu-item"
+                            <a 
+                                :href="href"
+                                :class="[(isActive || isExactActive) && 'is-active', `m--icon-${item.icon}`, (item.name === 'chat' && roomUnreadCount) || (item.name === 'notifications' && notificationsCount) ? 'is-alert' : '']"
+                                class="sidebar__bottom-menu-link"
+                                @click.prevent="onClickMenuItem(item)"
                             >
-                                <a 
-                                    :href="href"
-                                    :class="[isActive && 'is-active', `m--icon-${item.icon}`]"
-                                    class="sidebar__menu-link"
-                                    @click.prevent="onClickMenuItem(item)"
-                                >
-                                    {{ item.title }}
-                                    <template
-                                        v-if="item.name === 'chat' && roomUnreadCount"
-                                    >
-                                        <div class="sidebar__menu-count">{{ roomUnreadCount }}</div>
-                                    </template>
-                                    <template
-                                        v-if="item.name === 'notifications' && notificationsCount"
-                                    >
-                                        <div class="sidebar__menu-count">{{ notificationsCount }}</div>
-                                    </template>
-                                    <div
-                                        v-if="item.items"
-                                        class="sidebar__menu-item-arrow"
-                                    />
-                                </a>
                                 <template
-                                    v-if="item.items"
+                                    v-if="item.name === 'chat' && roomUnreadCount"
                                 >
-                                    <transition name="fade">
-                                        <div 
-                                            v-if="menuOpened(item.name, isActive)"
-                                            class="sidebar__menu-item-block"
-                                        >
-                                            <router-link
-                                                v-for="(sitem, skey) in item.items"
-                                                :key="skey"
-                                                v-slot="{ href, navigate, isActive }"
-                                                :to="{ name: sitem.name }"
-                                                custom
-                                            >
-                                                <div class="sidebar__menu-subitem">
-                                                    <a 
-                                                        :href="href"
-                                                        :class="[isActive && 'is-active']"
-                                                        class="sidebar__menu-sublink"
-                                                        @click="navigate"
-                                                    >
-                                                        {{ sitem.title }}
-                                                        <template
-                                                            v-if="sitem.name === 'participant-invites' && invitesCount"
-                                                        >
-                                                            <div class="sidebar__menu-count">{{ invitesCount }}</div>
-                                                        </template>
-                                                    </a>
-                                                </div>
-                                            </router-link>
-                                        </div>
-                                    </transition>
+                                    <div class="sidebar__bottom-menu-count">{{ roomUnreadCount }}</div>
                                 </template>
-                            </div>
+                                <template
+                                    v-if="item.name === 'notifications' && notificationsCount"
+                                >
+                                    <div class="sidebar__bottom-menu-count">{{ notificationsCount }}</div>
+                                </template>
+                            </a>
                         </router-link>
-                    </template>
-                </template>
-            </div>
-            <div class="sidebar__bottom">
-                <div class="sidebar__bottom-menu">
-                    <router-link
-                        v-for="(item, key) in menuBottom"
-                        :key="key"
-                        v-slot="{ href, isActive, isExactActive }"
-                        :to="{ name: item.name }"
-                        custom
-                    >
-                        <a 
-                            :href="href"
-                            :class="[(isActive || isExactActive) && 'is-active', `m--icon-${item.icon}`, (item.name === 'chat' && roomUnreadCount) || (item.name === 'notifications' && notificationsCount) ? 'is-alert' : '']"
-                            class="sidebar__bottom-menu-link"
-                            @click.prevent="onClickMenuItem(item)"
-                        >
-                            <template
-                                v-if="item.name === 'chat' && roomUnreadCount"
-                            >
-                                <div class="sidebar__bottom-menu-count">{{ roomUnreadCount }}</div>
-                            </template>
-                            <template
-                                v-if="item.name === 'notifications' && notificationsCount"
-                            >
-                                <div class="sidebar__bottom-menu-count">{{ notificationsCount }}</div>
-                            </template>
-                        </a>
-                    </router-link>
-                </div>
-                <div class="sidebar__bottom-date">
-                    <pre>{{ currentDate }}</pre>
-                    <pre>{{ currentTime }} ({{ this.currentTimeZone }} GMT)</pre>
+                    </div>
+                    <div class="sidebar__bottom-date">
+                        <pre>{{ currentDate }}</pre>
+                        <pre>{{ currentTime }} ({{ this.currentTimeZone }} GMT)</pre>
+                    </div>
                 </div>
             </div>
         </div>
-    </div>
+    </q-no-ssr>
 </template>
 
 <script>

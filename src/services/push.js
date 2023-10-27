@@ -1,6 +1,6 @@
 import WS from '@/utils/websocket';
 import { push as settings } from '@/settings';
-import store from '@/store/store';
+import store from '@/store';
 
 export default class {
     get settings() {

@@ -41,6 +41,7 @@
                                         />
                                         <div 
                                             v-if="item.error"
+                                            :key="`org-error-${item.inn}-${index}`"
                                             class="organization__error"
                                         > 
                                             <p>{{ item.error.detail }}</p>
@@ -62,6 +63,7 @@
                                         />
                                         <div 
                                             v-if="item.error"
+                                            :key="`org-error-${item.inn}-${index}`"
                                             class="organization__error"
                                         > 
                                             <p>{{ item.error.detail }}</p>

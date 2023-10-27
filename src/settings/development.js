@@ -20,8 +20,10 @@ const serviceUrl = {
 }
 
 let urlPath = `${serviceUrl.url}${serviceUrl.api}`;
-if (serviceUrl.onLocal || window.location.hostname === 'localhost') {
-    urlPath = `${serviceUrl.localPath}:${serviceUrl.port}${serviceUrl.api}`;
+if (process.env.CLIENT) {
+    if (serviceUrl.onLocal || window.location.hostname === 'localhost') {
+        urlPath = `${serviceUrl.localPath}:${serviceUrl.port}${serviceUrl.api}`;
+    }
 }
 
 let selfPath = `https:${serviceUrl.selfUrl}`;

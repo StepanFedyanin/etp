@@ -10,9 +10,8 @@
                         href="#"
                         class="header__burger"
                         :class="showSidebar ? 'is-active' : ''"
-                        @click.stop="onClickBurger"
+                        @click.prevent="onClickBurger"
                     />
-
                     <div class="header__logo">
                         <router-link
                             :to="{ name: 'home' }"
@@ -31,186 +30,161 @@
                             :key="key"
                             class="header__menu-item"
                         >
-                            <router-link
-                                :to="{ name: item.name }"
-                                class="header__menu-link"
-                            >
-                                {{ item.title }}
-                            </router-link>
+                            <template v-if="item.noSSR">
+                                <q-no-ssr>
+                                    <router-link
+                                        :to="{ name: item.name }"
+                                        class="header__menu-link"
+                                    >
+                                        {{ item.title }}
+                                    </router-link>
+                                </q-no-ssr>
+                            </template>
+                            <template v-else>
+                                <router-link
+                                    :to="{ name: item.name }"
+                                    class="header__menu-link"
+                                >
+                                    {{ item.title }}
+                                </router-link>
+                            </template>
                         </li>
                     </ul>
                 </div>
-                <div class="header__right">
-                    <!--div class="header__contacts">
-                        <a
-                            :href="$helpers.formatTel(phone)"
-                            class="header__contacts-phone"
-                        >{{ phone }}</a>
-                        <a
-                            :href="`mailto:${email}`"
-                            class="header__contacts-email"
-                        >{{ email }}</a>
-                    </div-->
-                    <!--div 
-                        v-if="user && user.id"
-                        class="header__timer"
-                    >
-                        <div class="header__timer-time">
-                            {{ `${currentTime} МСК` }}
-                        </div>
-                        <div class="header__timer-date">
-                            {{ currentDate }}
-                        </div>
-                    </div-->
-                    <template
-                        v-if="user && user.id"
-                    >
-                        <div 
-                            class="header__info"
-                            @click.stop="onClickPopup"
+                <q-no-ssr>
+                    <div class="header__right">
+                        <template
+                            v-if="user && user.id"
                         >
-                            <template v-if="user.im_auth_type === 'person'">
-                                <div class="header__info-user">
-                                    <span>{{ user.last_name }}</span> 
-                                    {{ user.first_name }} {{ user.patronymic }}
-                                </div>
-                            </template>
-                            <template v-else>
-                                <div 
-                                    v-if="user.organization?.name"
-                                    class="header__info-organization"
-                                >
-                                    {{ user.organization?.name }}
-                                </div>
-                                <div class="header__info-user">{{ user.last_name }} {{ user.first_name ? user.first_name[0] + '.' : '' }} {{ user.patronymic ? user.patronymic[0] + '.' : '' }}</div>
-                            </template>
-                        </div>
-                        <div 
-                            :class="['header__user', showPopup ? 'is-active' : '', user.photo || user.organization?.logo ? '' : 'm--no-logo']"
-                            @click.stop="onClickPopup"
-                        >
-                            <img 
-                                v-if="user.organization?.logo"
-                                :src="`${user.organization?.logo}`" 
-                                :alt="user.organization?.name" 
-                            />
-                            <img 
-                                v-else-if="user.photo"
-                                :src="`${user.photo}`" 
-                                :alt="`${user.last_name} ${user.first_name}`" 
-                            />
-                        </div>
-                        <div 
-                            v-if="showPopup"
-                            class="app__overlay" 
-                        />
-                        <transition name="fade">
+                            <div 
+                                class="header__info"
+                                @click.stop="onClickPopup"
+                            >
+                                <template v-if="user.im_auth_type === 'person'">
+                                    <div class="header__info-user">
+                                        <span>{{ user.last_name }}</span> 
+                                        {{ user.first_name }} {{ user.patronymic }}
+                                    </div>
+                                </template>
+                                <template v-else>
+                                    <div 
+                                        v-if="user.organization?.name"
+                                        class="header__info-organization"
+                                    >
+                                        {{ user.organization?.name }}
+                                    </div>
+                                    <div class="header__info-user">{{ user.last_name }} {{ user.first_name ? user.first_name[0] + '.' : '' }} {{ user.patronymic ? user.patronymic[0] + '.' : '' }}</div>
+                                </template>
+                            </div>
+                            <div 
+                                :class="['header__user', showPopup ? 'is-active' : '', user.photo || user.organization?.logo ? '' : 'm--no-logo']"
+                                @click.stop="onClickPopup"
+                            >
+                                <img 
+                                    v-if="user.organization?.logo"
+                                    :src="`${user.organization?.logo}`" 
+                                    :alt="user.organization?.name" 
+                                />
+                                <img 
+                                    v-else-if="user.photo"
+                                    :src="`${user.photo}`" 
+                                    :alt="`${user.last_name} ${user.first_name}`" 
+                                />
+                            </div>
                             <div 
                                 v-if="showPopup"
-                                v-click-out.prevent="onClickPopup"
-                                class="header__popup"
-                            >
+                                class="app__overlay" 
+                            />
+                            <transition name="fade">
                                 <div 
-                                    v-if="showPopupHeader"
-                                    class="header__popup-title"
+                                    v-if="showPopup"
+                                    v-on-click-outside.prevent="onClickPopup"
+                                    class="header__popup"
                                 >
-                                    {{ user.last_name }} {{ user.first_name ? user.first_name[0] + '.' : '' }} {{ user.patronymic ? user.patronymic[0] + '.' : '' }}
-                                    <a 
-                                        href="#" 
-                                        class="header__popup-close"
-                                        @click.stop="onClickPopup"
-                                    />
-                                </div>
-                                <div class="header__popup-body">
                                     <div 
-                                        v-for="(block, index) in menuUser[user.im_auth_type]"
-                                        :key="`block-${index}`"
-                                        class="header__popup-menu"
+                                        v-if="showPopupHeader"
+                                        class="header__popup-title"
                                     >
-                                        <router-link
-                                            v-for="(item, key) in block"
-                                            v-slot="{ href, navigate, isActive, isExactActive }"
-                                            :key="`block-${index}-${key}`"
-                                            :to="{ name: item.name, hash: item.hash }"
-                                            custom
-                                        >
-                                            <div 
-                                                v-if="showMenuItem(item.condition)"
-                                                :class="['header__popup-menu-item', item.name || item.action ? '' : 'm--title', item.icon ? `m--icon m--${item.icon}` : '']"
-                                                @click="onClickPopupItem"
-                                            >
-                                                <a 
-                                                    v-if="item.name"
-                                                    :href="href"
-                                                    :class="['header__popup-menu-link', (isActive && (item.hash === $route.hash || !item.hash)) && 'is-active', (isExactActive && item.hash === $route.hash) && 'is-subactive']"
-                                                    @click="navigate"
-                                                >
-                                                    {{ item.title }}
-                                                </a>
-                                                <div 
-                                                    v-else-if="item.action"
-                                                    class="header__popup-menu-link"
-                                                    @click="onClickAction(item.action)"
-                                                >
-                                                    {{ item.title }}
-                                                </div>
-                                                <div v-else>
-                                                    {{ item.title }}
-                                                </div>
-                                            </div>
-                                        </router-link>
+                                        {{ user.last_name }} {{ user.first_name ? user.first_name[0] + '.' : '' }} {{ user.patronymic ? user.patronymic[0] + '.' : '' }}
+                                        <a 
+                                            href="#" 
+                                            class="header__popup-close"
+                                            @click.stop="onClickPopup"
+                                        />
                                     </div>
-                                </div>
-                                <div 
-                                    v-if="showPopupFooter"
-                                    class="header__popup-footer"
-                                >
-                                    <a 
-                                        href="#"
-                                        class="button button-outline-red"
-                                        @click.stop="onClickExit"
+                                    <div class="header__popup-body">
+                                        <div 
+                                            v-for="(block, index) in menuUser[user.im_auth_type]"
+                                            :key="`block-${index}`"
+                                            class="header__popup-menu"
+                                        >
+                                            <router-link
+                                                v-for="(item, key) in block"
+                                                v-slot="{ href, navigate, isActive, isExactActive }"
+                                                :key="`block-${index}-${key}`"
+                                                :to="{ name: item.name, hash: item.hash }"
+                                                custom
+                                            >
+                                                <div 
+                                                    v-if="showMenuItem(item.condition)"
+                                                    :class="['header__popup-menu-item', item.name || item.action ? '' : 'm--title', item.icon ? `m--icon m--${item.icon}` : '']"
+                                                    @click="onClickPopupItem"
+                                                >
+                                                    <a 
+                                                        v-if="item.name"
+                                                        :href="href"
+                                                        :class="['header__popup-menu-link', (isActive && (item.hash === $route.hash || !item.hash)) && 'is-active', (isExactActive && item.hash === $route.hash) && 'is-subactive']"
+                                                        @click="navigate"
+                                                    >
+                                                        {{ item.title }}
+                                                    </a>
+                                                    <div 
+                                                        v-else-if="item.action"
+                                                        class="header__popup-menu-link"
+                                                        @click="onClickAction(item.action)"
+                                                    >
+                                                        {{ item.title }}
+                                                    </div>
+                                                    <div v-else>
+                                                        {{ item.title }}
+                                                    </div>
+                                                </div>
+                                            </router-link>
+                                        </div>
+                                    </div>
+                                    <div 
+                                        v-if="showPopupFooter"
+                                        class="header__popup-footer"
                                     >
-                                        Выйти
-                                    </a>
-                                </div>
-                            </div>                            
-                        </transition>
-                    </template>
-                    <template
-                        v-else
-                    >
-                        <div class="header__contacts">
-                            <a
-                                :href="$helpers.formatTel(phone)"
-                                class="header__contacts-link m--phone"
-                            >{{ phone }}</a>
-                            <a
-                                :href="`mailto:${email}`"
-                                class="header__contacts-link m--mail"
-                            >{{ email }}</a>
-                        </div>
-                    </template>
-                </div>
+                                        <a 
+                                            href="#"
+                                            class="button button-outline-red"
+                                            @click.stop="onClickExit"
+                                        >
+                                            Выйти
+                                        </a>
+                                    </div>
+                                </div>                            
+                            </transition>
+                        </template>
+                        <template
+                            v-else
+                        >
+                            <div class="header__contacts">
+                                <a
+                                    :href="$helpers.formatTel(phone)"
+                                    class="header__contacts-link m--phone"
+                                >{{ phone }}</a>
+                                <a
+                                    :href="`mailto:${email}`"
+                                    class="header__contacts-link m--mail"
+                                >{{ email }}</a>
+                            </div>
+                        </template>
+                    </div>
+                </q-no-ssr>
             </div>
         </div>
-        <!--div 
-            v-if="$route.meta.showSubHeader && !($route.meta.showSidebarAuth && user && user.id)"
-            class="header__sub"
-        >
-            <div class="container">
-                <div class="header__breadcrumbs">
-                    <router-link
-                        :to="{ name: 'home' }"
-                        class=""
-                    >
-                        Главная
-                    </router-link>
-                </div>
-                <div class="header__title h1">
-                    {{ $route.meta.name || $route.meta.title }} {{ $route.name === 'registration' ? $store.state.stepRegistration || 1 : '' }}
-                </div>
-            </div>
-        </div-->
     </div>
 </template>
 
@@ -247,10 +221,12 @@
                         name: 'registration',
                         role: 'all',
                         title: 'Регистрация',
+                        noSSR: true
                     }, {
                         name: 'auth',
                         role: 'all',
                         title: 'Вход',
+                        noSSR: true
                     }
                 ],
                 headerMenuUser: [
@@ -270,6 +246,7 @@
                         name: 'cabinet',
                         role: 'all',
                         title: 'Кабинет',
+                        noSSR: true
                     }
                 ],
                 menuUser: {
@@ -385,7 +362,7 @@
         },
         computed: {
             user() {
-                return this.$store.state.user;
+                return this.$store.state.user || {};
             },
             menu() {
                 return (this.$store.state.user && this.$store.state.user.id) ? this.headerMenuUser : this.headerMenu;

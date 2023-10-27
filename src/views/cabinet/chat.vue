@@ -111,14 +111,15 @@
                                     >
                                         <div 
                                             v-if="message.type === 'time' "
+                                            :key="`message-${message.id}`"
                                             class="chat__messages-date"
                                         >
                                             {{ $helpers.formatDate(new Date(message.date), 'DD.MM.YY') }}
                                         </div>
                                         <div
                                             v-else
-                                            class="chat__messages-item "
-                                            :class="[{'is-unread': !message.seen}, message.user !== $store._state.data.user.id ? 'is-recipient' : 'is-your']"
+                                            :key="`message-${message.id}`"
+                                            :class="['chat__messages-item', {'is-unread': !message.seen}, message.user !== $store._state.data.user.id ? 'is-recipient' : 'is-your']"
                                         >
                                             <div class="chat__messages-item-inner">
                                                 <div 

@@ -177,14 +177,14 @@
                 </div>
             </template>
         </div>
-        <ModalAddLotOffer
+        <ModalLotOfferAdd
             v-if="showAddLotOfferModal"
             :tender="tender || {}"
             :lotId="lot.id"
             :showModal="showAddLotOfferModal"
             @hideModal="hideAddLotOfferModal"
         />
-        <ModalCancelLotOffer
+        <ModalLotOfferCancel
             :tender="tender || {}"
             :lot="lot || {}"
             :showModal="showCancelLotOfferModal"
@@ -194,12 +194,12 @@
 </template>
 
 <script>
-    import ModalAddLotOffer from '@/components/modal-add-lot-offer';
-    import ModalCancelLotOffer from '@/components/modal-cancel-lot-offer';
+    import ModalLotOfferAdd from '@/components/modals/lot-offer-add';
+    import ModalLotOfferCancel from '@/components/modals/lot-offer-cancel';
     export default {
         components: {
-            ModalAddLotOffer,
-            ModalCancelLotOffer
+            ModalLotOfferAdd,
+            ModalLotOfferCancel
         },
         props: {
             tender: {

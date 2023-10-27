@@ -1,7 +1,7 @@
 import { tenderChat as settings } from '@/settings';
 import { REST, RESTError } from './rest';
 import WS from '@/utils/websocket';
-import store from "@/store/store";
+import store from '@/store';
 
 export default class extends REST {
     static get settings() {

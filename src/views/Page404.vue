@@ -1,5 +1,5 @@
 <template>
-    <div class="app__main">
+    <div class="app__main m--error-404">
         <div 
             :class="['page404', user?.id ? 'm--justify-flex-start' : '']"
         >

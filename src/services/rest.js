@@ -1,6 +1,6 @@
 import ajax from '@/utils/ajax';
-import router from '@/router/router';
-import store from "@/store/store";
+import router from '@/router';
+import store from '@/store';
 
 class RESTError extends Error {
     constructor(error, message, params={}) {

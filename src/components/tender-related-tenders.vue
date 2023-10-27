@@ -12,6 +12,7 @@
             <div class="tender__related-block">
                 <div 
                     v-for="item in tender.related_parent_tender"
+                    :key="`tender-parent-related-${item.id}`"
                     class="tender__related-item"
                 >
                     <router-link
@@ -58,6 +59,7 @@
             <div class="tender__related-block">
                 <div 
                     v-for="item in tender.related_tenders"
+                    :key="`tender-related-${item.id}`"
                     class="tender__related-item"
                 >
                     <router-link

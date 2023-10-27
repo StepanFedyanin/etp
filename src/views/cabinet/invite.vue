@@ -19,7 +19,7 @@
                 <Invite 
                     @submitInviteHandler="submitInviteHandler"
                 />
-                <ModalSendInvite 
+                <ModalInviteSend 
                     :text="text || ''"
                     :emails="emails || ''"
                     :showModal="showSendInviteModal"
@@ -32,12 +32,12 @@
 <script>
     import { user as api } from "@/services";
     import Invite from "@/components/forms/invite.vue";
-    import ModalSendInvite from '@/components/modal-send-invite.vue'
+    import ModalInviteSend from '@/components/modals/invite-send.vue'
 
     export default {
         components: {
             Invite,
-            ModalSendInvite,
+            ModalInviteSend,
         },
         props: {
             tender: {

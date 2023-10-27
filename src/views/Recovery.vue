@@ -56,11 +56,9 @@
 
 <script>
     import { user as api } from "@/services";
-    //import ModalRecoveryPassword from '@/components/modal-recovery-password.vue'
 
     export default {
         components: {
-            //ModalRecoveryPassword
         },
         data() {
             return {

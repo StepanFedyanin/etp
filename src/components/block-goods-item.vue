@@ -10,14 +10,11 @@
             @click.stop=""
         >
             <div class="goods__item-photo-inner">
-                <template
+                <img 
                     v-if="good.photo"
+                    :src="`${urlPath}${good.photo}`"
+                    :alt="good.name"
                 >
-                    <img 
-                        :src="`${urlPath}${good.photo}`"
-                        :alt="good.name"
-                    >
-                </template>
             </div>
         </router-link>
         <router-link 
@@ -51,7 +48,7 @@
             <a 
                 href="#" 
                 class="goods__item-control-link m--change"
-                @click.stop.prevent="addGood(good.slug)"
+                @click.stop.prevent="$router.push({ name: 'organization-good-edit', params: { slug: good.slug } })"
             >
                 Изменить товар
             </a>
@@ -104,8 +101,6 @@
             return {
                 urlPath
             };
-        },
-        computed: {
         },
         created() {
         },

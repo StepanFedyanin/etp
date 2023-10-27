@@ -67,9 +67,12 @@
                 formData: {
                     phone: {
                         country: {
-                            id: 1,
-                            cond_phone: '+7',
-                            name: 'Россия'
+                            label: '+7',
+                            value: {
+                                id: 1,
+                                code_phone: '+7',
+                                name: 'Россия'
+                            }
                         }
                     }
                 },
@@ -112,36 +115,7 @@
                         placeholder: '(XXX) XXX-XX-XX',
                         validationRules: { phoneLen },
                         validation: 'required|phoneLen',
-                        options: async () => {
-                            return await geoApi.getCountries()
-                                .then(countries => {
-                                    if (countries) {
-                                        let options = countries.map( country => {
-                                            // if (!this.formData.phone?.country && country.name === 'Россия') this.formData.phone.country = { label: country.code_phone, value: country, country: country.name };
-                                            return { 
-                                                label: country.code_phone, 
-                                                value: {
-                                                    id: country.id,
-                                                    name: country.name,
-                                                    code_phone: country.code_phone,
-                                                }, 
-                                                country: country.name 
-                                            }
-                                        })
-                                        /*
-                                        console.log(options[0]);
-                                        this.formData.phone = {
-                                            country: options[0].value
-                                        };
-                                        */
-                                        return options
-                                    } else {
-                                        console.log('No getCountries data')
-                                    }
-                                }).catch(err => {
-                                    console.error(err)
-                                })
-                        },
+                        options: async () => { return await this.getCountryList() },
                         classes: { multiselect: 'multiselect m--phone-code' },
                         outerClass: 'field--required',
                     }, {
@@ -178,13 +152,33 @@
             this.$store.dispatch('deathUser');
         },
         methods: {
+            async getCountryList() {
+                return await geoApi.getCountries().then(countries => {
+                    if (countries) {
+                        let options = countries.map( country => {
+                            return { 
+                                label: country.code_phone, 
+                                value: {
+                                    id: country.id,
+                                    name: country.name,
+                                    code_phone: country.code_phone,
+                                }, 
+                            }
+                        });
+                        return options;
+                    } else {
+                        console.log('No getCountries data')
+                    }
+                }).catch(err => {
+                    console.error(err)
+                })
+            },
             submitHandler(data, node) {
                 this.showLoaderSending = true;
                 let params = Object.assign({}, this.formData);
-                params.country = params.phone.country.id;
-                params.phone = params.phone.country.code_phone + params.phone.number;
+                params.country = this.formData.phone?.country?.value?.id;
+                params.phone = params.phone?.country?.value?.code_phone + params.phone?.number;
                 params.phone = params.phone?.replace(/ /g,'').replace(/-/g,'').replace(/\(/g,'').replace(/\)/g,'');
-                console.log(params);
                 api.addUser(params).then(res => {
                     console.log(res);
                     if (res.access && res.refresh) {

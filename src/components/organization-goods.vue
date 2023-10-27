@@ -1,15 +1,11 @@
 <template>
     <div :class="['goods', blockClass]">
-        <template
-            v-if="showLoaderSending"
-        >
+        <template v-if="showLoaderSending">
             <div class="goods__loader loader">
                 <div class="spinner" /> Загрузка данных
             </div>
         </template>
-        <template
-            v-else-if="goods && count"
-        >    
+        <template v-else-if="goods && count">    
             <div class="goods__title h2">
                 Загруженные товары <span>({{ count }})</span>
             </div>
@@ -18,22 +14,17 @@
                     v-for="item in goods"
                     :key="`good-${item.id}`"
                     :good="item"
-                    :showControl="true"
-                    @addGood="addGood"
+                    :showControl="user.is_access_product"
                     @deleteGood="deleteGood"
                 />
             </div>
         </template>
-        <template
-            v-else
-        >
+        <template v-else>
             <div class="tenders__empty">
                 В данный момент у вас нет ни одного товара
             </div> 
         </template>
-        <div
-            class="goods__pagination"
-        >
+        <div class="goods__pagination">
             <Pagination
                 :total="count"
                 :limit="limit"
@@ -44,16 +35,17 @@
         </div>
         <button 
             class="button button-green"
-            @click.prevent="addGood()"
+            :disabled="!user.is_access_product"
+            @click.prevent="$router.push({ name: 'organization-good-add' })"
         >
             Добавить товар
         </button>
-        <ModalAddGood
+        <!--ModalAddGood
             v-if="showAddGoodModal"
             :slug="slug"
             :showModal="showAddGoodModal"
             @hideModal="hideAddGoodModal"
-        />
+        /-->
     </div>
 </template>
 
@@ -61,13 +53,13 @@
     //import { urlPath } from '@/settings'
     import { user as userApi, product as productApi } from "@/services"
     import blockGoodsItem from '@/components/block-goods-item.vue';
-    import ModalAddGood from '@/components/modals/good-add.vue';
+    //import ModalAddGood from '@/components/modals/good-add.vue';
     import Pagination from '@/components/pagination.vue';
 
     export default {
         components: {
             blockGoodsItem,
-            ModalAddGood,
+            //ModalAddGood,
             Pagination,
         },
         props: {
@@ -86,7 +78,7 @@
                 slug: null,
                 goods: null,
                 count: null,
-                showAddGoodModal: false,
+                //showAddGoodModal: false,
                 showLoaderSending: false,
             }
         },
@@ -116,19 +108,16 @@
             }
         },
         created() {
-            // this.getInviteStatus();
         },
         mounted() {
             this.getGoods();
         },
         methods: {
             getGoods() {
-                console.log('getGoods');
-                let limit = Number(this.limit)
                 let params = {
                     organization: this.user.organization.id,
-                    limit,
-                    offset: this.offset
+                    limit: +this.limit,
+                    offset: +this.offset
                 };
                 this.showLoaderSending = true;
                 userApi.getOrganizationProducts(this.organization.id, params).then(res => {
@@ -141,10 +130,6 @@
                     console.error(err)
                 })
 
-            },
-            addGood(slug) {
-                this.slug = slug;
-                this.showAddGoodModal = true;
             },
             deleteGood(slug) {
                 productApi.deleteProduct(slug).then(res => {

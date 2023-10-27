@@ -38,10 +38,19 @@
 
     &__sidebar {
         width: 300px;
+        min-width: 300px;
         /*width: 350px;*/
         /*margin-right: 48px;*/
         @mixin responsive-le-xs {
             width: 100%;
+        }
+    }
+
+    &__sidebar ~ &__main {
+        max-width: calc(100% - 300px);
+
+        @mixin responsive-le-m {
+            max-width: none;
         }
     }
 

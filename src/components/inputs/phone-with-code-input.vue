@@ -38,7 +38,8 @@
         </Multiselect>
         <input
             ref="maska"
-            v-maska="props.context.maska"
+            v-maska
+            :data-maska="props.context.maska?.mask"
             :value="props.context._value?.number"
             :disabled="disabled"
             :readonly="readonly"
@@ -62,7 +63,7 @@
 
     //const options = props.context.options;
     //console.log('Options', optionsList);
-    console.log(props.context);
+    console.log(props.context, 'props.context.maska', props.context.maska);
     const multiselect = ref(null);
     const maska = ref(null);
     const searchChange = props.context.attrs["search-change"];

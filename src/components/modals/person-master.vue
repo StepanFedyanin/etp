@@ -1,59 +1,64 @@
 <template>
-    <vue-final-modal 
-        v-model="show"
-        classes="modal__container" 
-        content-class="modal__block m--small"
-        @click-outside="$emit('hideModal', false)"
-    >
-        <button 
-            class="modal__close" 
-            @click="$emit('hideModal', false)"
+    <q-no-ssr>
+        <vue-final-modal 
+            v-model="show"
+            class="modal__container" 
+            content-class="modal__block m--small"
+            content-transition="vfm-fade"
+            overlay-transition="vfm-fade"
+            :clickToClose="false"
+            @click-outside="$emit('hideModal', false)"
         >
-            <span />
-        </button>
-        <span class="modal__title">Предупреждение</span>
-        <div 
-            class="modal__content text"
-        >
-            <p 
-                v-if="person.is_master"
-                class="m--mb-3"
+            <button 
+                class="modal__close" 
+                @click="$emit('hideModal', false)"
             >
-                <strong>{{ person.full_name }}</strong> лишится прав администратора <strong>{{ organization.name }}</strong>.
-            </p>
-            <p 
-                v-else
-                class="m--mb-3"
+                <span />
+            </button>
+            <span class="modal__title">Предупреждение</span>
+            <div 
+                class="modal__content text"
             >
-                <strong>{{ person.full_name }}</strong> станет администратором <strong>{{ organization.name }}</strong> и получит все права на управление организацией.
-            </p>
-            <FormKit
-                v-model="formValues"
-                name="form-master"
-                preserve
-                type="form"
-                data-loading="loading"
-                form-class="$reset form m--width-100"
-                :actions="false"
-                :disabled="showLoaderSending"
-                :loading="showLoaderSending ? true : undefined"
-                @submit="submitHandler"
-            >
-                <div 
-                    class="form__submit" 
-                    data-type="submit"
+                <p 
+                    v-if="person.is_master"
+                    class="m--mb-3"
                 >
-                    <button
-                        type="submit"
-                        :disabled="showLoaderSending"
-                        class="button button-red button-center"
+                    <strong>{{ person.full_name }}</strong> лишится прав администратора <strong>{{ organization.name }}</strong>.
+                </p>
+                <p 
+                    v-else
+                    class="m--mb-3"
+                >
+                    <strong>{{ person.full_name }}</strong> станет администратором <strong>{{ organization.name }}</strong> и получит все права на управление организацией.
+                </p>
+                <FormKit
+                    v-model="formValues"
+                    name="form-master"
+                    preserve
+                    type="form"
+                    data-loading="loading"
+                    form-class="$reset form m--width-100"
+                    :actions="false"
+                    :disabled="showLoaderSending"
+                    :loading="showLoaderSending ? true : undefined"
+                    @submit="submitHandler"
+                >
+                    <div 
+                        class="form__submit" 
+                        data-type="submit"
                     >
-                        Подтвердить
-                    </button>
-                </div>
-            </FormKit>
-        </div>
-    </vue-final-modal>
+                        <button
+                            type="submit"
+                            :disabled="showLoaderSending"
+                            class="button button-red button-center"
+                        >
+                            Подтвердить
+                        </button>
+                    </div>
+                </FormKit>
+            </div>
+        </vue-final-modal>
+    </q-no-ssr>
 </template>
 
 <script>
@@ -84,6 +89,9 @@
             show() {
                 return this.showModal;
             },
+            user() {
+                return this.$store.state.user;
+            },
         },
         methods: {
             submitHandler(data, node) {
@@ -96,8 +104,18 @@
                     is_access_organization: !this.person.is_master,
                 };
                 cabinet.updateMyOrganizationMemberPartial(params).then(res => {
-                    console.log(res);
-                    this.showLoaderSending = false;
+                    if (this.user.id === this.person.id) {
+                        cabinet.getMyProfile().then(res => {
+                            this.showLoaderSending = false;
+                            this.$store.dispatch('setUser', res);
+                        }).catch(err => {
+                            this.showLoaderSending = false;
+                            this.$store.dispatch('showError', err);
+                            console.error(err);
+                        });
+                    } else {
+                        this.showLoaderSending = false;
+                    }
                     this.$emit('hideModal', true);
                 }).catch(err => {
                     console.error(err);
@@ -106,21 +124,6 @@
                     );
                     this.showLoaderSending = false;
                 });
-
-                /*
-                tenderApi.deleteDraft(this.tender.id).then(res => {
-                    this.showLoaderSending = false;
-                    this.loading = false;
-                    this.deleteSended = true;
-                    this.updateData = true;
-                    console.log(res);
-                }).catch(err => {
-                    this.showLoaderSending = false;
-                    this.loading = false;
-                    this.$store.dispatch('showError', err);
-                    console.error(err);
-                });
-                */
             }
         }
     };

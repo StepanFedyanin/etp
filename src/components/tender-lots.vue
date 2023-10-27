@@ -143,7 +143,7 @@
                     </div>
                 </div>
             </div>
-            <ModalWinnerLot
+            <ModalLotWinner
                 v-if="lotWinner"
                 :tender="tender"
                 :lot="lotWinner"
@@ -155,10 +155,10 @@
 </template>
 
 <script>
-    import ModalWinnerLot from '@/components/modal-winner-lot';
+    import ModalLotWinner from '@/components/modals/lot-winner';
     export default {
         components: {
-            ModalWinnerLot
+            ModalLotWinner
         },
         props: {
             tender: {
@@ -181,10 +181,10 @@
                 return this.tender.status === 'bidding_process' && (this.user.id === this.tender.creator || this.user.is_staff);
             },
             showWinners() {
-                return (this.tender.status === 'closed' || this.tender.status === 'bidding_completed' || this.tender.status === 'fulfilment') && (this.user.id === this.tender.creator || this.user.is_staff || this.user.organization?.id === this.tender.organization.id || (this.tender.user_participation && this.tender.user_participation.status === 'participant'));
+                return (this.tender.status === 'closed' || this.tender.status === 'bidding_completed' || this.tender.status === 'fulfilment') && (this.user.id === this.tender.creator || this.user.is_staff || this.user.organization?.id === this.tender.organization?.id || (this.tender.user_participation && this.tender.user_participation?.status === 'participant'));
             },
             user() {
-                return this.$store.state.user;
+                return this.$store.state.user || {};
             }
         },
         mounted() {

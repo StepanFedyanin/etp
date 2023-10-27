@@ -47,7 +47,7 @@
                 </div>
             </div>
         </div>
-        <ModalRecoveryPassword
+        <ModalPasswordRecovery
             :showModal="showRecoveryPasswordModal"
             @hideModal="hideRecoveryPasswordModal"
         />
@@ -56,11 +56,11 @@
 
 <script>
     import { user as api, cabinet } from "@/services";
-    import ModalRecoveryPassword from '@/components/modal-recovery-password.vue'
+    import ModalPasswordRecovery from '@/components/modals/password-recovery.vue'
 
     export default {
         components: {
-            ModalRecoveryPassword
+            ModalPasswordRecovery
         },
         data() {
             return {

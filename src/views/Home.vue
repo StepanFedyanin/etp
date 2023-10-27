@@ -16,12 +16,14 @@
                                 <p>Используйте TUGAN в качестве собственной ЭТП<br>  или участвуйте в существующих тендерах.</p>
                                 <p>Присоединяйтесь к нам, продавайте и покупайте.</p>
                             </div>
-                            <router-link
-                                :to="{ name: user && user.id ? 'cabinet' : 'registration' }"
-                                class="button button-green banner__register"
-                            >
-                                {{ user && user.id ? 'Мой кабинет' : 'Зарегистрироваться' }}
-                            </router-link>
+                            <q-no-ssr>
+                                <router-link
+                                    :to="{ name: user && user.id ? 'cabinet' : 'registration' }"
+                                    class="button button-green banner__register"
+                                >
+                                    {{ user && user.id ? 'Мой кабинет' : 'Зарегистрироваться' }}
+                                </router-link>
+                            </q-no-ssr>
                         </div>
                         <div class="banner__right">
                             <img
@@ -102,62 +104,17 @@
                         <div class="h1 auction__title">
                             Новые тендеры:
                         </div>
-                        <!--template
-                            v-if="showLoaderGroups"
-                        >
-                            <div class="auction__loader loader">
-                                <div class="spinner" /> Загрузка групп
-                            </div>
-                        </template>
-                        <template
-                            v-else-if="groups && groups.count"
-                        >
-                            <div class="h4 auction__subtitle">
-                                <span
-                                    v-for="idx in 5"
-                                    :key="`group-${idx}`"
-                                >
-                                    <router-link
-                                        :to="{ name: 'groups' }"
-                                        v-text="groups.results[idx - 1].name"
-                                    />,
-                                </span>
-                                и
-                                <router-link
-                                    :to="{ name: 'groups' }"
-                                >
-                                    {{ groups.count - 5 }} других категориях.
-                                </router-link>
-                            </div>
-                        </template-->
                         <Search
                             @startSearch="startSearch"
                         />
                     </div>
-                    <div
-                        class="auction__list"
-                        :class="{ '_is-scrollbar' : scrollbarVisible }"
-                    >
-                        <!--div
-                            v-show="scrollbarVisible"
-                            class="auction__list-up"
-                            @click="scrollUp"
-                        />
-                        <div
-                            v-show="scrollbarVisible"
-                            class="auction__list-down"
-                            @click="scrollDown"
-                        /-->
-                        <template
-                            v-if="showLoaderTenders"
-                        >
+                    <div class="auction__list">
+                        <template v-if="showLoaderTenders">
                             <div class="auction__list-loader loader">
                                 <div class="spinner" /> Загрузка данных
                             </div>
                         </template>
-                        <template
-                            v-else-if="tenders && tenders.count"
-                        >
+                        <template v-else-if="tenders && tenders.count">
                             <div
                                 ref="list"
                                 class="auction__list-inner tenders__block"
@@ -234,27 +191,25 @@
                                 <li>Узнавайте обо всех обновлениях и планах по развитию площадки TUGAN.</li>
                             </ul>
                         </div>
-                        <router-link
-                            :to="{ name: user && user.id ? 'cabinet' : 'registration' }"
-                            class="button capabilities__item-button button-green"
-                        >
-                            {{ user && user.id ? 'Мой кабинет' : 'К регистрации' }}
-                        </router-link>
+                        <q-no-ssr>
+                            <router-link
+                                :to="{ name: user && user.id ? 'cabinet' : 'registration' }"
+                                class="button capabilities__item-button button-green"
+                            >
+                                {{ user && user.id ? 'Мой кабинет' : 'К регистрации' }}
+                            </router-link>
+                        </q-no-ssr>
                     </div>
                 </div>
             </div>
             <div class="goods">
                 <div class="container m--1460">
-                    <template
-                        v-if="showLoaderGoods"
-                    >
+                    <template v-if="showLoaderGoods">
                         <div class="goods__loader loader">
                             <div class="spinner" /> Загрузка данных
                         </div>
                     </template>
-                    <template
-                        v-else
-                    >    
+                    <template v-else>    
                         <div class="goods__title h2">
                             Новые товары
                             <div
@@ -395,32 +350,34 @@
                 <div class="home-page__alert">
                     <div class="home-page__alert-content m--flex">
                         <div class="home-page__alert-buttons">
-                            <template
-                                v-if="user && user.id"
-                            >
-                                <router-link
-                                    :to="{ name: 'cabinet' }"
-                                    class="button button-outline-green button-width-auto"
+                            <q-no-ssr>
+                                <template
+                                    v-if="user && user.id"
                                 >
-                                    Мой кабинет
-                                </router-link>
-                            </template>
-                            <template
-                                v-else
-                            >
-                                <router-link
-                                    :to="{ name: 'registration' }"
-                                    class="button button-outline-green button-width-auto"
+                                    <router-link
+                                        :to="{ name: 'cabinet' }"
+                                        class="button button-outline-green button-width-auto"
+                                    >
+                                        Мой кабинет
+                                    </router-link>
+                                </template>
+                                <template
+                                    v-else
                                 >
-                                    Регистрация
-                                </router-link>
-                                <router-link
-                                    :to="{ name: 'auth' }"
-                                    class="button button-outline-green button-width-auto"
-                                >
-                                    Вход
-                                </router-link>
-                            </template>
+                                    <router-link
+                                        :to="{ name: 'registration' }"
+                                        class="button button-outline-green button-width-auto"
+                                    >
+                                        Регистрация
+                                    </router-link>
+                                    <router-link
+                                        :to="{ name: 'auth' }"
+                                        class="button button-outline-green button-width-auto"
+                                    >
+                                        Вход
+                                    </router-link>
+                                </template>
+                            </q-no-ssr>
                         </div>
                         <p>
                             Если возникнут трудности, вопросы или предложения по сотрудничеству —<br>обратитесь к нам по телефону <a href="tel:+73433448383">+7 (343) 344-83-83</a>.
@@ -440,6 +397,25 @@
 
     export default {
         name: 'Home',
+        async preFetch({ store, currentRoute, previousRoute, redirect, ssrContext, urlPath, publicPath }) {
+            console.log('AppHome preFetch')
+            if (!process.env.SERVER) return;
+            store.dispatch('setMeta', {});
+            let params = {
+                limit: 12,
+                offset: 0
+            };
+            await product.getProducts(params).then(goods => {
+                store.dispatch('fetchDataByKey', { data: goods, key: 'goods' });
+            })
+            params = {
+                limit: 3,
+                offset: 0,
+            };
+            await tender.searchTenders(params).then(tenders => {
+                store.dispatch('fetchDataByKey', { data: tenders, key: 'tenders' });
+            })
+        },
         components: {
             Search,
             BlockTender,
@@ -450,9 +426,9 @@
                 groups: null,
                 showLoaderGroups: false,
                 limit: 5,
-                tenders: null,
+                //tenders: null,
                 showLoaderTenders: false,
-                goods: null,
+                //goods: null,
                 showLoaderGoods: false,
                 resizeObserver: null,
                 scrollbarVisible: false,
@@ -460,6 +436,12 @@
             };
         },
         computed: {
+            goods() {
+                return this.$store.state.data?.goods || {};
+            },
+            tenders() {
+                return this.$store.state.data?.tenders || {};
+            },
             user() {
                 return this.$store.state.user;
             },
@@ -469,28 +451,22 @@
             }
         },
         mounted () {
-            /*
-            if (this.$refs.auction) {
-                this.resizeObserver = new ResizeObserver(this.onResize)
-                this.resizeObserver.observe(this.$refs.auction)
-            }
-            */
-            
             //this.getGroups();
             this.getTenders();
             this.getGoods();
         },
         methods: {
             startSearch(formData) {
+                this.showLoaderTenders = true;
                 formData.limit = Number(this.limit)
                 formData.offset = this.offset
-                tender.searchTenders(formData)
-                    .then(tenders => {
-                        console.log(tenders)
-                        this.tenders = tenders
-                    }).catch(err => {
-                        console.error(err)
-                    })
+                tender.searchTenders(formData).then(tenders => {
+                    this.$store.dispatch('fetchDataByKey', { data: tenders, key: 'tenders' });
+                    this.showLoaderTenders = false;
+                }).catch(err => {
+                    this.showLoaderTenders = false;
+                    console.error(err)
+                })
             },
             getGoods() {
                 let params = {
@@ -498,10 +474,9 @@
                     offset: 0
                 };
                 this.showLoaderGoods = true;
-                product.getProducts(params).then(res => {
-                    this.goods = res;
+                product.getProducts(params).then(goods => {
+                    this.$store.dispatch('fetchDataByKey', { data: goods, key: 'goods' });
                     this.showLoaderGoods = false;
-                    console.log(res)
                 }).catch(err => {
                     this.showLoaderGoods = false;
                     console.error(err)
@@ -514,8 +489,8 @@
                 }
                 this.showLoaderTenders = true;
                 tender.searchTenders(params).then(tenders => {
+                    this.$store.dispatch('fetchDataByKey', { data: tenders, key: 'tenders' });
                     this.showLoaderTenders = false;
-                    this.tenders = tenders
                 }).catch(err => {
                     this.showLoaderTenders = false;
                     console.error(err)

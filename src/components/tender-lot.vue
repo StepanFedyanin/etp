@@ -90,7 +90,7 @@
                 :lotId="lotData.id"
                 @getTenderLot="getTenderLot"
             />
-            <ModalWinnerLot
+            <ModalLotWinner
                 v-if="lotWinner"
                 :tender="tender"
                 :lot="lotWinner"
@@ -105,12 +105,12 @@
     import { tender as tenderApi } from "@/services";
     import TenderLotParticipants from '@/components/tender-lot-participants';
     import TenderLotHistory from '@/components/tender-lot-history';
-    import ModalWinnerLot from '@/components/modal-winner-lot';
+    import ModalLotWinner from '@/components/modals/lot-winner';
     export default {
         components: {
             TenderLotParticipants,
             TenderLotHistory,
-            ModalWinnerLot
+            ModalLotWinner
         },
         props: {
             tender: {

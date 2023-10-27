@@ -1,6 +1,6 @@
 //import _keys from 'lodash/keys';
 import { parse, format } from 'fecha';
-import store from '../store/store';
+import store from '@/store';
 
 const helpers = {
     parseDate: (value, template) => {
@@ -177,9 +177,10 @@ const helpers = {
     },
 
     createKeywords: (obj, route) => {
+        console.log(store.state);
         if (obj && obj.keywords) return obj.keywords;
         let metaTemplates = store.state.metaScheme;
-        let keywords = (metaTemplates.commonPfx?.keywords || '') + (metaTemplates[route.name]?.keywords || '') + ' ' + (metaTemplates.commonSfx.keywords || '');
+        let keywords = (metaTemplates.commonPfx?.keywords || '') + (metaTemplates[route.name]?.keywords || '') + ' ' + (metaTemplates.commonSfx?.keywords || '');
         Object.keys(obj).map((key) => {
             keywords = keywords.replace(`%${key}%`, obj[key]);
         });

@@ -309,7 +309,7 @@
                 </div>
             </FormKit>
         </template>
-        <ModalAddLot
+        <ModalLotAdd
             v-if="showAddLotModal"
             :showModal="showAddLotModal"
             :lotId="lotId"
@@ -317,7 +317,7 @@
             @hideModal="hideAddLotModal"
             @addLot="addLotModal"
         />
-        <ModalAddLotFile
+        <ModalLotFileAdd
             :showModal="showFileLotModal"
             @hideModal="hideFileLotModal"
             @uploadFileLot="uploadFileLot"
@@ -327,14 +327,14 @@
 
 <script>
     import { tender as tenderApi, category as categoryApi, geo as geoApi, user as userApi, common as commonApi, cabinet } from "@/services"
-    import ModalAddLot from '@/components/modal-add-lot.vue'
-    import ModalAddLotFile from '@/components/modal-add-lot-file.vue'
+    import ModalLotAdd from '@/components/modals/lot-add.vue'
+    import ModalLotFileAdd from '@/components/modals/lot-file-add.vue'
     import { urlPath } from '@/settings'
 
     export default {
         components: {
-            ModalAddLot,
-            ModalAddLotFile,
+            ModalLotAdd,
+            ModalLotFileAdd,
         },
         props: {
             propType: {

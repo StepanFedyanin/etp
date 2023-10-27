@@ -61,7 +61,7 @@
                 </template>
             </div>
         </div>
-        <ModalCancelLotOfferStaff
+        <ModalLotOfferStaffCancel
             v-if="lot.last_bet"
             :tender="tender || {}"
             :lot="lot || {}"
@@ -73,10 +73,10 @@
 
 <script>
     import { tender as tenderApi } from "@/services";
-    import ModalCancelLotOfferStaff from '@/components/modal-cancel-lot-offer-staff';
+    import ModalLotOfferStaffCancel from '@/components/modals/lot-offer-staff-cancel';
     export default {
         components: {
-            ModalCancelLotOfferStaff
+            ModalLotOfferStaffCancel
         },
         props: {
             tender: {

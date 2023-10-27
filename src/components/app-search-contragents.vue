@@ -30,12 +30,9 @@
 </template>
 
 <script>
-    //import ModalSearch from '@/components/modal-search.vue'
-
     export default {
         name: 'Search',
         components: {
-            //ModalSearch
         },
         props: {
         },

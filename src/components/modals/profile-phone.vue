@@ -1,71 +1,76 @@
 <template>
-    <vue-final-modal 
-        v-model="show"
-        classes="modal__container" 
-        content-class="modal__block m--small"
-        @click-outside="$emit('hideModal', false)"
-    >
-        <button 
-            class="modal__close" 
-            @click="$emit('hideModal', false)"
+    <q-no-ssr>
+        <vue-final-modal 
+            v-model="show"
+            class="modal__container" 
+            content-class="modal__block m--small"
+            content-transition="vfm-fade"
+            overlay-transition="vfm-fade"
+            :clickToClose="false"
+            @click-outside="$emit('hideModal', false)"
         >
-            <span />
-        </button>
-        <span class="modal__title">Новый телефон аккаунта</span>
-        <div class="modal__content">
-            <div class="text">
-                <p class="m--mb-1">
-                    <strong>{{ user.full_name }}</strong>
-                </p>
-            </div>
-            <FormKit
-                v-model="formData"
-                name="form-email"
-                preserve
-                type="form"
-                data-loading="loading"
-                form-class="$reset form m--width-100 m--no--comments"
-                :actions="false"
-                :disabled="showLoaderSending"
-                :loading="showLoaderSending ? true : undefined"
-                @submit="submitHandler"
+            <button 
+                class="modal__close" 
+                @click="$emit('hideModal', false)"
             >
-                <div
-                    v-if="changedSended" 
-                    class="text"
-                >
+                <span />
+            </button>
+            <span class="modal__title">Новый телефон аккаунта</span>
+            <div class="modal__content">
+                <div class="text">
                     <p class="m--mb-1">
-                        <strong>Ваш телефон аккаунта изменен!</strong>
+                        <strong>{{ user.full_name }}</strong>
                     </p>
                 </div>
-                <FormKitSchema 
-                    v-else
-                    :schema="schema" 
-                />
-                <div 
-                    class="form__submit" 
-                    data-type="submit"
+                <FormKit
+                    v-model="formData"
+                    name="form-email"
+                    preserve
+                    type="form"
+                    data-loading="loading"
+                    form-class="$reset form m--width-100 m--no--comments"
+                    :actions="false"
+                    :disabled="showLoaderSending"
+                    :loading="showLoaderSending ? true : undefined"
+                    @submit="submitHandler"
                 >
-                    <button
-                        v-if="changedSended"
-                        :disabled="showLoaderSending"
-                        class="button button-green button-center"
-                        @click.prevent="$emit('hideModal', false)"
+                    <div
+                        v-if="changedSended" 
+                        class="text"
                     >
-                        Закрыть окно
-                    </button>
-                    <button
+                        <p class="m--mb-1">
+                            <strong>Ваш телефон аккаунта изменен!</strong>
+                        </p>
+                    </div>
+                    <FormKitSchema 
                         v-else
-                        type="submit"
-                        :disabled="showLoaderSending"
-                        class="button button-green button-center"
+                        :schema="schema" 
+                    />
+                    <div 
+                        class="form__submit" 
+                        data-type="submit"
                     >
-                        Изменить телефон
-                    </button>
-                </div>
-            </FormKit>
-        </div>
-    </vue-final-modal>
+                        <button
+                            v-if="changedSended"
+                            :disabled="showLoaderSending"
+                            class="button button-green button-center"
+                            @click.prevent="$emit('hideModal', false)"
+                        >
+                            Закрыть окно
+                        </button>
+                        <button
+                            v-else
+                            type="submit"
+                            :disabled="showLoaderSending"
+                            class="button button-green button-center"
+                        >
+                            Изменить телефон
+                        </button>
+                    </div>
+                </FormKit>
+            </div>
+        </vue-final-modal>
+    </q-no-ssr>
 </template>
 
 <script>

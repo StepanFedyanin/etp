@@ -1,114 +1,119 @@
 <template>
-    <vue-final-modal 
-        v-model="show"
-        classes="modal__container" 
-        content-class="modal__block m--middle"
-        @click-outside="$emit('hideModal', updateData)"
-    >
-        <button 
-            class="modal__close" 
-            @click="$emit('hideModal', updateData)"
+    <q-no-ssr>
+        <vue-final-modal 
+            v-model="show"
+            class="modal__container" 
+            content-class="modal__block m--middle"
+            content-transition="vfm-fade"
+            overlay-transition="vfm-fade"
+            :clickToClose="false"
+            @click-outside="$emit('hideModal', updateData)"
         >
-            <span />
-        </button>
-        <span class="modal__title">
-            {{ slug ? 'Редактирование товара' : 'Добавление товара' }}
-        </span>
-        <div
-            v-if="productSended"
-            class="modal__content"
-        >
-            {{ slug ? 'Товар успешно обновлен' : 'Товар Успешно добавлен.' }}
-        </div>
-        <div 
-            v-else
-            class="modal__content"
-        >
-            <FormKit
-                id="addGoodForm"
-                v-model="formValues"
-                name="add-good-form"
-                preserve
-                type="form"
-                data-loading="showLoaderSending"
-                form-class="$reset modal-form goods__form"
-                :disabled="showLoaderSending"
-                :loading="showLoaderSending ? true : undefined"
-                :actions="false"
-                @submit="submitAddGoodForm"
+            <button 
+                class="modal__close" 
+                @click="$emit('hideModal', updateData)"
             >
-                <div class="modal-form__block">
-                    <div class="goods__form-photo">
-                        <div class="field">
-                            <div class="field__inner">
-                                <label 
-                                    class="field__label" 
-                                    for="photo"
-                                >
-                                    Фотография
-                                </label>
-                                <div class="field__input m--hidden">
-                                    <input
-                                        id="photo"
-                                        ref="photoInput"
-                                        accept=".jpg,.png,.svg" 
-                                        class="input" 
-                                        type="file" 
-                                        name="photo" 
+                <span />
+            </button>
+            <span class="modal__title">
+                {{ slug ? 'Редактирование товара' : 'Добавление товара' }}
+            </span>
+            <div
+                v-if="productSended"
+                class="modal__content"
+            >
+                {{ slug ? 'Товар успешно обновлен' : 'Товар Успешно добавлен.' }}
+            </div>
+            <div 
+                v-else
+                class="modal__content"
+            >
+                <FormKit
+                    id="addGoodForm"
+                    v-model="formValues"
+                    name="add-good-form"
+                    preserve
+                    type="form"
+                    data-loading="showLoaderSending"
+                    form-class="$reset modal-form goods__form"
+                    :disabled="showLoaderSending"
+                    :loading="showLoaderSending ? true : undefined"
+                    :actions="false"
+                    @submit="submitAddGoodForm"
+                >
+                    <div class="modal-form__block">
+                        <div class="goods__form-photo">
+                            <div class="field">
+                                <div class="field__inner">
+                                    <label 
+                                        class="field__label" 
+                                        for="photo"
                                     >
+                                        Фотография
+                                    </label>
+                                    <div class="field__input m--hidden">
+                                        <input
+                                            id="photo"
+                                            ref="photoInput"
+                                            accept=".jpg,.png,.svg" 
+                                            class="input" 
+                                            type="file" 
+                                            name="photo" 
+                                        >
+                                    </div>
+                                </div>
+                                <div 
+                                    class="form__submit edit__form-submit m--start" 
+                                >
+                                    <button
+                                        :disabled="loading || busyForm"
+                                        class="button button-outline-green button-width-auto"
+                                        @click.prevent="onClickUploadPhoto"
+                                    >
+                                        Загрузить новую
+                                    </button>
+                                    <button
+                                        v-if="formValues.small_photo"
+                                        :disabled="loading || busyForm"
+                                        class="button button-outline-red button-width-auto"
+                                        @click.prevent="onClickDeletePhoto"
+                                    >
+                                        Удалить
+                                    </button>
+                                </div>
+                                <div 
+                                    v-if="formValues.small_photo"
+                                    class="field__text m--color-green"
+                                >
+                                    Загружен файл: {{ formValues.small_photo.split('/').at(-1) }}
+                                </div>
+                                <div class="field__text">
+                                    Рекомендуемый размер: 600х600px. jpg, png, svg
                                 </div>
                             </div>
-                            <div 
-                                class="form__submit edit__form-submit m--start" 
-                            >
-                                <button
-                                    :disabled="loading || busyForm"
-                                    class="button button-outline-green button-width-auto"
-                                    @click.prevent="onClickUploadPhoto"
-                                >
-                                    Загрузить новую
-                                </button>
-                                <button
+                            <div class="goods__form-photo-pic">
+                                <img
                                     v-if="formValues.small_photo"
-                                    :disabled="loading || busyForm"
-                                    class="button button-outline-red button-width-auto"
-                                    @click.prevent="onClickDeletePhoto"
+                                    :src="formValues.small_photo" 
+                                    alt="" 
                                 >
-                                    Удалить
-                                </button>
-                            </div>
-                            <div 
-                                v-if="formValues.small_photo"
-                                class="field__text m--color-green"
-                            >
-                                Загружен файл: {{ formValues.small_photo.split('/').at(-1) }}
-                            </div>
-                            <div class="field__text">
-                                Рекомендуемый размер: 600х600px. jpg, png, svg
                             </div>
                         </div>
-                        <div class="goods__form-photo-pic">
-                            <img
-                                v-if="formValues.small_photo"
-                                :src="formValues.small_photo" 
-                                alt="" 
-                            >
-                        </div>
-                    </div>
 
-                    <FormKitSchema :schema="addGoodSchema" />
-                </div>
-                <div class="modal-form__actions">
-                    <button
-                        type="submit"
-                        class="button button-green"
-                    >
-                        Сохранить
-                    </button>
-                </div>
-            </FormKit>
-        </div>
-    </vue-final-modal>
+                        <FormKitSchema :schema="addGoodSchema" />
+                    </div>
+                    <div class="modal-form__actions">
+                        <button
+                            type="submit"
+                            class="button button-green"
+                        >
+                            Сохранить
+                        </button>
+                    </div>
+                </FormKit>
+            </div>
+        </vue-final-modal>
+    </q-no-ssr>
 </template>
 
 <script>

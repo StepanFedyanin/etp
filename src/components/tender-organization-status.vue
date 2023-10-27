@@ -165,7 +165,7 @@
             </div>
         </template>
 
-        <ModalRequestPartipation
+        <ModalPartipationRequest
             :showModal="showRequestPartipationModal"
             :tender="tender"
             @getTenderData="getTenderData"
@@ -175,13 +175,13 @@
 </template>
 
 <script>
-    import ModalRequestPartipation from '@/components/modal-request-partipation';
+    import ModalPartipationRequest from '@/components/modals/partipation-request';
     import { urlPath } from '@/settings'
     import { tender as tenderApi } from "@/services"
 
     export default {
         components: {
-            ModalRequestPartipation
+            ModalPartipationRequest
         },
         props: {
             modifierClass: {

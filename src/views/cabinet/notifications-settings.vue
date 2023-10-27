@@ -32,7 +32,8 @@
                             </h2>
                             <div class="notifications__settings-group-block">
                                 <div
-                                    v-for="template in group.templates" 
+                                    v-for="template in group.templates"
+                                    :key="`notifications-${template.id}`"
                                     class="notifications__settings-item"
                                 >
                                     <div class="notifications__settings-item-param">

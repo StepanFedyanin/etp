@@ -1,67 +1,72 @@
 <template>
-    <vue-final-modal 
-        v-model="show"
-        classes="modal__container" 
-        content-class="modal__block m--small"
-        @click-outside="$emit('hideModal', false)"
-    >
-        <button 
-            class="modal__close" 
-            @click="$emit('hideModal', false)"
+    <q-no-ssr>
+        <vue-final-modal 
+            v-model="show"
+            class="modal__container" 
+            content-class="modal__block m--small"
+            content-transition="vfm-fade"
+            overlay-transition="vfm-fade"
+            :clickToClose="false"
+            @click-outside="$emit('hideModal', false)"
         >
-            <span />
-        </button>
-        <span class="modal__title">Предупреждение</span>
-        <div 
-            class="modal__content text"
-        >
-            <p 
-                v-if="excludedSended"
-                class="m--mb-3"
+            <button 
+                class="modal__close" 
+                @click="$emit('hideModal', false)"
             >
-                <strong>{{ person.full_name }}</strong> больше не состоит в организации <strong>{{ organization.name }}</strong>!
-            </p>
-            <p 
-                v-else
-                class="m--mb-3"
+                <span />
+            </button>
+            <span class="modal__title">Предупреждение</span>
+            <div 
+                class="modal__content text"
             >
-                <strong>{{ person.full_name }}</strong> покинет организацию <strong>{{ organization.name }}</strong> и потеряет все имеющиеся права.
-            </p>
-            <FormKit
-                v-model="formData"
-                name="form-exclude"
-                preserve
-                type="form"
-                data-loading="loading"
-                form-class="$reset form m--width-100"
-                :actions="false"
-                :disabled="showLoaderSending"
-                :loading="showLoaderSending ? true : undefined"
-                @submit="submitHandler"
-            >
-                <div 
-                    class="form__submit" 
-                    data-type="submit"
+                <p 
+                    v-if="excludedSended"
+                    class="m--mb-3"
                 >
-                    <button
-                        v-if="excludedSended"
-                        :disabled="showLoaderSending"
-                        class="button button-green button-center"
+                    <strong>{{ person.full_name }}</strong> больше не состоит в организации <strong>{{ organization.name }}</strong>!
+                </p>
+                <p 
+                    v-else
+                    class="m--mb-3"
+                >
+                    <strong>{{ person.full_name }}</strong> покинет организацию <strong>{{ organization.name }}</strong> и потеряет все имеющиеся права.
+                </p>
+                <FormKit
+                    v-model="formData"
+                    name="form-exclude"
+                    preserve
+                    type="form"
+                    data-loading="loading"
+                    form-class="$reset form m--width-100"
+                    :actions="false"
+                    :disabled="showLoaderSending"
+                    :loading="showLoaderSending ? true : undefined"
+                    @submit="submitHandler"
+                >
+                    <div 
+                        class="form__submit" 
+                        data-type="submit"
                     >
-                        Закрыть окно
-                    </button>
-                    <button
-                        v-else
-                        type="submit"
-                        :disabled="showLoaderSending"
-                        class="button button-red button-center"
-                    >
-                        Подтвердить
-                    </button>
-                </div>
-            </FormKit>
-        </div>
-    </vue-final-modal>
+                        <button
+                            v-if="excludedSended"
+                            :disabled="showLoaderSending"
+                            class="button button-green button-center"
+                        >
+                            Закрыть окно
+                        </button>
+                        <button
+                            v-else
+                            type="submit"
+                            :disabled="showLoaderSending"
+                            class="button button-red button-center"
+                        >
+                            Подтвердить
+                        </button>
+                    </div>
+                </FormKit>
+            </div>
+        </vue-final-modal>
+    </q-no-ssr>
 </template>
 
 <script>
@@ -98,7 +103,6 @@
             submitHandler(data, node) {
                 this.showLoaderSending = true;
                 cabinet.excludeMyOrganizationMember(this.person.id).then(res => {
-                    console.log(res);
                     this.showLoaderSending = false;
                     this.$emit('hideModal', true);
                 }).catch(err => {

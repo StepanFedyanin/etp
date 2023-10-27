@@ -1,17 +1,12 @@
 <template>
-    <div
-        :class="['cabinet tender', user?.id ? 'm--justify-flex-start' : '']">
+    <div :class="['cabinet tender', user?.id ? 'm--justify-flex-start' : '']">
         <div :class="['container', user?.id ? '' : 'm--1460']">
-            <template
-                v-if="showLoaderSending"
-            >
+            <template v-if="showLoaderSending">
                 <div class="tender__loader loader">
                     <div class="spinner" /> Загрузка данных
                 </div>
             </template>
-            <template
-                v-else-if="tender"
-            >
+            <template v-else-if="tender?.id">
                 <div class="tender__block m--top">
                     <!-- CARD 1 -->
                     <div 
@@ -212,7 +207,7 @@
                             <span class="tender__info-param-name">Заказчик</span> 
                             <div class="tender__info-param-value">
                                 <router-link
-                                    :to="{ name: 'contragent', params: { id: tender.organization.id } }"
+                                    :to="{ name: 'contragent', params: { id: tender.organization?.id } }"
                                 >
                                     {{ tender.organization.name }}
                                 </router-link>
@@ -223,6 +218,7 @@
                             <div class="tender__info-param-value">
                                 <template
                                     v-for="(category, index) in tender.category_detail"
+                                    :key="`category-${index}`"
                                 >
                                     {{ category.name }}<span v-if="tender.category.length > 0 && index != (tender.category.length - 1)">; </span>
                                 </template>
@@ -348,7 +344,7 @@
                                     Отменить тендер
                                 </button>
                             </div>
-                            <ModalCancelTenderConfirm
+                            <ModalTenderCancel
                                 :tender="tender || {}"
                                 :showModal="showCancelTenderConfirmModal"
                                 @hideModal="hideCancelTenderConfirmModal"
@@ -381,7 +377,7 @@
                                     С выбором победителя
                                 </button>
                             </div>
-                            <ModalCloseAheadTenderConfirm
+                            <ModalTenderCloseAhead
                                 :tender="tender || {}"
                                 :setWinner="setWinner"
                                 :showModal="showCloseAheadTenderConfirmModal"
@@ -408,7 +404,7 @@
                                     Завершить тендер
                                 </button>
                             </div>
-                            <ModalCloseTenderConfirm
+                            <ModalTenderClose
                                 :tender="tender || {}"
                                 :showModal="showCloseTenderConfirmModal"
                                 @hideModal="hideCloseTenderConfirmModal"
@@ -448,7 +444,7 @@
                                 Удалить
                             </button>
                         </div>
-                        <ModalDeleteTenderConfirm
+                        <ModalTenderDelete
                             :tender="tender || {}"
                             :showModal="showDeleteTenderConfirmModal"
                             @hideModal="hideDeleteTenderConfirmModal"
@@ -677,7 +673,7 @@
 
 <script>
     import { urlPath } from '@/settings'
-    import { tender as tenderApi } from "@/services"
+    import { tender as tenderApi, chat as Chat } from "@/services"
     import TenderOrganizationStatus from '@/components/tender-organization-status';
     import TenderParticipants from '@/components/tender-participants';
     import TenderRelatedTenders from '@/components/tender-related-tenders.vue';
@@ -687,13 +683,27 @@
     import TenderBids from '@/components/tender-bids';
     import Timer from '@/components/timer';
     import TenderInvite from '@/components/tender-invite.vue';
-    import ModalCloseTenderConfirm from '@/components/modal-close-tender-confirm';
-    import ModalCloseAheadTenderConfirm from '@/components/modal-close-ahead-tender-confirm';
-    import ModalCancelTenderConfirm from '@/components/modal-cancel-tender-confirm';
-    import ModalDeleteTenderConfirm from '@/components/modal-delete-tender-confirm';
-    import { chat as Chat } from "@/services"
+    import ModalTenderClose from '@/components/modals/tender-close';
+    import ModalTenderCloseAhead from '@/components/modals/tender-close-ahead';
+    import ModalTenderCancel from '@/components/modals/tender-cancel';
+    import ModalTenderDelete from '@/components/modals/tender-delete';
 
     export default {
+        async preFetch({ store, currentRoute, previousRoute, redirect, ssrContext, urlPath, publicPath }) {
+            console.log('Tender preFetch', process.env.SERVER, currentRoute.params);
+            if (!process.env.SERVER) return;
+            let tender = {}; 
+            await tenderApi.getTender(currentRoute.params?.id).then(res => {
+                tender = res;
+                store.dispatch('setMeta', tender);
+                let duration = new Date(tender.date_end) - new Date(tender.date_start);
+                tender.duration = Math.ceil(duration / 1000);
+                tender.limit = (new Date(tender.date_end) - new Date()) / 1000;
+                store.dispatch('fetchDataByKey', { data: tender, key: 'tender' });
+            }).catch(err => {
+                if (err.response.status === 404) store.dispatch('showError', err.response.status);
+            });
+        },
         components: {
             TenderOrganizationStatus,
             TenderParticipants,
@@ -704,10 +714,10 @@
             TenderBids,
             TenderInvite,
             Timer,
-            ModalCloseTenderConfirm,
-            ModalCloseAheadTenderConfirm,
-            ModalCancelTenderConfirm,
-            ModalDeleteTenderConfirm,
+            ModalTenderClose,
+            ModalTenderCloseAhead,
+            ModalTenderCancel,
+            ModalTenderDelete,
         },
         props: {
             id: {
@@ -718,8 +728,8 @@
         data() {
             return {
                 urlPath,
-                user: this.$store.state.user,
-                tender: null,
+                //user: this.$store.state.user,
+                //tender: null,
                 lot: null,
                 participants: [],
                 documents: [],
@@ -745,6 +755,12 @@
             }
         },
         computed: {
+            user() {
+                return this.$store.state.user || {};
+            },
+            tender() {
+                return this.$store.state.data?.tender || {};
+            },
             showActinsBlock() {
                 if (this.tender.publication && this.tender.status !== 'closed' && this.tender.status !== 'fulfilment') {
                     if (this.tender.creator === this.user.id) {
@@ -759,39 +775,37 @@
         },
         watch: {
             '$route.params': {
+                //immediate: true,
                 handler() {
-                    console.log(this.$route.params);
-                    this.$nextTick(() => {
-                        this.getTenderData();
-                    });
+                    if (!process.env.SERVER) this.getTenderData();
                 },
             }
         },
         created() {
-            this.getTenderData();
         },
         mounted() {
+            this.getTenderData();
         },
         methods: {
             getTenderData() {
                 this.showLoaderSending = true;
                 tenderApi.getTender(this.id).then(res => {
                     this.showLoaderSending = false;
-                    this.tender = res;
-                    this.$store.dispatch('setMeta', this.tender);
-                    let duration = new Date(this.tender.date_end) - new Date(this.tender.date_start);
-                    this.tender.duration = Math.ceil(duration / 1000);
+                    let tender = res;
+                    let duration = new Date(tender.date_end) - new Date(tender.date_start);
+                    tender.duration = Math.ceil(duration / 1000);
                     // let limit = (new Date(this.tender.date_end) - new Date()) / 1000;
-                    this.tender.limit = (new Date(this.tender.date_end) - new Date()) / 1000;
-                    console.log(res);
+                    tender.limit = (new Date(tender.date_end) - new Date()) / 1000;
+                    this.$store.dispatch('fetchDataByKey', { data: tender, key: 'tender' });
+                    this.$store.dispatch('setMeta', tender);
+
                     if (this.user.id === this.tender.creator || this.user.is_staff) {
                         tenderApi.getTenderParticipants(this.id).then(res => {
                             this.participants = res;
                             console.log(res);
                         }).catch(err => {
+                            if (err.response.status === 404) this.$store.dispatch('showError', err.response.status);
                             this.showLoaderSending = false;
-                            this.$store.dispatch('showError', err);
-                            console.error(err);
                         });
                     }
                     /*
@@ -805,13 +819,9 @@
                     });
                     */
                 }).catch(err => {
+                    this.$store.dispatch('setMeta', {});
+                    if (err.response?.status === 404) this.$router.replace({ name: 'page404' });
                     this.showLoaderSending = false;
-                    if (err.response && err.response.status === 404) {
-                        this.$router.push({ name: 'page404' });
-                    } else {
-                        this.$store.dispatch('showError', err);
-                    }
-                    console.error(err);
                 });
             },
             onClickRapidBets(type) {

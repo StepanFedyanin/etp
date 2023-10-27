@@ -27,22 +27,26 @@ export default class {
             params.params = this.__append_extra_params(params.params, params.extraParams);
             delete params.extraParams;
         }
+        /*
         if (params.cancel) {
-            params.cancelToken = new axios.CancelToken(params.cancel);
+            params.cancelToken = this.CancelToken(params.cancel);
             delete params.cancel;
         }
+        */
         return axios.request(_defaults({}, params, this.settings));
     }
+    /*
     static cancelToken() {
         return axios.CancelToken.source();
     }
+    */
     static getUri(params) {
         return axios.getUri(params);
     }
     static __append_extra_data(data, extra) {
         data = data || {};
 
-        if (data instanceof FormData) {
+        if (process.env.CLIENT && data instanceof FormData) {
             for (let k in extra) {
                 data.append(k, extra[k]);
             }

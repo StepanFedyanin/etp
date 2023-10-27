@@ -200,7 +200,7 @@
                 </div>
             </template>
         </div>
-        <ModalRequestGood
+        <ModalGoodRequest
             v-if="showRequestGoodModal"
             :good="good"
             :showModal="showRequestGoodModal"
@@ -215,14 +215,14 @@
     import { user as api, product as productApi, cabinet } from "@/services";
     import blockContragent from '@/components/block-contragent.vue';
     import blockGoodsItem from '@/components/block-goods-item.vue';
-    import ModalRequestGood from '@/components/modal-request-good.vue';
+    import ModalGoodRequest from '@/components/modals/good-request.vue';
 
     export default {
         name: 'Product',
         components: {
             blockContragent,
             blockGoodsItem,
-            ModalRequestGood
+            ModalGoodRequest
         },
         props: {
             slug: {

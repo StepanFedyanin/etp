@@ -10,6 +10,7 @@
         >
             <div 
                 v-for="invite in invites"
+                :key="`invite-${invite.id}`"
                 class="invite__item"
             >
                 <div class="invite__item-info">
@@ -77,8 +78,7 @@
     </div>
 </template>
 <script>
-    import { user as userApi } from "@/services"
-    import { tender as tenderApi} from "@/services"
+    import { user as userApi, tender as tenderApi } from "@/services"
 
     export default {
         components: {

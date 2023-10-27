@@ -1,68 +1,73 @@
 <template>
-    <vue-final-modal 
-        v-model="show"
-        classes="modal__container" 
-        content-class="modal__block m--small"
-        @click-outside="$emit('hideModal', false)"
-    >
-        <button 
-            class="modal__close" 
-            @click="$emit('hideModal', false)"
+    <q-no-ssr>
+        <vue-final-modal 
+            v-model="show"
+            class="modal__container" 
+            content-class="modal__block m--small"
+            content-transition="vfm-fade"
+            overlay-transition="vfm-fade"
+            :clickToClose="false"
+            @click-outside="$emit('hideModal', false)"
         >
-            <span />
-        </button>
-        <span class="modal__title">Новый пароль сотрудника</span>
-        <div class="modal__content">
-            <div class="text">
-                <p class="m--mb-2">
-                    <strong>{{ person.full_name }}</strong>
-                </p>
-            </div>
-            <FormKit
-                v-model="formData"
-                name="form-password"
-                preserve
-                type="form"
-                data-loading="loading"
-                form-class="$reset form m--width-100 m--no--comments"
-                :actions="false"
-                :disabled="showLoaderSending"
-                :loading="showLoaderSending ? true : undefined"
-                @submit="submitHandler"
+            <button 
+                class="modal__close" 
+                @click="$emit('hideModal', false)"
             >
-                <div
-                    v-if="changedSended" 
-                    class="text"
-                >
-                    Пароль сотрудника изменен!
+                <span />
+            </button>
+            <span class="modal__title">Новый пароль сотрудника</span>
+            <div class="modal__content">
+                <div class="text">
+                    <p class="m--mb-2">
+                        <strong>{{ person.full_name }}</strong>
+                    </p>
                 </div>
-                <FormKitSchema 
-                    v-else
-                    :schema="schema" 
-                />
-                <div 
-                    class="form__submit" 
-                    data-type="submit"
+                <FormKit
+                    v-model="formData"
+                    name="form-password"
+                    preserve
+                    type="form"
+                    data-loading="loading"
+                    form-class="$reset form m--width-100 m--no--comments"
+                    :actions="false"
+                    :disabled="showLoaderSending"
+                    :loading="showLoaderSending ? true : undefined"
+                    @submit="submitHandler"
                 >
-                    <button
-                        v-if="changedSended"
-                        :disabled="showLoaderSending"
-                        class="button button-green button-center"
+                    <div
+                        v-if="changedSended" 
+                        class="text"
                     >
-                        Закрыть окно
-                    </button>
-                    <button
+                        Пароль сотрудника изменен!
+                    </div>
+                    <FormKitSchema 
                         v-else
-                        type="submit"
-                        :disabled="showLoaderSending"
-                        class="button button-green button-center"
+                        :schema="schema" 
+                    />
+                    <div 
+                        class="form__submit" 
+                        data-type="submit"
                     >
-                        Изменить пароль
-                    </button>
-                </div>
-            </FormKit>
-        </div>
-    </vue-final-modal>
+                        <button
+                            v-if="changedSended"
+                            :disabled="showLoaderSending"
+                            class="button button-green button-center"
+                        >
+                            Закрыть окно
+                        </button>
+                        <button
+                            v-else
+                            type="submit"
+                            :disabled="showLoaderSending"
+                            class="button button-green button-center"
+                        >
+                            Изменить пароль
+                        </button>
+                    </div>
+                </FormKit>
+            </div>
+        </vue-final-modal>
+    </q-no-ssr>
 </template>
 
 <script>
@@ -117,7 +122,7 @@
                 this.showLoaderSending = true;
                 let params = {
                     id: this.person.id,
-                    password: !this.formData.password
+                    password: this.formData.password
                 };
                 cabinet.updateMyOrganizationMemberPartial(params).then(res => {
                     console.log(res);

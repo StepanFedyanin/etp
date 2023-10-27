@@ -3,50 +3,63 @@
         class="app"
         :class="[$route.meta.requiresAuth || ($route.meta.showSidebarAuth && user && user.id) ? 'm--with-sidebar' : '', $route.name === 'page404' ? 'm--page404' : '', $route.meta.appClass]"
     >
-        <HeadTag>
-            <title>{{ $helpers.createTitle(meta, $route) }}</title>
-            <meta
-                name="description"
-                :content="$helpers.createDescription(meta, $route)"
-            >
-            <meta
-                name="keywords"
-                :content="$helpers.createKeywords(meta, $route)"
-            >
-        </HeadTag>
+        <MetaTags 
+            :route="$route"
+            :data="$store.state.meta"
+        />
         <AppHeader
             :showSidebar="showSidebarBlock"
             @showSidebar="showSidebar"
         />
+        <!--
+        Header End -->
         <div class="app__block">
-            <Sidebar
+            <AppSidebar
                 v-if="$route.meta.requiresAuth || ($route.meta.showSidebarAuth && user && user.id)"
                 :class="showSidebarBlock ? 'is-show-sidebar' : ''"
             />
-            <routerView />
+            <Page404 v-if="showErrorPage" />
+            <routerView v-else />
         </div>
+        <!--
+        Main End -->
         <AppFooter />
-        <appError />
+        <!--
+        Footer End -->
+        <ModalError />
     </div>
 </template>
 
 <script>
     import { common as api } from '@/services';
-    import { Head as HeadTag } from '@vueuse/head';
+    import MetaTags from '@/components/meta-tags.vue';
+    //import { Head as HeadTag } from '@vueuse/head';
     //import { useMeta } from 'vue-meta';
     import { helpers } from '@/utils/helpers';
-    import appError from '@/components/app-error.vue';
     import AppHeader from '@/components/app-header.vue';
     import AppFooter from '@/components/app-footer.vue';
-    import Sidebar from '@/components/app-sidebar.vue';
+    import AppSidebar from '@/components/app-sidebar.vue';
+    import Page404 from '@/views/Page404.vue';
+    import ModalError from '@/components/modals/error.vue';
 
     export default {
+        async preFetch({ store, currentRoute, previousRoute, redirect, ssrContext, urlPath, publicPath }) {
+            console.log('App preFetch', process.env.MODE);
+            if (currentRoute.name === 'page500') return;
+            if (!process.env.SERVER) return;
+            await api.getMetaScheme().then(res => {
+                let meta = {}; 
+                res.forEach(item => { meta[item.key] = item; });
+                return store.dispatch('setMetaScheme', meta );
+            });
+        },
         components: {
-            appError,
-            HeadTag,
+            MetaTags,
             AppHeader,
             AppFooter,
-            Sidebar
+            AppSidebar,
+            Page404,
+            ModalError,
         },
         /*
         setup (props, context) {
@@ -65,30 +78,14 @@
             };
         },
         computed: {
-            meta() {
-                return this.$store.state.meta || {};
-            },
             user() {
                 return this.$store.state.user;
+            },
+            showErrorPage() {
+                return this.$store.state.showErrorPage;
             }
         },
         watch: {
-            /*
-            '$route': {
-                immediate: true,
-                handler(to, from) {
-                    if (!from || to.fullPath !== from.fullPath) {
-                        console.log(to.meta);
-                        console.log(this.$route.meta);
-                        document.title = to.meta.title + ' | ЭТП TUGAN' || 'ЭТП TUGAN';
-                        const description = document.querySelector('head meta[name="description"]');
-                        const keywords = document.querySelector('head meta[name="keywords"]');
-                        description.setAttribute('content', to.meta.description || '');
-                        keywords.setAttribute('content', to.meta.keywords || '');
-                    }
-                }
-            },
-            */
             '$route.name': {
                 immediate: true,
                 handler() {
@@ -97,11 +94,6 @@
             },
         },
         created() {
-            api.getMetaScheme().then(res => {
-                let meta = {}; 
-                res.forEach(item => { meta[item.key] = item; });
-                this.$store.dispatch('setMetaScheme', meta );
-            });
             /*
             window.onerror = (message, source, lineno, colno, err) => {
                 console.error('Window error', err.message);
@@ -110,7 +102,11 @@
             */
         },
         mounted() {
-            console.log(this.$route);
+            api.getMetaScheme().then(res => {
+                let meta = {}; 
+                res.forEach(item => { meta[item.key] = item; });
+                this.$store.dispatch('setMetaScheme', meta );
+            });
             this.$store.dispatch('hideError');
         },
         /*
@@ -127,6 +123,6 @@
         }
     };
 </script>
-<style lang="postcss">
+<style>
     @import "assets/css/main.pcss";
 </style>

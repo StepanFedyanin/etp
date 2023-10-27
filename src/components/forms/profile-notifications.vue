@@ -25,6 +25,7 @@
                         <div
                             v-for="template in group.templates" 
                             class="notifications__settings-item"
+                            :key="`notifications-${template.id}`"
                         >
                             <div class="notifications__settings-item-param">
                                 <FormKit

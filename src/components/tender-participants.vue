@@ -187,8 +187,7 @@
 </template>
 
 <script>
-    import { tender as tenderApi } from "@/services"
-    import { chat as api } from "@/services"
+    import { tender as tenderApi, chat as api } from "@/services"
 
     export default {
         props: {

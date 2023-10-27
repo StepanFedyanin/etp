@@ -318,7 +318,7 @@
                 params.country = this.formData.phone?.country?.value?.id;
                 params.phone = params.phone?.country?.value?.code_phone + params.phone?.number;
                 params.phone = params.phone?.replace(/ /g,'').replace(/-/g,'').replace(/\(/g,'').replace(/\)/g,'');
-                params.contact_phone = params.contact_phone?.country?.value?.code_phone + params.contact_phone?.number;
+                params.contact_phone = (params.contact_phone?.country?.value?.code_phone || '') + (params.contact_phone?.number || '');
                 params.contact_phone = params.contact_phone?.replace(/ /g,'').replace(/-/g,'').replace(/\(/g,'').replace(/\)/g,'');
                 if (this.personId) {
                     delete params.email;

@@ -45,7 +45,7 @@
 </template>
 
 <script>
-    import ModalSearch from '@/components/modal-search.vue'
+    import ModalSearch from '@/components/modals/search.vue'
 
     export default {
         name: 'Search',
