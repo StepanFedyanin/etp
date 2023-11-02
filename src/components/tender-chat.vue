@@ -62,7 +62,7 @@
                                                 {{ $helpers.formatDate(new Date(message.date_publication), 'HH:mm:ss') }} МСК
                                             </div>
                                             <button
-                                                v-if="user.id === tender.creator || user.is_staff || user.id === message.id_user"
+                                                v-if="user.organization?.id === tender.creator || user.is_staff || user.id === message.id_user"
                                                 class="chat__messages-item-delete"
                                                 @click.prevent="onDeleteMessage(message.id)"
                                             />

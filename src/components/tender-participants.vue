@@ -14,11 +14,11 @@
             <div class="tender__participants-item-block">
                 <div class="tender__participants-item-name">
                     <span>
-                        {{ participant.organization.name }}
+                        {{ participant.organization?.name }}
                     </span>
                     <div 
                         class="tender__participants-item-chat"
-                        @click="startChat(participant.organization.id)"
+                        @click="startChat(participant.organization?.id)"
                     >
                         Чат
                     </div>
@@ -54,10 +54,10 @@
                         </div>
                         <div class="partipation__info-organization">
                             <div class="partipation__info-item">
-                                <span>ИНН:</span> {{ participant.organization.inn }}
+                                <span>ИНН:</span> {{ participant.organization?.inn }}
                             </div>
                             <div class="partipation__info-item">
-                                <span>КПП:</span> {{ participant.organization.kpp }}
+                                <span>КПП:</span> {{ participant.organization?.kpp }}
                             </div>
                         </div>
                     </div>
@@ -168,7 +168,7 @@
                                     Отказать
                                 </button>
                                 <button
-                                    v-if="user.id === tender.creator"
+                                    v-if="user.organization?.id === tender.creator"
                                     type="submit"
                                     :disabled="loadingConfirm"
                                     class="button button-green"

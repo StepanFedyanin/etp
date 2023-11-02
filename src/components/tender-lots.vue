@@ -110,7 +110,7 @@
                                         </template>
                                     </div>
                                     <div 
-                                        v-if="user.id === tender.creator"
+                                        v-if="user.organization?.id === tender.creator"
                                         class="lots__item-cell m--edit"
                                     >
                                         <a

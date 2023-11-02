@@ -3,7 +3,7 @@
         <div class="lot__history-title m--title">
             История предложений
             <a
-                v-if="((user.id === tender.creator || user.is_staff) && tender.kind === 'tender' && lot.last_bet)"
+                v-if="((user.organization?.id === tender.creator || user.is_staff) && tender.kind === 'tender' && lot.last_bet)"
                 href="#"
                 class="lot__history-title-link"
                 @click.prevent="onClickCancelLotOffer()"

@@ -603,7 +603,7 @@
                     @getTenderData="getTenderData"
                 /-->
                 <TenderChat 
-                    v-if="tender.publication && (user.id === tender.creator || user.is_staff || user.organization?.id === tender.organization.id || (tender.user_participation && tender.user_participation.status === 'participant'))"
+                    v-if="tender.publication && (user.organization?.id === tender.creator || user.is_staff || user.organization?.id === tender.organization.id || (tender.user_participation && tender.user_participation.status === 'participant'))"
                     :tender="tender"
                 />
                 <TenderLots
@@ -613,7 +613,7 @@
                     @getTenderData="getTenderData"
                 />
                 <TenderLotsExtended
-                    v-if="(user.id === tender.creator || user.is_staff || (user.organization?.id === tender.organization.id && user.is_master)) && tender.status !== 'bid_accept' && tender.lots && tender.lots.length"
+                    v-if="(user.organization?.id === tender.creator || user.is_staff || (user.organization?.id === tender.organization.id && user.is_master)) && tender.status !== 'bid_accept' && tender.lots && tender.lots.length"
                     :tender="tender"
                     :lots="tender.lots"
                     @getTenderData="getTenderData"
@@ -663,7 +663,7 @@
                     @getTenderData="getTenderData"
                 />
                 <TenderInvite 
-                    v-if="user.id === tender.creator && tender.status === 'bid_accept' && tender.publication"
+                    v-if="user.organization?.id === tender.creator && tender.status === 'bid_accept' && tender.publication"
                     :tender="tender"
                 />
             </template>
@@ -800,7 +800,7 @@
                     this.$store.dispatch('fetchDataByKey', { data: tender, key: 'tender' });
                     this.$store.dispatch('setMeta', tender);
 
-                    if (this.user.id === this.tender.creator || this.user.is_staff) {
+                    if (this.user.organization?.id === this.tender.creator || this.user.is_staff) {
                         tenderApi.getTenderParticipants(this.id).then(res => {
                             this.participants = res;
                             console.log(res);
