@@ -1,6 +1,6 @@
 <template>
-    <div :class="['good contragent', user?.id ? 'm--justify-flex-start' : '']">
-        <div :class="['container', user?.id ? '' : 'm--1460']">
+    <div :class="['good contragent']">
+        <div :class="['container']">
             <app-breadcrumbs 
                 v-if="!showLoaderSending.product"
                 :breadcrumbs="[
@@ -124,80 +124,66 @@
                         @toggleFavorite="toggleFavorite"
                     />
                 </div>
-            </template>
-            <template
-                v-if="goodsOrganizationTotal"
-            >
-                <div class="good__list goods m--block">
-                    <div class="goods__title h2">
-                        Все товары поставщика <span>({{ goodsOrganizationTotal }})</span>
-                    </div>
-                    <div 
-                        class="goods__block"
-                    >
-                        <blockGoodsItem
-                            v-for="item in goodsOrganization"
-                            :key="`good-organization-${item.id}`"
-                            :good="item"
-                            :showCategory="true"
-                            :showOrganization="false"
-                        />
-                    </div>
-                    <template
-                        v-if="showLoaderSending.organization"
-                    >
-                        <div class="good__loader loader">
-                            <div class="spinner" /> Загрузка данных о товарах поставщика
+                <template v-if="goodsOrganization.count">
+                    <div class="good__list goods m--block">
+                        <div class="goods__title h2">
+                            Все товары поставщика <span>({{ goodsOrganization.count }})</span>
                         </div>
-                    </template>
-                    <template
-                        v-else
-                    >
-                        <button 
-                            v-if="goodsOrganizationTotal > goodsOrganization.length"
-                            class="button button-outline-green goods__more"
-                            @click.prevent="getOrganizationGoods()"
-                        >
-                            показать еще
-                        </button>
-                    </template>
-                </div>
-            </template>
-            <template
-                v-if="goodsCategoryTotal"
-            >
-                <div class="good__list goods m--block">
-                    <div class="goods__title h2">
-                        Товары из категории «{{ good.category_detail.name }}» <span>({{ goodsCategoryTotal }})</span>
-                    </div>
-                    <div class="goods__block">
-                        <blockGoodsItem
-                            v-for="item in goodsCategory"
-                            :key="`good-category-${item.id}`"
-                            :good="item"
-                            :showCategory="false"
-                            :showOrganization="true"
-                        />
-                    </div>
-                    <template
-                        v-if="showLoaderSending.category"
-                    >
-                        <div class="good__loader loader">
-                            <div class="spinner" /> Загрузка данных о товарах категории
+                        <div class="goods__block">
+                            <blockGoodsItem
+                                v-for="item in goodsOrganization.results"
+                                :key="`good-organization-${item.id}`"
+                                :good="item"
+                                :showCategory="true"
+                                :showOrganization="false"
+                            />
                         </div>
-                    </template>
-                    <template
-                        v-else
-                    >
-                        <button 
-                            v-if="goodsCategoryTotal > goodsCategory.length"
-                            class="button button-outline-green goods__more"
-                            @click.prevent="getCategoryGoods()"
-                        >
-                            показать еще
-                        </button>
-                    </template>
-                </div>
+                        <template v-if="showLoaderSending.organization">
+                            <div class="good__loader loader">
+                                <div class="spinner" /> Загрузка данных о товарах поставщика
+                            </div>
+                        </template>
+                        <template v-else>
+                            <button 
+                                v-if="goodsOrganization.count > goodsOrganization.results?.length"
+                                class="button button-outline-green goods__more"
+                                @click.prevent="getOrganizationGoods()"
+                            >
+                                показать еще
+                            </button>
+                        </template>
+                    </div>
+                </template>
+                <template v-if="goodsCategory.count">
+                    <div class="good__list goods m--block">
+                        <div class="goods__title h2">
+                            Товары из категории «{{ good.category_detail.name }}» <span>({{ goodsCategory.count }})</span>
+                        </div>
+                        <div class="goods__block">
+                            <blockGoodsItem
+                                v-for="item in goodsCategory.results"
+                                :key="`good-category-${item.id}`"
+                                :good="item"
+                                :showCategory="false"
+                                :showOrganization="true"
+                            />
+                        </div>
+                        <template v-if="showLoaderSending.category">
+                            <div class="good__loader loader">
+                                <div class="spinner" /> Загрузка данных о товарах категории
+                            </div>
+                        </template>
+                        <template v-else>
+                            <button 
+                                v-if="goodsCategory.count > goodsCategory.results?.length"
+                                class="button button-outline-green goods__more"
+                                @click.prevent="getCategoryGoods()"
+                            >
+                                показать еще
+                            </button>
+                        </template>
+                    </div>
+                </template>
             </template>
         </div>
         <ModalGoodRequest
@@ -219,6 +205,35 @@
 
     export default {
         name: 'Product',
+        async preFetch({ store, currentRoute, previousRoute, redirect, ssrContext, urlPath, publicPath }) {
+            console.log('Product preFetch', process.env.SERVER, currentRoute.params);
+            if (!process.env.SERVER) return;
+            await productApi.getProduct(currentRoute.params?.slug).then(res => {
+                let good = res;
+                store.dispatch('setMeta', good);
+                store.dispatch('fetchDataByKey', { data: good, key: 'good' });
+                let params = {
+                    limit: 18,
+                    offset: 0,
+                    organization: good.organization.id,
+                    exclude_slug: good.slug
+                };
+                console.log(params);
+                productApi.getProducts(params).then(res => {
+                    let goodsOrganization = res;
+                    store.dispatch('fetchDataByKey', { data: goodsOrganization, key: 'goodsOrganization' });
+                });
+                delete params.organization;
+                params.category = good.category;
+                console.log(params);
+                productApi.getProducts(params).then(res => {
+                    let goodsCategory = res;
+                    store.dispatch('fetchDataByKey', { data: goodsCategory, key: 'goodsCategory' });
+                });
+            }).catch(err => {
+                if (err.response.status === 404) store.dispatch('showError', err.response.status);
+            });
+        },
         components: {
             blockContragent,
             blockGoodsItem,
@@ -233,16 +248,18 @@
         data() {
             return {
                 urlPath,
-                good: {},
-                goodsOrganization: null,
-                goodsOrganizationTotal: null,
+                //good: {},
+                //goodsOrganization: null,
+                //goodsOrganizationTotal: null,
                 goodsOrganizationLimit: 18,
                 goodsOrganizationOffset: 0,
-                goodsCategory: null,
-                goodsCategoryTotal: null,
+                //goodsCategory: null,
+                //goodsCategoryTotal: null,
                 goodsCategoryLimit: 18,
                 goodsCategoryOffset: 0,
-                showLoaderSending: {},
+                showLoaderSending: {
+                    product: process.env.CLIENT
+                },
                 showRequestGoodModal: false,
             }
         },
@@ -250,37 +267,48 @@
             user() {
                 return this.$store.state.user;
             },
+            good() {
+                return this.$store.state.data?.good || {};
+            },
+            goodsOrganization() {
+                return this.$store.state.data?.goodsOrganization || {};
+            },
+            goodsCategory() {
+                return this.$store.state.data?.goodsCategory || {};
+            },
         },
         watch: {
             slug: {
-                immediate: true,
+                //immediate: true,
                 handler() {
-                    this.getGood();
+                    if (!process.env.SERVER) this.getGood();
                 },
             }
         },
         mounted() {
+            this.getGood();
         },
         methods: {
             getGood() {
+                this.$store.dispatch('fetchDataByKey', { data: {}, key: 'goodsOrganization' });
+                this.$store.dispatch('fetchDataByKey', { data: {}, key: 'goodsCategory' });
                 this.showLoaderSending.product = true;
-                this.goodsOrganization = null;
+                //this.goodsOrganization = null;
                 this.goodsOrganizationOffset = 0;
                 this.goodsCategory = null;
                 this.goodsCategoryOffset = 0;
-                let params = {
-                };
-                productApi.getProduct(this.slug, params).then(res => {
-                    console.log(res);
-                    this.good = res;
-                    this.$store.dispatch('setMeta', this.good);
+                productApi.getProduct(this.slug).then(res => {
+                    let good = res;
+                    this.$store.dispatch('fetchDataByKey', { data: good, key: 'good' });
+                    this.$store.dispatch('setMeta', good);
                     this.showLoaderSending.product = false;
                     this.getOrganizationGoods();
                     this.getCategoryGoods();
                 }).catch(err => {
+                    this.$store.dispatch('fetchDataByKey', { data: {}, key: 'good' });
+                    this.$store.dispatch('setMeta', {});
+                    if (err.response.status === 404) this.$store.dispatch('showError', err.response.status)
                     this.showLoaderSending.product = false;
-                    this.$store.dispatch('showError', err);
-                    console.error(err);
                 });
             },
             getOrganizationGoods() {
@@ -292,11 +320,13 @@
                     exclude_slug: this.slug
                 };
                 productApi.getProducts(params).then(res => {
-                    console.log(res);
-                    if (!this.goodsOrganization) {
-                        this.goodsOrganization = res.results;
+                    if (!this.goodsOrganization.results) {
+                        this.$store.dispatch('fetchDataByKey', { data: res, key: 'goodsOrganization' });
                     } else {
-                        this.goodsOrganization = [...this.goodsOrganization, ...res.results];
+                        let goodsOrganization = this.goodsOrganization;
+                        goodsOrganization.results = [...this.goodsOrganization.results, ...res.results];
+                        goodsOrganization.count = res.count;
+                        this.$store.dispatch('fetchDataByKey', { data: goodsOrganization, key: 'goodsOrganization' });
                     }
                     this.goodsOrganizationOffset = this.goodsOrganizationOffset + this.goodsOrganizationLimit;
                     this.goodsOrganizationTotal = res.count;
@@ -316,11 +346,13 @@
                     exclude_slug: this.slug
                 };
                 productApi.getProducts(params).then(res => {
-                    console.log(res);
-                    if (!this.goodsCategory) {
-                        this.goodsCategory = res.results;
+                    if (!this.goodsCategory.results) {
+                        this.$store.dispatch('fetchDataByKey', { data: res, key: 'goodsCategory' });
                     } else {
-                        this.goodsCategory = [...this.goodsCategory, ...res.results];
+                        let goodsCategory = this.goodsCategory;
+                        goodsCategory.results = [...this.goodsCategory.results, ...res.results];
+                        goodsCategory.count = res.count;
+                        this.$store.dispatch('fetchDataByKey', { data: goodsCategory, key: 'goodsCategory' });
                     }
                     this.goodsCategoryOffset = this.goodsCategoryOffset + this.goodsCategoryLimit;
                     this.goodsCategoryTotal = res.count;

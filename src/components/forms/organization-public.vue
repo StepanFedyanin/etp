@@ -268,11 +268,11 @@
                     if (!this.formData.contact_phone?.number) {
                         this.formData.contact_phone = {
                             country: {
-                                label: organization.contact_phone?.substring(0, organization.contact_phone?.length - 10),
+                                label: organization.contact_phone?.substring(0, organization.contact_phone?.length - 10) || '+7',
                                 value: {
-                                    id: organization.country,
-                                    code_phone: organization.contact_phone?.substring(0, organization.contact_phone?.length - 10),
-                                    name: organization.country_name
+                                    id: organization.country || 1,
+                                    code_phone: organization.contact_phone?.substring(0, organization.contact_phone?.length - 10) || '+7',
+                                    name: organization.country_name || 'Россия'
                                 }
                             },
                             number: organization.contact_phone?.substring(organization.contact_phone?.length - 10)

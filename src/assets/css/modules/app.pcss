@@ -52,6 +52,27 @@
         @mixin responsive-le-m {
             max-width: none;
         }
+        /*
+        .container {
+            width: calc(100% - 80px);
+            max-width: 1200px;
+            margin: 0 40px;
+
+            @mixin responsive-le-xl {
+                width: calc(100% - 48px);
+                padding: 0;
+                margin: auto 24px !important;
+            }
+
+            @mixin responsive-le-l {
+                width: calc(100% - 32px);
+                margin: auto 16px !important;
+            }
+        }
+        */
+        & > .cabinet {
+            justify-content: flex-start;
+        }
     }
 
     &__breadcrumbs {

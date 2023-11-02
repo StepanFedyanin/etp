@@ -3,8 +3,8 @@
         v-if="$route.name === 'contragents'"
         class="app__main"
     >
-        <div :class="['cabinet contragents', user?.id ? 'm--justify-flex-start' : '']">
-            <div :class="['container', user?.id ? '' : 'm--1460']">
+        <div :class="['cabinet contragents']">
+            <div :class="['container']">
                 <app-breadcrumbs 
                     :breadcrumbs="[
                         { name: 'Главная', route: { name: 'home' } },
@@ -18,43 +18,33 @@
                         @startSearch="getOrganizations"
                     />
                 </div>
-                <template
-                    v-if="showLoaderSending"
-                >
+                <template v-if="showLoaderSending">
                     <div class="contragents__loader loader">
                         <div class="spinner" /> Загрузка данных
                     </div>
                 </template>
-                <template
-                    v-else-if="contragents && contragents.length"
-                >
+                <template v-else-if="contragents.count">
                     <div class="contragents__block">
-                        <div
-                            v-if="contragents && contragents.length"
-                            class="contragents__pagination"
-                        >
+                        <div class="contragents__pagination">
                             <Pagination
-                                :total="count"
-                                :limit="Number(limit)"
-                                :currentPage="Number($route.query.page || 1)"
+                                :total="contragents.count"
+                                :limit="+limit"
+                                :currentPage="+$route.query?.page || 1"
                                 :query="$route.query"
                                 :url="$route.path"
                             />
                         </div>
                     </div>
                     <BlockContragents 
-                        :contragents="contragents"
+                        :contragents="contragents.results"
                         :hideHeader="true"
                     />
                     <div class="contragents__block">
-                        <div
-                            v-if="contragents && contragents.length"
-                            class="contragents__pagination m--no-margin"
-                        >
+                        <div class="contragents__pagination m--no-margin">
                             <Pagination
-                                :total="count"
-                                :limit="Number(limit)"
-                                :currentPage="Number($route.query.page || 1)"
+                                :total="contragents.count"
+                                :limit="+limit"
+                                :currentPage="+$route.query?.page || 1"
                                 :query="$route.query"
                                 :url="$route.path"
                             />
@@ -81,6 +71,26 @@
     import SearchContragents from '@/components/app-search-contragents.vue';
 
     export default {
+        name: 'Contragents',
+        async preFetch({ store, currentRoute, previousRoute, redirect, ssrContext, urlPath, publicPath }) {
+            console.log('Contragents preFetch', process.env.SERVER, currentRoute.params);
+            if (!process.env.SERVER) return;
+            let limit = 10;
+            let offset = (currentRoute.query?.page ? currentRoute.query?.page - 1 : 0) * limit;
+            let params = {
+                offset: offset,
+                limit: limit,
+                ...Object.assign({}, currentRoute.query)
+            };
+
+            await api.getOrganizations(params).then(res => {
+                let contragents = res;
+                store.dispatch('setMeta', {});
+                store.dispatch('fetchDataByKey', { data: contragents, key: 'contragents' });
+            }).catch(err => {
+                if (err.response.status === 404) store.dispatch('showError', err.response.status);
+            });
+        },
         components: {
             BlockContragents,
             Pagination,
@@ -94,9 +104,7 @@
         },
         data() {
             return {
-                contragents: [],
                 limit: 10,
-                count: "",
                 showLoaderSending: false,
             }
         },
@@ -104,46 +112,45 @@
             user() {
                 return this.$store.state.user;
             },
+            contragents() {
+                return this.$store.state.data?.contragents || {};
+            },
             page() {
-                return Number(this.$route.query.page) || 1
+                return +this.$route.query?.page || 1
             },
             offset() {
-                let limit = Number(this.limit)
-                return (this.page - 1) * limit
+                return +this.limit * (this.page - 1);
             }
         },
         watch: {
-            limit () {
-                if (this.$route.query.page) {
-                    this.$router.replace({ query: {} })
-                } else {
-                    this.getOrganizations(this.$route.query)
+            '$route.name': {
+                handler(to) {
+                    if (to === 'contragents') this.getOrganizations();
                 }
             },
             '$route.query.page': {
-                handler() {
-                    this.getOrganizations(this.$route.query)
+                handler(to) {
+                    if (to) this.getOrganizations();
                 },
             }
         },
-        mounted() {
-        },
-        beforeDestroy() {
-        },
         created() {
-            this.getOrganizations(this.$route.query);
+        },
+        mounted() {
+            this.getOrganizations();
         },
         methods: {
-            getOrganizations(formData) {
-                console.log(formData);
-                let limit = Number(this.limit);
-                let params = Object.assign({}, formData);
-                params.limit = this.limit;
-                params.offset = this.offset;
+            getOrganizations() {
+                let params = {
+                    offset: this.offset,
+                    limit: this.limit,
+                    ...Object.assign({}, this.$route.query)
+                };
                 this.showLoaderSending = true;
                 api.getOrganizations(params).then(res => {
-                    this.contragents = res.results;
-                    this.count = res.count;
+                    let contragents = res;
+                    this.$store.dispatch('setMeta', {});
+                    this.$store.dispatch('fetchDataByKey', { data: contragents, key: 'contragents' });
                     this.showLoaderSending = false;
                 }).catch(err => {
                     console.error(err);

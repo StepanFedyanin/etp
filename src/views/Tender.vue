@@ -1,6 +1,6 @@
 <template>
-    <div :class="['cabinet tender', user?.id ? 'm--justify-flex-start' : '']">
-        <div :class="['container', user?.id ? '' : 'm--1460']">
+    <div :class="['cabinet tender']">
+        <div :class="['container']">
             <template v-if="showLoaderSending">
                 <div class="tender__loader loader">
                     <div class="spinner" /> Загрузка данных
@@ -689,6 +689,7 @@
     import ModalTenderDelete from '@/components/modals/tender-delete';
 
     export default {
+        name: 'Tender',
         async preFetch({ store, currentRoute, previousRoute, redirect, ssrContext, urlPath, publicPath }) {
             console.log('Tender preFetch', process.env.SERVER, currentRoute.params);
             if (!process.env.SERVER) return;
@@ -774,7 +775,7 @@
             }
         },
         watch: {
-            '$route.params': {
+            id: {
                 //immediate: true,
                 handler() {
                     if (!process.env.SERVER) this.getTenderData();
@@ -819,9 +820,11 @@
                     });
                     */
                 }).catch(err => {
+                    this.$store.dispatch('fetchDataByKey', { data: {}, key: 'tender' });
                     this.$store.dispatch('setMeta', {});
                     if (err.response?.status === 404) this.$router.replace({ name: 'page404' });
                     this.showLoaderSending = false;
+                    //this.$store.dispatch('showError', err);
                 });
             },
             onClickRapidBets(type) {

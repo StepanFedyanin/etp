@@ -41,15 +41,17 @@
         font-size: 16px;
         border-radius: 2px;
         border: 1px solid transparent;
+        transition: all 0.5s ease;
 
-        &--current {
+        &.m--current {
             border-color: $color-green;
+            pointer-events: none;
         }
 
-        &--first,
-        &--last,
-        &--prev,
-        &--next {
+        &.m--first,
+        &.m--last,
+        &.m--prev,
+        &.m--next {
             vertical-align: bottom;
             background-position: center center;
             /*background-size: 7px 10px;*/
@@ -66,7 +68,7 @@
             }
         }
 
-        &--first {
+        &.m--first {
             background-image: svg-load('assets/img/icons/icon-arrow-pagination-first.svg', fill=$color-black);
 
             &.m--disabled {
@@ -74,7 +76,7 @@
             }
         }
 
-        &--last {
+        &.m--last {
             background-image: svg-load('assets/img/icons/icon-arrow-pagination-last.svg', fill=$color-black);
 
             &.m--disabled {
@@ -82,7 +84,7 @@
             }
         }
 
-        &--prev {
+        &.m--prev {
             background-image: svg-load('assets/img/icons/icon-arrow-pagination-prev.svg', fill=$color-black);
 
             &.m--disabled {
@@ -90,7 +92,7 @@
             }
         }
 
-        &--next {
+        &.m--next {
             background-image: svg-load('assets/img/icons/icon-arrow-pagination-next.svg', fill=$color-black);
 
             &.m--disabled {

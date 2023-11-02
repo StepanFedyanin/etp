@@ -51,13 +51,13 @@
             font-size: 20px;
             line-height: 24px;
             text-transform: uppercase;
-            color: $color-gray-T3;
+            color: $color-gray-82;
             padding: 0 0 36px;
         }
     }
     &__list {
-        padding: 12px 15px;
-        margin-bottom: 24px;
+        padding: 0.75rem 1rem;
+        margin-bottom: 1.5rem;
         overflow: hidden;
         @mixin shadow-box;
 
@@ -69,21 +69,23 @@
 
     &__item {
         position: relative;
-        padding: 24px 15px;
+        padding: 1.5rem 1rem;
+        margin-top: -1px;
         cursor: pointer;
+        transition: background 0.5s ease;
         /*min-width: 580px;*/
 
         @mixin responsive-le-xs {
-            padding: 12px 5px;
+            padding: 0.75rem 0.25rem;
         }
 
         &:after {
             content: '';
             position: absolute;
             bottom: 0;
-            left: 15px;
-            right: 15px;
-            border-bottom: 1px solid $color-gray-T5;
+            left: 1rem;
+            right: 1rem;
+            border-bottom: 1px solid $color-gray-e0;
 
             @mixin responsive-le-xs {
                 left: 0;
@@ -130,14 +132,14 @@
                 font-weight: 500;
                 font-size: 16px;
                 line-height: 20px;
-                color: $color-gray-T1;
+                color: $color-gray-33;
             }
 
             .m--name-inn {
                 font-weight: 500;
                 font-size: 12px;
                 line-height: 16px;
-                color: $color-gray-T3;
+                color: $color-gray-82;
 
                 span {
                     font-weight: 300;
@@ -149,7 +151,7 @@
                 font-weight: 300;
                 font-size: 12px;
                 line-height: 16px;
-                color: $color-gray-T3;
+                color: $color-gray-82;
                 margin-left: 0;
             }
 
@@ -158,7 +160,7 @@
                 font-weight: 400;
                 font-size: 14px;
                 line-height: 18px;
-                color: $color-gray-T1;
+                color: $color-gray-33;
             }
 
             &.m--favorite {
@@ -209,7 +211,7 @@
             position: relative;
             width: 32px;
             height: 32px;
-            background-image: svg-load('./assets/img/icons/icon-star.svg', fill=$color-gray-T4);
+            background-image: svg-load('./assets/img/icons/icon-star.svg', fill=$color-gray-bd);
             background-size: contain;
             cursor: pointer;
 

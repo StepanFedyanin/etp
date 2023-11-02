@@ -2,8 +2,8 @@
     <div class="app__main">
         <div
             v-if="$route.name === 'tenders'"
-            :class="['cabinet tenders', user?.id ? 'm--justify-flex-start' : '']">
-            <div :class="['container', user?.id ? '' : 'm--1460']">
+            :class="['cabinet tenders']">
+            <div :class="['container']">
                 <app-breadcrumbs 
                     :breadcrumbs="[
                         { name: 'Главная', route: { name: 'home' } },

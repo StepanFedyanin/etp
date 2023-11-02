@@ -1,9 +1,9 @@
 <template>
     <div class="app__main">
-        <div :class="['groups', user?.id ? 'm--justify-flex-start' : '']">
+        <div :class="['groups']">
             <div 
                 v-if="!showLoaderSending['group']" 
-                :class="['container', user?.id ? '' : 'm--1460']"
+                :class="['container']"
             >
                 <app-breadcrumbs 
                     v-if="!showLoaderSending.group"

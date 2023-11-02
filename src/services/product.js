@@ -47,8 +47,8 @@ export default class extends REST {
         });
     }
 
-    static getProduct(slug, params) {
-        return this._get(`products/${slug}`, params, {}).then((data) => {
+    static getProduct(slug) {
+        return this._get(`products/${slug}`, {}, {}).then((data) => {
             return data;
         }).catch((error) => {
             throw new RESTError(error, 'Не удалось получить товар');

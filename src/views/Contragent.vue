@@ -1,7 +1,7 @@
 <template>
     <div class="app__main">
-        <div :class="['cabinet contragent', user?.id ? 'm--justify-flex-start' : '']">
-            <div :class="['container', user?.id ? '' : 'm--1460']">
+        <div :class="['cabinet contragent']">
+            <div :class="['container']">
                 <app-breadcrumbs 
                     :breadcrumbs="[
                         { name: 'Главная', route: { name: 'home' } },
@@ -31,17 +31,19 @@
                             :organization="contragent"
                         />
                     </div-->
-                    <template v-if="user?.id && user.organization?.id">
-                        <div class="h2">
-                            Представители организации
-                        </div>
-                        <div class="contragent__block">
-                            <blockPersons 
-                                :persons="persons"
-                                @updated="getMembers"
-                            />
-                        </div>
-                    </template>
+                    <q-no-ssr>
+                        <template v-if="user?.id && user.organization?.id">
+                            <div class="h2">
+                                Представители организации
+                            </div>
+                            <div class="contragent__block">
+                                <blockPersons 
+                                    :persons="persons"
+                                    @updated="getMembers"
+                                />
+                            </div>
+                        </template>
+                    </q-no-ssr>
                     <ContragentGoods
                         :contragent="contragent"
                     />
@@ -141,6 +143,18 @@
     import { user as api, cabinet } from "@/services";
 
     export default {
+        name: 'Contragent',
+        async preFetch({ store, currentRoute, previousRoute, redirect, ssrContext, urlPath, publicPath }) {
+            console.log('Contragent preFetch', process.env.SERVER, currentRoute.params);
+            if (!process.env.SERVER) return;
+            await api.getOrganization(currentRoute.params?.id).then(res => {
+                let contragent = res;
+                store.dispatch('setMeta', contragent);
+                store.dispatch('fetchDataByKey', { data: contragent, key: 'contragent' });
+            }).catch(err => {
+                if (err.response.status === 404) store.dispatch('showError', err.response.status);
+            });
+        },
         components: {
             blockContragent,
             blockPersons,
@@ -155,8 +169,7 @@
         },
         data() {
             return {
-                contragent: {},
-                contragents: undefined,
+                //contragent: {},
                 persons: [],
                 participationTenders: {},
                 createdTenders: {},
@@ -174,34 +187,42 @@
             user() {
                 return this.$store.state.user;
             },
+            contragent() {
+                return this.$store.state.data?.contragent || {};
+            },
         },
         watch: {
             'id': {
-                immediate: true,
+                //immediate: true,
                 handler() {
-                    this.getOrganization();
-                    this.getCreatedTenders();
-                    this.getParticipationTenders();
-                    this.getMembers();
+                    if (!process.env.SERVER) {
+                        this.getOrganization();
+                        this.getCreatedTenders();
+                        this.getParticipationTenders();
+                        this.getMembers();
+                    }
                 },
             }
         },
-        mounted() {
-            
-        },
-        beforeDestroy() {
-        },
         created() {
+        },
+        mounted() {
+            this.getOrganization();
+            this.getCreatedTenders();
+            this.getParticipationTenders();
+            this.getMembers();
         },
         methods: {
             getOrganization() {
                 this.showLoaderSending = true;
                 api.getOrganization(this.id).then(res => {
-                    this.contragent = res;
+                    let contragent = res;
+                    this.$store.dispatch('fetchDataByKey', { data: contragent, key: 'contragent' });
                     this.$store.dispatch('setMeta', this.contragent);
                     this.showLoaderSending = false;
                 }).catch(err => {
-                    console.error(err);
+                    this.$store.dispatch('setMeta', {});
+                    if (err.response?.status === 404) this.$router.replace({ name: 'page404' });
                     this.showLoaderSending = false;
                 });
             },
@@ -215,22 +236,22 @@
                     });
                 }
             },
-            getParticipationTenders(){
-                api.getParticipationTenders(this.id, {limit: this.limit, offset: this.offsetParticipation}).then(res =>{
-                    if(this.offsetParticipation===0){
+            getParticipationTenders() {
+                api.getParticipationTenders(this.id, {limit: this.limit, offset: this.offsetParticipation}).then(res => {
+                    if (this.offsetParticipation===0) {
                         this.participationTenders = res;
-                    }else if(this.participationTenders.results){
+                    } else if (this.participationTenders.results) {
                         this.participationTenders = {...this.participationTenders, ...res, results: [...this.participationTenders.results, ...res.results]}
                     }
                     this.offsetParticipation += 5;
                     this.countParticipationTenders = this.participationTenders.results.length;
                 });
             },
-            getCreatedTenders(){
-                api.getCreatedTenders(this.id, {limit: this.limit, offset: this.offsetCreated}).then(res =>{
-                    if(this.offsetCreated===0){
+            getCreatedTenders() {
+                api.getCreatedTenders(this.id, {limit: this.limit, offset: this.offsetCreated}).then(res => {
+                    if(this.offsetCreated===0) {
                         this.createdTenders = res;
-                    }else if(this.createdTenders.results){
+                    } else if (this.createdTenders.results) {
                         this.createdTenders = {...this.createdTenders, ...res, results: [...this.createdTenders.results, ...res.results]}
                     }
                     this.offsetCreated += 5;

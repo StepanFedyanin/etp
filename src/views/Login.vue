@@ -2,7 +2,7 @@
     <div class="app__main">
         <div class="auth">
             <div 
-                :class="['container', user?.id ? '' : 'm--1460']"
+                :class="['container']"
             >
                 <div class="auth__block">
                     <div class="auth__tabs tabs-buttons m--50">

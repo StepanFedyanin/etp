@@ -1,7 +1,7 @@
 <template>
     <div class="app__main">
         <div class="about">
-            <div class="container m--1460">
+            <div class="container">
                 <app-breadcrumbs 
                     :breadcrumbs="[
                         { name: 'Главная', route: { name: 'home' } },
@@ -30,7 +30,7 @@
             </div>
         </div>
         <div class="capabilities">
-            <div class="container m--1460">
+            <div class="container">
                 <div 
                     class="capabilities__block"
                 >
@@ -110,7 +110,7 @@
             </div>
         </div> 
         <div class="needs">
-            <div class="container m--1460">
+            <div class="container">
                 <div class="needs__blocks">
                     <div class="needs__block">
                         <div class="needs__block-left">

@@ -1,7 +1,7 @@
 <template>
     <div class="app__main">
         <div class="page">
-            <div :class="['container', user?.id ? '' : 'm--1460']">
+            <div :class="['container']">
                 <app-breadcrumbs 
                     :breadcrumbs="[
                         { name: 'Главная', route: { name: 'home' } },
@@ -39,8 +39,18 @@
 
     export default {
         name: 'Page',
+        async preFetch({ store, currentRoute, previousRoute, redirect, ssrContext, urlPath, publicPath }) {
+            console.log('Page preFetch', process.env.SERVER, currentRoute.params);
+            if (!process.env.SERVER) return;
+            await api.getPage(currentRoute.params?.slug).then(res => {
+                let page = res;
+                store.dispatch('setMeta', page);
+                store.dispatch('fetchDataByKey', { data: page, key: 'page' });
+            }).catch(err => {
+                if (err.response.status === 404) store.dispatch('showError', err.response.status);
+            });
+        },
         components: {
-            //Header,
         },
         props: {
             slug: {
@@ -50,30 +60,42 @@
         },
         data() {
             return {
-                page: {},
                 showLoaderSending: false
             };
+        },
+        watch: {
+            slug: {
+                //immediate: true,
+                handler(to) {
+                    if (!process.env.SERVER) {
+                        to ? this.getPage() : this.$router.push({ name: 'page404' });
+                    }
+                },
+            }
+        },
+        computed: {
+            page() {
+                return this.$store.state.data?.page || {};
+            },
         },
         created() {
         },
         mounted() {
-            if (this.slug) {
-                this.getPage();    
-            } else {
-                this.$router.push({ name: 'page404' });
-            }
+            this.slug ? this.getPage() : this.$router.push({ name: 'page404' });
         },
         methods: {
             getPage() {
                 this.showLoaderSending = true;
                 api.getPage(this.slug).then(res => {
-                    this.page = res;
-                    this.$store.dispatch('setMeta', this.page);
+                    let page = res;
+                    this.$store.dispatch('fetchDataByKey', { data: page, key: 'page' });
+                    this.$store.dispatch('setMeta', page);
                     this.showLoaderSending = false;
                 }).catch(err => {
-                    this.$router.push({ name: 'page404' });
+                    this.$store.dispatch('fetchDataByKey', { data: {}, key: 'page' });
+                    this.$store.dispatch('setMeta', {});
+                    if (err.response?.status === 404) this.$router.replace({ name: 'page404' });
                     this.showLoaderSending = false;
-                    console.error(err)
                 })
             }
         },

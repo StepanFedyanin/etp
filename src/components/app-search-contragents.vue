@@ -3,7 +3,7 @@
         <div class="search__inner">
             <form
                 class="search__form"
-                @submit.prevent="searchTenders"
+                @submit.prevent="searchHandler"
             >
                 <div class="search__form-group">
                     <div class="search__form-field">
@@ -55,10 +55,11 @@
             }
         },
         methods: {
-            searchTenders(event) {
-                //this.formData.query = this.$refs.query.value;
-                this.$route.query = Object.assign({}, this.$route.query, this.formData);
-                this.$emit('startSearch', this.formData);
+            async searchHandler() {
+                let query = Object.assign({}, this.$route.query, this.formData);
+                delete query.page;
+                await this.$router.replace({ query: query });
+                this.$emit('startSearch');
             }
         }
     };

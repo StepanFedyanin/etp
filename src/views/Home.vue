@@ -1,7 +1,7 @@
 <template>
     <div class="app__main">
         <div class="home-page">
-            <div class="container m--1460">
+            <div class="container">
                 <div class="banner">
                     <div class="banner__content">
                         <div class="banner__left">
@@ -41,8 +41,7 @@
                         </div>
                     </div>
                 </div>
-            </div>
-            <div class="container m--1460">
+
                 <div class="home-page__alert">
                     <div class="home-page__alert-title">
                         Организуйте собственные закупки или участвуйте в тендерах
@@ -51,55 +50,51 @@
                         Работа на площадке TUGAN позволяет упростить собственный процесс закупок — на равных и выгодных для всех условиях.
                     </div>
                 </div>
-            </div>
-            <div class="container m--1460 capabilities">
-                <div 
-                    class="capabilities__block"
-                >
-                    <div class="capabilities__item">
-                        <div class="capabilities__item-title">
-                            Организаторам
+                <div class="capabilities">
+                    <div class="capabilities__block">
+                        <div class="capabilities__item">
+                            <div class="capabilities__item-title">
+                                Организаторам
+                            </div>
+                            <div class="capabilities__item-description">
+                                <ul>
+                                    <li>Неограниченное количество собственных тендеров и запросов цен;</li>
+                                    <li>Возможность пригласить к участию бизнес-партнеров, уже знакомых вам, и принимать заявки от новых контрагентов;</li>
+                                    <li>Итоги каждого тендера в подробной и наглядной форме.</li>
+                                </ul>
+                            </div>
                         </div>
-                        <div class="capabilities__item-description">
-                            <ul>
-                                <li>Неограниченное количество собственных тендеров и запросов цен;</li>
-                                <li>Возможность пригласить к участию бизнес-партнеров, уже знакомых вам, и принимать заявки от новых контрагентов;</li>
-                                <li>Итоги каждого тендера в подробной и наглядной форме.</li>
-                            </ul>
+                        <div class="capabilities__item">
+                            <div class="capabilities__item-title">
+                                Поставщикам
+                            </div>
+                            <div class="capabilities__item-description">
+                                <ul>
+                                    <li>Удобный каталог тендеров и запросов цен, проходящих прямо сейчас;</li>
+                                    <li>Фильтры по региону поставки, товарным группам и другим параметрам;</li>
+                                    <li>Свободная подача заявок на участие в тендерах — быстро и бесплатно!</li>
+                                </ul>
+                            </div>
                         </div>
-                    </div>
-                    <div class="capabilities__item">
-                        <div class="capabilities__item-title">
-                            Поставщикам
-                        </div>
-                        <div class="capabilities__item-description">
-                            <ul>
-                                <li>Удобный каталог тендеров и запросов цен, проходящих прямо сейчас;</li>
-                                <li>Фильтры по региону поставки, товарным группам и другим параметрам;</li>
-                                <li>Свободная подача заявок на участие в тендерах — быстро и бесплатно!</li>
-                            </ul>
-                        </div>
-                    </div>
-                    <div class="capabilities__item">
-                        <div class="capabilities__item-title">
-                            Всем
-                        </div>
-                        <div class="capabilities__item-description">
-                            <ul>
-                                <li>Уведомления обо всех важных событиях в тендерах — внутри площадки и на e-mail;</li>
-                                <li>Возможность организовать цепочку закупок при помощи связанных тендеров;</li>
-                                <li>Общий чат тендера и приватные чаты - для решения всех вопросов, возникших в ходе тендера.</li>
-                            </ul>
+                        <div class="capabilities__item">
+                            <div class="capabilities__item-title">
+                                Всем
+                            </div>
+                            <div class="capabilities__item-description">
+                                <ul>
+                                    <li>Уведомления обо всех важных событиях в тендерах — внутри площадки и на e-mail;</li>
+                                    <li>Возможность организовать цепочку закупок при помощи связанных тендеров;</li>
+                                    <li>Общий чат тендера и приватные чаты - для решения всех вопросов, возникших в ходе тендера.</li>
+                                </ul>
+                            </div>
                         </div>
                     </div>
                 </div>
-            </div>
 
-            <div
-                ref="auction"
-                class="auction"
-            >
-                <div class="container m--1460">
+                <div
+                    ref="auction"
+                    class="auction"
+                >
                     <div class="auction__search">
                         <div class="h1 auction__title">
                             Новые тендеры:
@@ -129,8 +124,7 @@
                         </template>
                     </div>
                 </div>
-            </div>
-            <div class="container m--1460">
+
                 <div class="home-page__alert">
                     <div class="home-page__alert-title">
                         Больше возможностей
@@ -139,71 +133,68 @@
                         Мы работаем над нововведениями, которые позволят нам построить настоящую бизнес-платформу с массой возможностей для бизнеса.<br>Некоторые из них вы можете увидеть уже сейчас!
                     </div>
                 </div>
-            </div>
-            <div class="container m--1460 capabilities">
-                <div 
-                    class="capabilities__block"
-                >
-                    <div class="capabilities__item">
-                        <div class="capabilities__item-title">
-                            <span class="m--color-green">Товары и услуги</span>
-                        </div>
-                        <div class="capabilities__item-description">
-                            <ul>
-                                <li>Размещайте на площадке предложения собственных товаров и услуг;</li>
-                                <li>Продвигайте свою продукцию с нашей помощью и с поддержкой сообщества;</li>
-                                <li>Оставляйте заявки на товары других поставщиков, которые заинтересовали вас.</li>
-                            </ul>
-                        </div>
-                        <router-link
-                            :to="{ name: 'groups' }"
-                            class="button capabilities__item-button button-green"
-                        >
-                            К товарным группам
-                        </router-link>
-                    </div>
-                    <div class="capabilities__item">
-                        <div class="capabilities__item-title">
-                            <span class="m--color-green">Раздел контрагентов</span>
-                        </div>
-                        <div class="capabilities__item-description">
-                            <ul>
-                                <li>Расскажите всем о себе, оставьте контактные данные, получайте новые обращения;</li>
-                                <li>Ознакомьтесь со списком организаций, зарегистрированных на площадке;</li>
-                                <li>Узнайте, какие тендеры проводит организация и какую продукцию предлагает.</li>
-                            </ul>
-                        </div>
-                        <router-link
-                            :to="{ name: 'contragents' }"
-                            class="button capabilities__item-button button-green"
-                        >
-                            К контрагентам
-                        </router-link>
-                    </div>
-                    <div class="capabilities__item">
-                        <div class="capabilities__item-title">
-                            <span class="m--color-red">Скоро:</span> блоги компаний
-                        </div>
-                        <div class="capabilities__item-description">
-                            <ul>
-                                <li>Пишите от своего имени или от имени вашей компании без ограничений;</li>
-                                <li>Делитесь друг с другом новостями и успехами вашего бизнеса;</li>
-                                <li>Узнавайте обо всех обновлениях и планах по развитию площадки TUGAN.</li>
-                            </ul>
-                        </div>
-                        <q-no-ssr>
+
+                <div class="capabilities">
+                    <div class="capabilities__block">
+                        <div class="capabilities__item">
+                            <div class="capabilities__item-title">
+                                <span class="m--color-green">Товары и услуги</span>
+                            </div>
+                            <div class="capabilities__item-description">
+                                <ul>
+                                    <li>Размещайте на площадке предложения собственных товаров и услуг;</li>
+                                    <li>Продвигайте свою продукцию с нашей помощью и с поддержкой сообщества;</li>
+                                    <li>Оставляйте заявки на товары других поставщиков, которые заинтересовали вас.</li>
+                                </ul>
+                            </div>
                             <router-link
-                                :to="{ name: user && user.id ? 'cabinet' : 'registration' }"
+                                :to="{ name: 'groups' }"
                                 class="button capabilities__item-button button-green"
                             >
-                                {{ user && user.id ? 'Мой кабинет' : 'К регистрации' }}
+                                К товарным группам
                             </router-link>
-                        </q-no-ssr>
+                        </div>
+                        <div class="capabilities__item">
+                            <div class="capabilities__item-title">
+                                <span class="m--color-green">Раздел контрагентов</span>
+                            </div>
+                            <div class="capabilities__item-description">
+                                <ul>
+                                    <li>Расскажите всем о себе, оставьте контактные данные, получайте новые обращения;</li>
+                                    <li>Ознакомьтесь со списком организаций, зарегистрированных на площадке;</li>
+                                    <li>Узнайте, какие тендеры проводит организация и какую продукцию предлагает.</li>
+                                </ul>
+                            </div>
+                            <router-link
+                                :to="{ name: 'contragents' }"
+                                class="button capabilities__item-button button-green"
+                            >
+                                К контрагентам
+                            </router-link>
+                        </div>
+                        <div class="capabilities__item">
+                            <div class="capabilities__item-title">
+                                <span class="m--color-red">Скоро:</span> блоги компаний
+                            </div>
+                            <div class="capabilities__item-description">
+                                <ul>
+                                    <li>Пишите от своего имени или от имени вашей компании без ограничений;</li>
+                                    <li>Делитесь друг с другом новостями и успехами вашего бизнеса;</li>
+                                    <li>Узнавайте обо всех обновлениях и планах по развитию площадки TUGAN.</li>
+                                </ul>
+                            </div>
+                            <q-no-ssr>
+                                <router-link
+                                    :to="{ name: user && user.id ? 'cabinet' : 'registration' }"
+                                    class="button capabilities__item-button button-green"
+                                >
+                                    {{ user && user.id ? 'Мой кабинет' : 'К регистрации' }}
+                                </router-link>
+                            </q-no-ssr>
+                        </div>
                     </div>
                 </div>
-            </div>
-            <div class="goods">
-                <div class="container m--1460">
+                <div class="goods m--block">
                     <template v-if="showLoaderGoods">
                         <div class="goods__loader loader">
                             <div class="spinner" /> Загрузка данных
@@ -229,12 +220,10 @@
                         </div>
                     </template>
                 </div>
-            </div>
-            <div 
-                v-if="showFeatures"
-                class="features"
-            >
-                <div class="container">
+                <div 
+                    v-if="showFeatures"
+                    class="features"
+                >
                     <div class="h1 features__title">
                         Бизнес для своих
                     </div>
@@ -290,9 +279,7 @@
                         </ul>
                     </div>
                 </div>
-            </div>
 
-            <div class="container m--1460">
                 <div class="home-page__alert">
                     <div class="home-page__alert-title">
                         Социальная бизнес-платформа
@@ -301,52 +288,48 @@
                         Мы создаем платформу для всех представителей малого и среднего бизнеса, основанную на взаимопомощи и качественных поставках друг другу.
                     </div>
                 </div>
-            </div>
 
-            <div class="container m--1460 capabilities">
-                <div 
-                    class="capabilities__block"
-                >
-                    <div class="capabilities__item">
-                        <div class="capabilities__item-title">
-                            Приглашайте своих партнеров
+                <div class="capabilities">
+                    <div class="capabilities__block">
+                        <div class="capabilities__item">
+                            <div class="capabilities__item-title">
+                                Приглашайте своих партнеров
+                            </div>
+                            <div class="capabilities__item-description">
+                                <ul>
+                                    <li>Пригласите на площадку тех, с кем ваша компания уже торгует;</li>
+                                    <li>Сделайте ваш процесс закупок более прозрачным и удобным;</li>
+                                    <li>Укрепляйте связи с проверенными партнерами.</li>
+                                </ul>
+                            </div>
                         </div>
-                        <div class="capabilities__item-description">
-                            <ul>
-                                <li>Пригласите на площадку тех, с кем ваша компания уже торгует;</li>
-                                <li>Сделайте ваш процесс закупок более прозрачным и удобным;</li>
-                                <li>Укрепляйте связи с проверенными партнерами.</li>
-                            </ul>
+                        <div class="capabilities__item">
+                            <div class="capabilities__item-title">
+                                Обретайте связи
+                            </div>
+                            <div class="capabilities__item-description">
+                                <ul>
+                                    <li>Ознакомьтесь со списком организаций, зарегистрированных на площадке;</li>
+                                    <li>Обменивайтесь контактами, обращайтесь друг к другу за необходимой продукцией;</li>
+                                    <li>Пригласите интересных контрагентов к участию в ваших тендерах.</li>
+                                </ul>
+                            </div>
                         </div>
-                    </div>
-                    <div class="capabilities__item">
-                        <div class="capabilities__item-title">
-                            Обретайте связи
-                        </div>
-                        <div class="capabilities__item-description">
-                            <ul>
-                                <li>Ознакомьтесь со списком организаций, зарегистрированных на площадке;</li>
-                                <li>Обменивайтесь контактами, обращайтесь друг к другу за необходимой продукцией;</li>
-                                <li>Пригласите интересных контрагентов к участию в ваших тендерах.</li>
-                            </ul>
-                        </div>
-                    </div>
-                    <div class="capabilities__item">
-                        <div class="capabilities__item-title">
-                            Будьте на равных
-                        </div>
-                        <div class="capabilities__item-description">
-                            <ul>
-                                <li>Регистрация, участие в тендерах, создание тендеров — сейчас бесплатно для всех;</li>
-                                <li>Все участники платформы проверены на благонадежность в системе Контур.Фокус;</li>
-                                <li>Единые равные условия для всех поставщиков, главное для нас — ваша добросовестность.</li>
-                            </ul>
+                        <div class="capabilities__item">
+                            <div class="capabilities__item-title">
+                                Будьте на равных
+                            </div>
+                            <div class="capabilities__item-description">
+                                <ul>
+                                    <li>Регистрация, участие в тендерах, создание тендеров — сейчас бесплатно для всех;</li>
+                                    <li>Все участники платформы проверены на благонадежность в системе Контур.Фокус;</li>
+                                    <li>Единые равные условия для всех поставщиков, главное для нас — ваша добросовестность.</li>
+                                </ul>
+                            </div>
                         </div>
                     </div>
                 </div>
-            </div>
 
-            <div class="container m--1460">
                 <div class="home-page__alert">
                     <div class="home-page__alert-content m--flex">
                         <div class="home-page__alert-buttons">

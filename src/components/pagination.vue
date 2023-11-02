@@ -6,22 +6,19 @@
         <div class="pagination__left">
             <router-link
                 :to="{ path: url, query: Object.assign({}, query, { page: 1 }) }"
-                class="pagination__item pagination__item--first"
-                :class="{'m--disabled': isFirstPage}"
+                :class="['pagination__item m--first', isFirstPage && 'm--disabled']"
                 :event="isFirstPage ? '' : 'click'"
             />
             <router-link
                 :to="{ path: url, query: Object.assign({}, query, { page: goPrev }) }"
-                class="pagination__item pagination__item--prev"
-                :class="{'m--disabled': isFirstPage}"
+                :class="['pagination__item m--prev', isFirstPage && 'm--disabled']"
                 :event="isFirstPage ? '' : 'click'"
             />
             <ul class="pagination__list">
                 <li
                     v-for="page in pagesArray"
                     :key="`page-${page.value}`"
-                    class="pagination__item"
-                    :class="{ 'pagination__item--current': page.value === currentPage }"
+                    :class="['pagination__item', page.value === currentPage && 'm--current']"
                 >
                     <router-link
                         class="pagination__link"
@@ -33,15 +30,13 @@
                 </li>
             </ul>
             <router-link
-                class="pagination__item pagination__item--next"
                 :to="{ path: url, query: Object.assign({}, query, { page: goForward }) }"
-                :class="{'m--disabled': isLastPage}"
+                :class="['pagination__item m--next', isLastPage && 'm--disabled']"
                 :event="isLastPage ? '' : 'click'"
             />
             <router-link
-                class="pagination__item pagination__item--last"
-                :to="{ path: url, query: Object.assign({}, query, { page: this.pages.length }) }"
-                :class="{'m--disabled': isLastPage}"
+                :to="{ path: url, query: Object.assign({}, query, { page: pages.length }) }"
+                :class="['pagination__item m--last', isLastPage && 'm--disabled']"
                 :event="isLastPage ? '' : 'click'"
             />
         </div>
@@ -56,24 +51,23 @@
         props: {
             total: {
                 type: Number,
-                required: true
+                default() { return 0; }
             },
             limit: {
                 type: Number,
-                required: true
+                default() { return 10; }
             },
             currentPage: {
                 type: Number,
-                required: true,
-                default: 1
+                default() { return 1; }
             },
             query: {
                 type: Object,
-                default() { return {} }
+                default() { return {}; }
             },
             url: {
                 type: String,
-                required: true
+                default() { return ''; }
             }
         },
         data() {
@@ -85,8 +79,8 @@
                 return 1
             },
             pages() {
-                const pagesCount = Math.ceil(this.total / this.limit)
-                return this.$helpers.range(1, pagesCount)
+                const pagesCount = Math.ceil(this.total / this.limit);
+                return this.$helpers.range(1, pagesCount || 1);
             },
             pagesArray() {
                 const count = Math.ceil(this.total / this.limit);

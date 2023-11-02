@@ -17,7 +17,7 @@
                             v-for="item in tabsItems"
                             :key="`tab-${item.name}`"
                             class="tabs__item"
-                            :class="currentTabsItem === item.name && 'is-active'"
+                            :class="(currentTabsItem === item.name || $route.matched.some(record => { return record.name === item.name })) && 'is-active'"
                             @click.prevent="changeTab(item.name)"
                         >
                             {{ item.label }}
