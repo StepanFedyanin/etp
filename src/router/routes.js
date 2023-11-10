@@ -26,6 +26,7 @@ import CabinetNotifications from '@/views/cabinet/notifications';
 import CabinetNotificationsSettings from '@/views/cabinet/notifications-settings.vue'; //? Возможно не используется
 import CabinetOrganization from '@/views/cabinet/organization';
 import CabinetOrganizationGoodAdd from '@/views/cabinet/organization-good-add.vue';
+import CabinetOrganizationGoodEdit from '@/views/cabinet/organization-good-edit.vue';
 import CabinetOrganizationPersonAdd from '@/views/cabinet/organization-person-add.vue';
 import CabinetOrganizationRegistration from '@/views/cabinet/organization-registration.vue';
 import CabinetParticipant from '@/views/cabinet/participant';
@@ -191,7 +192,7 @@ const routes = [
             }, {
                 path: 'organization/good-edit/:slug',
                 name: 'organization-good-edit',
-                component: CabinetOrganizationGoodAdd,
+                component: CabinetOrganizationGoodEdit,
                 meta: { 
                     title: 'Редактирование товара',
                     breadcrumbs: ['cabinet'],

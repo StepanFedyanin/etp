@@ -1,6 +1,48 @@
 .tender-form {
     &__title {
         margin-bottom: 1rem;
+
+        &-button {
+            position: relative;
+            display: flex;
+            align-items: center;
+            margin-left: auto;
+            margin-top: -5px;
+            padding: 0.5rem 0.75rem;
+            font-weight: 600;
+            font-size: 0.875rem;
+            line-height: 1.25rem;
+            text-transform: uppercase;
+            color: $color-gray-66;
+            cursor: pointer;
+            align-self: center;
+            border: 1px solid $color-gray-dd;
+            background: transparent;
+
+            span {
+                position: relative;
+                display: block;
+                padding-right: 1rem;
+
+                &:before {
+                    content: '';
+                    position: absolute;
+                    width: 0.75rem;
+                    height: 0.75rem;
+                    right: 0;
+                    top: 50%;
+                    transform: translateY(-50%);
+                    background-image: url('./assets/img/icons/icon-arrow-right.svg');
+                    background-size: contain;
+                }
+
+                &.m--plus {
+                    &:before {
+                        background-image: url('./assets/img/icons/icon-plus.svg');
+                    }
+                }
+            }
+        }
     }
 
     &__block {
@@ -36,7 +78,7 @@
         &.m--half {
             width: calc(50% - 24px);
 
-            @mixin responsive-le-m {
+            @mixin responsive-le-s {
                 width: 100%;
             }
         }
@@ -157,11 +199,11 @@
 
     &__actions {
         display: flex;
-        gap: 36px;
+        gap: 2rem;
         align-items: center;
-        justify-content: center;
+        justify-content: flex-start;
         
-        @mixin responsive-le-m {
+        @mixin responsive-le-s {
             flex-direction: column;
             gap: 18px;
         }

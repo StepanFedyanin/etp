@@ -48,7 +48,7 @@
         margin: 0 3rem 1.5rem 0;
         font-weight: 500;
         font-size: 1rem;
-        line-height: 1.25rem;
+        line-height: normal;
         text-transform: uppercase;
         color: $color-gray-66;
     }
@@ -123,24 +123,26 @@
         flex-direction: row;
         align-items: center;
         justify-content: center;
-        height: 500px;
-        width: 1461px;
-        /* padding: 130px 254px; */
+        min-height: 500px;
+
+        @mixin responsive-le-xs {
+            flex-direction: column;
+        }
+
         .modal{
             &__content {
-                max-width: 756px;
-                padding: 0 45px;
+                padding: 0 1.5rem;
                 /* margin-left: 45px; */
-                flex-shrink: 6;
+                /*flex-shrink: 6;*/
             }
             &__text {
-                margin-bottom: 24px;
+                margin-bottom: 1.5rem;
             }
             &__title {
-            margin-bottom: 24px;
-            font-size: 34px;
-            text-transform: inherit;
-        }
+                margin-bottom: 1.4rem;
+                font-size: 2rem;
+                text-transform: inherit;
+            }
         }
         svg {
             flex-shrink: 1;
@@ -152,7 +154,7 @@
             font-weight: 400;
         }
         p {
-            margin-bottom: 24px;
+            margin-bottom: 1.5rem;
             font-weight: 300;
         }
 

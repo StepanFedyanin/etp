@@ -60,8 +60,8 @@
             data-loading="loading"
             form-class="$reset invites__form form"
             submit-label="Отправить"
-            :disabled="loading"
-            :loading="loading ? true : undefined"
+            :disabled="showLoaderSending"
+            :loading="showLoaderSending ? true : undefined"
             :submit-attrs="{
                 inputClass: '$reset button button-green invites__form-button',
                 wrapperClass: '$reset form__submit invites__form-submit',
@@ -134,8 +134,8 @@
                         outerClass: 'inviteTender__multiselect',
                         organization: {},
                     }
-
-                ]
+                ],
+                showLoaderSending: false
             }
 
         },

@@ -16,10 +16,9 @@ class RESTError extends Error {
             this[k] = params[k];
         }
 
-        if (this.response && this.response.status === 401) {
+        //if (this.response && (this.response.status === 401 || this.response.status === 403)) {
+        if (this.response && (this.response.status === 401)) {
             store.dispatch('deathUser');
-            //store.dispatch('clearToken');
-            //store.dispatch('showError', 'Доступ запрещен!');
             router.push({ name: 'auth' });
         } else {
             if (typeof Error.captureStackTrace === 'function') {

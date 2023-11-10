@@ -40,14 +40,28 @@
             </div>
             <div class="footer__bottom">
                 <div class="footer__bottom-menu">
-                    <router-link
+                    <template
                         v-for="(item, key) in footerMenuBottom"
-                        :key="key"
-                        :to="{ name: item.name, params: item.params }"
-                        class="footer__bottom-link"
                     >
-                        {{ item.title }}
-                    </router-link>
+                        <a 
+                            v-if="item.link"
+                            :key="`link-${key}`"
+                            :href="item.link" 
+                            class="footer__bottom-link m--green" 
+                            target="_blank"
+                        >
+                            {{ item.title }}
+                            <span v-if="item.icon" :class="['icon', item.icon]" />
+                        </a>
+                        <router-link
+                            v-else
+                            :key="`route-${key}`"
+                            :to="{ name: item.name, params: item.params }"
+                            class="footer__bottom-link"
+                        >
+                            {{ item.title }}
+                        </router-link>
+                    </template>
                 </div>
                 <div class="footer__bottom-developer">
                     Разработка площадки - 
@@ -108,6 +122,11 @@
                         params: { slug: 'contacts' },
                         role: 'all',
                         title: 'Контакты',
+                    }, {
+                        link: 'https://forms.yandex.ru/cloud/654b873b5d2a06115722d4a1/',
+                        role: 'all',
+                        title: 'Улучшим TUGAN вместе!',
+                        icon: 'm--edit'
                     }
                 ]
             };

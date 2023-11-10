@@ -3,6 +3,7 @@
         <vue-final-modal 
             v-model="show"
             class="modal__container" 
+            content-class="modal__block m--middle"
             content-transition="vfm-fade"
             overlay-transition="vfm-fade"
             :clickToClose="false"
@@ -35,10 +36,6 @@
                     </p>
                 </template>
             </div>
-            <div
-                v-if="footer"
-                class="modal__footer"
-            />
         </vue-final-modal>
     </q-no-ssr>
 </template>

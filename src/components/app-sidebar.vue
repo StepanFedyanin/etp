@@ -57,29 +57,33 @@
                                                 v-if="menuOpened(item.name, isActive)"
                                                 class="sidebar__menu-item-block"
                                             >
-                                                <router-link
+                                                <template
                                                     v-for="(sitem, skey) in item.items"
-                                                    :key="skey"
-                                                    v-slot="{ href, navigate, isActive }"
-                                                    :to="{ name: sitem.name }"
-                                                    custom
                                                 >
-                                                    <div class="sidebar__menu-subitem">
-                                                        <a 
-                                                            :href="href"
-                                                            :class="[isActive && 'is-active']"
-                                                            class="sidebar__menu-sublink"
-                                                            @click="navigate"
-                                                        >
-                                                            {{ sitem.title }}
-                                                            <template
-                                                                v-if="sitem.name === 'participant-invites' && invitesCount"
+                                                    <router-link
+                                                        v-if="!sitem.access || (sitem.access && user[sitem.access])"
+                                                        :key="skey"
+                                                        v-slot="{ href, navigate, isActive }"
+                                                        :to="{ name: sitem.name }"
+                                                        custom
+                                                    >
+                                                        <div class="sidebar__menu-subitem">
+                                                            <a 
+                                                                :href="href"
+                                                                :class="[isActive && 'is-active']"
+                                                                class="sidebar__menu-sublink"
+                                                                @click="navigate"
                                                             >
-                                                                <div class="sidebar__menu-count">{{ invitesCount }}</div>
-                                                            </template>
-                                                        </a>
-                                                    </div>
-                                                </router-link>
+                                                                {{ sitem.title }}
+                                                                <template
+                                                                    v-if="sitem.name === 'participant-invites' && invitesCount"
+                                                                >
+                                                                    <div class="sidebar__menu-count">{{ invitesCount }}</div>
+                                                                </template>
+                                                            </a>
+                                                        </div>
+                                                    </router-link>
+                                                </template>
                                             </div>
                                         </transition>
                                     </template>
@@ -160,11 +164,13 @@
                             name: 'customer-drafts',
                             role: 'all',
                             title: 'Черновики',
+                            access: 'is_access_tender'
                         }, {
                             name: 'tender-start',
                             role: 'all',
                             title: 'Объявить тендер',
-                            icon: 'loudspeaker'
+                            icon: 'loudspeaker',
+                            access: 'is_access_tender'
                         }
                     ]
                 }, {
@@ -177,6 +183,7 @@
                             name: 'participant-invites',
                             role: 'all',
                             title: 'Приглашения',
+                            access: 'is_access_tender'
                         }, {
                             name: 'participant-current',
                             role: 'all',
@@ -247,6 +254,11 @@
                 invitesCount: 0,
                 notificationsCount: 0
             };
+        },
+        computed: {
+            user() {
+                return this.$store.state.user;
+            },
         },
         /*
         watch: {

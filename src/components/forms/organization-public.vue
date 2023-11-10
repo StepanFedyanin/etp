@@ -353,7 +353,7 @@
                             params.contact_phone = params.contact_phone?.replace(/ /g,'').replace(/-/g,'').replace(/\(/g,'').replace(/\)/g,'');
                             data.append('contact_phone', params.contact_phone);
                         } else {
-                            data.append(item.name, params[item.name]);
+                            if (params[item.name]) data.append(item.name, params[item.name]);
                         }
                     }
                     if (item.children && Array.isArray(item.children)) {

@@ -11,6 +11,9 @@ module.exports = {
     watch_delay: 1000,
     error_file: "./var/log/app-error.log",
     out_file: "./var/log/app-out.log",
-    kill_timeout : 3000
+    kill_timeout : 3000,
+    env: {
+      PORT: 3003,
+    }
   }]
 }

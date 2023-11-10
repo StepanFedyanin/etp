@@ -3,7 +3,7 @@
         <vue-final-modal
             v-model="show"
             class="modal__container" 
-            content-class="modal__block modal__notice"
+            content-class="modal__block modal__notice m--middle"
             content-transition="vfm-fade"
             overlay-transition="vfm-fade"
             :clickToClose="false"

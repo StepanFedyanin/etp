@@ -109,6 +109,17 @@
                     </span>
                 </div>
             </div>
+            <div 
+                v-else-if="person"
+                class="multiselect-person"
+            >
+                <div class="multiselect-person__inner">
+                    <span class="multiselect-person__name">
+                        {{ option.label }}
+                    </span>
+                    <span :class="['icon m--perms-tenders', !option.disabled && 'm--on']" />
+                </div>
+            </div>
         </template>
     </Multiselect>
 </template>
@@ -144,6 +155,7 @@
     const tender = props.context.attrs.tender !== undefined ? true : false;
     const lot = props.context.attrs.lot !== undefined ? true : false;
     const country = props.context.attrs.country !== undefined ? true : false;
+    const person = props.context.attrs.person !== undefined ? true : false;
     // let vModelValue = reactive({})
 
     // const optionsComuted = computed(() => {

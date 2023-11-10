@@ -12,7 +12,7 @@
     --ms-option-line-height: 22px;
     --ms-option-bg-pointed: $color-white-dark;
     --ms-option-color-pointed: $color-black;
-    --ms-option-bg-disabled: $color-white-dark;
+    --ms-option-bg-disabled: $color-white;
     --ms-option-color-disabled: $color-gray;
     --ms-option-bg-selected: $color-green;
     --ms-option-color-selected: $color-white;
@@ -471,6 +471,10 @@
         background-image: url('./assets/img/icons/icon-check.svg');
         background-position: calc(100% - 14px) 50%;
         background-repeat: no-repeat;
+
+        .icon.icon {
+          background-color: var(--ms-option-color-selected, #FFFFFF);
+        }
     }
 
     &.is-disabled {
@@ -687,6 +691,60 @@
 
     &__price {
         font-weight: 500;
+    }
+}
+
+.multiselect-person {
+    width: 100%;
+    margin-right: 10px;    
+    
+    &__inner {
+        display: flex;
+        gap: 10px;
+    }
+
+    &__name {
+    }
+
+    .icon {
+        margin-left: auto;
+        display: block;
+        width: 1.5rem;
+        min-width: 1.5rem;
+        height: 1.5rem;
+        background: $color-red;
+
+        &.m--arrow-down {
+            mask: url('./assets/img/icons/icon-arrow-down.svg') 50% 50% no-repeat;
+            mask-size: contain;
+            background: $color-green;
+        }
+
+        &.m--arrow-up {
+            mask: url('./assets/img/icons/icon-arrow-down.svg') 50% 50% no-repeat;
+            mask-size: contain;
+            transform: rotateX(180deg);
+            background: $color-green;
+        }
+
+        &.m--perms-org {
+            mask: url('./assets/img/icons/icon-building.svg') 50% 50% no-repeat;
+            mask-size: contain;
+        }
+
+        &.m--perms-goods {
+            mask: url('./assets/img/icons/icon-bag-check.svg') 50% 50% no-repeat;
+            mask-size: contain;
+        }
+
+        &.m--perms-tenders {
+            mask: url('./assets/img/icons/icon-customer.svg') 50% 50% no-repeat;
+            mask-size: contain;
+        }
+
+        &.m--on {
+            background: $color-green;
+        }
     }
 }
 

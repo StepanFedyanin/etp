@@ -62,7 +62,7 @@
                                                 {{ $helpers.formatDate(new Date(message.date_publication), 'HH:mm:ss') }} МСК
                                             </div>
                                             <button
-                                                v-if="user.organization?.id === tender.creator || user.is_staff || user.id === message.id_user"
+                                                v-if="(user.is_access_tender && user.organization?.id === tender.creator) || user.is_staff || user.id === message.id_user"
                                                 class="chat__messages-item-delete"
                                                 @click.prevent="onDeleteMessage(message.id)"
                                             />
@@ -158,12 +158,13 @@
                 return items;
             },
         },
-        mounted() {
-            this.clearChat();
-        },
         created() {
             //this.connectionChat();
+            //this.appendMessages(this.tender.id);
+        },
+        mounted() {
             this.appendMessages(this.tender.id);
+            this.clearChat();
         },
         methods: {
             dateDiff(oldDate, newDate) {
@@ -222,16 +223,18 @@
                 Chat.getTenderChat(params).then(res => {
                     this.chat_messages = res.results.reverse().concat(this.chat_messages);
                     this.canScroll = res.count > this.offset;
-                    const el = this.$refs.board;
-                    const scrollHeight = el.scrollHeight;
                     this.$nextTick(() => {
-                        el.scrollTop = el.scrollHeight - scrollHeight;
-                        // el.scrollTo({ 
-                        //     top: scrollHeight, 
-                        //     behavior: 'smooth'
-                        // });
-                        this.offset += this.limit;
-                        this.isLoading = false;
+                        const el = this.$refs.board;
+                        if (el) {
+                            const scrollHeight = el.scrollHeight;
+                            el.scrollTop = el.scrollHeight - scrollHeight;
+                            // el.scrollTo({ 
+                            //     top: scrollHeight, 
+                            //     behavior: 'smooth'
+                            // });
+                            this.offset += this.limit;
+                            this.isLoading = false;
+                        }
                     });
                 }).catch(err => {
                     console.error(err);

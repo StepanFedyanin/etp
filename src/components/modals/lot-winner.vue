@@ -52,13 +52,13 @@
                                 </div>
                                 <div class="offers__item-winner-block">
                                     <div class="offers__item-param m--winner">
-                                        <span>Менеджер:</span> {{ lot.winner_bet.user.full_name }}
+                                        <span>Менеджер:</span> {{ lot.winner_bet.author.full_name }}
                                     </div>
                                     <div class="offers__item-param m--winner">
-                                        <span>Телефон:</span> {{ lot.winner_bet.user.phone }}
+                                        <span>Телефон:</span> {{ lot.winner_bet.author.phone }}
                                     </div>
                                     <div class="offers__item-param m--winner">
-                                        <span>Email:</span> {{ lot.winner_bet.user.email }}
+                                        <span>Email:</span> {{ lot.winner_bet.author.email }}
                                     </div>
                                 </div>
                             </div>
@@ -182,7 +182,7 @@
                             return await tenderApi.getTenderLotUsers(this.tender.id, this.lot.id).then(res => {
                                 console.log(res);
                                 return res.map((bet) => {
-                                    return { label: bet.organization.name, price: bet.price, currency_detail: this.tender.currency_detail, value: { bet: bet.id, winner: bet.user.id } }
+                                    return { label: bet.organization.name, price: bet.price, currency_detail: this.tender.currency_detail, value: { bet: bet.id, winner: bet.author.id } }
                                 });
                             }).catch(err => {
                                 console.error(err);

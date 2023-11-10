@@ -216,12 +216,12 @@
                         <div class="tender__info-param">
                             <span class="tender__info-param-name">Категории</span>
                             <div class="tender__info-param-value">
-                                <template
+                                <span
                                     v-for="(category, index) in tender.category_detail"
                                     :key="`category-${index}`"
                                 >
-                                    {{ category.name }}<span v-if="tender.category.length > 0 && index != (tender.category.length - 1)">; </span>
-                                </template>
+                                    {{ category.name }}<template v-if="tender.category.length > 0 && index != (tender.category.length - 1)">; </template>
+                                </span>
                             </div>
                         </div>
                         <div class="tender__info-param">
@@ -239,12 +239,14 @@
                                 {{ tender.description }}
                             </div>
                         </div>
-                        <TenderOrganizationStatus
-                            v-if="user.id !== tender.creator && !user.is_staff && user.organization?.id !== tender.organization.id"
-                            modifierClass="tender__info-status"
-                            :tender="tender"
-                            @getTenderData="getTenderData"
-                        />
+                        <q-no-ssr>
+                            <TenderOrganizationStatus
+                                v-if="user.organization?.id !== tender.creator && !user.is_staff && user.organization?.id !== tender.organization.id"
+                                modifierClass="tender__info-status"
+                                :tender="tender"
+                                @getTenderData="getTenderData"
+                            />
+                        </q-no-ssr>
                     </div>
                     <div class="tender__info-right">
                         <div class="tender__info-price">
@@ -322,267 +324,223 @@
                         </div>
                     </div>
                 </div>
-                <template 
-                    v-if="showActinsBlock" 
-                >
-                    <template
-                        v-if="tender.status === 'bid_accept'" 
-                    >
-                        <div class="h2">
-                            Действия с тендером
-                        </div>
-                        <div 
-                            class="tender__actions"
-                        >
-                            <div
-                                class="tender__actions-buttons"
-                            >
-                                <button 
-                                    class="button button-red"
-                                    @click.stop="onClickCancelTender()"
-                                >
-                                    Отменить тендер
-                                </button>
-                            </div>
-                            <ModalTenderCancel
-                                :tender="tender || {}"
-                                :showModal="showCancelTenderConfirmModal"
-                                @hideModal="hideCancelTenderConfirmModal"
-                            />
-                        </div>
-                    </template>
-                    <template
-                        v-else-if="tender.status === 'bidding_process'" 
-                    >
-                        <div class="h2">
-                            Завершить тендер досрочно
-                        </div>
-                        <div 
-                            class="tender__actions"
-                        >
-                            <div
-                                class="tender__actions-buttons"
-                            >
-                                <button 
-                                    class="button button-red"
-                                    @click.stop="onClickCloseTenderAhead(false)"
-                                >
-                                    Без победителя
-                                </button>
-                                <button 
-                                    v-if="tender.creator === user.id"
-                                    class="button button-green"
-                                    @click.stop="onClickCloseTenderAhead(true)"
-                                >
-                                    С выбором победителя
-                                </button>
-                            </div>
-                            <ModalTenderCloseAhead
-                                :tender="tender || {}"
-                                :setWinner="setWinner"
-                                :showModal="showCloseAheadTenderConfirmModal"
-                                @hideModal="hideCloseAheadTenderConfirmModal"
-                            />
-                        </div>
-                    </template>
-                    <template
-                        v-else-if="tender.status === 'bidding_completed'"
-                    >
-                        <div class="h2">
-                            Действия с тендером
-                        </div>
-                        <div 
-                            class="tender__actions"
-                        >
-                            <div
-                                class="tender__actions-buttons"
-                            >
-                                <button 
-                                    class="button button-green"
-                                    @click.stop="onClickCloseTenderWithWinner()"
-                                >
-                                    Завершить тендер
-                                </button>
-                            </div>
-                            <ModalTenderClose
-                                :tender="tender || {}"
-                                :showModal="showCloseTenderConfirmModal"
-                                @hideModal="hideCloseTenderConfirmModal"
-                            />
-                        </div>
-                    </template>
-                </template>
-                <template 
-                    v-else-if="tender.creator === user.id && !tender.publication" 
-                >
-                    <div class="h2">
-                        Действия с тендером
-                    </div>
-                    <div 
-                        class="tender__actions"
-                    >
-                        <div
-                            class="tender__actions-buttons"
-                        >
-                            <button 
-                                class="button button-green"
-                                @click.stop="onClickEditTender"
-                            >
-                                Редактировать
-                            </button>
-                            <button 
-                                class="button button-green"
-                                :disabled="tender.lots && tender.lots.length ? false : true"
-                                @click.stop=""
-                            >
-                                Опубликовать
-                            </button>
-                            <button 
-                                class="button button-red"
-                                @click.stop="onClickDeleteTender"
-                            >
-                                Удалить
-                            </button>
-                        </div>
-                        <ModalTenderDelete
-                            :tender="tender || {}"
-                            :showModal="showDeleteTenderConfirmModal"
-                            @hideModal="hideDeleteTenderConfirmModal"
-                        />
-                    </div>
-                </template>
-                <div 
-                    :class="['tender__block m--col']"
-                >
-                    <div class="h2">
-                        Документы:
-                    </div>
-                    <div
-                        v-if="((tender.creator === user.id || user.is_staff) && tender.status === 'bid_accept') || tender.documents.length"
-                        class="tender__docs"
-                        :class="tender.creator === user.id || user.is_staff ? 'm--width-100' : ''"
-                    >
-                        <div class="tender__docs-list">
-                            <div 
-                                class="tender__docs-item"
-                                :class="(tender.creator === user.id || user.is_staff) && tender.status === 'bid_accept' ? 'm--edit' : ''"
-                            >
-                                <div class="tender__docs-cell m--title">
-                                    Файл
-                                </div>
-                                <div class="tender__docs-cell m--title">
-                                    Описание
-                                </div>
-                                <template
-                                    v-if="(tender.creator === user.id || user.is_staff) && tender.status === 'bid_accept'"
-                                >
-                                    <div class="tender__docs-cell m--edit" />
-                                    <div class="tender__docs-cell m--delete" />
-                                </template>
-                            </div>
-                            <template 
-                                v-for="doc in tender.documents"
-                            >
-                                <div 
-                                    v-if="doc.publication"
-                                    :key="`doc-${doc.id}`"
-                                    class="tender__docs-item"
-                                    :class="(tender.creator === user.id || user.is_staff) && tender.status === 'bid_accept' ? 'm--edit' : ''"
-                                >
-                                    <a
-                                        :href="urlPath + doc.file"
-                                        class="tender__docs-cell m--file"
-                                        target="_blank"
-                                    >
-                                        {{ doc.name }}
-                                    </a>
-                                    <template
-                                        v-if="(tender.creator === user.id || user.is_staff) && tender.status === 'bid_accept'"
-                                    >
-                                        <div class="tender__docs-cell">
-                                            <FormKit
-                                                v-model="doc.description"
-                                                class="input"
-                                                type="text"
-                                                placeholder="Ввести данные"
-                                                :name="`description_${doc.id}`"
-                                                :value="doc.description"
-                                                outerClass="$reset"
-                                                @focusout="updateDocument(doc.id)"
-                                            />
-                                        </div>
-                                        <div class="tender__docs-cell m--edit">
-                                            <div
-                                                class="tender__docs-edit"
-                                                @click="updateDocument(doc.id)"
-                                            />
-                                        </div>
-                                        <div class="tender__docs-cell m--delete">
-                                            <div
-                                                class="tender__docs-delete"
-                                                @click="onClickRemoveFile(doc.id)"
-                                            />
-                                        </div>
-                                    </template>
-                                    <div 
-                                        v-else
-                                        class="tender__docs-cell m--desc"
-                                    >
-                                        {{ doc.description }}
-                                    </div>
-                                </div>
-                            </template>
-                        </div>
+                <q-no-ssr>
+                    <template v-if="showActinsBlock">
                         <template
-                            v-if="(tender.creator === user.id || user.is_staff) && tender.status === 'bid_accept'"
+                            v-if="tender.status === 'bid_accept'" 
                         >
-                            <FormKit
-                                id="draft_file"
-                                name="draft_file"
-                                type="file"
-                                outerClass="$reset field--type_hidden"
-                                @change="uploadFileComplete"
-                            />
-                            <button
-                                type="button"
-                                class="button button-outline-green"
-                                @click="onClickUploadFile(null)"
-                            >
-                                Добавить документ
-                            </button>
-                        </template>
-                    </div>
-                    <template
-                        v-if="tender.creator !== user.id && !user.is_staff"
-                    >
-                        <div class="h2">
-                            Контактное лицо
-                            <template
-                                v-if="user.id !== tender.creator && tender.status !== 'closed' && tender.user_participation"
+                            <div class="h2">
+                                Действия с тендером
+                            </div>
+                            <div 
+                                class="tender__actions"
                             >
                                 <div
+                                    class="tender__actions-buttons"
+                                >
+                                    <button 
+                                        class="button button-red"
+                                        @click.stop="onClickCancelTender()"
+                                    >
+                                        Отменить тендер
+                                    </button>
+                                </div>
+                                <ModalTenderCancel
+                                    :tender="tender || {}"
+                                    :showModal="showCancelTenderConfirmModal"
+                                    @hideModal="hideCancelTenderConfirmModal"
+                                />
+                            </div>
+                        </template>
+                        <template
+                            v-else-if="tender.status === 'bidding_process'" 
+                        >
+                            <div class="h2">
+                                Завершить тендер досрочно
+                            </div>
+                            <div 
+                                class="tender__actions"
+                            >
+                                <div
+                                    class="tender__actions-buttons"
+                                >
+                                    <button 
+                                        class="button button-red"
+                                        @click.stop="onClickCloseTenderAhead(false)"
+                                    >
+                                        Без победителя
+                                    </button>
+                                    <button 
+                                        v-if="tender.creator === user.organization?.id"
+                                        class="button button-green"
+                                        @click.stop="onClickCloseTenderAhead(true)"
+                                    >
+                                        С выбором победителя
+                                    </button>
+                                </div>
+                                <ModalTenderCloseAhead
+                                    :tender="tender || {}"
+                                    :setWinner="setWinner"
+                                    :showModal="showCloseAheadTenderConfirmModal"
+                                    @hideModal="hideCloseAheadTenderConfirmModal"
+                                />
+                            </div>
+                        </template>
+                        <template
+                            v-else-if="tender.status === 'bidding_completed'"
+                        >
+                            <div class="h2">
+                                Действия с тендером
+                            </div>
+                            <div 
+                                class="tender__actions"
+                            >
+                                <div
+                                    class="tender__actions-buttons"
+                                >
+                                    <button 
+                                        class="button button-green"
+                                        @click.stop="onClickCloseTenderWithWinner()"
+                                    >
+                                        Завершить тендер
+                                    </button>
+                                </div>
+                                <ModalTenderClose
+                                    :tender="tender || {}"
+                                    :showModal="showCloseTenderConfirmModal"
+                                    @hideModal="hideCloseTenderConfirmModal"
+                                />
+                            </div>
+                        </template>
+                    </template>
+                    <template 
+                        v-else-if="showTenderControl && !tender.publication" 
+                    >
+                        <div class="h2">
+                            Действия с тендером
+                        </div>
+                        <div 
+                            class="tender__actions"
+                        >
+                            <div
+                                class="tender__actions-buttons"
+                            >
+                                <button 
+                                    class="button button-green"
+                                    @click.stop="onClickEditTender"
+                                >
+                                    Редактировать
+                                </button>
+                                <button 
+                                    class="button button-green"
+                                    :disabled="tender.lots && tender.lots.length ? false : true"
+                                    @click.stop=""
+                                >
+                                    Опубликовать
+                                </button>
+                                <button 
+                                    class="button button-red"
+                                    @click.stop="onClickDeleteTender"
+                                >
+                                    Удалить
+                                </button>
+                            </div>
+                            <ModalTenderDelete
+                                :tender="tender || {}"
+                                :showModal="showDeleteTenderConfirmModal"
+                                @hideModal="hideDeleteTenderConfirmModal"
+                            />
+                        </div>
+                    </template>
+                </q-no-ssr>
+                <q-no-ssr>
+                    <div :class="['tender__block m--col']">
+                        <div class="tender__title h2">
+                            Документы
+                            <template v-if="showTenderControl && tender.status === 'bid_accept'">
+                                <button
+                                    type="button"
+                                    class="tender-form__title-button"
+                                    @click="onClickUploadFile(null)"
+                                >
+                                    Добавить документ <span class="m--plus" />
+                                </button>
+                                <FormKit
+                                    id="draft_file"
+                                    name="draft_file"
+                                    type="file"
+                                    outerClass="$reset field--type_hidden"
+                                    @change="uploadFileComplete"
+                                />
+                            </template>
+                        </div>
+                        <div class="tender__docs docs">
+                            <div class="docs__list">
+                                <template v-if="tender.documents?.length">
+                                    <TenderDocsItem
+                                        v-for="(file, idx) in tender.documents"
+                                        :key="idx"
+                                        :file="file"
+                                        :tender="tender"
+                                        :editMode="showTenderControl"
+                                        @getTenderDocuments="getTenderDocuments"
+                                    />
+                                </template>
+                                <template v-else>
+                                    К тендеру не приложено ни одного документа.
+                                </template>
+                            </div>
+                        </div>
+                        <div class="h2">
+                            Ответственное лицо
+                            <template
+                                v-if="user.organization?.id !== tender.creator && tender.status !== 'closed' && tender.user_participation"
+                            >
+                                <div
+                                    v-if="user.is_access_tender"
                                     class="tender__contact-chat"
                                     @click="startChat(tender.organization.id)"
                                 >
                                     <span>Написать в чат</span>
                                 </div>
                             </template>
+                            <template
+                                v-else-if="showTenderControl"
+                            >
+                                <div
+                                    class="tender__contact-chat"
+                                    @click="onClickChangeAuthor"
+                                >
+                                    <span>Изменить</span>
+                                </div>
+                            </template>
                         </div>
                         <div
                             class="tender__contact"
-                            :class="tender.documents.length ? '' : 'm--full-width'"
                         >
                             <template
                                 v-if="tender.contact_person"
                             >
                                 <div class="tender__contact-param">
-                                    <span>Менеджер:</span> {{ tender.contact_person.full_name }}
+                                    <span>{{ tender.contact_person.full_name }}</span>
                                 </div>
                                 <div class="tender__contact-param">
-                                    <span>Телефон:</span> {{ tender.contact_person.phone || '—' }}
+                                    <span>Телефон: </span> 
+                                    <template v-if="tender.contact_person.phone">
+                                        <a :href="`tel:${tender.contact_person.phone}`">{{ tender.contact_person.phone }}</a>
+                                    </template>
+                                    <template v-else>
+                                        —
+                                    </template>
                                 </div>
                                 <div class="tender__contact-param">
-                                    <span>E-mail:</span> {{ tender.contact_person.contact_email || tender.contact_person.email || '—' }}
+                                    <span>E-mail: </span> 
+                                    <template v-if="tender.contact_person.contact_email || tender.contact_person.email">
+                                        <a :href="`mailto:${tender.contact_person.contact_email || tender.contact_person.email}`">{{ tender.contact_person.contact_email || tender.contact_person.email }}</a>
+                                    </template>
+                                    <template v-else>
+                                        —
+                                    </template>
                                 </div>
                             </template>
                             <template
@@ -591,35 +549,35 @@
                                 —
                             </template>
                         </div>                        
-                    </template>
-                </div>
+                        <ModalTenderAuthor
+                            :tender="tender || {}"
+                            :showModal="showChangeTenderAuthorModal"
+                            @hideModal="hideChangeTenderAuthorModal"
+                        />
+                    </div>
+                </q-no-ssr>
                 <TenderRelatedTenders
                     v-if="tender.status === 'fulfilment'"
                     :tender="tender"
                 />
-                <!--TenderOrganizationStatus
-                    v-if="user.id !== tender.creator && !user.is_staff && user.organization.id !== tender.organization.id"
-                    :tender="tender"
-                    @getTenderData="getTenderData"
-                /-->
                 <TenderChat 
-                    v-if="tender.publication && (user.organization?.id === tender.creator || user.is_staff || user.organization?.id === tender.organization.id || (tender.user_participation && tender.user_participation.status === 'participant'))"
+                    v-if="tender.publication && (showTenderControl || (user.is_access_tender && tender.user_participation && tender.user_participation.status === 'participant'))"
                     :tender="tender"
                 />
                 <TenderLots
-                    v-if="tender.lots && tender.lots.length"
+                    v-if="tender.lots?.length"
                     :tender="tender"
                     :lots="tender.lots"
                     @getTenderData="getTenderData"
                 />
                 <TenderLotsExtended
-                    v-if="(user.organization?.id === tender.creator || user.is_staff || (user.organization?.id === tender.organization.id && user.is_master)) && tender.status !== 'bid_accept' && tender.lots && tender.lots.length"
+                    v-if="(showTenderControl || (user.organization?.id === tender.organization.id && user.is_master)) && tender.status !== 'bid_accept' && tender.lots && tender.lots.length"
                     :tender="tender"
                     :lots="tender.lots"
                     @getTenderData="getTenderData"
                 />
                 <template 
-                    v-if="tender.bet_enabled && tender.user_participation && tender.kind === 'tender' && tender.user_participation.status === 'participant' && tender.user_participation.contact_person.id === user.id"
+                    v-if="tender.bet_enabled && tender.user_participation && tender.kind === 'tender' && tender.user_participation.status === 'participant'"
                 >
                     <div class="h2">
                         Быстрые ставки
@@ -663,7 +621,7 @@
                     @getTenderData="getTenderData"
                 />
                 <TenderInvite 
-                    v-if="user.organization?.id === tender.creator && tender.status === 'bid_accept' && tender.publication"
+                    v-if="showTenderControl && tender.status === 'bid_accept' && tender.publication"
                     :tender="tender"
                 />
             </template>
@@ -677,6 +635,7 @@
     import TenderOrganizationStatus from '@/components/tender-organization-status';
     import TenderParticipants from '@/components/tender-participants';
     import TenderRelatedTenders from '@/components/tender-related-tenders.vue';
+    import TenderDocsItem from '@/components/tender-docs-item.vue'
     import TenderChat from '@/components/tender-chat';
     import TenderLots from '@/components/tender-lots';
     import TenderLotsExtended from '@/components/tender-lots-extended';
@@ -687,6 +646,7 @@
     import ModalTenderCloseAhead from '@/components/modals/tender-close-ahead';
     import ModalTenderCancel from '@/components/modals/tender-cancel';
     import ModalTenderDelete from '@/components/modals/tender-delete';
+    import ModalTenderAuthor from '@/components/modals/tender-author';
 
     export default {
         name: 'Tender',
@@ -709,6 +669,7 @@
             TenderOrganizationStatus,
             TenderParticipants,
             TenderRelatedTenders,
+            TenderDocsItem,
             TenderChat,
             TenderLots,
             TenderLotsExtended,
@@ -719,6 +680,7 @@
             ModalTenderCloseAhead,
             ModalTenderCancel,
             ModalTenderDelete,
+            ModalTenderAuthor
         },
         props: {
             id: {
@@ -733,7 +695,6 @@
                 //tender: null,
                 lot: null,
                 participants: [],
-                documents: [],
                 tenderForm: {},
                 types: {
                     reduction_opened: 'Открытый',
@@ -751,6 +712,7 @@
                 showCloseAheadTenderConfirmModal: false,
                 showCancelTenderConfirmModal: false,
                 showDeleteTenderConfirmModal: false,
+                showChangeTenderAuthorModal: false,
                 showLoaderSending: false,
                 formValues: {},
             }
@@ -762,14 +724,15 @@
             tender() {
                 return this.$store.state.data?.tender || {};
             },
+            showTenderControl() {
+                if (this.user.is_staff) return true;
+                if (this.tender.creator === this.user.organization?.id && this.user.is_access_tender) return true;
+                return false;
+            },
             showActinsBlock() {
                 if (this.tender.publication && this.tender.status !== 'closed' && this.tender.status !== 'fulfilment') {
-                    if (this.tender.creator === this.user.id) {
-                        return true;
-                    }
-                    if (this.user.is_staff && this.tender.status !== 'bidding_completed') {
-                        return true;
-                    }
+                    if (this.tender.creator === this.user.organization?.id && this.user.is_access_tender) return true;
+                    if (this.user.is_staff && this.tender.status !== 'bidding_completed') return true;
                 }
                 return false;
             }
@@ -876,6 +839,9 @@
             onClickDeleteTender() {
                 this.showDeleteTenderConfirmModal = true;
             },
+            onClickChangeAuthor() {
+                this.showChangeTenderAuthorModal = true;
+            },
             /*
             onClickInviteTender() {
                 const el = this.$refs.inviteTender;
@@ -892,21 +858,19 @@
             },
             hideCloseAheadTenderConfirmModal(updateData=false) {
                 this.showCloseAheadTenderConfirmModal = false;
-                if (updateData) {
-                    this.getTenderData();
-                }
+                if (updateData) this.getTenderData();
             },
             hideCancelTenderConfirmModal(updateData=false) {
                 this.showCancelTenderConfirmModal = false;
-                if (updateData) {
-                    this.getTenderData();
-                }
+                if (updateData) this.getTenderData();
             },
             hideDeleteTenderConfirmModal(updateData=false) {
                 this.showDeleteTenderConfirmModal = false;
-                if (updateData) {
-                    this.$router.push({ name: 'customer-drafts' });
-                }
+                if (updateData) this.$router.push({ name: 'customer-drafts' });
+            },
+            hideChangeTenderAuthorModal(updateData=false) {
+                this.showChangeTenderAuthorModal = false;
+                if (updateData) this.getTenderData();
             },
             startChat(organizationId) {
                 let params = {
@@ -940,42 +904,23 @@
                     formData.append("file", file)
                     formData.append("description", file.name)
                     formData.append("publication", true)
-                    tenderApi.addTenderDocument(this.tender.id, formData)
-                        .then(newFile => {
-                            this.documents.push(newFile)
-                            this.tender.documents.push(newFile)
-                            // this.defaultTender.documents = this.documents
-                        }).catch(err => {
-                            console.error(err)
-                        })
+                    tenderApi.addTenderDocument(this.tender.id, formData).then(res => {
+                        let tender = this.tender;
+                        tender.documents.push(res);
+                        this.$store.dispatch('fetchDataByKey', { data: tender, key: 'tender' });
+                    }).catch(err => {
+                        console.error(err);
+                    })
                 }
             },
-            updateDocument(id) {
-                let idx = this.tender.documents.findIndex(f => f.id === id)
-                if (idx >= 0) {
-                    const formData = new FormData()
-                    formData.append("description", this.tender.documents[idx].description)
-                    tenderApi.updateTenderDocument(this.tender.id, this.tender.documents[idx].id, formData)
-                        .then(newFile => {
-                            this.tender.documents[idx] = newFile
-                            // this.defaultTender.documents = this.documents
-                        }).catch(err => {
-                            console.error(err)
-                        })
-                }
-            },
-            onClickRemoveFile(id) {
-                let idx = this.tender.documents.findIndex(f => f.id === id)
-                if (idx >= 0) {
-                    tenderApi.deleteTenderDocument(this.tender.id, this.tender.documents[idx].id)
-                        .then(res => {
-                            this.tender.documents.splice(idx, 1);
-                            console.log(res);
-                            // this.defaultTender.documents = this.documents
-                        }).catch(err => {
-                            console.error(err);
-                        })
-                }
+            getTenderDocuments() {
+                tenderApi.getTenderDocuments(this.tender.id).then(res => {
+                    let tender = this.tender;
+                    tender.documents = res;
+                    this.$store.dispatch('fetchDataByKey', { data: tender, key: 'tender' });
+                }).catch(err => {
+                    console.error(err);
+                })
             },
         }
     };

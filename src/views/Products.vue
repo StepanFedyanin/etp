@@ -67,7 +67,7 @@
         async preFetch({ store, currentRoute, previousRoute, redirect, ssrContext, urlPath, publicPath }) {
             console.log('Products preFetch', process.env.SERVER, currentRoute.params);
             if (!process.env.SERVER) return;
-            let limit = 8;
+            let limit = 24;
             let offset = (currentRoute.query?.page ? currentRoute.query?.page - 1 : 0) * limit;
             let params = {
                 offset: offset,
@@ -95,7 +95,7 @@
         },
         data() {
             return {
-                limit: 8,
+                limit: 24,
                 showLoaderSending: false,
             }
         },

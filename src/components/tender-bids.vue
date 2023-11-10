@@ -150,7 +150,7 @@
                         </template>
                     </div>
                     <div 
-                        v-if="tender.user_participation.contact_person.id === user.id"
+                        v-if="tender.user_participation && tender.user_participation.status === 'participant'"
                         class="lots__item-buttons"
                     >
                         <template

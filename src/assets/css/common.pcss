@@ -344,9 +344,9 @@ input[type='number'] {
 }
 
 .svg-icon {
-    height: 24px; 
-    width: 24px;
-    min-width: 24px;
+    height: 1.5rem; 
+    width: 1.5rem;
+    min-width: 1.5rem;
     cursor: pointer;
 
     &&__edit {
@@ -411,7 +411,8 @@ input[type='number'] {
     &&__sent {
         display: inline-block;
         background: $color-green;
-        mask: url('./assets/img/icons/icon-sent.svg') 50% 50% no-repeat;
+        mask: url('./assets/img/icons/icon-check-square.svg') 50% 50% no-repeat;
+        mask-size: contain;
         &:hover {
             background: $color-green-dark;
         }

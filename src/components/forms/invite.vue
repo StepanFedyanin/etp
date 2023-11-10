@@ -12,7 +12,7 @@
                 <div 
                     v-for="(index) in invitesCount"
                     :key="index"
-                    class="list__item"
+                    class="invite__form-item list__item"
                 >   
                     <div class="item__title">
                         Приглашение №{{ index }} 
@@ -64,8 +64,6 @@
         name: 'Invite',
         data() {
             return {
-                formData: undefined,
-                formValues: this.formData,
                 list:[],
                 invitesCount: 1
             }

@@ -125,6 +125,10 @@
             flex-direction: column;
         }
 
+        &.m--100 {
+            width: 100%;
+        }
+
         &-favorite {
             position: absolute;
             width: 32px;
@@ -507,12 +511,15 @@
         }
 
         &-param {
-            margin-bottom: 16px;
             font-weight: 400;
+
+            &:not(:last-child) {
+                margin-bottom: 1rem;
+            }
 
             span,
             a {
-                font-weight: 600;
+                font-weight: 500;
             }
             a {
                 color: $color-green;
@@ -731,7 +738,7 @@
                 width: 100%;
                 gap: 16px;
 
-                span {
+                span, a {
                     font-weight: 600;
                 }
             }

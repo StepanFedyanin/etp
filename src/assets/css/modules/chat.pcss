@@ -307,14 +307,17 @@
                 */
             }
 
-            &.is-your &-inner  {
-                background: $color-white;
-                border-top-right-radius: 0;
+            &.is-your &-inner,
+            &.is-right &-inner  {
+                border: 1px solid $color-gray-dd !important;
+                border-top-right-radius: 0 !important;
                 margin-left: auto;
             }
-            &.is-recipient &-inner {
+            &.is-recipient &-inner,
+            &.is-left &-inner {
+                border: 1px solid $color-gray-dd !important;
                 background: $color-green-opacity20;
-                border-top-left-radius: 0;
+                border-top-left-radius: 0 !important;
                 margin-right: auto;
             }
 

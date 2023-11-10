@@ -13,6 +13,7 @@
                     />
                     <GoodAdd
                         :key="`interface-${$route.name}`"
+                        :slug="slug"
                     />
                 </div>
             </div>

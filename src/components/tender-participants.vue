@@ -13,9 +13,11 @@
         >
             <div class="tender__participants-item-block">
                 <div class="tender__participants-item-name">
-                    <span>
+                    <router-link
+                        :to="{ name: 'contragent', params: { id: participant.organization?.id } }"
+                    >
                         {{ participant.organization?.name }}
-                    </span>
+                    </router-link>
                     <div 
                         class="tender__participants-item-chat"
                         @click="startChat(participant.organization?.id)"

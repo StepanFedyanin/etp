@@ -16,18 +16,22 @@
                         v-if="!$route.name.match(/^start-/)"
                         class="customer__tabs tabs"
                     >
-                        <button 
+                        <template 
                             v-for="item in tabsItems"
-                            :key="`tab-${item.name}`"
-                            :class="['tabs__item', item.class, (currentTabsItem === item.name || $route.matched.some(record => record.name === item.name)) && 'is-active']"
-                            @click.prevent="changeTab(item.name)"
                         >
-                            {{ item.label }}
-                            <span
-                                v-if="item.icon"
-                                :class="['icon', item.icon]"
-                            />
-                        </button>
+                            <button 
+                                v-if="!item.access || (item.access && user[item.access])"
+                                :key="`tab-${item.name}`"
+                                :class="['tabs__item', item.class, (currentTabsItem === item.name || $route.matched.some(record => record.name === item.name)) && 'is-active']"
+                                @click.prevent="changeTab(item.name)"
+                            >
+                                {{ item.label }}
+                                <span
+                                    v-if="item.icon"
+                                    :class="['icon', item.icon]"
+                                />
+                            </button>
+                        </template>
                     </div>
                 </div>
                 <routerView />
@@ -57,11 +61,13 @@
                 }, {
                     label: 'Черновики',
                     name: 'customer-drafts',
-                    icon: 'm--edit'
+                    icon: 'm--edit',
+                    access: 'is_access_tender'
                 }, {
                     label: 'Объявить тендер',
                     name: 'tender-start',
-                    class: 'm--right button'
+                    class: 'm--right button',
+                    access: 'is_access_tender'
                 }],
                 currentTabsItem: this.$route.name || 'customer-current',
             }
@@ -72,6 +78,11 @@
                 handler() {
                     this.currentTabsItem = this.$route.name || 'customer-current';
                 },
+            },
+        },
+        computed: {
+            user() {
+                return this.$store.state.user;
             },
         },
         mounted() {

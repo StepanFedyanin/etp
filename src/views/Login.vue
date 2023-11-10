@@ -38,7 +38,7 @@
                             <a 
                                 href="#"
                                 class="auth__block-link"
-                                @click.stop="next('recovery')"
+                                @click.prevent="next('recovery')"
                             >
                                 Восстановить пароль
                             </a>
@@ -130,15 +130,13 @@
                     this.next('cabinet');
                 }).catch(err => {
                     node.setErrors(
-                        [err.detail],
+                        ['Не верный логин или пароль'],
                         {
                             email: '',
                             password: ''
                         }
                     )
                     this.showLoaderSending = false;
-                    this.$store.dispatch('showError', err);
-                    console.error(err);
                 });
             },
             onClickRecoveryPasswordModal() {

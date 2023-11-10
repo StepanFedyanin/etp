@@ -65,142 +65,144 @@
                 </div>
                 <div 
                     class="contragent__info-about text"
-                    v-html="contragent.about_company"
+                    v-html="contragent.about_company.replace(/\n/g, '<br/>')"
                 />
             </template>
         </div>
         <div class="contragent__info-right">
-            <div 
-                v-if="user && user.id && user.organization?.id !== contragent.id"
-                class="contragent__info-favorite"
-                :class="contragent.is_favorite && 'm--favorite'"
-                @click.prevent="toggleFavorite()"
-            >
-                {{ contragent.is_favorite ? 'У вас в избранном' : 'Добавить в избранное' }}
-            </div>
-            <div class="contragent__info-block">
+            <div class="contragent__info-right-inner">
+                <div 
+                    v-if="user && user.id && user.organization?.id !== contragent.id"
+                    class="contragent__info-favorite"
+                    :class="contragent.is_favorite && 'm--favorite'"
+                    @click.prevent="toggleFavorite()"
+                >
+                    {{ contragent.is_favorite ? 'У вас в избранном' : 'Добавить в избранное' }}
+                </div>
+                <div class="contragent__info-block">
+                    <div class="contragent__info-params">
+                        <div class="contragent__info-param m--inline">
+                            <div class="contragent__info-param-name">
+                                ИНН
+                            </div>
+                            <div class="contragent__info-param-data">
+                                {{ contragent.inn }}
+                            </div>
+                        </div>
+                        <div class="contragent__info-param m--inline">
+                            <div class="contragent__info-param-name">
+                                КПП
+                            </div>
+                            <div class="contragent__info-param-data">
+                                {{ contragent.kpp }}
+                            </div>
+                        </div>
+                        <div class="contragent__info-param m--inline">
+                            <div class="contragent__info-param-name">
+                                ОКПО
+                            </div>
+                            <div class="contragent__info-param-data">
+                                {{ contragent.okpo }}
+                            </div>
+                        </div>
+                        <div class="contragent__info-param m--inline">
+                            <div class="contragent__info-param-name">
+                                ОГРН
+                            </div>
+                            <div class="contragent__info-param-data">
+                                {{ contragent.ogrn }}
+                            </div>
+                        </div>
+                    </div>
+                    <div 
+                        class="contragent__info-logo"
+                        :class="contragent.logo ? '' : 'm--no-logo'"
+                    >
+                        <img 
+                            v-if="contragent.logo"
+                            :src="contragent.logo"
+                            :alt="contragent.name"
+                        >
+                    </div>
+                </div>
+                <div class="contragent__info-rating">
+                    Рейтинг Контур.Фокус
+                    <div
+                        :class="`m--${contragent.color_status}`"
+                    >
+                        {{ contragent.color_status_detail }}
+                    </div>
+                </div>
                 <div class="contragent__info-params">
                     <div class="contragent__info-param m--inline">
                         <div class="contragent__info-param-name">
-                            ИНН
+                            Дата регистрации
                         </div>
                         <div class="contragent__info-param-data">
-                            {{ contragent.inn }}
+                            {{ $helpers.parseDate(contragent.date_registration, 'YYYY-MM-DD').toLocaleDateString('ru') }}
                         </div>
                     </div>
                     <div class="contragent__info-param m--inline">
                         <div class="contragent__info-param-name">
-                            КПП
+                            Уставный капитал
                         </div>
                         <div class="contragent__info-param-data">
-                            {{ contragent.kpp }}
+                            {{ $helpers.toPrice(contragent.capital) }}
                         </div>
                     </div>
-                    <div class="contragent__info-param m--inline">
+                    <div class="contragent__info-param m--inline m--margin">
                         <div class="contragent__info-param-name">
-                            ОКПО
+                            Статус ЕГРЮЛ
                         </div>
                         <div class="contragent__info-param-data">
-                            {{ contragent.okpo }}
+                            {{ contragent.status_detail }}
                         </div>
                     </div>
-                    <div class="contragent__info-param m--inline">
+                    <div 
+                        v-if="contragent.website"
+                        class="contragent__info-param m--inline"
+                    >
                         <div class="contragent__info-param-name">
-                            ОГРН
+                            Сайт
                         </div>
-                        <div class="contragent__info-param-data">
-                            {{ contragent.ogrn }}
+                        <a 
+                            :href="contragent.website"
+                            target="_blank"
+                            class="contragent__info-param-data"
+                        >
+                            {{ contragent.website }}
+                        </a>
+                    </div>
+                    <div 
+                        v-if="contragent.contact_phone"
+                        class="contragent__info-param m--inline"
+                    >
+                        <div class="contragent__info-param-name">
+                            Контактный телефон
                         </div>
+                        <a 
+                            :href="`tel:${contragent.contact_phone}`"
+                            target="_blank"
+                            class="contragent__info-param-data"
+                        >
+                            {{ contragent.contact_phone }}
+                        </a>
                     </div>
-                </div>
-                <div 
-                    class="contragent__info-logo"
-                    :class="contragent.logo ? '' : 'm--no-logo'"
-                >
-                    <img 
-                        v-if="contragent.logo"
-                        :src="contragent.logo"
-                        :alt="contragent.name"
+                    <div 
+                        v-if="contragent.contact_email"
+                        class="contragent__info-param m--inline"
                     >
-                </div>
-            </div>
-            <div class="contragent__info-rating">
-                Рейтинг Контур.Фокус
-                <div
-                    :class="`m--${contragent.color_status}`"
-                >
-                    {{ contragent.color_status_detail }}
-                </div>
-            </div>
-            <div class="contragent__info-params">
-                <div class="contragent__info-param m--inline">
-                    <div class="contragent__info-param-name">
-                        Дата регистрации
+                        <div class="contragent__info-param-name">
+                            Контактный email
+                        </div>
+                        <a 
+                            :href="`mailto:${contragent.contact_email}`"
+                            target="_blank"
+                            class="contragent__info-param-data"
+                        >
+                            {{ contragent.contact_email }}
+                        </a>
                     </div>
-                    <div class="contragent__info-param-data">
-                        {{ $helpers.parseDate(contragent.date_registration, 'YYYY-MM-DD').toLocaleDateString('ru') }}
-                    </div>
-                </div>
-                <div class="contragent__info-param m--inline">
-                    <div class="contragent__info-param-name">
-                        Уставный капитал
-                    </div>
-                    <div class="contragent__info-param-data">
-                        {{ $helpers.toPrice(contragent.capital) }}
-                    </div>
-                </div>
-                <div class="contragent__info-param m--inline m--margin">
-                    <div class="contragent__info-param-name">
-                        Статус ЕГРЮЛ
-                    </div>
-                    <div class="contragent__info-param-data">
-                        {{ contragent.status_detail }}
-                    </div>
-                </div>
-                <div 
-                    v-if="contragent.website"
-                    class="contragent__info-param m--inline"
-                >
-                    <div class="contragent__info-param-name">
-                        Сайт
-                    </div>
-                    <a 
-                        :href="contragent.website"
-                        target="_blank"
-                        class="contragent__info-param-data"
-                    >
-                        {{ contragent.website }}
-                    </a>
-                </div>
-                <div 
-                    v-if="contragent.contact_phone"
-                    class="contragent__info-param m--inline"
-                >
-                    <div class="contragent__info-param-name">
-                        Контактный телефон
-                    </div>
-                    <a 
-                        :href="`tel:${contragent.contact_phone}`"
-                        target="_blank"
-                        class="contragent__info-param-data"
-                    >
-                        {{ contragent.contact_phone }}
-                    </a>
-                </div>
-                <div 
-                    v-if="contragent.contact_email"
-                    class="contragent__info-param m--inline"
-                >
-                    <div class="contragent__info-param-name">
-                        Контактный email
-                    </div>
-                    <a 
-                        :href="`mailto:${contragent.contact_email}`"
-                        target="_blank"
-                        class="contragent__info-param-data"
-                    >
-                        {{ contragent.contact_email }}
-                    </a>
                 </div>
             </div>
         </div>

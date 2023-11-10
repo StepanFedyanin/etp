@@ -118,6 +118,16 @@ export default class extends REST {
         });
     }
 
+    static updateTenderAuthor(params) {
+        let id = params.id;
+        delete params.id;
+        return this._patch(`${id}/update_supervisor`, {}, params).then((data) => {
+            return data;
+        }).catch((error) => {
+            throw new RESTError(error, 'Не удалось изменить ответственное лицо тендера');
+        });
+    }
+
     static switchFavoriteTender(id) {
         return this._get(`${id}/pin_unpin`, {}, {}).then((data) => {
             return data;

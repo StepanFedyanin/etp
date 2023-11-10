@@ -30,7 +30,7 @@
     </div>
 </template>
 <script>
-    import { user as api } from "@/services";
+    import { cabinet as api } from "@/services";
     import Invite from "@/components/forms/invite.vue";
     import ModalInviteSend from '@/components/modals/invite-send.vue'
 
@@ -80,10 +80,11 @@
                     console.error(err);
                 });
             },
-            hideSendInviteModal(){
+            hideSendInviteModal() {
                 this.showSendInviteModal = false;
-                this.emails = "";
-                this.text = "";
+                this.emails = '';
+                this.text = '';
+                this.$router.go();
             }
             
         }

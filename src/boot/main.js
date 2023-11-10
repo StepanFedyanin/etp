@@ -57,17 +57,17 @@ export default boot(async ({ app, router }) => {
                 validation: {
                     date_after({ name, args }) {
                         if (Array.isArray(args) && args.length) {
-                            return `${name} должна быть позже ${date(args[0])}`;
+                            return `${name} должна быть позже ${new Intl.DateTimeFormat(undefined, { year: 'numeric', month: 'long', day: 'numeric', hour: 'numeric', minute: 'numeric' }).format(typeof args[0] === 'string' ? new Date(Date.parse(args[0])) : args[0]) }`;
                         }
                         return `${name} должна быть в будущем.`;
                     },
                     date_before({ name, args }) {
                         if (Array.isArray(args) && args.length) {
-                            return `${name} должна быть раньше ${date(args[0])}`;
+                            return `${name} должна быть раньше ${new Intl.DateTimeFormat(undefined, { year: 'numeric', month: 'long', day: 'numeric', hour: 'numeric', minute: 'numeric' }).format(typeof args[0] === 'string' ? new Date(Date.parse(args[0])) : args[0]) }`;
                         }
                         return `${name} должна быть в прошлом.`;
                     },
-                }
+                },
             }
         },
         inputs: {

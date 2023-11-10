@@ -6,7 +6,10 @@
             <div class="h2">
                 Статус вашей организации: приглашена к участию
             </div>
-            <div class="tender__status">
+            <div 
+                v-if="user.is_access_tender"
+                class="tender__status"
+            >
                 <div class="tender__status-block">
                     <button 
                         class="button button-green"
@@ -30,6 +33,7 @@
                 Статус вашей организации: приглашение принято
             </div>
             <div 
+                v-if="user.is_access_tender"
                 class="tender__status"
             >
                 <div class="tender__status-block">
@@ -49,6 +53,7 @@
                 Статус вашей организации: не участвует в тендере
             </div>
             <div 
+                v-if="user.is_access_tender"
                 class="tender__status"
             >
                 <div class="tender__status-block">
@@ -129,7 +134,10 @@
                         {{ tender.user_participation.creator_comment }}
                     </div>
                 </div>
-                <div class="tender__status-block">
+                <div 
+                    v-if="user.is_access_tender && tender.status === 'bid_accept'"
+                    class="tender__status-block"
+                >
                     <button 
                         class="button button-green"
                         @click="onClickRequestPartipation()"
@@ -201,7 +209,7 @@
         },
         computed: {
             user() {
-                return this.$store.state.user;
+                return this.$store.state.user || {};
             },
         },
         mounted() {

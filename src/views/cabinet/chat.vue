@@ -74,7 +74,7 @@
                             >
                                 <div class="chat__board-tender tender">
                                     <div
-                                        class="tender__info m--column"
+                                        class="tender__info m--column m--100"
                                     >
                                         <!-- <div class="tender__info-number">
                                             Аукцион №{{ chatInfo.tender && chatInfo.tender.id }}
