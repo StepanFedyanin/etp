@@ -17,14 +17,14 @@
             </button>
             <span class="modal__title">Новый телефон аккаунта</span>
             <div class="modal__content">
-                <div class="text">
+                <!--div class="text">
                     <p class="m--mb-1">
                         <strong>{{ user.full_name }}</strong>
                     </p>
-                </div>
+                </div-->
                 <FormKit
                     v-model="formData"
-                    name="form-email"
+                    name="form-phone"
                     preserve
                     type="form"
                     data-loading="loading"
@@ -74,7 +74,7 @@
 </template>
 
 <script>
-    import { cabinet, geo as geoApi } from "@/services"
+    import { cabinet as api, geo as geoApi } from "@/services"
 
     function phoneLen(node) {
         const value = node.value;
@@ -91,6 +91,7 @@
         data() {
             return {
                 formData: {},
+                person: {},
                 schema: [
                     {
                         $formkit: 'phoneWithCode',
@@ -100,29 +101,8 @@
                         placeholder: '(XXX) XXX-XX-XX',
                         validationRules: { phoneLen },
                         validation: 'phoneLen',
-                        options: async () => {
-                            return await geoApi.getCountries()
-                                .then(countries => {
-                                    if (countries) {
-                                        let options = countries.map( country => {
-                                            // if (!this.formData.phone?.country && country.name === 'Россия') this.formData.phone.country = { label: country.code_phone, value: country, country: country.name };
-                                            return { label: country.code_phone, 
-                                                value: {
-                                                    id: country.id,
-                                                    name: country.name,
-                                                    code_phone: country.code_phone,
-                                                }, 
-                                                country: country.name 
-                                            }
-                                        });
-                                        return options
-                                    } else {
-                                        console.log('No getCountries data')
-                                    }
-                                }).catch(err => {
-                                    console.error(err)
-                                })
-                        },
+                        options: async () => { return await this.getCountryList() },
+
                         classes: { multiselect: 'multiselect m--phone-code' },    
                     }
                 ],
@@ -139,16 +119,66 @@
             },
         },
         mounted() {
+            this.getMyProfile();
         },
         methods: {
+            async getCountryList() {
+                return await geoApi.getCountries().then(countries => {
+                    if (countries) {
+                        let options = countries.map( country => {
+                            return { 
+                                label: country.code_phone, 
+                                value: {
+                                    id: country.id,
+                                    name: country.name,
+                                    code_phone: country.code_phone,
+                                }, 
+                            }
+                        });
+                        return options;
+                    } else {
+                        console.log('No getCountries data')
+                    }
+                }).catch(err => {
+                    console.error(err)
+                })
+            },
+            getMyProfile() {
+                this.showLoaderSending = true;
+                api.getMyProfile().then(res => {
+                    this.formData = {
+                        phone: res.phone
+                    };
+                    this.person = Object.assign({}, res);
+                    if (!this.formData.phone?.number) {
+                        this.person.phone = this.person.phone?.replace(/ /g,'').replace(/-/g,'').replace(/\(/g,'').replace(/\)/g,'');
+                        this.formData.phone = {
+                            country: {
+                                label: this.person.phone?.substring(0, this.person.phone?.length - 10),
+                                value: {
+                                    id: this.person.country,
+                                    code_phone: this.person.phone?.substring(0, this.person.phone?.length - 10),
+                                    name: this.person.country_name
+                                }
+                            },
+                            number: this.person.phone?.substring(this.person.phone?.length - 10)
+                        };
+                    }
+                    this.showLoaderSending = false;
+                }).catch(err => {
+                    this.showLoaderSending = false;
+                    console.error(err);
+                });
+            },
             submitHandler(data, node) {
                 this.showLoaderSending = true;
                 let params = Object.assign({}, this.formData);
                 params.id = this.user.id;
-                params.phone = params.phone?.country?.code_phone + params.phone?.number;
+                params.country = params.phone.country?.value?.id;
+                params.phone = params.phone?.country?.value?.code_phone + params.phone?.number;
                 params.phone = params.phone?.replace(/ /g,'').replace(/-/g,'').replace(/\(/g,'').replace(/\)/g,'');
-                cabinet.updateMyProfilePartial(params).then(res => {
-                    cabinet.getMyProfile().then(res => {
+                api.updateMyProfilePartial(params).then(res => {
+                    api.getMyProfile().then(res => {
                         this.showLoaderSending = false;
                         this.$store.dispatch('setUser', res);
                         this.changedSended = true;

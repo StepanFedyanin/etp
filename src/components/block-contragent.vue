@@ -42,14 +42,14 @@
                 </div>
             </div>
             <div class="contragent__info-param">
-                <div class="contragent__info-param-name">
+                <div v-if="contragent.legal_address" class="contragent__info-param-name">
                     Юридический адрес
                 </div>
                 <div class="contragent__info-param-data">
                     {{ contragent.legal_address }}
                 </div>
             </div>
-            <div class="contragent__info-param">
+            <div v-if="contragent.actual_address" class="contragent__info-param">
                 <div class="contragent__info-param-name">
                     Фактический адрес
                 </div>
@@ -57,9 +57,7 @@
                     {{ contragent.actual_address }}
                 </div>
             </div>
-            <template
-                v-if="contragent.about_company"
-            >
+            <template v-if="contragent.about_company">
                 <div class="h2">
                     О компании
                 </div>
@@ -81,7 +79,7 @@
                 </div>
                 <div class="contragent__info-block">
                     <div class="contragent__info-params">
-                        <div class="contragent__info-param m--inline">
+                        <div v-if="contragent.inn" class="contragent__info-param m--inline">
                             <div class="contragent__info-param-name">
                                 ИНН
                             </div>
@@ -89,7 +87,7 @@
                                 {{ contragent.inn }}
                             </div>
                         </div>
-                        <div class="contragent__info-param m--inline">
+                        <div v-if="contragent.kpp" class="contragent__info-param m--inline">
                             <div class="contragent__info-param-name">
                                 КПП
                             </div>
@@ -97,7 +95,7 @@
                                 {{ contragent.kpp }}
                             </div>
                         </div>
-                        <div class="contragent__info-param m--inline">
+                        <div v-if="contragent.okpo" class="contragent__info-param m--inline">
                             <div class="contragent__info-param-name">
                                 ОКПО
                             </div>
@@ -105,7 +103,7 @@
                                 {{ contragent.okpo }}
                             </div>
                         </div>
-                        <div class="contragent__info-param m--inline">
+                        <div v-if="contragent.ogrn" class="contragent__info-param m--inline">
                             <div class="contragent__info-param-name">
                                 ОГРН
                             </div>

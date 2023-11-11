@@ -18,6 +18,7 @@
                             v-else
                         >
                             <router-link
+                                v-if="!item.access || (item.access && user[item.access])"
                                 :key="key"
                                 v-slot="{ href, isActive }"
                                 :to="{ name: item.name }"
@@ -147,6 +148,7 @@
                     role: 'all',
                     title: 'Я - заказчик',
                     icon: 'customer',
+                    access: 'organization',
                     items: [
                         {
                             name: 'customer-current',
@@ -178,6 +180,7 @@
                     role: 'all',
                     title: 'Я - поставщик',
                     icon: 'provider',
+                    access: 'organization',
                     items: [
                         {
                             name: 'participant-invites',
