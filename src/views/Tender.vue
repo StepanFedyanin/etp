@@ -491,64 +491,56 @@
                                 </template>
                             </div>
                         </div>
-                        <div class="h2">
-                            Ответственное лицо
-                            <template
-                                v-if="user.organization?.id !== tender.creator && tender.status !== 'closed' && tender.user_participation"
-                            >
-                                <div
-                                    v-if="user.is_access_tender"
-                                    class="tender__contact-chat"
-                                    @click="startChat(tender.organization.id)"
-                                >
-                                    <span>Написать в чат</span>
-                                </div>
-                            </template>
-                            <template
-                                v-else-if="showTenderControl"
-                            >
-                                <div
-                                    class="tender__contact-chat"
-                                    @click="onClickChangeAuthor"
-                                >
-                                    <span>Изменить</span>
-                                </div>
-                            </template>
-                        </div>
-                        <div
-                            class="tender__contact"
-                        >
-                            <template
-                                v-if="tender.contact_person"
-                            >
-                                <div class="tender__contact-param">
-                                    <span>{{ tender.contact_person.full_name }}</span>
-                                </div>
-                                <div class="tender__contact-param">
-                                    <span>Телефон: </span> 
-                                    <template v-if="tender.contact_person.phone">
-                                        <a :href="`tel:${tender.contact_person.phone}`">{{ tender.contact_person.phone }}</a>
-                                    </template>
-                                    <template v-else>
-                                        —
-                                    </template>
-                                </div>
-                                <div class="tender__contact-param">
-                                    <span>E-mail: </span> 
-                                    <template v-if="tender.contact_person.contact_email || tender.contact_person.email">
-                                        <a :href="`mailto:${tender.contact_person.contact_email || tender.contact_person.email}`">{{ tender.contact_person.contact_email || tender.contact_person.email }}</a>
-                                    </template>
-                                    <template v-else>
-                                        —
-                                    </template>
-                                </div>
-                            </template>
-                            <template
-                                v-else
-                            >
-                                —
-                            </template>
-                        </div>                        
+                        <template v-if="user?.id">
+                            <div class="h2">
+                                Ответственное лицо
+                                <template v-if="user.organization?.id !== tender.creator && tender.status !== 'closed' && tender.user_participation">
+                                    <div
+                                        v-if="user.is_access_tender"
+                                        class="tender__contact-chat"
+                                        @click="startChat(tender.organization.id)"
+                                    >
+                                        <span>Написать в чат</span>
+                                    </div>
+                                </template>
+                                <template v-else-if="showTenderControl">
+                                    <div
+                                        class="tender__contact-chat"
+                                        @click="onClickChangeAuthor"
+                                    >
+                                        <span>Изменить</span>
+                                    </div>
+                                </template>
+                            </div>
+                            <div class="tender__contact">
+                                <template v-if="tender.contact_person">
+                                    <div class="tender__contact-param">
+                                        <span>{{ tender.contact_person.full_name }}</span>
+                                    </div>
+                                    <div class="tender__contact-param">
+                                        <span>Телефон: </span> 
+                                        <template v-if="tender.contact_person.phone">
+                                            <a :href="`tel:${tender.contact_person.phone}`">{{ tender.contact_person.phone }}</a>
+                                        </template>
+                                        <template v-else>
+                                            —
+                                        </template>
+                                    </div>
+                                    <div class="tender__contact-param">
+                                        <span>E-mail: </span> 
+                                        <template v-if="tender.contact_person.contact_email || tender.contact_person.email">
+                                            <a :href="`mailto:${tender.contact_person.contact_email || tender.contact_person.email}`">{{ tender.contact_person.contact_email || tender.contact_person.email }}</a>
+                                        </template>
+                                        <template v-else>
+                                            —
+                                        </template>
+                                    </div>
+                                </template>
+                                <template v-else>
+                                    —
+                                </template>
+                            </div>                            
+                        </template>
                         <ModalTenderAuthor
                             :tender="tender || {}"
                             :showModal="showChangeTenderAuthorModal"

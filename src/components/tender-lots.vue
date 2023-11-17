@@ -43,7 +43,7 @@
                             <div class="lots__header-cell m--sum">
                                 Ставка победителя
                             </div>
-                            <div class="lots__header-cell m--edit" />
+                            <!--div class="lots__header-cell m--edit" /-->
                         </template>
                     </div>
                     <div class="lots__list">
@@ -94,6 +94,12 @@
                             <template v-else-if="showWinners">
                                 <template v-if="tender.status === 'bidding_completed'">
                                     <div class="lots__item-cell">
+                                        <a
+                                            v-if="user.organization?.id === tender.creator"
+                                            href="#"
+                                            class="lots__item-edit"
+                                            @click.prevent="onClickWinnerLotModal(lot)"
+                                        />
                                         <template v-if="lot.winner_organization">
                                             {{ lot.winner_organization.name }}
                                         </template>
@@ -109,7 +115,7 @@
                                             —
                                         </template>
                                     </div>
-                                    <div 
+                                    <!--div 
                                         v-if="user.organization?.id === tender.creator"
                                         class="lots__item-cell m--edit"
                                     >
@@ -118,7 +124,7 @@
                                             class="lots__item-edit"
                                             @click.prevent="onClickWinnerLotModal(lot)"
                                         />
-                                    </div>
+                                    </div-->
                                 </template>
                                 <template v-else-if="tender.status === 'closed' || tender.status === 'fulfilment'">
                                     <div class="lots__item-cell">

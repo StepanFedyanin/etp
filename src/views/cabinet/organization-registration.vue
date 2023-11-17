@@ -249,6 +249,7 @@
                 this.showLoaderSending = true;
                 let params = Object.assign({}, data);
                 delete params.owner_type;
+                if (this.$metrika) this.$metrika.reachGoal('reg_2');
                 cabinet.searchOrganizationKontur(params).then(res => {
                     console.log(res);
                     this.organizations = res;
@@ -269,6 +270,7 @@
             registerCompany(organization) {
                 this.showLoaderSending = true;
                 organization.country = this.user.country;
+                if (this.$metrika) this.$metrika.reachGoal('reg_3');
                 cabinet.addOrganizationKontur(organization).then(res => {
                     console.log(res);
                     if (res.id) {
@@ -301,7 +303,7 @@
                         organization: res.id
                     };
                     this.$store.dispatch('setRegData', this.regData);
-                    if (this.$metrika) this.$metrika.reachGoal('reg_2');
+                    if (this.$metrika) this.$metrika.reachGoal('reg_3');
                     this.nextStep();
                 }).catch(err => {
                     node.setErrors(

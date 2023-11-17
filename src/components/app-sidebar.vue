@@ -18,7 +18,7 @@
                             v-else
                         >
                             <router-link
-                                v-if="!item.access || (item.access && user[item.access])"
+                                v-if="(!item.access && !item.forbiden) || ((item.access && user[item.access]) || (item.forbiden && !user[item.forbiden]))"
                                 :key="key"
                                 v-slot="{ href, isActive }"
                                 :to="{ name: item.name }"
@@ -202,6 +202,12 @@
                     role: 'all',
                     title: 'Организации',
                     icon: 'peoples'
+                }, {
+                    name: 'organization-registration',
+                    role: 'all',
+                    title: 'Моя организация',
+                    icon: 'organization',
+                    forbiden: 'organization'
                 /*
                 }, {
                     name: 'favorites-contragents',

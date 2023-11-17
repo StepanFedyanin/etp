@@ -12,7 +12,7 @@
             <div class="goods__item-photo-inner">
                 <img 
                     v-if="good.photo"
-                    :src="`${urlPath}${good.photo}`"
+                    :src="good.photo"
                     :alt="good.name"
                 >
             </div>

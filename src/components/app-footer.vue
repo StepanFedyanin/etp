@@ -66,7 +66,7 @@
                 <div class="footer__bottom-developer">
                     Разработка площадки - 
                     <a
-                        href="//flexites.org"
+                        href="//tenders.flexites.org"
                         class="footer__bottom-link m--developer"
                         target="_blank"
                     >

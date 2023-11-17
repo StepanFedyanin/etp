@@ -28,6 +28,8 @@
 
         @mixin responsive-le-m {
             padding: 1.25rem;
+            flex-direction: column;
+            gap: 0;
         }
 
         &.m--white {
@@ -76,6 +78,10 @@
         &-buttons {
             display: flex;
             gap: 24px;
+
+            @mixin responsive-le-m {
+                flex-wrap: wrap;
+            }
 
             .button {
                 white-space: nowrap;

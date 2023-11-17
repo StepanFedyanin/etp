@@ -6,12 +6,15 @@
         <div class="container m--header">
             <div class="header__content">
                 <div class="header__left">
-                    <a 
-                        href="#"
-                        class="header__burger"
-                        :class="showSidebar ? 'is-active' : ''"
-                        @click.prevent="onClickBurger"
-                    />
+                    <q-no-ssr>
+                        <a 
+                            v-if="user?.id"
+                            href="#"
+                            class="header__burger"
+                            :class="showSidebar ? 'is-active' : ''"
+                            @click.prevent="onClickBurger"
+                        />
+                    </q-no-ssr>
                     <div class="header__logo">
                         <router-link
                             :to="{ name: 'home' }"
@@ -53,9 +56,7 @@
                 </div>
                 <q-no-ssr>
                     <div class="header__right">
-                        <template
-                            v-if="user && user.id"
-                        >
+                        <template v-if="user?.id">
                             <div 
                                 class="header__info"
                                 @click.stop="onClickPopup"
@@ -76,20 +77,22 @@
                                     <div class="header__info-user">{{ user.last_name }} {{ user.first_name ? user.first_name[0] + '.' : '' }} {{ user.patronymic ? user.patronymic[0] + '.' : '' }}</div>
                                 </template>
                             </div>
-                            <div 
-                                :class="['header__user', showPopup ? 'is-active' : '', user.photo || user.organization?.logo ? '' : 'm--no-logo']"
-                                @click.stop="onClickPopup"
-                            >
-                                <img 
-                                    v-if="user.organization?.logo"
-                                    :src="`${user.organization?.logo}`" 
-                                    :alt="user.organization?.name" 
-                                />
-                                <img 
-                                    v-else-if="user.photo"
-                                    :src="`${user.photo}`" 
-                                    :alt="`${user.last_name} ${user.first_name}`" 
-                                />
+                            <div class="header__right-user">
+                                <div 
+                                    :class="['header__user', showPopup ? 'is-active' : '', user.photo || user.organization?.logo ? '' : 'm--no-logo']"
+                                    @click.stop="onClickPopup"
+                                >
+                                    <img 
+                                        v-if="user.organization?.logo"
+                                        :src="`${user.organization?.logo}`" 
+                                        :alt="user.organization?.name" 
+                                    />
+                                    <img 
+                                        v-else-if="user.photo"
+                                        :src="`${user.photo}`" 
+                                        :alt="`${user.last_name} ${user.first_name}`" 
+                                    />
+                                </div>
                             </div>
                             <div 
                                 v-if="showPopup"
@@ -167,9 +170,7 @@
                                 </div>                            
                             </transition>
                         </template>
-                        <template
-                            v-else
-                        >
+                        <template v-else>
                             <div class="header__contacts">
                                 <a
                                     :href="$helpers.formatTel(phone)"

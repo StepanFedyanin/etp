@@ -186,7 +186,7 @@
                         cabinet.getMyProfile().then(res => {
                             this.showLoaderSending = false;
                             this.$store.dispatch('setUser', res);
-                            //if (this.$metrika) this.$metrika.reachGoal('reg_3');
+                            if (this.$metrika) this.$metrika.reachGoal('reg_user');
                             this.next('home');
                         }).catch(err => {
                             this.showLoaderSending = false;

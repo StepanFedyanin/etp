@@ -1,7 +1,7 @@
 import { boot } from 'quasar/wrappers'
 import { vMaska } from 'maska'
 import { vOnClickOutside } from '@vueuse/components'
-import VueYandexMetrika from 'vue3-yandex-metrika'
+import VueYandexMetrika from '@/modules/vue3-yandex-metrika'
 
 // "async" is optional;
 // more info on params: https://v2.quasar.dev/quasar-cli/boot-files
@@ -36,7 +36,7 @@ export default boot(async ({ app, router }) => {
         app.directive('Maska', vMaska);
         console.warn('YandexMetrika', process.env.NODE_ENV);
         app.use(VueYandexMetrika, {
-            id: 94189540,
+            id: 90339048,
             router: router,
             env: process.env.NODE_ENV,
             debug: true, // false,

@@ -83,8 +83,8 @@
 
     &.m--finished &__header,
     &.m--finished &__item {
-        grid-template-columns: 35px auto 70px 70px 100px 100px 140px 200px 140px 60px;
-        grid-template-areas: 'A B C D E F G H I J';
+        grid-template-columns: 35px auto 70px 70px 100px 100px 140px 200px 140px;
+        grid-template-areas: 'A B C D E F G H I';
         min-width: 1260px;
     }
 
@@ -267,9 +267,11 @@
 
         &-edit,
         &-delete {
-            display: block;
-            width: 24px;
-            height: 24px;
+            display: inline-block;
+            vertical-align: bottom;
+            width: 1.5rem;
+            height: 1.5rem;
+            margin-right: 0.25rem;
             cursor: pointer;
             background-size: contain;
         }
