@@ -31,7 +31,7 @@
                         <li
                             v-for="(item, key) in menu"
                             :key="key"
-                            class="header__menu-item"
+                            :class="['header__menu-item', item.class]"
                         >
                             <template v-if="item.noSSR">
                                 <q-no-ssr>
@@ -171,7 +171,21 @@
                             </transition>
                         </template>
                         <template v-else>
-                            <div class="header__contacts">
+                            <div v-if="hideHeaderContacts" class="header__right-menu m--desktop">
+                                <div
+                                    v-for="(item, key) in headerMenuAdv"
+                                    :key="key"
+                                    class="header__right-menu-item"
+                                >
+                                    <router-link
+                                        :to="{ name: item.name }"
+                                        class="header__right-menu-link"
+                                    >
+                                        {{ item.title }}
+                                    </router-link>
+                                </div>
+                            </div>
+                            <div v-else class="header__contacts">
                                 <a
                                     :href="$helpers.formatTel(phone)"
                                     class="header__contacts-link m--phone"
@@ -222,12 +236,12 @@
                         name: 'registration',
                         role: 'all',
                         title: 'Регистрация',
-                        noSSR: true
+                        class: 'm--mobile'
                     }, {
                         name: 'auth',
                         role: 'all',
                         title: 'Вход',
-                        noSSR: true
+                        class: 'm--mobile'
                     }
                 ],
                 headerMenuUser: [
@@ -248,6 +262,17 @@
                         role: 'all',
                         title: 'Кабинет',
                         noSSR: true
+                    }
+                ],
+                headerMenuAdv: [
+                    {
+                        name: 'registration',
+                        role: 'all',
+                        title: 'Регистрация',
+                    }, {
+                        name: 'auth',
+                        role: 'all',
+                        title: 'Вход',
                     }
                 ],
                 menuUser: {
@@ -356,6 +381,7 @@
                         }]
                     ],
                 },
+                hideHeaderContacts: true,
                 showPopup: false,
                 showPopupHeader: false,
                 showPopupFooter: false,

@@ -34,11 +34,11 @@ export default boot(async ({ app, router }) => {
     if (process.env.CLIENT) {
         app.directive('OnClickOutside', vOnClickOutside);
         app.directive('Maska', vMaska);
-        console.warn('YandexMetrika', process.env.NODE_ENV);
+        console.warn('YandexMetrika', process.env.BUILD_MODE);
         app.use(VueYandexMetrika, {
             id: 90339048,
             router: router,
-            env: process.env.NODE_ENV,
+            env: process.env.BUILD_MODE,
             debug: true, // false,
             options: {
                 clickmap: true,

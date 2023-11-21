@@ -120,7 +120,7 @@
         }
 
         &.is-pointed {
-            background: $color-white-dark;
+            background: $color-white-fc;
             color: $color-black;
         }
 
@@ -139,7 +139,7 @@
         }
 
         &.is-selected.is-pointed {
-            background-color: $color-green-dark;
+            background-color: $color-green-41;
         }
 
         &.is-selected.is-disabled {
@@ -168,7 +168,7 @@
         }
 
         &.is-selected {
-            background: $color-white-dark;
+            background: $color-white-fc;
             color: $color-black;
             &:before {
                 background-color: $color-green;

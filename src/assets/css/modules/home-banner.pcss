@@ -4,57 +4,52 @@
     justify-content: center;
     width: 100%;
     border-radius: 0.5rem;
-
+    /*
     background-image: url('./assets/img/banner-wall.jpg');
     background-size: 100% 100%;
-    padding: 1.25rem 2.5rem;
+    */
+    background: $color-green;
+    color: $color-white;
     box-sizing: border-box;
-    margin-bottom: 44px;
-
-    @mixin responsive-le-xl {
-        padding: 1.25rem 2.5rem;
-    }
-
-    @mixin responsive-le-l {
-        padding: 1.25rem 2rem;
-    }
-
-    @mixin responsive-le-m {
-        padding: 1.25rem;
-    }
+    margin-bottom: 3rem;
+    box-shadow: 5px 6px 20px 0px rgba(0, 0, 0, 0.15); 
 
     &__content {
         display: flex;
-        align-items: center;
         width: 100%;
-        max-width: 1920px;
-        margin: 0 auto;
+        overflow: hidden;
     }
 
     &__left {
-        width: 57%;
-        @mixin responsive-le-s {
+        padding: 3rem 2.5rem;
+        flex-grow: 1;
+        align-self: center;
+
+        @mixin responsive-le-l {
+            padding: 1.25rem 2rem;
+        }
+
+        @mixin responsive-le-m {
             width: 100%;
         }
     }
 
     &__title {
         font-weight: 600;
-        font-size: 36px;
-        line-height: 44px;
+        font-size: 2rem;
+        line-height: normal;
         color: $color-white;
-        margin-bottom: 12px;
+        text-transform: uppercase;
+        margin-bottom: 1.5rem;
+
         @mixin responsive-le-m {
-            font-size: 32px;
-            line-height: 40px;
+            font-size: 1.75rem;
         }
         @mixin responsive-le-s {
-            font-size: 28px;
-            line-height: 36px;
+            font-size: 1.675rem;
         }
         @mixin responsive-le-xs {
-            font-size: 24px;
-            line-height: 32px;
+            font-size: 1.5rem;
         }
     }
 
@@ -81,32 +76,39 @@
 
     &__description {
         font-weight: 500;
-        font-size: 16px;
-        line-height: 20px;
+        font-size: 1.125rem;
+        line-height: 1.375rem;
         color: $color-white;
-        margin-bottom: 32px;
+        margin-bottom: 2rem;
+        max-width: 500px;
 
         p {
-            margin-bottom: 16px;
+            margin-bottom: 1.25rem;
         }
     }
 
     &__register {
         display: inline-block;
         width: auto;
+        border-color: $color-white !important;
     }
 
     &__right {
-        width: 43%;
+        width: 300px;
         position: relative;
-        @mixin responsive-le-s {
+        min-height: 330px;
+
+        @mixin responsive-le-m {
             display: none;
         }
     }
 
     &__logo {
-        width: 100%;
-        left: 0;
+        position: absolute;
+        width: 440px;
+        margin-top: -58px;
+        margin-right: -85px;
+        right: 0;
         top: 0;
         
         animation-duration: 12s;
@@ -116,7 +118,7 @@
         /* animation-direction: alternate; */
         
         &:nth-child(1) {
-            position: relative;
+            position: absolute;
             animation-name: change-logo;
             opacity: 1;
         }

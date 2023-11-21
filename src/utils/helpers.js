@@ -154,10 +154,11 @@ const helpers = {
             }
         }
     },
-    createTitle: (obj, route) => {
+    createTitle: (obj, route, useSfx = true) => {
         if (obj && obj.title) return obj.title;
         let metaTemplates = store.state.metaScheme;
-        let title = (metaTemplates.commonPfx?.title || '') + (metaTemplates[route.name]?.title || obj.name || route.meta.title) + ' ' + (metaTemplates.commonSfx?.title || '');
+        let title = (metaTemplates.commonPfx?.title || '') + (metaTemplates[route.name]?.title || obj.name || route.meta.title);
+        if (useSfx) title = title + ' ' + (metaTemplates.commonSfx?.title || '');
         Object.keys(obj).map((key) => {
             title = title.replace(`%${key}%`, obj[key]);
         });
@@ -165,10 +166,11 @@ const helpers = {
         return title;
     },
 
-    createDescription: (obj, route) => {
+    createDescription: (obj, route, useSfx = true) => {
         if (obj && obj.description) return obj.description;
         let metaTemplates = store.state.metaScheme;
-        let description = (metaTemplates.commonPfx?.description || '') + (metaTemplates[route.name]?.description || '') + ' ' + (metaTemplates.commonSfx?.description || '');
+        let description = (metaTemplates.commonPfx?.description || '') + (metaTemplates[route.name]?.description || '');
+        if (useSfx) description = description + ' ' + (metaTemplates.commonSfx?.description || '');
         Object.keys(obj).map((key) => {
             description = description.replace(`%${key}%`, obj[key]);
         });

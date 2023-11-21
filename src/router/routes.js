@@ -10,8 +10,6 @@ import registration from '@/views/Registration';
 import recovery from '@/views/Recovery';
 import auth from '@/views/Login';
 /* cabinet */
-
-
 import Cabinet from '@/views/Cabinet';
 import CabinetChat from '@/views/cabinet/chat';
 import CabinetCustomer from '@/views/cabinet/customer';
@@ -41,7 +39,6 @@ import cabinetProfileEdit from '@/views/CabinetProfileEdit';
 import cabinetProfilePassword from '@/views/CabinetProfilePassword';
 import cabinetProfileItem from '@/views/CabinetProfileItem';
 import cabinetProfileItemEdit from '@/views/CabinetProfileItemEdit';
-import cabinetTenders from '@/views/CabinetTenders';
 //import cabinetTendersList from '@/views/CabinetTendersList';
 //import cabinetTendersEnd from '@/views/CabinetTendersEnd';
 //import cabinetContragentsList from '@/views/CabinetContragentsList';
@@ -53,10 +50,10 @@ import contragent from '@/views/Contragent';
 //import group from '@/views/Group';
 import product from '@/views/Product';
 import products from '@/views/Products';
-//import page404 from '@/views/Page404';
 import tender from '@/views/Tender';
-import TendersGroups from '@/views/TendersGroups';
-import TendersGroup from '@/views/TendersGroup';
+import tenders from '@/views/Tenders';
+import tendersGroups from '@/views/TendersGroups';
+import tendersGroup from '@/views/TendersGroup';
 
 const routes = [
     {
@@ -557,7 +554,7 @@ const routes = [
     }, {
         path: '/tenders',
         name: 'tenders',
-        component: cabinetTenders,
+        component: tenders,
         meta: { 
             title: 'Тендеры', 
             breadcrumbs: [],
@@ -569,13 +566,13 @@ const routes = [
             {
                 path: 'groups',
                 name: 'groups',
-                component: TendersGroups,
+                component: tendersGroups,
                 meta: { title: 'Категории тендеров', showSidebarAuth: true },
                 props: true,
             }, {
                 path: 'groups/:parentslug?/:slug',
                 name: 'group',
-                component: TendersGroup,
+                component: tendersGroup,
                 meta: { title: 'Категория тендеров', showSidebarAuth: true },
                 props: true,
             }, {

@@ -25,8 +25,8 @@ export default boot(async ({ app, router }) => {
     // app.use(breadcrumbs, {
     // includeComponent: false // {boolean} [includeComponent=false] - Include global breadcrumbs component or not
     // });
-
-    if (process.env.NODE_ENV === 'production') {
+    console.log(process.env.BUILD_MODE);
+    if (process.env.BUILD_MODE === 'production') {
         Sentry.init({
             app,
             dsn: "https://58dcbe2ab75d35ba65339fb488599f69@jora.flexites.org/11",

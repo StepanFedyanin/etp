@@ -22,6 +22,14 @@ export default class extends REST {
         });
     }
 
+    static getHint(params) {
+        return this._get('hint', {}, params).then((data) => {
+            return data;
+        }).catch((error) => {
+            throw new RESTError(error, 'Ошибка при получении подсказки');
+        });
+    }
+
     static getNewsList(params) {
         return this._get('news', {}, params).then((data) => {
             return data;

@@ -5,7 +5,7 @@
                 v-if="!showLoaderSending.product"
                 :breadcrumbs="[
                     { name: 'Главная', route: { name: 'home' } },
-                    { name: 'Товары и услуги', route: { name: 'groups' } },
+                    { name: 'Товары и услуги', route: { name: 'products' } },
                     { name: good.category_detail.parent?.name, route: { name: 'group', params: { slug: good.category_detail.parent?.slug || 0 } } },
                     { name: good.category_detail.name, route: { name: 'group', params: { parentslug: good.category_detail.parent?.slug || 0, slug: good.category_detail.slug } } },
                 ]"
@@ -279,14 +279,14 @@
         },
         watch: {
             slug: {
-                //immediate: true,
+                immediate: true,
                 handler() {
-                    if (!process.env.SERVER) this.getGood();
+                    if (process.env.CLIENT) this.getGood();
                 },
             }
         },
         mounted() {
-            this.getGood();
+            //this.getGood();
         },
         methods: {
             getGood() {
@@ -295,7 +295,7 @@
                 this.showLoaderSending.product = true;
                 //this.goodsOrganization = null;
                 this.goodsOrganizationOffset = 0;
-                this.goodsCategory = null;
+                //this.goodsCategory = null;
                 this.goodsCategoryOffset = 0;
                 productApi.getProduct(this.slug).then(res => {
                     let good = res;

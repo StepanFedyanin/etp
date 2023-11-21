@@ -15,9 +15,11 @@
                 </div>
                 <template v-if="stepRegistration === 1">
                     <div class="registration__step m--step-1">
-                        <div class="registration__step-alert text">
-                            <p>Юридические лица из Российской Федерации проходят проверку в системе Контур.Светофор.</p>
-                            <p>Если организация имеет <span class="m--color-red">красный</span> рейтинг, мы не сможем ее зарегистрировать.</p>
+                        <div class="registration__step-alert">
+                            <blockHint 
+                                classModifier=""
+                                slug="registration_kontur"
+                            />
                         </div>
                         <regOrganizationSearch 
                             :loading="showLoaderSending"
@@ -162,6 +164,7 @@
     //import regOrganization from '@/components/forms/reg-organization';
     //import regPersonForm from '@/components/forms/reg-person-form';
     import regOrganizationItem from '@/components/reg-organization-item';
+    import blockHint from '@/components/block-hint';
     
 
     export default {
@@ -170,7 +173,7 @@
             //regOrganization,
             //regPersonForm,
             regOrganizationItem,
-            //inviteAddForm
+            blockHint
         },
         props: {
         },        

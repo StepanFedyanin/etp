@@ -191,6 +191,7 @@
         components: {
             ModalPartipationRequest
         },
+        emits: ['getTenderData'],
         props: {
             modifierClass: {
                 type: String,
@@ -251,6 +252,9 @@
                     this.$store.dispatch('showError', err);
                     console.error(err);
                 });
+            },
+            getTenderData() {
+                this.$emit('getTenderData');
             }
         },
     };

@@ -79,6 +79,27 @@
     import blockTender from '@/components/block-tender.vue';
 
     export default {
+        name: 'Tenders',
+        async preFetch({ store, currentRoute, previousRoute, redirect, ssrContext, urlPath, publicPath }) {
+            console.log('Tenders preFetch', process.env.SERVER, currentRoute.params);
+            if (!process.env.SERVER) return;
+            if (currentRoute.name !== 'tenders') return;
+            let limit = 10;
+            let offset = (currentRoute.query?.page ? currentRoute.query?.page - 1 : 0) * limit;
+            let params = {
+                offset: offset,
+                limit: limit,
+                ...Object.assign({}, currentRoute.query)
+            };
+
+            await api.searchTenders(params).then(res => {
+                let tenders = res;
+                store.dispatch('setMeta', {});
+                store.dispatch('fetchDataByKey', { data: tenders, key: 'tenders' });
+            }).catch(err => {
+                if (err.response.status === 404) store.dispatch('showError', err.response.status);
+            });
+        },
         components: {
             Search,
             Pagination,
@@ -87,7 +108,7 @@
         data() {
             return {
                 limit: 10,
-                tenders: null,
+                //tenders: null,
                 showLoaderSending: false,
             }
         },
@@ -95,52 +116,49 @@
             user() {
                 return this.$store.state.user;
             },
+            tenders() {
+                return this.$store.state.data?.tenders || {};
+            },
             page() {
                 return Number(this.$route.query.page) || 1
             },
             offset() {
-                let limit = Number(this.limit)
-                return (this.page - 1) * limit
+                return +this.limit * (this.page - 1);
             }
         },
         watch: {
-            limit () {
-                if (this.$route.query.page) {
-                    this.$router.replace({ query: {} })
-                } else {
-                    this.getTenders(this.$route.query)
+            '$route.name': {
+                immediate: true,
+                handler(to) {
+                    if (process.env.CLIENT && to === 'tenders') this.getTenders(this.$route.query);
                 }
-                /*
-                if (this.$route.query) {
-                    this.$router.replace({ query: Object.assign({}, this.$route.query, { page: 1 }) })
-                }
-                this.getTenders(this.$route.query)
-                */
             },
             '$route.query.page': {
-                handler() {
-                    this.getTenders(this.$route.query)
+                handler(to) {
+                    if (to) this.getTenders(this.$route.query)
                 },
             }
         },
-        mounted() {
-            this.getTenders(this.$route.query);
-        },
-        beforeDestroy() {
-        },
         created() {
+        },
+        mounted() {
+            //this.getTenders(this.$route.query);
         },
         methods: {
             getTenders(formData) {
-                let params = Object.assign({}, formData);
-                params.limit = this.limit;
-                params.offset = this.offset;
+                let params = {
+                    offset: this.offset,
+                    limit: this.limit,
+                    ...Object.assign({}, formData)
+                };
                 if (this.$route.query && this.$route.query.category) {
                     params.category = [this.$route.query.category];
                 }
                 this.showLoaderSending = true;
-                api.searchTenders(params).then(tenders => {
-                    this.tenders = tenders
+                api.searchTenders(params).then(res => {
+                    let tenders = res;
+                    this.$store.dispatch('setMeta', {});
+                    this.$store.dispatch('fetchDataByKey', { data: tenders, key: 'tenders' });
                     this.showLoaderSending = false;
                 }).catch(err => {
                     this.showLoaderSending = false;

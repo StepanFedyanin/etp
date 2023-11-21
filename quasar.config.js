@@ -1,6 +1,7 @@
 const path = require('path');
 const webpack = require('webpack');
 const nodeExternals = require("webpack-node-externals");
+const env = require('dotenv').config({ path: `.env.${process.env.NODE_ENV.toLowerCase()}` }).parsed
 /* eslint-env node */
 
 /*
@@ -56,6 +57,9 @@ module.exports = configure(function (ctx) {
     // Full list of options: https://v2.quasar.dev/quasar-cli-webpack/quasar-config-js#Property%3A-build
     build: {
       vueRouterMode: 'history', // available values: 'hash', 'history'
+      env: {
+        ...env
+      },
       // transpile: false,
       // publicPath: '/',
 

@@ -5,23 +5,17 @@
                 <div class="banner">
                     <div class="banner__content">
                         <div class="banner__left">
-                            <div class="banner__title">
-                                Электронная торговая площадка
-                            </div>
-                            <div class="banner__subtitle">
-                                для малого и среднего бизнеса
-                            </div>
+                            <h1 class="banner__title">Социальная бизнес-платформа TUGAN</h1>
                             <div class="banner__description">
-                                <p>Наша цель - объединить предпринимателей<br> и сделать процесс закупок честным, удобным и выгодным.</p>
-                                <p>Используйте TUGAN в качестве собственной ЭТП<br>  или участвуйте в существующих тендерах.</p>
+                                <p>Используйте TUGAN в качестве собственной ЭТП или участвуйте в существующих тендерах.</p>
                                 <p>Присоединяйтесь к нам, продавайте и покупайте.</p>
                             </div>
                             <q-no-ssr>
                                 <router-link
                                     :to="{ name: user && user.id ? 'cabinet' : 'registration' }"
-                                    class="button button-green banner__register"
+                                    class="button button-outline-green banner__register"
                                 >
-                                    {{ user && user.id ? 'Мой кабинет' : 'Зарегистрироваться' }}
+                                    {{ user && user.id ? 'Мой кабинет' : 'Бесплатная регистрация' }}
                                 </router-link>
                             </q-no-ssr>
                         </div>
@@ -42,12 +36,13 @@
                     </div>
                 </div>
 
-                <div class="home-page__alert">
-                    <div class="home-page__alert-title">
-                        Организуйте собственные закупки или участвуйте в тендерах
-                    </div>
-                    <div class="home-page__alert-content">
-                        Работа на площадке TUGAN позволяет упростить собственный процесс закупок — на равных и выгодных для всех условиях.
+                <div class="home-page__top">
+                    <h2 class="home-page__top-title">Организуйте собственные закупки или участвуйте в тендерах</h2>
+                    <div class="home-page__top-content content">
+                        <p>Наша цель - объединить предпринимателей малого и среднего бизнеса, сделать процесс закупок честным, удобным и выгодным.</p>
+                        <p>Работа на площадке TUGAN позволяет упростить собственный процесс закупок.</p>
+                        <p>Разместите тендер бесплатно и за 5 минут, пригласите собственных проверенных поставщиков.</p>
+                        <p>Участвуйте в тендерах, проходящих на площадке. У нас нет комиссии и платежей за подачу заявки или за победу в тендере.</p>
                     </div>
                 </div>
                 <div class="capabilities">
@@ -435,6 +430,7 @@
         },
         mounted () {
             //this.getGroups();
+            this.$store.dispatch('setMeta', {});
             this.getTenders();
             this.getGoods();
         },

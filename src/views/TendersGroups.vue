@@ -66,13 +66,31 @@
 
     export default {
         name: 'TendersGroups',
+        async preFetch({ store, currentRoute, previousRoute, redirect, ssrContext, urlPath, publicPath }) {
+            console.log('TendersGroups preFetch', process.env.SERVER, currentRoute.params);
+            if (!process.env.SERVER) return;
+            let limit = 10;
+            let offset = (currentRoute.query?.page ? currentRoute.query?.page - 1 : 0) * limit;
+            let params = {
+                offset: offset,
+                limit: limit,
+            };
+
+            await categoryApi.getCategoryList(params).then(res => {
+                let groups = res;
+                store.dispatch('setMeta', {});
+                store.dispatch('fetchDataByKey', { data: groups, key: 'groups' });
+            }).catch(err => {
+                if (err.response?.status === 404) store.dispatch('showError', err.response.status);
+            });
+        },
         components: {
             Pagination,
         },
         data() {
             return {
-                groups: {},
-                tenders: null,
+                //groups: {},
+                //tenders: null,
                 limit: 10,
                 showLoaderSending: false,
             }
@@ -81,13 +99,27 @@
             user() {
                 return this.$store.state.user;
             },
+            groups() {
+                return this.$store.state.data?.groups || {};
+            },
+            page() {
+                return Number(this.$route.query.page) || 1
+            },
+            offset() {
+                return +this.limit * (this.page - 1);
+            }
         },
         watch: {
-            '$route.query.page': {
+            '$route.name': {
                 immediate: true,
-                handler() {
-                    this.getGroups();
-                    this.getTenders();
+                handler(to) {
+                    if (process.env.CLIENT && to === 'groups') this.getGroups();
+                }
+            },
+            '$route.query.page': {
+                //immediate: true,
+                handler(to) {
+                    if (to) this.getGroups();
                 },
             }
         },
@@ -102,29 +134,15 @@
                 }
                 this.showLoaderSending = true;
                 categoryApi.getCategoryList(params).then(res => {
-                    this.groups = res
+                    let groups = res
+                    this.$store.dispatch('setMeta', {});
+                    this.$store.dispatch('fetchDataByKey', { data: groups, key: 'groups' });
                     this.showLoaderSending = false;
                 }).catch(err => {
                     this.showLoaderSending = false;
                     console.error(err)
                 })
             },
-            getTenders() {
-                console.log('getTenders');
-                let params = {
-                    limit: 4,
-                    offset: 0
-                };
-                //this.showLoaderSending = true;
-                tenderApi.searchTenders(params).then(res => {
-                    this.tenders = res.results;
-                    //this.showLoaderSending = false;
-                    console.log(res)
-                }).catch(err => {
-                    //this.showLoaderSending = false;
-                    console.error(err)
-                })
-            }
         },
     }
 </script>

@@ -67,6 +67,7 @@
         async preFetch({ store, currentRoute, previousRoute, redirect, ssrContext, urlPath, publicPath }) {
             console.log('Products preFetch', process.env.SERVER, currentRoute.params);
             if (!process.env.SERVER) return;
+            if (currentRoute.name !== 'products') return;
             let limit = 24;
             let offset = (currentRoute.query?.page ? currentRoute.query?.page - 1 : 0) * limit;
             let params = {
@@ -115,8 +116,9 @@
         },
         watch: {
             '$route.name': {
+                immediate: true,
                 handler(to) {
-                    if (to === 'products') this.getGoods();
+                    if (process.env.CLIENT && to === 'products') this.getGoods();
                 }
             },
             '$route.query.page': {
@@ -128,7 +130,7 @@
         created() {
         },
         mounted() {
-            this.getGoods();
+            //this.getGoods();
         },
         methods: {
             getGoods() {

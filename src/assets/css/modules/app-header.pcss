@@ -88,8 +88,70 @@
     &__right {
         display: flex;
         align-items: center;
+
         @mixin responsive-le-l {
-            gap: 12px;
+            gap: 0.75rem;
+        }
+
+        &-menu {
+            display: flex;
+            flex-wrap: wrap;
+            column-gap: 3.25rem;
+
+            @mixin responsive-le-l {
+                margin-bottom: 0.335rem;
+            }
+
+            &.m--desktop {
+                @mixin responsive-le-m {
+                    display: none;
+                }
+            }
+
+            &-item {
+                position: relative;
+
+                &:not(:last-child):before {
+                    content: '';
+                    position: absolute;
+                    top: 50%;
+                    transform: translateY(-50%);
+                    left: 100%;
+                    margin-left: 1rem;
+                    width: 1.25rem;
+                    height: 1.25rem;
+                    background: url('./assets/img/icons/icon-tugan.svg') 50% 50% no-repeat;
+                    background-size: contain;
+                }
+            }
+
+            &-link {
+                font-size: 1.125rem;
+                font-weight: 500;
+                text-transform: uppercase;
+                text-decoration: none;
+                color: $color-black;
+                transition: color 0.5s ease;
+
+                @mixin responsive-le-l {
+                    font-size: 1rem;
+                }
+
+                @mixin responsive-le-m {
+                    font-size: 0.875rem;
+                }
+
+                @mixin responsive-le-xs {
+                    font-size: 0.75rem;
+                }
+
+                &:hover,
+                &.is-active,
+                &.is-subactive {
+                    color: $color-green;
+                    text-decoration: none;
+                }
+            }
         }
     }
 
@@ -123,8 +185,8 @@
         }
 
         @mixin responsive-le-l {
-            width: 224px;
-            min-width: 224px;
+            width: 234px;
+            min-width: 234px;
         }
 
         @mixin responsive-le-m {
@@ -157,6 +219,14 @@
                 background-repeat: no-repeat;
                 pointer-events: none;
                 z-index: 1;
+
+                @mixin responsive-le-m {
+                    right: -0.0875rem;
+                    bottom: -0.0875rem;
+                    width: 0.9rem;
+                    height: 0.9rem;
+                    background-size: 0.7rem;
+                }
             }
         }
     }
@@ -167,8 +237,8 @@
 
     &.m--cabinet &__burger {
         display: none;
-        width: 2.5rem;
-        height: 2.5rem;
+        width: 2rem;
+        height: 2rem;
         background-color: $color-green;
         -webkit-mask-position: center;
         mask-position: center;
@@ -194,7 +264,7 @@
 
         @mixin responsive-le-s {
             position: absolute;
-            top: 0;
+            top: 0.25rem;
             transform: translateY(0%);
         }
 
@@ -212,7 +282,7 @@
         }
 
         @mixin responsive-le-l {
-            width: 200px;
+            width: 210px;
         }
 
         @mixin responsive-le-m {
@@ -337,6 +407,7 @@
 
         @mixin responsive-xxs {
             position: relative;
+            justify-content: flex-start;
             max-width: 100%;
             width: auto;
             overflow-x: auto;
@@ -351,6 +422,14 @@
             margin: 0;
             display: flex;
             align-items: center;
+
+            &.m--mobile {
+                display: none;
+
+                @mixin responsive-le-m {
+                    display: flex;
+                }
+            }
 
             @mixin responsive-le-s {
                 /*margin: 0;*/
@@ -416,11 +495,6 @@
                     border-bottom: 2px solid rgba($color-green, 1);
                 }
             }
-        }
-
-        @mixin responsive-le-s {
-            width: 100%;
-            justify-content: center;
         }
     }
 
