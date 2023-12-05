@@ -35,7 +35,16 @@
                         </div>
                     </div>
                 </div>
-
+                <blockContent
+                    classModifier="m--top"
+                    place="top"
+                    name="global"
+                />
+                <blockContent
+                    classModifier="m--top"
+                    place="top"
+                    :name="$route.name"
+                />
                 <div class="home-page__top">
                     <h2 class="home-page__top-title">Организуйте собственные закупки или участвуйте в тендерах</h2>
                     <div class="home-page__top-content content">
@@ -143,7 +152,7 @@
                                 </ul>
                             </div>
                             <router-link
-                                :to="{ name: 'groups' }"
+                                :to="{ name: 'tenders-groups' }"
                                 class="button capabilities__item-button button-green"
                             >
                                 К товарным группам
@@ -362,6 +371,16 @@
                         </p>
                     </div>
                 </div>
+                <blockContent
+                    classModifier="m--bottom"
+                    place="bottom"
+                    name="global"
+                />
+                <blockContent
+                    classModifier="m--bottom"
+                    place="bottom"
+                    :name="$route.name"
+                />
             </div>
         </div>
     </div>
@@ -369,8 +388,9 @@
 
 <script>
     import { category, tender, product } from "@/services";
-    import Search from '../components/app-search.vue';
-    import BlockTender from '../components/block-tender.vue';
+    import Search from '@/components/app-search.vue';
+    import blockContent from '@/components/block-content.vue';
+    import BlockTender from '@/components/block-tender.vue';
     import blockGoodsItem from '@/components/block-goods-item.vue';
 
     export default {
@@ -396,6 +416,7 @@
         },
         components: {
             Search,
+            blockContent,
             BlockTender,
             blockGoodsItem
         },

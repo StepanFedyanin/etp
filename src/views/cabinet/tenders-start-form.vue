@@ -508,7 +508,7 @@
                         mode: 'dateTime',
                         id: 'date_start',
                         name: 'date_start',
-                        value: this.minDateStart(),
+                        value: this.minDateStart(-3600000),
                         min: this.minDateStart(60000),
                         max: '2099-12-31T23:59',
                         label: 'Дата начала этапа торгов',
@@ -530,7 +530,7 @@
                         $formkit: 'datetime-local',
                         id: 'date_end',
                         name: 'date_end',
-                        value: this.minDateEnd(),
+                        value: this.minDateEnd(-3600000),
                         min: this.minDateEnd(60000),
                         max: '2099-12-31T23:59',
                         label: 'Дата завершения торгов и выбор победителя',
@@ -543,8 +543,8 @@
                             this.$nextTick(() => {
                                 const node = this.$formkit.get('date_fulfilment');
                                 node.props.attrs.min = this.minDateFulfilment();
-                                node.props.validation = [['required'], ['date_after', this.minDateFulfilment(60000)], ['date_before', '2100-01-01']];
-                                node.emit('input', this.tenderForm.date_fulfilment);
+                                node.props.validation = [['required'], ['date_after', this.minDateFulfilment(60000)], ['date_before', this.maxDateFulfilment(60000)]];
+                                //node.emit('input', this.tenderForm.date_fulfilment);
                                 if (this.tenderForm.date_fulfilment) node.emit('input', this.tenderForm.date_fulfilment);
                                 //if (new Date(this.tenderForm.date_fulfilment) < new Date(this.minDateFulfilment())) node.input(this.minDateFulfilment());
                             });
@@ -553,12 +553,12 @@
                         $formkit: 'datetime-local',
                         id: 'date_fulfilment',
                         name: 'date_fulfilment',
-                        value: this.minDateFulfilment(),
+                        value: this.minDateFulfilment(-3600000),
                         min: this.minDateFulfilment(60000),
                         max: '2099-12-31T23:59',
                         label: 'Дата исполнения обязательств по договору',
                         help: 'Укажите дату, до которой должны быть исполнены все обязательства по тендеру',
-                        validation: [['required'], ['date_after', this.minDateFulfilment(60000)], ['date_before', '2100-01-01']],
+                        validation: [['required'], ['date_after', this.minDateFulfilment(60000)], ['date_before', this.maxDateFulfilment(60000)]],
                         validationVisibility: 'live',
                         outerClass: 'tender-form__field m--half',
                         messageClass: 'tender-form__message',
@@ -645,14 +645,21 @@
                         })[0];
                         if (tender) {
                             let date = this.$helpers.formatDate(new Date(tender.date_fulfilment), 'YYYY-MM-DDTHH:mm');
-                            console.log(date);
-                            node.props.max = date;
-                            node.props.type = 'text';
+                            node.props.attrs.max = date;
+                            node.props.validation = [['required'], ['date_after', this.minDateFulfilment(60000)], ['date_before', this.maxDateFulfilment(60000)]];
                             this.tenderForm.date_fulfilment = date;
-                            this.$nextTick(() => {
-                                node.props.type = 'datetime-local';
-                            });
+                            //this.$nextTick(() => {
+                            //    node.props.type = 'datetime-local';
+                            //});
+                        } else {
+                            node.props.attrs.max = '2099-12-31T23:59';
+                            node.props.validation = [['required'], ['date_after', this.minDateFulfilment(60000)], ['date_before', this.maxDateFulfilment(60000)]];
                         }
+                        node.props.type = 'text';
+                        if (this.tenderForm.date_fulfilment) node.emit('input', this.tenderForm.date_fulfilment);
+                        this.$nextTick(() => {
+                            node.props.type = 'datetime-local';
+                        });
                     }
                 }                
             }
@@ -745,6 +752,19 @@
                 let time = new Date(this.$helpers.curDateMSK()).getTime();
                 if (this.tenderForm?.date_end) time = new Date(this.tenderForm?.date_end).getTime() - 12 * 3600000;
                 return this.$helpers.formatDate(new Date(time - delta + 36 * 3600000), 'YYYY-MM-DDTHH:mm')
+            },
+            maxDateFulfilment(delta = 0) {
+                let tender = this.relatedTenders?.filter(item => {
+                    return item.id === this.tenderForm?.related_tender;
+                })[0];
+                if (tender) {
+                    let time = new Date(tender.date_fulfilment).getTime();
+                    console.log('BLA 1');
+                    return this.$helpers.formatDate(new Date(time + delta), 'YYYY-MM-DDTHH:mm');
+                } else {
+                    console.log('BLA 2');
+                    return this.$helpers.formatDate(new Date('2100-01-01T00:00'), 'YYYY-MM-DDTHH:mm');
+                }
             },
             submitForm(handlerSubmit) {
                 this.handlerSubmit = handlerSubmit;

@@ -209,7 +209,7 @@
         },
         data() {
             return {
-                showExtended: false,
+                showExtended: true,
                 urlPath,
                 formData: {},
                 showLoaderSending: false,
@@ -217,6 +217,13 @@
                 busyForm: false,
                 mainGoodSchema: [
                     {
+                        $formkit: 'text',
+                        name: 'name',
+                        label: 'Название товара',
+                        placeholder: 'Например: Мука пшеничная, высший сорт',
+                        validation: 'required',
+                        outerClass: 'field--required',
+                    }, {
                         $formkit: 'multiselect',
                         mode: 'single',
                         name: 'category',
@@ -226,7 +233,7 @@
                         placeholder: 'Выберите категорию товара',
                         searchable: true,
                         minChars: 1,
-                        validation: 'required',
+                        //validation: 'required',
                         options: async () => {
                             return await categoryApi.getCategoryListProduct({ limit: 9999 }).then(groups => {
                                 if (groups.results) {
@@ -238,27 +245,53 @@
                                 console.error(err)
                             })
                         },
-                        outerClass: 'field--required',
+                        //outerClass: 'field--required',
+                    }, {
+                        $formkit: 'textarea',
+                        name: 'description',
+                        label: 'Описание товара',
+                        placeholder: 'Расскажите о своем товаре: где применяется, характеристики, состав, выгодные особенности и прочее',
+                        // validation: 'required',
                     }, {
                         $formkit: 'text',
-                        name: 'name',
-                        label: 'Название товара',
-                        placeholder: 'Например: Мука пшеничная, высший сорт',
-                        validation: 'required',
-                        outerClass: 'field--required',
+                        name: 'brand',
+                        label: 'Бренд / Производитель',
+                        placeholder: '',
+                        // validation: 'required',
+                        // outerClass: 'field--required',
                     }, {
+                        $formkit: 'text',
+                        name: 'article',
+                        label: 'Артикул',
+                        placeholder: '',
+                        // validation: 'required',
+                        // outerClass: 'field--required',
+                    },
+                ],
+                paymentGoodSchema: [
+                    {
                         $formkit: 'text',
                         name: 'unit',
                         label: 'Единица измерения',
-                        placeholder: 'За что назначается цена? Например: шт; м; час; мешок 50кг',
+                        placeholder: 'Например: шт; м; час; мешок 50кг',
+                        validation: 'required',
+                        outerClass: 'field--required m--width-33',
+                    }, {
+                        $formkit: 'maska',
+                        name: 'price',
+                        maska: { mask: '0.99', tokens: '0:\\d:multiple|9:\\d:optional' },
+                        label: 'Цена за 1 ед.',
+                        placeholder: '',
                         // validation: 'required',
+                        // outerClass: 'field--required',
+                        outerClass: 'm--width-33',
                     }, {
                         $formkit: 'multiselect',
                         mode: 'single',
                         name: 'currency',
                         closeOnSelect: true,
                         label: 'Валюта',
-                        placeholder: 'Выберите валюту стоимости',
+                        placeholder: '',
                         searchable: true,
                         minChars: 1,
                         validation: 'required',
@@ -276,45 +309,33 @@
                                 console.error(err);
                             })
                         },
-                        outerClass: 'field--required',
+                        outerClass: 'field--required m--width-33',
                     }, {
-                        $formkit: 'maska',
-                        name: 'price',
-                        maska: { mask: '#*D##', tokens: { 'D': { pattern: /\./ }}},
-                        label: 'Цена за единицу',
-                        placeholder: 'Цена, соответствующая единице измерения, с учетом НДС',
-                        validation: 'required',
-                        outerClass: 'field--required',
-                    }, {
-                        $formkit: 'textarea',
-                        name: 'description',
-                        label: 'Краткое описание',
-                        placeholder: 'Расскажите о своем товаре: где применяется, характеристики, состав, выгодные особенности и прочее',
-                        // validation: 'required',
-                    },
-                ],
-                paymentGoodSchema: [
-                    {
                         $formkit: 'multiselect',
                         mode: 'single',
                         name: 'nds',
                         //groups: true,
                         closeOnSelect: true,
                         label: 'В том числе, НДС',
-                        validation: 'required',
-                        options: [],
-                        outerClass: 'field--required m--width-50',
+                        // validation: 'required',
+                        options: [
+                            { label: 'Нет НДС', value: -1 },
+                            { label: '0%', value: 0 },
+                            { label: '10%', value: 10 },
+                            { label: '20%', value: 20 },
+                        ],
+                        outerClass: 'm--width-50',
                     }, {
                         $formkit: 'maska',
-                        name: 'min_order',
-                        maska: { mask: '#*' },
+                        name: 'min_count',
+                        maska: { mask: '0', tokens: '0:\\d:multiple' },
                         label: 'Минимальный заказ, ед.',
                         //placeholder: 'Мин. сумма для доставки, ₽',
-                        validation: 'required',
-                        outerClass: 'field--required m--width-50',
+                        // validation: 'required',
+                        outerClass: 'm--width-50',
                     }, {
                         $formkit: 'text',
-                        name: 'payment_info',
+                        name: 'payment_terms',
                         label: 'Условия оплаты',
                         //validation: 'required',
                         outerClass: 'm--width-100',
@@ -323,12 +344,12 @@
                 deliveryGoodSchema: [
                     {
                         $formkit: 'maska',
-                        name: 'delivery_min_sum',
-                        maska: { mask: '#*D##', tokens: { 'D': { pattern: /\./ }}},
-                        label: 'Мин. сумма для доставки, ₽',
+                        name: 'delivery_min_cost',
+                        maska: { mask: '0.99', tokens: '0:\\d:multiple|9:\\d:optional' },
+                        label: 'Мин. стоимость доставки, ₽',
                         //placeholder: 'Мин. сумма для доставки, ₽',
-                        validation: 'required',
-                        outerClass: 'field--required m--width-50',
+                        //validation: 'required',
+                        outerClass: 'm--width-50',
                     }, {
                         $formkit: 'text',
                         name: 'delivery_time',
@@ -337,7 +358,7 @@
                         outerClass: 'm--width-50',
                     }, {
                         $formkit: 'textarea',
-                        name: 'delivery_info',
+                        name: 'delivery_terms',
                         label: 'Условия доставки',
                         //placeholder: 'Расскажите о своем товаре: где применяется, характеристики, состав, выгодные особенности и прочее',
                         // validation: 'required',
@@ -348,20 +369,26 @@
                     {
                         $formkit: 'multiselect',
                         mode: 'single',
-                        name: 'watcher',
+                        name: 'participant_type',
                         //groups: true,
                         closeOnSelect: true,
                         label: 'Кто может заказать товар?',
                         validation: 'required',
-                        options: [],
+                        canClear: false,
+                        disabled: true,
+                        options: [
+                            { label: 'Организация', value: 'organization' },
+                            { label: 'Физ. лицо', value: 'person', disabled: true }
+                        ],
                         outerClass: 'field--required',
                     }, {
-                        $formkit: 'text',
-                        name: 'position',
+                        $formkit: 'maska',
+                        name: 'ordering',
+                        maska: { mask: '0', tokens: '0:\\d:multiple' },
                         label: 'Сортировка',
                         help: 'Чем меньше число, тем выше расположится товар в вашем прайс-листе',
-                        validation: 'required',
-                        outerClass: 'field--required',
+                        //validation: 'required',
+                        //outerClass: 'field--required',
                     }, {
                         $formkit: 'checkbox',
                         name: 'publication',
@@ -376,7 +403,12 @@
         watch: {
             slug() {
                 this.productSended = false;
-                this.formData = {};
+                this.formData = {
+                    nds: -1,
+                    min_count: 1,
+                    participant_type: 'organization',
+                    ordering: 10
+                };
                 if (this.slug) {
                     this.getProduct();
                 }
@@ -384,7 +416,12 @@
         },
         mounted() {
             this.productSended = false;
-            this.formData = {};
+            this.formData = {
+                nds: -1,
+                min_count: 1,
+                participant_type: 'organization',
+                ordering: 10
+            };
             if (this.slug) {
                 this.getProduct();
             }
@@ -394,7 +431,9 @@
                 this.showLoaderSending = true;
                 this.busyForm = true;
                 productApi.getProduct(this.slug, {}).then(res => {
-                    this.formData = {
+                    this.formData = res; 
+                    /*
+                    {
                         category: res.category,
                         name: res.name,
                         price: res.price,
@@ -404,6 +443,7 @@
                         //photo: res.photo,
                         small_photo: res.small_photo ? `${urlPath}${res.small_photo}` : null,
                     };
+                    */
                     /*
                     this.formData.category = {
                         fromParent: true,
@@ -471,7 +511,7 @@
             submitAddGoodForm(data, node) {
                 let params = new FormData();
                 Object.keys(this.formData).forEach(key => {
-                    if (this.formData[key]) {
+                    if (this.formData[key] && key !== 'small_photo' && key !== 'photo') {
                         params.append(key, this.formData[key]);
                     }
                 });

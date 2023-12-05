@@ -18,7 +18,8 @@
                 v-if="$route.meta.requiresAuth || ($route.meta.showSidebarAuth && user && user.id)"
                 :class="showSidebarBlock ? 'is-show-sidebar' : ''"
             />
-            <Page404 v-if="showErrorPage" />
+            <Page404 v-if="showErrorPage404" />
+            <Page500 v-if="showErrorPage500" />
             <routerView v-else />
         </div>
         <!--
@@ -40,6 +41,7 @@
     import AppFooter from '@/components/app-footer.vue';
     import AppSidebar from '@/components/app-sidebar.vue';
     import Page404 from '@/views/Page404.vue';
+    import Page500 from '@/views/Page500.vue';
     import ModalError from '@/components/modals/error.vue';
 
     export default {
@@ -59,6 +61,7 @@
             AppFooter,
             AppSidebar,
             Page404,
+            Page500,
             ModalError,
         },
         /*
@@ -81,8 +84,11 @@
             user() {
                 return this.$store.state.user;
             },
-            showErrorPage() {
-                return this.$store.state.showErrorPage;
+            showErrorPage404() {
+                return this.$store.state.showErrorPage?.response?.status === 404;
+            },
+            showErrorPage500() {
+                return this.$store.state.showErrorPage?.response?.status === 500;
             }
         },
         watch: {

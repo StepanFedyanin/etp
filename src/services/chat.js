@@ -7,6 +7,7 @@ export default class extends REST {
     static get settings() {
         return settings;
     }
+
     get settings() {
         return settings;
     }

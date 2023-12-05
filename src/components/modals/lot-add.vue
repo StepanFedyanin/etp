@@ -149,7 +149,7 @@
                     }, {
                         $formkit: 'maska',
                         name: 'price',
-                        maska: { mask: '#*D##', tokens: { 'D': { pattern: /\./ }}},
+                        maska: { mask: '0.99', tokens: '0:\\d:multiple|9:\\d:optional' },
                         label: `Цена за единицу, ${this.tender.currency_detail}`,
                         placeholder: "Введите цену за единицу",
                         validation: (this.tender.kind === 'tender') ? 'required' : null,

@@ -1,25 +1,23 @@
 <template>
     <div :class="['persons', blockClass]">
-        <div :class="['persons__item m--header', !showMore && 'm--short']">
-            <div class="persons__item-inner">
-                <div v-if="showMore" class="persons__item-cell" />
-                <div class="persons__item-cell">
-                    ФИО
+        <template v-if="persons.length">
+            <div :class="['persons__item m--header', !showMore && 'm--short']">
+                <div class="persons__item-inner">
+                    <div v-if="showMore" class="persons__item-cell" />
+                    <div class="persons__item-cell">
+                        ФИО
+                    </div>
+                    <div class="persons__item-cell">
+                        Email
+                    </div>
+                    <div class="persons__item-cell">
+                        Телефон
+                    </div>
+                    <div v-if="showActions" class="persons__item-cell" />
                 </div>
-                <div class="persons__item-cell">
-                    Email
-                </div>
-                <div class="persons__item-cell">
-                    Телефон
-                </div>
-                <div v-if="showActions" class="persons__item-cell" />
             </div>
-        </div>
-        <template 
-            v-for="(item, index) in persons"
-        >
             <div
-                v-if="user.is_staff || (organization?.id == user.organization?.id)"
+                v-for="(item, index) in persons"
                 :key="`person-${item.id}`"
                 :class="['persons__item', !showMore && 'm--short']"
             >
@@ -186,6 +184,9 @@
                     </div>
                 </div>
             </div>
+        </template>
+        <template v-else>
+            На данный момент у организации не добавлены представители.
         </template>
         <ModalPersonMaster
             :key="`modal-master-${person.id}`"

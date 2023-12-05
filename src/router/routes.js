@@ -565,13 +565,13 @@ const routes = [
         children: [
             {
                 path: 'groups',
-                name: 'groups',
+                name: 'tenders-groups',
                 component: tendersGroups,
                 meta: { title: 'Категории тендеров', showSidebarAuth: true },
                 props: true,
             }, {
                 path: 'groups/:parentslug?/:slug',
-                name: 'group',
+                name: 'tenders-group',
                 component: tendersGroup,
                 meta: { title: 'Категория тендеров', showSidebarAuth: true },
                 props: true,

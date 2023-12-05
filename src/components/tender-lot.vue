@@ -140,7 +140,6 @@
         },
         methods: {
             getTenderLot() {
-                console.log('BLA BLA BLA BLA');
                 this.showLoaderSending = true;
                 tenderApi.getTenderLot(this.tender.id, this.lotData.id).then(res => {
                     console.log(res);

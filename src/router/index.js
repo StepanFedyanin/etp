@@ -23,7 +23,7 @@ export default route(function (/* { store, ssrContext } */) {
         return savedPosition
       } else {
         //document.getElementById('app').scrollIntoView({ behavior: 'smooth' });
-        if (to.query.page) return;
+        //if (to.query.page) return;
         return new Promise((resolve) => {
           resolve({ left: 0, top: 0 });
         })

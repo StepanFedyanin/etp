@@ -23,10 +23,18 @@ export default class extends REST {
     }
 
     static getHint(params) {
-        return this._get('hint', {}, params).then((data) => {
+        return this._get('hint', params, {}, true).then((data) => {
             return data;
         }).catch((error) => {
             throw new RESTError(error, 'Ошибка при получении подсказки');
+        });
+    }
+
+    static getBanner(params) {
+        return this._get('banner', params, {}, true).then((data) => {
+            return data;
+        }).catch((error) => {
+            throw new RESTError(error, 'Ошибка при получении баннеров');
         });
     }
 

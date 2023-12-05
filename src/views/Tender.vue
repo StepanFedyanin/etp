@@ -1,6 +1,16 @@
 <template>
     <div :class="['cabinet tender']">
         <div :class="['container']">
+            <blockContent
+                classModifier="m--top"
+                place="top"
+                name="global"
+            />
+            <blockContent
+                classModifier="m--top"
+                place="top"
+                :name="$route.name"
+            />
             <template v-if="showLoaderSending">
                 <div class="tender__loader loader">
                     <div class="spinner" /> Загрузка данных
@@ -617,6 +627,16 @@
                     :tender="tender"
                 />
             </template>
+            <blockContent
+                classModifier="m--bottom"
+                place="bottom"
+                name="global"
+            />
+            <blockContent
+                classModifier="m--bottom"
+                place="bottom"
+                :name="$route.name"
+            />
         </div>
     </div>
 </template>
@@ -624,6 +644,7 @@
 <script>
     import { urlPath } from '@/settings'
     import { tender as tenderApi, chat as Chat } from "@/services"
+    import blockContent from '@/components/block-content.vue';
     import TenderOrganizationStatus from '@/components/tender-organization-status';
     import TenderParticipants from '@/components/tender-participants';
     import TenderRelatedTenders from '@/components/tender-related-tenders.vue';
@@ -658,6 +679,7 @@
             });
         },
         components: {
+            blockContent,
             TenderOrganizationStatus,
             TenderParticipants,
             TenderRelatedTenders,

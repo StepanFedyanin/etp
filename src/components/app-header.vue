@@ -275,7 +275,21 @@
                         title: 'Вход',
                     }
                 ],
-                menuUser: {
+                hideHeaderContacts: true,
+                showPopup: false,
+                showPopupHeader: false,
+                showPopupFooter: false,
+            };
+        },
+        computed: {
+            user() {
+                return this.$store.state.user || {};
+            },
+            menu() {
+                return (this.$store.state.user && this.$store.state.user.id) ? this.headerMenuUser : this.headerMenu;
+            },
+            menuUser() {
+                return {
                     person: [
                         [{
                             name: 'cabinet',
@@ -315,12 +329,17 @@
                         [{
                             name: null,
                             role: 'all',
-                            title: 'Настройки профиля',
+                            title: 'Профиль',
+                        }, {
+                            name: 'profile',
+                            hash: '#account',
+                            role: 'all',
+                            title: `Аккаунт (${this.$store.state.user?.email})`
                         }, {
                             name: 'profile',
                             hash: '#public',
                             role: 'all',
-                            title: 'Мой профиль'
+                            title: 'Публичный профиль'
                         }, {
                             name: 'profile',
                             hash: '#notifications',
@@ -342,17 +361,12 @@
                         [{
                             name: null,
                             role: 'all',
-                            title: 'Настройки организации',
+                            title: 'Организация',
                         }, {
                             name: 'organization',
                             hash: '#public',
                             role: 'all',
                             title: 'Публичный профиль'
-                        }, {
-                            name: 'organization',
-                            hash: '#goods',
-                            role: 'all',
-                            title: 'Товары'
                         }, {
                             name: 'organization',
                             hash: '#persons',
@@ -362,12 +376,27 @@
                         [{
                             name: null,
                             role: 'all',
-                            title: 'Настройки профиля',
+                            title: 'Маркет',
+                        }, {
+                            name: 'organization',
+                            hash: '#goods',
+                            role: 'all',
+                            title: 'Товары'
+                        }],
+                        [{
+                            name: null,
+                            role: 'all',
+                            title: 'Профиль',
+                        }, {
+                            name: 'profile',
+                            hash: '#account',
+                            role: 'all',
+                            title: `Аккаунт (${this.$store.state.user?.email})`
                         }, {
                             name: 'profile',
                             hash: '#public',
                             role: 'all',
-                            title: 'Мой профиль'
+                            title: 'Публичный профиль'
                         }, {
                             name: 'profile',
                             hash: '#notifications',
@@ -380,19 +409,7 @@
                             title: 'Выход',
                         }]
                     ],
-                },
-                hideHeaderContacts: true,
-                showPopup: false,
-                showPopupHeader: false,
-                showPopupFooter: false,
-            };
-        },
-        computed: {
-            user() {
-                return this.$store.state.user || {};
-            },
-            menu() {
-                return (this.$store.state.user && this.$store.state.user.id) ? this.headerMenuUser : this.headerMenu;
+                };
             }
         },
         mounted() {

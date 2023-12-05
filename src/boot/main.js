@@ -15,6 +15,7 @@ import phoneWithCodeInput from '@/components/inputs/phone-with-code-input';
 
 import { plugin, defaultConfig, createInput } from '@formkit/vue'
 import { ru } from '@formkit/i18n'
+import Popper from 'vue3-popper';
 import ResizeTextarea from 'resize-textarea-vue3'
 import helpers from '@/utils/helpers'
 
@@ -110,6 +111,7 @@ export default boot(async ({ app, router }) => {
     };
 
     app.use(plugin, defaultConfig(confFormKit));
+    app.component('Popper', Popper);
 })
 
 function date(date) {

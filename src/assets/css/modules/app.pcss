@@ -81,6 +81,39 @@
     &__breadcrumbs {
     }
 
+    &__content {
+        &.m--top,
+        &.m--bottom {
+            display: flex;
+            flex-direction: column;
+            gap: 2.5rem;
+            padding-top: 1.5rem;
+            padding-bottom: 3rem;
+        }
+
+        & + & {
+            margin-top: -0.8rem;
+            padding-top: 0;
+        }
+
+        &-banner {
+            a {
+                display: block;
+            }
+
+            img {
+                max-width: 100%;
+                width: 100%;
+                height: auto;
+            }
+        }
+
+        &-hint&-hint {
+            max-width: none;
+            margin-bottom: 0;
+        }
+    }
+
     &__main {
         width: 100%;
         /* padding-top: 25px; */

@@ -1,6 +1,6 @@
 {
   "name": "tugan",
-  "version": "0.9.3",
+  "version": "0.9.4",
   "description": "A Tugan project",
   "productName": "Tugan App",
   "author": "KOVex <kovex@portal2u.ru>",
@@ -36,6 +36,7 @@
     "vue-final-modal": "^4.4.5",
     "vue-router": "^4.0.0",
     "vue-template-compiler": "^2.7.15",
+    "vue3-popper": "^1.5.0",
     "vue3-yandex-metrika": "^0.0.4",
     "vuex": "^4.0.1",
     "vuex-persist": "^3.1.3"

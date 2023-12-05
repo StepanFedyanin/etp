@@ -23,7 +23,7 @@
                             class="group"
                         >
                             <router-link
-                                :to="{ name: 'group', params: { slug: group.slug } }"
+                                :to="{ name: 'tenders-group', params: { slug: group.slug } }"
                                 class="group__title h2"
                             >
                                 {{ group.name }}
@@ -40,7 +40,7 @@
                                     class="group__products-item"
                                 >
                                     <router-link
-                                        :to="{ name: 'group', params: { parentslug: group.slug, slug: category.slug } }"
+                                        :to="{ name: 'tenders-group', params: { parentslug: group.slug, slug: category.slug } }"
                                     >
                                         {{ category.name }}
                                     </router-link>
@@ -127,7 +127,7 @@
         },
         methods: {
             getGroups() {
-                let page = Number(this.$route.query.page) || 1
+                let page = +this.$route.query.page || 1
                 let params = {
                     limit: this.limit,
                     offset: (page - 1) * this.limit,

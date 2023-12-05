@@ -118,7 +118,7 @@
                                             v-if="!refreshInput"
                                             id="price"
                                             v-model="formValues.price"
-                                            :maska="{ mask: '#*D##', tokens: { 'D': { pattern: /\./ }}}"
+                                            :maska="{ mask: '0.99', tokens: '0:\\d:multiple|9:\\d:optional' }"
                                             :disabled="loading || formValues.min_bid.length ? true : false"
                                             type="maska"
                                             name="price"

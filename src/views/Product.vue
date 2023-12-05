@@ -6,8 +6,8 @@
                 :breadcrumbs="[
                     { name: 'Главная', route: { name: 'home' } },
                     { name: 'Товары и услуги', route: { name: 'products' } },
-                    { name: good.category_detail.parent?.name, route: { name: 'group', params: { slug: good.category_detail.parent?.slug || 0 } } },
-                    { name: good.category_detail.name, route: { name: 'group', params: { parentslug: good.category_detail.parent?.slug || 0, slug: good.category_detail.slug } } },
+                    { name: good.category_detail.parent?.name, route: { name: 'tenders-group', params: { slug: good.category_detail.parent?.slug || 0 } } },
+                    { name: good.category_detail.name, route: { name: 'tenders-group', params: { parentslug: good.category_detail.parent?.slug || 0, slug: good.category_detail.slug } } },
                 ]"
             />
             <template
@@ -29,7 +29,10 @@
                     <div class="good__block-left">
                         <div class="good__block-card">
                             <div class="good__params">
-                                <div class="good__param">
+                                <div 
+                                    v-if="good.organization?.id" 
+                                    class="good__param"
+                                >
                                     <div class="good__param-name">
                                         Поставщик
                                     </div>
@@ -88,7 +91,7 @@
                                 {{ $helpers.toPrice(good.price, { sign: good.currency_detail }) }}
                             </div>
                             <button 
-                                v-if="!user || !user.id || user.organization.id !== good.organization.id"
+                                v-if="!user || !user.id || user.organization?.id !== good.organization.id"
                                 class="button button-green good__price-button"
                                 @click.prevent="requestGood()"
                             >

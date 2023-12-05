@@ -62,6 +62,13 @@ class Cache {
     clear() {
         this._storage.clear();
     }
+    key(ns, type, data) {
+        let key = ns + ':' + type;
+        if (data) {
+            key += ':' + JSON.stringify(data, _keys(data).sort());
+        }
+        return key;
+    }
 }
 
 

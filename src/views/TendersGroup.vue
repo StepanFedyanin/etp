@@ -6,8 +6,8 @@
                 :breadcrumbs="[
                     { name: 'Главная', route: { name: 'home' } },
                     { name: 'Тендеры', route: { name: 'tenders' } },
-                    { name: 'Категории', route: { name: 'groups' } },
-                    { name: group.parent?.name, route: { name: 'group', params: { slug: group.parent?.slug || 0 } } },
+                    { name: 'Категории', route: { name: 'tenders-groups' } },
+                    { name: group.parent?.name, route: { name: 'tenders-group', params: { slug: group.parent?.slug || 0 } } },
                 ]"
             />
             <template v-if="showLoaderSending['group']">
@@ -19,24 +19,23 @@
                 <h1 class="groups__title h1">
                     {{ group.name }}
                 </h1>
-                <div
-                    v-if="group.categories?.length"
-                    class="group m--margin"
-                >
-                    <ul class="group__products">
-                        <li
-                            v-for="category in group.categories"
-                            :key="category.id"
-                            class="group__products-item"
-                        >
-                            <router-link
-                                :to="{ name: 'group', params: { parentslug: group.slug, slug: category.slug } }"
-                            >
-                                {{ category.name }}
-                            </router-link>
-                        </li>
-                    </ul>
-                </div>
+                <template v-if="showLoaderSending.tenders">
+                    <div class="groups__main">
+                        <div class="groups__loader loader">
+                            <div class="spinner" /> Загрузка данных
+                        </div>
+                    </div>
+                </template>
+                <template v-else-if="group.categories?.length">
+                    <div class="groups__main">
+                        <div class="groups__block">
+                            <blockGroups
+                                :parent="group"
+                                :groups="group.categories"
+                            />
+                        </div>
+                    </div>
+                </template>
             </template>
             <div class="tenders m--block">
                 <template v-if="showLoaderSending['tenders'] && !tenders">
@@ -72,6 +71,9 @@
                         </button>
                     </template>
                 </template>
+                <template v-else>
+                    В данной категории нет открытых тендеров.
+                </template>
             </div>
         </div>
     </div>
@@ -79,6 +81,7 @@
 
 <script>
     import { category as api } from "@/services"
+    import blockGroups from '@/components/block-groups.vue';
     import blockTender from '@/components/block-tender.vue';
     //import Pagination from '@/components/pagination.vue'
 
@@ -106,6 +109,7 @@
             }
         },
         components: {
+            blockGroups,
             blockTender,
             //Pagination,
         },

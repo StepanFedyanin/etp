@@ -18,7 +18,7 @@ export default {
                 meta: {
                     description: { name: 'description', content: $helpers.createDescription(props.data, props.route) },
                     keywords: { name: 'keywords', content: $helpers.createKeywords(props.data, props.route) },
-                    ogSiteName:  { property: 'og:site_name', content: 'TUGAN — Социальная платформа для малого и среднего бизнеса' },
+                    ogSiteName:  { property: 'og:site_name', content: 'Бизнес-платформа TUGAN' },
                     ogUrl:  { property: 'og:url', content: `${selfPath}${props.route.href}` },
                     ogTitle:  { property: 'og:title', content: $helpers.createTitle(props.data, props.route, false) },
                     ogDescription:  { property: 'og:description', content: $helpers.createDescription(props.data, props.route, false) },

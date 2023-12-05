@@ -1,6 +1,8 @@
 <template>
     <input
-        v-maska="maska"
+        v-maska
+        :data-maska="props.context.maska?.mask"
+        :data-maska-tokens="props.context.maska?.tokens"
         :value="props.context._value"
         :disabled="disabled"
         :readonly="readonly"

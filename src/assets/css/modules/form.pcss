@@ -27,6 +27,14 @@
                 width: 100%;
             }
         }
+
+        .m--width-33 {
+            width: calc(100% / 3 - 2 / 3 * 1rem);
+
+            @mixin responsive-xxs {
+                width: 100%;
+            }
+        }
     }
 
     &__block {

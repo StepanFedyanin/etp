@@ -18,7 +18,7 @@
             </div>
         </router-link>
         <router-link 
-            v-if="showOrganization"
+            v-if="showOrganization && good.organization"
             :to="{ name: 'contragent', params: { id: good.organization.id } }"
             class="goods__item-organozation"
             @click.stop=""
@@ -35,7 +35,7 @@
         </div>
         <router-link
             v-if="showCategory"
-            :to="{ name: 'group', params: { parentslug: good.category_detail.parent?.slug || 0, slug: good.category_detail.slug } }"
+            :to="{ name: 'tenders-group', params: { parentslug: good.category_detail.parent?.slug || 0, slug: good.category_detail.slug } }"
             class="goods__item-category"
             @click.stop=""
         >

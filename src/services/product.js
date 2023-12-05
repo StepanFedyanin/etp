@@ -6,7 +6,6 @@ export default class extends REST {
         return settings;
     }
 
-
     static addProduct(params) {
         return this._post(`products`, {}, params).then((data) => {
             return data;

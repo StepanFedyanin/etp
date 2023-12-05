@@ -3,7 +3,7 @@
         <div class="lot__history-title m--title">
             История предложений
             <a
-                v-if="((user.organization?.id === tender.creator || user.is_staff) && tender.kind === 'tender' && lot.last_bet)"
+                v-if="showCancelLotOffer"
                 href="#"
                 class="lot__history-title-link"
                 @click.prevent="onClickCancelLotOffer()"
@@ -99,6 +99,13 @@
             }
         },
         computed: {
+            showCancelLotOffer() {
+                if (this.user.is_staff) return true;
+                if (this.user.organization?.id === this.tender.creator) {
+                    if  (this.tender.kind === 'tender' && this.lot.last_bet && this.tender.status === 'bid_accept') return true;
+                }
+                return false;
+            }
         },
         created() {
         },

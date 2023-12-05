@@ -5,7 +5,8 @@ const ajax = {
 };
 
 const cache = {
-    storage: 'sessionStorage'
+    //storage: 'sessionStorage'
+    storage: 'tempStorage'
 };
 
 const serviceUrl = {

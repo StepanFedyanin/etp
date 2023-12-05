@@ -3,6 +3,7 @@ Disallow: /auth
 Disallow: /registration
 Disallow: */index.php
 Disallow: /*?*
+Disallow: /cabinet
 Allow: *.css
 Allow: *.gif
 Allow: *.jpg

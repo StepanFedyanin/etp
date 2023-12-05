@@ -36,7 +36,7 @@
                 </div>
             </div>
             <router-link
-                :to="{ name: ($route.name === 'home' || $route.name === 'participant-invites' || $route.name === 'favorites-tenders' || $route.name === 'tenders' || $route.name === 'contragent' || $route.name === 'group') ? 'tender' : `${$route.name.replace('-tender', '')}-tender`, params: { id: tender.id } }"
+                :to="{ name: ($route.name === 'home' || $route.name === 'participant-invites' || $route.name === 'favorites-tenders' || $route.name === 'tenders' || $route.name === 'contragent' || $route.name === 'tenders-group') ? 'tender' : `${$route.name.replace('-tender', '')}-tender`, params: { id: tender.id } }"
                 class="tenders__item-title"
             >
                 {{ tender.name }}
