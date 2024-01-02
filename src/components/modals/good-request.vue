@@ -24,30 +24,30 @@
             >
                 <div class="good__request">
                     <div class="good__request-content text">
-                        <p><strong class="m--color-green">{{ good.organization.name }}</strong> ответит вам на контактную почту или телефон.</p>
+                        <p><strong class="m--color-green">{{ good.marketplace_user.name }}</strong> ответит вам на контактную почту или телефон.</p>
                         <p>Если через некоторое время ответа не будет, попробуйте связаться с контрагентом самостоятельно:</p>
                     </div>
                     <div class="good__request-organization">
                         <div 
-                            v-if="good.organization.website"
+                            v-if="good.marketplace_user.website"
                             class="good__request-organization-item"
                         >
                             <span>Сайт</span> <a
-                                :href="good.organization.website"
+                                :href="good.marketplace_user.website"
                                 target="_blank"
-                            >{{ good.organization.website }}</a>
+                            >{{ good.marketplace_user.website }}</a>
                         </div>
                         <div 
-                            v-if="good.organization.contact_phone"
+                            v-if="good.marketplace_user.contact_phone"
                             class="good__request-organization-item"
                         >
-                            <span>Контактный телефон</span> {{ good.organization.contact_phone }}
+                            <span>Контактный телефон</span> {{ good.marketplace_user.contact_phone }}
                         </div>
                         <div 
-                            v-if="good.organization.contact_email"
+                            v-if="good.marketplace_user.contact_email"
                             class="good__request-organization-item"
                         >
-                            <span>Контактный email</span> {{ good.organization.contact_email }}
+                            <span>Контактный email</span> {{ good.marketplace_user.contact_email }}
                         </div>
                     </div>
                 </div>
@@ -68,8 +68,8 @@
             >
                 <div class="text">
                     <p>
-                        Организация <router-link :to="{ name: 'contragent', params: { id: good.organization.id } }">
-                            {{ good.organization.name }}
+                        Организация <router-link :to="{ name: 'contragent', params: { id: good.marketplace_user.id } }">
+                            {{ good.marketplace_user.name }}
                         </router-link> получит уведомление о том, что вам интересен товар <strong>{{ good.name }}</strong>.
                     </p>
                     <p>Также вы можете оставить комментарий — например, какой объем товара вам нужен, или как вам будет удобнее связаться для дальнейшего сотрудничества.</p>
@@ -111,7 +111,7 @@
 
 <script>
     import { urlPath } from '@/settings';
-    import { product as productApi } from "@/services";
+    import { cabinet } from "@/services";
     export default {
         props: {
             showModal: {
@@ -162,7 +162,7 @@
                         outerClass: '$reset modal-form__field m--width-100',
                     }, {
                         $formkit: 'textarea',
-                        name: 'description',
+                        name: 'comment',
                         label: 'Комментарий',
                         placeholder: '',
                         // validation: 'required',
@@ -197,8 +197,8 @@
                 console.log(formData);
                 this.showLoaderSending = true;
                 //this.loading = true;
-                let params = Object.assign({}, this.formValues);
-                productApi.requestProduct(this.good.slug, params).then(res => {
+                let params = Object.assign({}, this.formValues, { product: this.good.id });
+                cabinet.createProductOrder(params).then(res => {
                     this.showLoaderSending = false;
                     this.loading = false;
                     this.requestSended = true;

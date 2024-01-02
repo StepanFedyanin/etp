@@ -5,12 +5,12 @@
                 :class="['container']"
             >
                 <div class="auth__block">
-                    <div class="auth__tabs tabs-buttons m--50">
+                    <div class="auth__tabs tabs">
                         <a 
                             v-for="item in recoveryTabs"
                             :key="`tab-${item.name}`"
                             href="#" 
-                            :class="['tabs-buttons__item', item.name === $route.name ? 'is-active' : '']"
+                            :class="['tabs__item', item.name === $route.name ? 'is-active' : '']"
                             @click.prevent="next(item.name)"
                         >
                             {{ item.title }}

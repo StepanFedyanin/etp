@@ -30,7 +30,6 @@
                     </div>
                 </div>
                 <div class="tenders__groups groups">
-
                     <div class="groups__main">
                         <div class="groups__block">
                             <div class="groups__block-title h2">Тендеры по отраслям 
@@ -41,7 +40,7 @@
                                     <span>Все отрасли</span>
                                 </router-link>
                             </div>
-                            <template v-if="showLoaderSending.tenders">
+                            <template v-if="showLoaderSending.groups">
                                 <div class="groups__loader loader">
                                     <div class="spinner" /> Загрузка данных
                                 </div>
@@ -49,6 +48,7 @@
                             <template v-else-if="groups && groups.count">
                                 <blockGroups 
                                     :groups="groups.results"
+                                    routeName="tenders"
                                 />
                             </template>
                         </div>
@@ -115,7 +115,7 @@
 
 <script>
     import { category as categoryApi, tender as tenderApi } from "@/services";
-    import Search from '@/components/app-search.vue';
+    import Search from '@/components/tenders-search.vue';
     import Pagination from '@/components/pagination.vue';
     import blockContent from '@/components/block-content.vue';
     import blockGroups from '@/components/block-groups.vue';

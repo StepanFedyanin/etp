@@ -20,11 +20,12 @@ import CabinetFavorites from '@/views/cabinet/favorites';
 import CabinetFavoritesContragents from '@/views/cabinet/favorites-contragents.vue';
 import CabinetFavoritesTenders from '@/views/cabinet/favorites-tenders.vue';
 import CabinetInvite from '@/views/cabinet/invite';
+import CabinetMarket from '@/views/cabinet/market';
+import CabinetMarketGoodAdd from '@/views/cabinet/market-good-add.vue';
+import CabinetMarketGoodEdit from '@/views/cabinet/market-good-edit.vue';
 import CabinetNotifications from '@/views/cabinet/notifications';
 import CabinetNotificationsSettings from '@/views/cabinet/notifications-settings.vue'; //? Возможно не используется
 import CabinetOrganization from '@/views/cabinet/organization';
-import CabinetOrganizationGoodAdd from '@/views/cabinet/organization-good-add.vue';
-import CabinetOrganizationGoodEdit from '@/views/cabinet/organization-good-edit.vue';
 import CabinetOrganizationPersonAdd from '@/views/cabinet/organization-person-add.vue';
 import CabinetOrganizationRegistration from '@/views/cabinet/organization-registration.vue';
 import CabinetParticipant from '@/views/cabinet/participant';
@@ -50,6 +51,8 @@ import contragent from '@/views/Contragent';
 //import group from '@/views/Group';
 import product from '@/views/Product';
 import products from '@/views/Products';
+import productsGroups from '@/views/ProductsGroups';
+import productsGroup from '@/views/ProductsGroup';
 import tender from '@/views/Tender';
 import tenders from '@/views/Tenders';
 import tendersGroups from '@/views/TendersGroups';
@@ -57,6 +60,17 @@ import tendersGroup from '@/views/TendersGroup';
 
 const routes = [
     {
+        path: '/',
+        name: 'home',
+        component: home,
+        meta: { 
+            title: 'Электронная торговая площадка',
+            description: 'ЭТП TUGAN — Электронная торговая площадка для проведения тендеров, онлайн торгов и аукционов. ✅Официальный сайт электронной торговой платформы TUGAN. ☎ +7 (343) 344-83-83',
+            keywords: 'электронная торговая площадка, торговая площадка, электронные торги, электронная торговая платформа? проведение тендеров, конкурс, аукцион, закупка, Туган, Tugan',
+            showSidebarAuth: true
+        },
+        props: true
+    }, {
         path: '/auth',
         name: 'auth',
         component: auth,
@@ -80,16 +94,6 @@ const routes = [
         component: about,
         meta: { title: 'О площадке' },
         props: true,
-    }, {
-        path: '/',
-        name: 'home',
-        component: home,
-        meta: { 
-            title: 'Электронная торговая площадка',
-            description: 'ЭТП TUGAN — Электронная торговая площадка для проведения тендеров, онлайн торгов и аукционов. ✅Официальный сайт электронной торговой платформы TUGAN. ☎ +7 (343) 344-83-83',
-            keywords: 'электронная торговая площадка, торговая площадка, электронные торги, электронная торговая платформа? проведение тендеров, конкурс, аукцион, закупка, Туган, Tugan'
-        },
-        props: true
     }, {
         path: '/info/:slug',
         name: 'page',
@@ -177,25 +181,38 @@ const routes = [
                 },
                 props: true,
             }, {
-                path: 'organization/good-add',
-                name: 'organization-good-add',
-                component: CabinetOrganizationGoodAdd,
+                path: 'market',
+                name: 'market',
+                component: CabinetMarket,
                 meta: { 
-                    title: 'Добавить товар', 
-                    breadcrumbs: ['cabinet'],
-                    requiresAuth: true 
-                },
-                props: false,
-            }, {
-                path: 'organization/good-edit/:slug',
-                name: 'organization-good-edit',
-                component: CabinetOrganizationGoodEdit,
-                meta: { 
-                    title: 'Редактирование товара',
+                    title: 'Мой маркет', 
                     breadcrumbs: ['cabinet'],
                     requiresAuth: true 
                 },
                 props: true,
+                children: [
+                    {
+                        path: 'good-add',
+                        name: 'market-good-add',
+                        component: CabinetMarketGoodAdd,
+                        meta: { 
+                            title: 'Добавить товар', 
+                            breadcrumbs: ['cabinet'],
+                            requiresAuth: true 
+                        },
+                        props: false,
+                    }, {
+                        path: 'good-edit/:goodId',
+                        name: 'market-good-edit',
+                        component: CabinetMarketGoodEdit,
+                        meta: { 
+                            title: 'Редактирование товара',
+                            breadcrumbs: ['cabinet'],
+                            requiresAuth: true 
+                        },
+                        props: true,
+                    }
+                ]
             }, {
                 path: 'chat',
                 name: 'chat',
@@ -661,6 +678,18 @@ const routes = [
         props: true,
         children: [
             {
+                path: 'groups',
+                name: 'products-groups',
+                component: productsGroups,
+                meta: { title: 'Категории товаров', showSidebarAuth: true },
+                props: true,
+            }, {
+                path: 'groups/:slug',
+                name: 'products-group',
+                component: productsGroup,
+                meta: { title: 'Категория товаров', showSidebarAuth: true },
+                props: true,
+            }, {
                 path: '/market/:slug',
                 name: 'product',
                 component: product,

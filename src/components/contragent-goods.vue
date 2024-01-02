@@ -89,9 +89,10 @@
                 let params = {
                     limit: this.goodsLimit,
                     offset: this.goodsOffset,
+                    seller: this.contragent.marketplace_user
                 };
                 this.showLoaderSending = true;
-                userApi.getOrganizationProducts(this.contragent.id, params).then(res => {
+                productApi.getProducts(params).then(res => {
                     if (!this.goods) {
                         this.goods = res.results;
                     } else {

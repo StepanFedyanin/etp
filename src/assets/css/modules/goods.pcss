@@ -14,7 +14,7 @@
         line-height: 24px;
         text-transform: uppercase;
         margin-bottom: 24px;
-        color: $color-gray-82;
+        color: $color-gray-66;
 
         &.m--padding-top {
             margin-top: 32px;
@@ -35,10 +35,16 @@
             font-size: 0.875rem;
             line-height: 1.25rem;
             text-transform: uppercase;
+            text-decoration: none;
             color: $color-gray-66;
             cursor: pointer;
             align-self: center;
             border: 1px solid $color-gray-dd;
+            transition: all 0.5s ease;
+
+            &:hover {
+                color: $color-green;
+            }
 
             > span {
                 position: relative;
@@ -57,6 +63,12 @@
                     background-size: contain;
                 }
 
+                &.m--plus {
+                    &:before {
+                        background-image: url('./assets/img/icons/icon-plus.svg');
+                    }
+                }
+
                 span {
                     color: $color-green;
                 }
@@ -69,6 +81,7 @@
         display: flex;
         flex-wrap: wrap;
         gap: 1rem;
+        width: 100%;
         /*
         padding: 24px 28px 8px;
         margin-bottom: 32px;
@@ -155,12 +168,58 @@
             }
         }
 
+        &-params {
+            display: flex;
+            gap: 0.75rem;
+            font-size: 0.75rem;
+            font-weight: 500;
+            line-height: 1rem;
+            color: $color-gray-33;
+            margin-bottom: 1rem;
+        }
+
+        &-param {
+            position: relative;
+            padding-left: 1.25rem;
+            /*flex-grow: 1;*/
+
+            &:before {
+                content: '';
+                position: absolute;
+                top: 50%;
+                left: 0;
+                transform: translateY(-50%);
+                width: 1rem;
+                height: 1rem;
+                background: $color-green;
+                mask-size: contain;
+            }
+
+            &.m--count:before {
+                mask: url('./assets/img/icons/icon-bag.svg') 50% 50% no-repeat;
+            }
+
+            &.m--nds:before {
+                mask: url('./assets/img/icons/icon-percent.svg') 50% 50% no-repeat;
+            }
+
+            &.m--buyer:before {
+                mask: url('./assets/img/icons/icon-card-list.svg') 50% 50% no-repeat;
+            }
+        }
+
         &-price {
             font-weight: 500;
             font-size: 1.125rem;
             line-height: 1.125rem;
             margin-bottom: 0.25rem;
             color: $color-gray-33;
+
+            &-unit {
+                font-size: 0.75rem;
+                font-weight: 400;
+                line-height: 1rem;
+            }
         }
 
         &-desc {
@@ -179,9 +238,9 @@
 
         &-category {
             font-size: 0.75rem;
-            font-weight: 400;
+            font-weight: 500;
             color: $color-gray-66;
-            margin-bottom: 0.5rem;
+            margin-bottom: 0.25rem;
             text-decoration: none;
             white-space: nowrap;
             text-overflow: ellipsis;
@@ -191,10 +250,10 @@
                 white-space: normal;
             }
 
-            &:hover {
+            a&:hover {
                 text-decoration: underline;
             }
-
+            /*
             &:before,
             &:hover:before {
                 content: '/';
@@ -202,11 +261,12 @@
                 margin-right: 0.25rem;
                 text-decoration: none;
             }
+            */
         }
 
         &-organozation {
             font-size: 0.75rem;
-            font-weight: 400;
+            font-weight: 500;
             color: $color-gray-66;
             margin-bottom: 0.5rem;
             text-decoration: none;
@@ -218,7 +278,7 @@
                 white-space: normal;
             }
 
-            &:hover {
+            a&:hover {
                 text-decoration: underline;
             }
         }
@@ -306,6 +366,18 @@
             @mixin select--with-arrow;
             padding-right: 36px;
         }
+    }
+
+    &__search {
+        padding-bottom: 1.5rem;
+
+        &-form {
+            margin-bottom: 1.5rem;
+        }
+    }
+
+    &__hint&__hint {
+        max-width: none;
     }
 
     &__form {

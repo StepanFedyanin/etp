@@ -10,8 +10,8 @@
                         <a 
                             v-if="user?.id"
                             href="#"
-                            class="header__burger"
-                            :class="showSidebar ? 'is-active' : ''"
+                            :class="['header__burger', showSidebar && 'is-active']"
+                            aria-label="Открыть меню"
                             @click.prevent="onClickBurger"
                         />
                     </q-no-ssr>
@@ -19,9 +19,12 @@
                         <router-link
                             :to="{ name: 'home' }"
                             class="header__logo-link"
+                            aria-label="На главную страницу"
                         >
                             <img
                                 src="@/assets/img/logo.svg"
+                                width="240"
+                                height="60"
                                 alt=""
                                 class="header__logo-img"
                             >
@@ -378,10 +381,21 @@
                             role: 'all',
                             title: 'Маркет',
                         }, {
-                            name: 'organization',
+                            name: 'market',
+                            hash: '#public',
+                            role: 'all',
+                            title: 'Публичный профиль',
+                            condition: 'is_access_product'
+                        }, {
+                            name: 'market',
                             hash: '#goods',
                             role: 'all',
                             title: 'Товары'
+                        }, {
+                            name: 'market',
+                            hash: '#orders',
+                            role: 'all',
+                            title: 'Заказы'
                         }],
                         [{
                             name: null,
@@ -451,7 +465,7 @@
                 this.showPopup = false;
                 this.$store.dispatch('deathUser');
                 this.$store.dispatch('setStepRegistration', 1);
-                this.$router.go();
+                this.$router.push({ name: 'auth' });
             },
         }
     };

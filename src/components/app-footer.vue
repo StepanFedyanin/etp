@@ -6,9 +6,12 @@
                     <router-link
                         :to="{ name: 'home' }"
                         class="footer__logo-link"
+                        aria-label="На главную страницу"
                     >
                         <img
                             src="@/assets/img/logo.svg"
+                            width="240"
+                            height="60"
                             alt=""
                             class="footer__logo-img"
                         >

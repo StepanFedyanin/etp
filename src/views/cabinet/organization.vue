@@ -31,39 +31,59 @@
                     v-if="currentTabsItem === 'public'"
                     class="organization__tab"
                 >
+                    <blockContent
+                        classModifier="m--top"
+                        place="top"
+                        name="organization-public"
+                    />
                     <OrganizationPublic
                         v-if="organization"
                         :loading="loading"
                         :organization="organization"
                         @getMyProfile="getMyProfile"
                     />
-                </div>
-                <div 
-                    v-if="currentTabsItem === 'goods'"
-                    class="organization__tab"
-                >
-                    <OrganizationGoods
-                        v-if="organization"
-                        :organization="organization"
-                        blockClass="m--block"
+                    <blockContent
+                        classModifier="m--bottom"
+                        place="bottom"
+                        name="organization-public"
                     />
                 </div>
                 <div 
                     v-if="currentTabsItem === 'props'"
                     class="organization__tab"
                 >
+                    <blockContent
+                        classModifier="m--top"
+                        place="top"
+                        name="organization-props"
+                    />
                     <OrganizationProps
                         v-if="organization"
                         :organization="organization"
+                    />
+                    <blockContent
+                        classModifier="m--bottom"
+                        place="bottom"
+                        name="organization-props"
                     />
                 </div>
                 <div 
                     v-if="currentTabsItem === 'persons'"
                     class="organization__tab"
                 >
+                    <blockContent
+                        classModifier="m--top"
+                        place="top"
+                        name="organization-persons"
+                    />
                     <OrganizationPersons
                         v-if="organization"
                         :organization="organization"
+                    />
+                    <blockContent
+                        classModifier="m--bottom"
+                        place="bottom"
+                        name="organization-persons"
                     />
                 </div>
                 <div 
@@ -116,21 +136,19 @@
 
 <script>
     import { user as api, cabinet } from "@/services";
-    //import blockOrganization from '@/components/block-organization.vue';
     import blockTenderMini from '@/components/block-tender-mini.vue';
-    import OrganizationGoods from '@/components/organization-goods.vue';
+    import blockContent from '@/components/block-content.vue';
     import OrganizationPublic from '@/components/forms/organization-public.vue';
     import OrganizationProps from '@/components/forms/organization-props.vue';
     import OrganizationPersons from '@/components/organization-persons.vue';
 
     export default {
         components: {
-            //blockOrganization,
             OrganizationPersons,
-            OrganizationGoods,
             OrganizationPublic,
             OrganizationProps,
             blockTenderMini,
+            blockContent
         },
         data() {
             return {
@@ -156,9 +174,6 @@
                     label: 'Виды деятельности',
                     name: 'activities'
                 */
-                }, {
-                    label: 'Товары',
-                    name: 'goods'
                 }, {
                     label: 'Реквизиты',
                     name: 'props'

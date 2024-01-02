@@ -1,16 +1,14 @@
 <template>
     <div class="app__main">
         <div class="registration">
-            <div 
-                :class="['container m--1460']"
-            >
+            <div :class="['container m--1460']">
                 <div class="registration__block">
-                    <div class="registration__tabs tabs-buttons m--50">
+                    <div class="registration__tabs tabs m--50">
                         <a 
                             v-for="item in regTabs"
                             :key="`tab-${item.name}`"
                             href="#" 
-                            :class="['tabs-buttons__item', item.name === $route.name ? 'is-active' : '']"
+                            :class="['tabs__item', item.name === $route.name ? 'is-active' : '']"
                             @click.prevent="next(item.name)"
                         >
                             {{ item.title }}
@@ -35,7 +33,6 @@
                     </FormKit>
                 </div>
             </div>
-
         </div>
     </div>
 </template>
@@ -53,6 +50,7 @@
     }
 
     export default {
+        name: 'Registration',
         components: {
             //regSearchForm,
             //regOrganizationForm,

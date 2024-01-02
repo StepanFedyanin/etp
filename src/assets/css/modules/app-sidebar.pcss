@@ -51,7 +51,8 @@
         max-height: calc(100vh - 96px);
         margin-bottom: 6rem;
         overflow-y: auto;
-        /*scrollbar-gutter: stable;*/
+        scrollbar-gutter: stable;
+        /*margin-right: -0.5rem;*/
         @mixin scrollbar $color-shadow, $color-green, 10px;
 
         &-devider {
@@ -59,9 +60,24 @@
             margin: 10px 0;
             border-bottom: 1px solid $color-green;
         }
+
+        &-title {
+            font-size: 0.75rem;
+            line-height: 1.5rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            color: $color-gray-66;
+            border-bottom: 1px solid $color-gray-dd;
+            margin: 0 1.25rem 0.25rem;
+
+            &:not(:first-child) {
+                margin-top: 1rem;
+            }
+        }
+
         &-item {
             position: relative;
-            text-transform: uppercase;
+            /*text-transform: uppercase;*/
             margin-bottom: 0.5rem;
 
             &.is-opened &-arrow {
@@ -165,6 +181,16 @@
             &.m--icon-peoples:before {
                 -webkit-mask-image: url('./assets/img/icons/icon-peoples.svg');
                 mask-image: url('./assets/img/icons/icon-peoples.svg');
+            }
+
+            &.m--icon-seller:before {
+                -webkit-mask-image: url('./assets/img/icons/icon-box-seam.svg');
+                mask-image: url('./assets/img/icons/icon-box-seam.svg');
+            }
+
+            &.m--icon-market:before {
+                -webkit-mask-image: url('./assets/img/icons/icon-card-list.svg');
+                mask-image: url('./assets/img/icons/icon-card-list.svg');
             }
 
             /* &.m--icon-news:before {

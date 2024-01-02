@@ -1,131 +1,222 @@
 <template>
     <div :class="['good contragent']">
         <div :class="['container']">
-            <app-breadcrumbs 
-                v-if="!showLoaderSending.product"
-                :breadcrumbs="[
-                    { name: 'Главная', route: { name: 'home' } },
-                    { name: 'Товары и услуги', route: { name: 'products' } },
-                    { name: good.category_detail.parent?.name, route: { name: 'tenders-group', params: { slug: good.category_detail.parent?.slug || 0 } } },
-                    { name: good.category_detail.name, route: { name: 'tenders-group', params: { parentslug: good.category_detail.parent?.slug || 0, slug: good.category_detail.slug } } },
-                ]"
-            />
-            <template
-                v-if="showLoaderSending.product"
-            >
+            <template v-if="showLoaderSending.product">
                 <div class="good__loader loader">
                     <div class="spinner" /> Загрузка данных о товаре
                 </div>
             </template>
-            <template
-                v-else-if="good"
-            >
-                <h1 
-                    class="good__title h1"
-                >
-                    {{ good.name }}
-                </h1>
-                <div class="good__block">
+            <template v-else-if="good.id">
+                <app-breadcrumbs 
+                    v-if="!showLoaderSending.product"
+                    :breadcrumbs="[
+                        { name: 'Главная', route: { name: 'home' } },
+                        { name: 'Товары и услуги', route: { name: 'products' } },
+                        ...goodBreadcrumbs
+                    ]"
+                />
+                <blockContent
+                    classModifier="m--top"
+                    place="top"
+                    name="global"
+                />
+                <blockContent
+                    classModifier="m--top"
+                    place="top"
+                    :name="$route.name"
+                />
+                <div class="good__block m--top">
                     <div class="good__block-left">
                         <div class="good__block-card">
-                            <div class="good__params">
-                                <div 
-                                    v-if="good.organization?.id" 
-                                    class="good__param"
+                            <h1 class="good__title">{{ good.name }}</h1>
+                            <div class="good__info">
+                                <div v-if="good.min_count" class="good__info-param m--count">Заказ от {{ good.min_count }} ед.</div>
+                                <div v-if="good.nds" class="good__info-param m--nds">НДС: {{ good.nds }}</div>
+                                <div v-if="good.type_of_buyer" class="good__info-param m--buyer">{{ good.type_of_buyer === 'organization' ? 'B2B' : 'B2C' }}</div>
+                            </div>
+                            <div class="good__price">
+                                <div class="good__price-value">
+                                    {{ $helpers.toPrice(good.price, { sign: good.currency_detail }) }}
+                                    <span>/ {{ good.unit }}</span>
+                                </div>
+                                <button 
+                                    v-if="!user || !user.id || user.marketplace_user?.id !== good.marketplace_user?.id"
+                                    class="button button-green good__price-button"
+                                    @click.prevent="requestGood()"
                                 >
-                                    <div class="good__param-name">
-                                        Поставщик
-                                    </div>
-                                    <router-link 
-                                        :to="{ name: 'contragent', params: { id: good.organization.id } }"
-                                        class="good__param-data"
-                                    >
-                                        {{ good.organization.name }}
-                                    </router-link>
+                                    Заказать
+                                </button>
+                            </div>
+                            <div class="h2">Характеристики</div>
+                            <div class="good__params">
+                                <div v-if="good.type_of_buyer" class="good__param">
+                                    <div class="good__param-name">Заказ</div>
+                                    <div class="good__param-data">{{ good.type_of_buyer === 'organization' ? 'Для юридических лиц' : 'Для физических лиц' }}</div>
                                 </div>
-
-                                <div class="good__param">
-                                    <div class="good__param-name">
-                                        Единица измерения
-                                    </div>
-                                    <div class="good__param-data">
-                                        {{ good.unit }}
-                                    </div>
+                                <div v-if="good.min_count" class="good__param">
+                                    <div class="good__param-name">Минимальный заказ</div>
+                                    <div class="good__param-data">{{ good.min_count }} {{ good.unit }}</div>
                                 </div>
-
-                                <div class="good__param">
-                                    <div class="good__param-name">
-                                        Дата обновления
-                                    </div>
-                                    <div class="good__param-data">
-                                        {{ $helpers.formatDate(new Date(good.updated), 'DD.MM.YYYY', 'Europe/Moscow') }}
-                                    </div>
+                                <div v-if="good.unit" class="good__param">
+                                    <div class="good__param-name">Единица измерения</div>
+                                    <div class="good__param-data">{{ good.unit }}</div>
                                 </div>
-
-                                <div class="good__param">
-                                    <div class="good__param-name">
-                                        Код позиции ЭТП
-                                    </div>
-                                    <div class="good__param-data">
-                                        {{ good.category_detail.parent?.code }}-{{ good.category_detail.code }}-{{ good.id }}
-                                    </div>
+                                <div v-if="good.nds" class="good__param">
+                                    <div class="good__param-name">НДС</div>
+                                    <div class="good__param-data">{{ good.nds }}</div>
+                                </div>
+                                <div v-if="good.delivery_min_cost || good.delivery_time" class="good__param">
+                                    <div class="good__param-name">Доставка</div>
+                                    <div class="good__param-data">{{ good.delivery_min_cost ? `от ${$helpers.toPrice(good.delivery_min_cost, { sign: good.currency_detail })}` : `` }} {{ good.delivery_time ? `(${good.delivery_time})` : `` }}</div>
+                                </div>
+                                <div v-if="good.marketplace_user?.name" class="good__param">
+                                    <div class="good__param-name">Поставщик</div>
+                                    <div class="good__param-data">{{ good.marketplace_user?.name }}</div>
+                                </div>
+                                <div v-if="good.brand" class="good__param">
+                                    <div class="good__param-name">Бренд</div>
+                                    <div class="good__param-data">{{ good.brand }}</div>
+                                </div>
+                                <div v-if="good.article" class="good__param">
+                                    <div class="good__param-name">Артикул</div>
+                                    <div class="good__param-data">{{ good.article }}</div>
                                 </div>
                             </div> 
-                            <div 
-                                v-if="good.description"
-                                class="good__block-info"
-                            >
-                                <div class="good__block-title">
-                                    О товаре
-                                </div>
-                                <div 
-                                    class="good__block-content"
-                                    v-html="good.description"
-                                />
-                            </div>                           
-                        </div>
-                        <div 
-                            class="good__price"
-                        >
-                            <div class="good__price-value">
-                                {{ $helpers.toPrice(good.price, { sign: good.currency_detail }) }}
-                            </div>
-                            <button 
-                                v-if="!user || !user.id || user.organization?.id !== good.organization.id"
-                                class="button button-green good__price-button"
-                                @click.prevent="requestGood()"
-                            >
-                                Отправить заявку
-                            </button>
                         </div>
                     </div>
                     <div class="good__block-right">
-                        <div 
-                            class="good__photo"
-                            :class="good.photo ? '' : 'm--no-photo'"
-                        >
+                        <div :class="['good__photo', !good.photos?.length && 'm--no-photo']">
                             <div class="good__photo-inner">
-                                <template
-                                    v-if="good.photo"
-                                >
+                                <template v-if="good.photos?.length">
                                     <img 
-                                        :src="good.photo"
+                                        :src="good.photos[currentPhoto].photo"
                                         :alt="good.name"
+                                        @click.prevent="showPhotoGoodModal = true;"
                                     >
                                 </template>
                             </div>
                         </div>
+
+                        <div v-if="good.photos?.length > 1" class="good__thumbs">
+                            <div 
+                                v-for="(item, index) in good.photos"
+                                :key="`thumb-${item.id}`"
+                                :class="['good__thumbs-item', (index === currentPhoto) && 'is-active']"
+                                @click.prevent="changeCurrentPhoto(index)"
+                            >
+                                <div class="good__thumbs-item-inner">
+                                    <img 
+                                        :src="item.photo"
+                                        :alt="good.name"
+                                    >
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="good__info m--second">
+                            <div class="good__info-param m--no-icon"># {{ good.id }}</div>
+                            <div class="good__info-param m--views">{{ good.views }}</div>
+                            <div class="good__info-param m--updated">{{ $helpers.formatDate(new Date(good.updated), 'DD.MM.YY', 'Europe/Moscow') }}</div>
+                        </div>
+
+                        <div class="good__menu">
+                            <a v-if="good.description" @click.prevent="scrollTo('about')" href="#" class="good__menu-link">О товаре</a>
+                            <a v-if="good.delivery_terms || good.payment_terms" @click.prevent="scrollTo('delivery')" href="#" class="good__menu-link">Доставка и оплата</a>
+                            <a v-if="good.marketplace_user" @click.prevent="scrollTo('organization')" href="#" class="good__menu-link">О поставщике</a>
+                            <a v-if="hints.length" @click.prevent="scrollTo('help')" href="#" class="good__menu-link">Как сделать заказ?</a>
+                        </div>
                     </div>
                 </div>
 
-                <div class="good__contragent">
-                    <div class="good__contragent-title">
-                        О поставщике
+                <div v-if="good.description" class="good__block" ref="about">
+                    <div class="good__block-info">
+                        <div class="good__block-title h2">О товаре</div>
+                        <div 
+                            class="good__block-content"
+                            v-html="good.description?.replace(/\n/g, '<br/>')"
+                        />
                     </div>
-                    <blockContragent 
-                        :contragent="good.organization"
-                        @toggleFavorite="toggleFavorite"
-                    />
+                </div>
+                <div v-if="good.delivery_terms || good.payment_terms" class="good__block" ref="delivery">
+                    <div class="good__block-info">
+                        <div class="good__block-title h2">Доставка и оплата</div>
+                        <div 
+                            v-if="good.delivery_terms"
+                            class="good__block-content"
+                            v-html="good.delivery_terms?.replace(/\n/g, '<br/>')"
+                        />
+                        <div 
+                            v-if="good.payment_terms"
+                            class="good__block-content"
+                            v-html="good.payment_terms?.replace(/\n/g, '<br/>')"
+                        />
+                    </div>
+                </div>
+                <div v-if="good.marketplace_user" class="good__contragent" ref="organization">
+                    <div class="good__contragent-title h2">
+                        <div>Продавец - {{ good.marketplace_user?.name }}</div>
+                        <a 
+                            href="#"
+                            class="good__contragent-title-more m--disabled"
+                        >
+                            <span>На страницу продавца</span>
+                        </a>
+                    </div>
+                    <div class="good__block m--reverse">
+                        <div class="good__block-left">
+                            <div class="good__params good__contragent-params">
+                                <div v-if="good.marketplace_user?.city" class="good__param">
+                                    <div class="good__param-name">Город</div>
+                                    <div class="good__param-data">{{ good.marketplace_user?.city }}</div>
+                                </div>
+                                <div v-if="good.marketplace_user?.phone" class="good__param">
+                                    <div class="good__param-name">Контактный телефон</div>
+                                    <a :href="`tel:${good.marketplace_user?.phone}`" class="good__param-data">{{ good.marketplace_user?.phone }}</a>
+                                </div>
+                                <div v-if="good.marketplace_user?.email" class="good__param">
+                                    <div class="good__param-name">Контактный email</div>
+                                    <a :href="`mailto:${good.marketplace_user?.email}`" class="good__param-data">{{ good.marketplace_user?.email }}</a>
+                                </div>
+                                <div v-if="good.marketplace_user?.site" class="good__param">
+                                    <div class="good__param-name">Сайт</div>
+                                    <a :href="good.marketplace_user?.site" target="_blank" class="good__param-data">{{ good.marketplace_user?.site }}</a>
+                                </div>
+                            </div>
+                            <div 
+                                v-if="good.marketplace_user?.about"
+                                class="good__block-content"
+                                v-html="good.marketplace_user?.about?.replace(/\n/g, '<br/>')"
+                            />
+
+                            <!--blockContragent 
+                                :contragent="good.organization"
+                                @toggleFavorite="toggleFavorite"
+                            /-->
+                        </div>
+                        <div class="good__block-right">
+                            <div v-if="good.marketplace_user?.logo" class="good__contragent-logo">
+                                <img 
+                                    :src="good.marketplace_user?.logo" 
+                                    :alt="good.marketplace_user?.name" 
+                                />
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div v-if="hints.length" class="good__block" ref="help">
+                    <div class="good__block-info">
+                        <div 
+                            v-for="hint in hints"
+                            :key="`hint-${hint.id}`"
+                            class="app__content-hint hint"
+                        >
+                            <div v-if="hint.subject" :class="['hint__title', `m--${hint.type}`]">{{ hint.subject }}</div>
+                            <div 
+                                class="hint__content text"
+                                v-html="hint.content"
+                            />
+                        </div>
+                    </div>
                 </div>
                 <template v-if="goodsOrganization.count">
                     <div class="good__list goods m--block">
@@ -150,7 +241,7 @@
                             <button 
                                 v-if="goodsOrganization.count > goodsOrganization.results?.length"
                                 class="button button-outline-green goods__more"
-                                @click.prevent="getOrganizationGoods()"
+                                @click.prevent="getSellerGoods()"
                             >
                                 показать еще
                             </button>
@@ -188,6 +279,16 @@
                     </div>
                 </template>
             </template>
+            <blockContent
+                classModifier="m--bottom"
+                place="bottom"
+                name="global"
+            />
+            <blockContent
+                classModifier="m--bottom"
+                place="bottom"
+                :name="$route.name"
+            />
         </div>
         <ModalGoodRequest
             v-if="showRequestGoodModal"
@@ -195,16 +296,24 @@
             :showModal="showRequestGoodModal"
             @hideModal="hideRequestGoodModal"
         />
+        <ModalGoodPhoto
+            v-if="showPhotoGoodModal"
+            :photo="good.photos[currentPhoto]"
+            :showModal="showPhotoGoodModal"
+            @hideModal="hidePhotoGoodModal"
+        />
     </div>
 </template>
 
 <script>
     //import { category as api } from "@/services"
     import { urlPath } from '@/settings';
-    import { user as api, product as productApi, cabinet } from "@/services";
-    import blockContragent from '@/components/block-contragent.vue';
+    import { user as api, product as productApi, cabinet, common } from "@/services";
+    //import blockContragent from '@/components/block-contragent.vue';
     import blockGoodsItem from '@/components/block-goods-item.vue';
+    import blockContent from '@/components/block-content.vue';
     import ModalGoodRequest from '@/components/modals/good-request.vue';
+    import ModalGoodPhoto from '@/components/modals/good-photo.vue';
 
     export default {
         name: 'Product',
@@ -234,13 +343,16 @@
                     store.dispatch('fetchDataByKey', { data: goodsCategory, key: 'goodsCategory' });
                 });
             }).catch(err => {
-                if (err.response.status === 404) store.dispatch('showError', err.response.status);
+                store.dispatch('fetchDataByKey', { data: {}, key: 'good' });
+                if (err.response?.status === 404) store.dispatch('showError', err.response?.status);
             });
         },
         components: {
-            blockContragent,
+            //blockContragent,
             blockGoodsItem,
-            ModalGoodRequest
+            blockContent,
+            ModalGoodRequest,
+            ModalGoodPhoto
         },
         props: {
             slug: {
@@ -251,6 +363,8 @@
         data() {
             return {
                 urlPath,
+                currentPhoto: 0,
+                hints: [],
                 //good: {},
                 //goodsOrganization: null,
                 //goodsOrganizationTotal: null,
@@ -264,6 +378,7 @@
                     product: process.env.CLIENT
                 },
                 showRequestGoodModal: false,
+                showPhotoGoodModal: false,
             }
         },
         computed: {
@@ -279,6 +394,11 @@
             goodsCategory() {
                 return this.$store.state.data?.goodsCategory || {};
             },
+            goodBreadcrumbs() {
+                return this.$store.state.data?.good.breadcrumbs.map(item => {
+                    return { name: item.name, route: { name: 'products-group', params: { slug: item.slug } } };
+                })
+            }
         },
         watch: {
             slug: {
@@ -305,21 +425,32 @@
                     this.$store.dispatch('fetchDataByKey', { data: good, key: 'good' });
                     this.$store.dispatch('setMeta', good);
                     this.showLoaderSending.product = false;
-                    this.getOrganizationGoods();
+                    this.getSellerGoods();
                     this.getCategoryGoods();
+                    this.getHint('product_howtobuy');
                 }).catch(err => {
                     this.$store.dispatch('fetchDataByKey', { data: {}, key: 'good' });
                     this.$store.dispatch('setMeta', {});
-                    if (err.response.status === 404) this.$store.dispatch('showError', err.response.status)
-                    this.showLoaderSending.product = false;
+                    //if (err.response.status === 404) this.$store.dispatch('showError', err.response.status)
+                    if (err.response?.status === 404) this.$router.replace({ name: 'page404' });
+                    //this.showLoaderSending.product = false;
                 });
             },
-            getOrganizationGoods() {
+            getHint(slug) {
+                let params = { slug: slug };
+                common.getHint(params).then(res => {
+                    this.hints = res.results;
+                }).catch(err => {
+                    console.error(err)
+                })
+            },
+            getSellerGoods() {
+                if (!this.good.marketplace_user?.id) return;
                 this.showLoaderSending.organization = true;
                 let params = {
                     limit: this.goodsOrganizationLimit,
                     offset: this.goodsOrganizationOffset,
-                    organization: this.good.organization.id,
+                    seller: this.good.marketplace_user?.id,
                     exclude_slug: this.slug
                 };
                 productApi.getProducts(params).then(res => {
@@ -385,7 +516,15 @@
                     //this.$emit('getTenderData');
                 }
             },
-
+            hidePhotoGoodModal() {
+                this.showPhotoGoodModal = false;
+            },
+            scrollTo(ref) {
+                if (this.$refs[ref]) this.$refs[ref].scrollIntoView({ behavior: "smooth" });
+            },
+            changeCurrentPhoto(index) {
+                this.currentPhoto = index;
+            }
         },
     }
 </script>

@@ -76,6 +76,7 @@ export default class extends REST {
     }
 
     /* ????????  */
+    /*
     static getOrganizationProducts(id, params) {
         return this._get(`organizations/${id}/products`, {}, params).then((data) => {
             return data;
@@ -83,6 +84,7 @@ export default class extends REST {
             throw new RESTError(error, 'Не удалось получить товары организации');
         });
     }
+    */
 
     static getOrganizationMembers(id, params) {
         return this._get(`organizations/${id}/members`, {}, params).then((data) => {
@@ -200,7 +202,7 @@ export default class extends REST {
 
 
 
-
+/*
     static addProduct(params) {
         return this._post(`products`, {}, params).then((data) => {
             return data;
@@ -248,5 +250,5 @@ export default class extends REST {
             throw new RESTError(error, 'Не удалось получить товар');
         });
     }
-
+*/
 }

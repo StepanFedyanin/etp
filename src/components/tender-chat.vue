@@ -22,7 +22,7 @@
                             v-for="(message) in messages"
                         >
                             <div 
-                                v-if="message.type === 'time' "
+                                v-if="message.type === 'time'"
                                 :key="`message-${message.id}`"
                                 class="chat__messages-date"
                             >
@@ -34,21 +34,15 @@
                                 :class="['chat__messages-item m--tender', {'is-unread': !message.seen}, message.user_status === 'participant' ? 'is-right' : 'is-left']"
                             >
                                 <div class="chat__messages-item-inner">
-                                    <template
-                                        v-if="message.deleted"
-                                    >
+                                    <template v-if="message.deleted">
                                         <div class="chat__messages-item-text m--deleted">
                                             Сообщение удалено
                                         </div>
                                     </template>
-                                    <template
-                                        v-else
-                                    >
+                                    <template v-else>
                                         <div class="chat__messages-item-top">
                                             <div class="chat__messages-item-member">
-                                                <span
-                                                    :class="`m--${message.user_status}`"
-                                                >
+                                                <span :class="`m--${message.user_status}`">
                                                     {{ message.user_status_detail }}
                                                 </span>
                                                 <router-link

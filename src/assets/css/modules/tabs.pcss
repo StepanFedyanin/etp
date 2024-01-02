@@ -1,6 +1,7 @@
 .tabs {
     display: flex;
     flex-wrap: wrap;
+    gap: 0.75rem;
     margin-bottom: 2.25rem;
 
     @mixin responsive-le-xs {
@@ -8,64 +9,63 @@
     }
 
     &__item {
-        position: relative;
-        display: flex;
-        margin: auto 0;
-        justify-content: center;
-        align-items: center;
-        font-family: $font-family-base;
-        padding: 0.675rem 1.25rem;
-        color: $color-gray-82;
-        font-size: 1.125rem;
-        line-height: 1.25rem;
-        font-weight: 500;
-        text-transform: uppercase;
-        text-decoration: none;
-        background: none;
-        border: none;
-        border-bottom: 2px solid rgba($color-green, 0.2);
-        cursor: pointer;
-        transition: color 0.5s ease, border 0.5s ease;
+        @mixin button;
+        @mixin button--outline-color $color-white, $color-gray-dd, $color-gray-33;
+        width: auto;
+        min-width: auto;
+        /*flex-grow: 1;*/
+        line-height: 1rem;
+        font-weight: 600;
+        color: $color-gray-66;
+
+        @mixin responsive-le-xs {
+            width: 100%;
+        }
 
         &:hover, &.is-active {
             color: $color-green;
-            border-bottom: 2px solid rgba($color-green, 1);
+            @mixin button--outline-color $color-gray-f8, $color-gray-dd, $color-green;
 
             .icon {
                 background: $color-green;
             }
         }
 
-        &.is-active {
-            font-weight: 500;
+        &.is-disabled,
+        &[disabled] {
+            pointer-events: none;
+            color: $color-gray-e0;
         }
 
         &.m--right {
             margin-left: auto;
+            flex-grow: 0;
 
             @mixin responsive-le-xs {
                 margin-right: auto;
             }
         }
 
+        /*
         &.button {
             margin-top: 1rem;
             margin-bottom: 1rem;
+
+            @mixin button;
+            @mixin button--outline-color $color-white, $color-gray-dd, $color-gray-33;
             width: auto;
 
-            @mixin button--outline-color $color-white, $color-green, $color-green;
-
-            &:hover, &.is-active {
-                @mixin button--outline-color $color-green, $color-green, $color-white;
+            &:hover {
+                @mixin button--outline-color $color-white, $color-green, $color-green;
             }
 
-
             &:disabled {
-                &:hover, &.is-active {
+                &:hover {
                     @mixin button--outline-color $color-white, $color-green, $color-green;
                 }
             }
         }
+        */
 
         .icon {
             position: relative;
@@ -73,7 +73,9 @@
             width: 1.25rem;
             height: 1.25rem;
             margin-left: 0.5rem;
-            background: $color-gray-82;
+            margin-top: -0.125rem;
+            margin-bottom: -0.125rem;
+            background: $color-gray-66;
 
             &.m--edit {
                 mask: url(./assets/img/icons/icon-pencil.svg) 50% 50% no-repeat;
@@ -86,4 +88,13 @@
             }
         }
     }
+
+    &.m--50 &__item {
+        width: calc(50% - 1 / 2 * 0.75rem);
+
+        @mixin responsive-le-xs {
+            width: 100%;
+        }
+    }
+
 }

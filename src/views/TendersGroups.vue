@@ -22,32 +22,28 @@
                             :key="group.id"
                             class="group"
                         >
-                            <router-link
-                                :to="{ name: 'tenders-group', params: { slug: group.slug } }"
-                                class="group__title h2"
-                            >
-                                {{ group.name }}
-                            </router-link>
-                            <div class="group__info">
-                                <div class="group__info-trades">
-                                    Тендеров: <span class="group__info-red">{{ group.bidding_count }}/{{ group.tender_count }}</span>
-                                </div>
-                            </div>
-                            <ul class="group__products">
-                                <li
-                                    v-for="category in group.categories"
-                                    :key="category.id"
-                                    class="group__products-item"
+                            <div class="groups__block-title h2">
+                                <router-link 
+                                    :to="{ name: 'tenders-group', params: { slug: group.slug } }"
+                                    class=""
                                 >
-                                    <router-link
-                                        :to="{ name: 'tenders-group', params: { parentslug: group.slug, slug: category.slug } }"
-                                    >
-                                        {{ category.name }}
-                                    </router-link>
-                                </li>
-                            </ul>
+                                    {{ group.name }}
+                                </router-link>
+                                <router-link 
+                                    :to="{ name: 'tenders-group', params: { slug: group.slug } }"
+                                    class="groups__block-title-more"
+                                >
+                                    <span>В категорию</span>
+                                </router-link>
+                            </div>
+                            <blockGroups
+                                :parent="group"
+                                :groups="group.categories"
+                                routeName="tenders"
+                            />
                         </div>
                         <Pagination
+                            v-if="groups.count > limit"
                             :total="groups.count"
                             :limit="Number(limit)"
                             :currentPage="Number($route.query.page || 1)"
@@ -61,7 +57,8 @@
 </template>
 
 <script>
-    import { category as categoryApi, tender as tenderApi } from "@/services"
+    import { category as categoryApi } from "@/services"
+    import blockGroups from '@/components/block-groups.vue';
     import Pagination from '@/components/pagination.vue'
 
     export default {
@@ -69,7 +66,7 @@
         async preFetch({ store, currentRoute, previousRoute, redirect, ssrContext, urlPath, publicPath }) {
             console.log('TendersGroups preFetch', process.env.SERVER, currentRoute.params);
             if (!process.env.SERVER) return;
-            let limit = 10;
+            let limit = 20;
             let offset = (currentRoute.query?.page ? currentRoute.query?.page - 1 : 0) * limit;
             let params = {
                 offset: offset,
@@ -85,13 +82,14 @@
             });
         },
         components: {
+            blockGroups,
             Pagination,
         },
         data() {
             return {
                 //groups: {},
                 //tenders: null,
-                limit: 10,
+                limit: 20,
                 showLoaderSending: false,
             }
         },
@@ -113,7 +111,7 @@
             '$route.name': {
                 immediate: true,
                 handler(to) {
-                    if (process.env.CLIENT && to === 'groups') this.getGroups();
+                    if (process.env.CLIENT && to === 'tenders-groups') this.getGroups();
                 }
             },
             '$route.query.page': {

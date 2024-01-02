@@ -16,9 +16,7 @@
                         v-if="!$route.name.match(/^start-/)"
                         class="customer__tabs tabs"
                     >
-                        <template 
-                            v-for="item in tabsItems"
-                        >
+                        <template v-for="item in tabsItems">
                             <button 
                                 v-if="!item.access || (item.access && user[item.access])"
                                 :key="`tab-${item.name}`"
@@ -66,7 +64,7 @@
                 }, {
                     label: 'Объявить тендер',
                     name: 'tender-start',
-                    class: 'm--right button',
+                    class: 'm--right button button-green',
                     access: 'is_access_tender'
                 }],
                 currentTabsItem: this.$route.name || 'customer-current',

@@ -50,6 +50,76 @@ export default class extends REST {
         });
     }
 
+    /* Мой маркет */
+
+    static getMarketProfile() {
+        return this._get('marketplace_user', {}).then((data) => {
+            return data;
+        }).catch((error) => {
+            throw new RESTError(error, 'Ошибка при получении профиля маркета');
+        });
+    }
+
+    static getMarketOrganizationProfile() {
+        return this._get('marketplace_user/organization', {}).then((data) => {
+            return data;
+        }).catch((error) => {
+            throw new RESTError(error, 'Ошибка при получении профиля маркета');
+        });
+    }
+
+    static updateMarketProfile(params) {
+        let id = params.id;
+        delete params.id;
+        return this._put(`marketplace_user/${id}`, {}, params).then((data) => {
+            return data;
+        }).catch((error) => {
+            throw new RESTError(error, 'Ошибка при обновлении профиля маркета');
+        });
+    }
+
+    static updateMarketOrganizationProfile(params) {
+        let id = params.id;
+        delete params.id;
+        return this._put(`marketplace_user/organization/${id}`, {}, params).then((data) => {
+            return data;
+        }).catch((error) => {
+            throw new RESTError(error, 'Ошибка при обновлении профиля маркета');
+        });
+    }
+
+    static updateMarketProfilePartial(id, params) {
+        return this._patch(`marketplace_user/${id}`, {}, params).then((data) => {
+            return data;
+        }).catch((error) => {
+            throw new RESTError(error, 'Ошибка при обновлении профиля маркета', { request: { params } });
+        });
+    }
+
+    static updateMarketOrganizationProfilePartial(id, params) {
+        return this._patch(`marketplace_user/organization/${id}`, {}, params).then((data) => {
+            return data;
+        }).catch((error) => {
+            throw new RESTError(error, 'Ошибка при обновлении профиля маркета', { request: { params } });
+        });
+    }
+
+    static updateMarketProfilePhoto(id, params) {
+        return this._patch(`marketplace_user/${id}`, {}, params).then((data) => {
+            return data;
+        }).catch((error) => {
+            throw new RESTError(error, 'Ошибка при обновлении профиля маркета');
+        });
+    }
+
+    static updateMarketOrganizationProfilePhoto(id, params) {
+        return this._patch(`marketplace_user/organization/${id}`, {}, params).then((data) => {
+            return data;
+        }).catch((error) => {
+            throw new RESTError(error, 'Ошибка при обновлении профиля маркета');
+        });
+    }
+
     /* Моя организация */
 
     static addMyOrganization(params) {
@@ -227,4 +297,114 @@ export default class extends REST {
         });
     }
 
+
+    /* Товары пользователя маркета */
+
+    static addProduct(params) {
+        return this._post(`product`, {}, params).then((data) => {
+            return data;
+        }).catch((error) => {
+            throw new RESTError(error, 'Не удалось создать товар');
+        });
+    }
+
+    static updateProduct(id, params) {
+        return this._put(`product/${id}`, {}, params).then((data) => {
+            return data;
+        }).catch((error) => {
+            throw new RESTError(error, 'Не удалось обновить товар');
+        });
+    }
+
+    static updateProductPartial(id, params) {
+        return this._patch(`product/${id}`, {}, params).then((data) => {
+            return data;
+        }).catch((error) => {
+            throw new RESTError(error, 'Не удалось обновить параметры товара');
+        });
+    }
+
+    static deleteProduct(id) {
+        return this._delete(`product/${id}`, {}, {}).then((data) => {
+            return data;
+        }).catch((error) => {
+            throw new RESTError(error, 'Не удалось удалить товар');
+        });
+    }
+
+    static getProducts(params) {
+        return this._get(`product`, params, {}).then((data) => {
+            return data;
+        }).catch((error) => {
+            throw new RESTError(error, 'Не удалось получить товары');
+        });
+    }
+
+    static getProduct(id) {
+        return this._get(`product/${id}`, {}, {}).then((data) => {
+            return data;
+        }).catch((error) => {
+            throw new RESTError(error, 'Не удалось получить товар');
+        });
+    }
+
+    /* Фото товаров маркета */
+
+    static addProductPhoto(params) {
+        return this._post(`product_photo`, {}, params).then((data) => {
+            return data;
+        }).catch((error) => {
+            throw new RESTError(error, 'Не удалось создать фото товара');
+        });
+    }
+
+    static updateProductPhoto(id, params) {
+        return this._put(`product_photo/${id}`, {}, params).then((data) => {
+            return data;
+        }).catch((error) => {
+            throw new RESTError(error, 'Не удалось обновить фото товара');
+        });
+    }
+
+    static updateProductPhotoPartial(id, params) {
+        return this._patch(`product_photo/${id}`, {}, params).then((data) => {
+            return data;
+        }).catch((error) => {
+            throw new RESTError(error, 'Не удалось обновить фото товара');
+        });
+    }
+
+    static deleteProductPhoto(id) {
+        return this._delete(`product_photo/${id}`, {}, {}).then((data) => {
+            return data;
+        }).catch((error) => {
+            throw new RESTError(error, 'Не удалось удалить фото товара');
+        });
+    }
+
+    /* Заявки на товары маркета */
+
+    static createProductOrder(params) {
+        return this._post(`product_order`, {}, params).then((data) => {
+            return data;
+        }).catch((error) => {
+            throw new RESTError(error, 'Не удалось создать заявку на товар');
+        });
+    }
+
+    static getProductOrders(params) {
+        return this._get(`product_order`, {}, params).then((data) => {
+            return data;
+        }).catch((error) => {
+            throw new RESTError(error, 'Не удалось получить список заявок на товар');
+        });
+    }
+
+    static getProductOrder(id) {
+        return this._get(`product_order/${id}`, {}, {}).then((data) => {
+            return data;
+        }).catch((error) => {
+            throw new RESTError(error, 'Не удалось получить заявку на товар');
+        });
+    }
 }

@@ -23,14 +23,20 @@
                             <img
                                 src="../assets/img/banner-logo.png"
                                 class="banner__logo"
+                                alt="TUGAN"
+                                loading="lazy"
                             >
                             <img
                                 src="../assets/img/banner-logo-2.png"
                                 class="banner__logo"
+                                alt="TUGAN"
+                                loading="lazy"
                             >
                             <img
                                 src="../assets/img/banner-logo-3.png"
                                 class="banner__logo"
+                                alt="TUGAN"
+                                loading="lazy"
                             >
                         </div>
                     </div>
@@ -152,10 +158,10 @@
                                 </ul>
                             </div>
                             <router-link
-                                :to="{ name: 'tenders-groups' }"
+                                :to="{ name: 'products' }"
                                 class="button capabilities__item-button button-green"
                             >
-                                К товарным группам
+                                В маркет
                             </router-link>
                         </div>
                         <div class="capabilities__item">
@@ -219,6 +225,7 @@
                                 v-for="item in goods?.results"
                                 :key="`good-${item.id}`"
                                 :good="item"
+                                :showCategory="true"
                                 :showOrganization="true"
                             />
                         </div>
@@ -388,7 +395,7 @@
 
 <script>
     import { category, tender, product } from "@/services";
-    import Search from '@/components/app-search.vue';
+    import Search from '@/components/tenders-search.vue';
     import blockContent from '@/components/block-content.vue';
     import BlockTender from '@/components/block-tender.vue';
     import blockGoodsItem from '@/components/block-goods-item.vue';

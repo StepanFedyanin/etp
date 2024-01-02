@@ -1,21 +1,48 @@
 <template>
     <div :class="['goods', blockClass]">
+        <div class="goods__title h2">
+            Загруженные товары <span>({{ count || 0 }})</span>
+            <router-link 
+                :to="{ name: 'market-good-add' }"
+                class="goods__title-more"
+            >
+                <span class="m--plus">Добавить товар</span>
+            </router-link>
+        </div>
         <template v-if="showLoaderSending">
             <div class="goods__loader loader">
                 <div class="spinner" /> Загрузка данных
             </div>
         </template>
         <template v-else-if="goods && count">    
-            <div class="goods__title h2">
-                Загруженные товары <span>({{ count }})</span>
+            <div v-if="count > limit" class="goods__pagination">
+                <Pagination
+                    :total="count"
+                    :limit="limit"
+                    :currentPage="Number($route.query.page || 1)"
+                    :query="$route.query"
+                    :hash="$route.hash"
+                    :url="$route.path"
+                />
             </div>
             <div class="goods__block">
                 <blockGoodsItem
                     v-for="item in goods"
                     :key="`good-${item.id}`"
                     :good="item"
+                    :showCategory="true"
                     :showControl="user.is_access_product"
                     @deleteGood="deleteGood"
+                />
+            </div>
+            <div v-if="count > limit" class="goods__pagination">
+                <Pagination
+                    :total="count"
+                    :limit="limit"
+                    :currentPage="Number($route.query.page || 1)"
+                    :query="$route.query"
+                    :hash="$route.hash"
+                    :url="$route.path"
                 />
             </div>
         </template>
@@ -24,22 +51,6 @@
                 В данный момент у вас нет ни одного товара
             </div> 
         </template>
-        <div class="goods__pagination">
-            <Pagination
-                :total="count"
-                :limit="limit"
-                :currentPage="Number($route.query.page || 1)"
-                :query="$route.query"
-                :url="$route.path"
-            />
-        </div>
-        <button 
-            class="button button-green"
-            :disabled="!user.is_access_product"
-            @click.prevent="$router.push({ name: 'organization-good-add' })"
-        >
-            Добавить товар
-        </button>
         <!--ModalAddGood
             v-if="showAddGoodModal"
             :slug="slug"
@@ -51,7 +62,7 @@
 
 <script>
     //import { urlPath } from '@/settings'
-    import { user as userApi, product as productApi } from "@/services"
+    import { cabinet } from "@/services"
     import blockGoodsItem from '@/components/block-goods-item.vue';
     //import ModalAddGood from '@/components/modals/good-add.vue';
     import Pagination from '@/components/pagination.vue';
@@ -74,7 +85,7 @@
         },
         data() {
             return {
-                limit: 18,
+                limit: 16,
                 slug: null,
                 goods: null,
                 count: null,
@@ -115,12 +126,11 @@
         methods: {
             getGoods() {
                 let params = {
-                    organization: this.user.organization.id,
                     limit: +this.limit,
                     offset: +this.offset
                 };
                 this.showLoaderSending = true;
-                userApi.getOrganizationProducts(this.organization.id, params).then(res => {
+                cabinet.getProducts(params).then(res => {
                     this.goods = res.results;
                     this.count = res.count;
                     this.showLoaderSending = false;
@@ -132,7 +142,7 @@
 
             },
             deleteGood(slug) {
-                productApi.deleteProduct(slug).then(res => {
+                cabinet.deleteProduct(slug).then(res => {
                     this.getGoods();
                 }).catch(err => {
                     this.showLoaderSending = false;

@@ -8,11 +8,22 @@
                         { name: 'Кабинет', route: { name: 'cabinet' } },
                     ]"
                 />
-                <div 
-                    v-if="chatId || rooms.length"
-                    class="chat__block"
-                >
+                <h1 class="h1">Чаты</h1>
+                <div class="chat__block">
                     <div class="chat__users">
+                        <div class="chat__tabs tabs m--50">
+                            <button 
+                                v-for="item in tabsItems"
+                                :key="`tab-${item.name}`"
+                                class="tabs__item"
+                                :class="currentTabsItem === item.name && 'is-active'"
+                                :disabled="item.disabled"
+                                @click.prevent="changeTab(item.name)"
+                            >
+                                {{ item.label }}
+                            </button>
+                        </div>
+
                         <!-- <div
                             v-show="scrollbarVisible['users']"
                             class="chat__block-up"
@@ -23,7 +34,13 @@
                             class="chat__block-down"
                             @click="scrollDown('users')"
                         /> -->
+                        <template v-if="showLoaderList">
+                            <div class="chat__loader loader">
+                                <div class="spinner" /> Загрузка чатов
+                            </div>
+                        </template>
                         <div 
+                            v-else-if="chatId || rooms.length"
                             ref="users"
                             class="chat__users-inner"
                         >
@@ -34,20 +51,25 @@
                                 :class="{'is-active': isActive(room.id)}"
                                 @click.prevent="onSelectRecipient(room.id, room)"
                             >
-                                <div 
-                                    class="chat__user-status" 
-                                    :class="[room.seen ? '' : 'is-unread']"
-                                />
-                                <div class="chat__user-name">
+                                <!--div class="chat__user-name">
                                     {{ room.chat_partner.last_name }} {{ room.chat_partner.first_name }}
-                                </div>
+                                </div-->
                                 <div class="chat__user-info">
-                                    <div class="chat__user-info-tender">
-                                        {{ room.tender.kind_detail }} №{{ room.tender.id }}
+                                    <div class="chat__user-info-organization">
+                                        {{ room.tender?.organization?.name }}
                                     </div>
                                     <div class="chat__user-info-date">
-                                        {{ $helpers.formatDate(new Date( room.last_update ), 'DD.MM.YY HH:mm') }}
+                                        <template v-if="$helpers.formatDate(new Date(room.last_update), 'DD.MM.YY') === $helpers.formatDate(new Date(), 'DD.MM.YY')">
+                                            {{ $helpers.formatDate(new Date(room.last_update), 'HH:mm') }}
+                                        </template>
+                                        <template v-else>
+                                            {{ $helpers.formatDate(new Date(room.last_update), 'DD.MM') }}
+                                        </template>
                                     </div>
+                                </div>
+                                <div class="chat__user-tender">
+                                    <div :class="['chat__user-status', room.unread_message_count && 'is-unread']" />
+                                    <span>№{{ room.tender.id }} {{ room.tender.name }}</span>
                                 </div>
                             </div>
                         </div>
@@ -69,13 +91,9 @@
                             class="chat__board-inner"
                             @wheel="scroll"
                         >
-                            <template
-                                v-if="chatInfo"
-                            >
+                            <template v-if="chatInfo">
                                 <div class="chat__board-tender tender">
-                                    <div
-                                        class="tender__info m--column m--100"
-                                    >
+                                    <div class="tender__info m--column m--100">
                                         <!-- <div class="tender__info-number">
                                             Аукцион №{{ chatInfo.tender && chatInfo.tender.id }}
                                         </div> -->
@@ -103,14 +121,12 @@
                                     </div>
                                 </div>
                                 <!-- ref="area" -->
-                                <div 
-                                    class="chat__messages"
-                                >
+                                <div class="chat__messages">
                                     <template
                                         v-for="(message) in messages"
                                     >
                                         <div 
-                                            v-if="message.type === 'time' "
+                                            v-if="message.type === 'time'"
                                             :key="`message-${message.id}`"
                                             class="chat__messages-date"
                                         >
@@ -122,6 +138,46 @@
                                             :class="['chat__messages-item', {'is-unread': !message.seen}, message.user !== $store._state.data.user.id ? 'is-recipient' : 'is-your']"
                                         >
                                             <div class="chat__messages-item-inner">
+                                                <template v-if="message.deleted">
+                                                    <div class="chat__messages-item-text m--deleted">
+                                                        Сообщение удалено
+                                                    </div>
+                                                </template>
+                                                <template v-else>
+                                                    <div class="chat__messages-item-top">
+                                                        <div class="chat__messages-item-member">
+                                                            <span :class="`m--${message.user_status}`">
+                                                                {{ message.user_status_detail }}
+                                                            </span>
+                                                            <router-link
+                                                                v-if="message.user_status !== 'admin' && message.organization && message.organization.id"
+                                                                :to="{ name: 'contragent', params: { id: message.organization.id } }"
+                                                            >
+                                                                {{ message.organization.name }}
+                                                            </router-link>
+                                                        </div>
+                                                        <div class="chat__messages-item-time">
+                                                            {{ $helpers.formatDate(new Date(message.date_publication), 'HH:mm:ss') }} МСК
+                                                        </div>
+                                                        <!--button
+                                                            v-if="(user.is_access_tender && user.organization?.id === tender.creator) || user.is_staff || user.id === message.id_user"
+                                                            class="chat__messages-item-delete"
+                                                            @click.prevent="onDeleteMessage(message.id)"
+                                                        /-->
+                                                    </div>
+                                                    <div 
+                                                        v-if="message.user_name"
+                                                        class="chat__messages-item-name"
+                                                    >
+                                                        {{ message.user_name }}
+                                                    </div>
+                                                    <div 
+                                                        class="chat__messages-item-text"
+                                                        v-html="message.text"
+                                                    />                                        
+                                                </template>
+                                            </div>
+                                            <!--div class="chat__messages-item-inner">
                                                 <div 
                                                     class="chat__messages-item-text"
                                                     v-html="message.text"
@@ -129,7 +185,7 @@
                                                 <div class="chat__messages-item-time">
                                                     {{ $helpers.formatDate(new Date(message.date_publication), 'HH:mm') }}
                                                 </div>
-                                            </div>
+                                            </div-->
                                         </div>
                                     </template>
                                 </div>
@@ -151,53 +207,36 @@
                                     />
                                 </form>
                             </template>
-                            <template
-                                v-else
-                            >
-                                <!-- <div class="chat__board-alert">
-                                    Выберите собеседника для общения.
-                                </div> -->
-                                <div class="chat__board-empty">
-                                    <div class="chat__board-title">
-                                        Добро пожаловать в чат!
-                                    </div>
-                                    <p>
-                                        Здесь вы можете общаться с другими участниками тендеров.<br>
-                                        <b>Организатор тендера</b> может начать чат с любым из участников.<br>
-                                        <b>Участник тендера</b> может начать чат с организатором.
-                                    </p>
-                                    <p>Новый чат можно создать из любого тендера, в котором вы участвуете.</p>
-                                </div>
+                            <template v-else-if="!showLoaderList">
+                                <template v-if="currentTabsItem === 'tenders'">
+                                    <blockHint 
+                                        classModifier="chat__board-empty"
+                                        :slug="`chats_${currentTabsItem}`"
+                                    />
+                                    <button
+                                        v-if="!rooms.length"
+                                        class="button button-outline-green"
+                                        @click="linkToTenders"
+                                    >
+                                        Перейти к тендерам
+                                    </button>
+                                </template>
+                                <template v-if="currentTabsItem === 'market'">
+                                    <blockHint 
+                                        classModifier="chat__board-empty"
+                                        :slug="`chats_${currentTabsItem}`"
+                                    />
+                                    <button
+                                        v-if="!rooms.length"
+                                        class="button button-outline-green"
+                                        @click="linkToMarket"
+                                    >
+                                        Перейти в маркет
+                                    </button>
+                                </template>
                             </template>
                         </div>
                     </div>
-                </div>
-                <template
-                    v-if="showLoaderSending && sortedChats && sortedChats.length === 0"
-                >
-                    <div class="tenders__loader loader">
-                        <div class="spinner" /> Загрузка данных
-                    </div>
-                </template>
-                <div
-                    v-if="!showLoaderSending && !chatId && !rooms.length"
-                    class="chat__board-empty"
-                >
-                    <div class="h1">
-                        Добро пожаловать в чат!
-                    </div>
-                    <p>
-                        Здесь вы можете общаться с другими участниками тендеров.<br>
-                        <b>Организатор тендера</b> может начать чат с любым из участников.<br>
-                        <b>Участник тендера</b> может начать чат с организатором.
-                    </p>
-                    <p>Новый чат можно создать из любого тендера, в котором вы участвуете.</p>
-                    <button 
-                        class="button button-outline-green"
-                        @click="linkToTenders"
-                    >
-                        Перейти к тендерам
-                    </button>
                 </div>
             </div>
         </div>
@@ -207,9 +246,13 @@
 <script>
     import { chat as Chat } from "@/services";
     import _find from 'lodash/find';
+    import blockHint from '@/components/block-hint';
 
     export default {
         name: 'CabinetChat',
+        components: {
+            blockHint
+        },
         props: {
             chatId: {
                 type: Number,
@@ -218,6 +261,16 @@
         },
         data() {
             return {
+                tabsItems: [
+                    {
+                        name: 'market',
+                        label: 'Маркет'
+                    }, {
+                        name: 'tenders',
+                        label: 'Тендеры'
+                    }
+                ],
+                currentTabsItem: this.$route.hash?.replace('#', '') || 'market',
                 chat: null,
                 chat_messages: [],
                 form: {},
@@ -227,7 +280,7 @@
                     board: false
                 },
                 canScroll: false,
-                showLoaderSending: false,
+                showLoaderList: false,
                 currentRecipient: null,
                 isLoading: false,
                 rooms: [],
@@ -312,18 +365,23 @@
                 newAsDate.setHours(12,0,0);
                 return Math.round( (newAsDate - oldAsDate) / msPerDay );
             },
-            fetchChats(chatId) {
-                this.showLoaderSending = true;
-                Chat.getChatList().then(res => {
-                    this.rooms = res;
-                    if (chatId) {
-                        this.onSelectRecipient(chatId, this.findChat(chatId));
-                    }
-                    this.showLoaderSending = false;
-                }).catch(err => {
-                    console.error(err);
-                    this.showLoaderSending = false;
-                });
+            fetchChats(chatId, lazy = false) {
+                if (this.currentTabsItem === 'market') {
+                    this.rooms = [];
+                }
+                if (this.currentTabsItem === 'tenders') {
+                    if (!lazy) this.showLoaderList = true;
+                    Chat.getChatList().then(res => {
+                        this.rooms = res;
+                        if (chatId) {
+                            this.onSelectRecipient(chatId, this.findChat(chatId));
+                        }
+                        this.showLoaderList = false;
+                    }).catch(err => {
+                        console.error(err);
+                        this.showLoaderList = false;
+                    });
+                }
             },
             appendMessages(chatId) {
                 this.isLoading = true;
@@ -390,7 +448,7 @@
             onSendMessage(room, text) {
                 if (text) {
                     Chat.createMessages(room, {'text': text}).then(() => {
-                        this.fetchChats();
+                        this.fetchChats(null, true);
                         this.form = {};
                     }).catch(err => {
                         console.error(err);
@@ -407,6 +465,9 @@
             },
             linkToTenders() {
                 this.$router.push({ name: 'tenders'});
+            },
+            linkToMarket() {
+                this.$router.push({ name: 'market'});
             },
             handleMessage(msg) {
                 if (msg.room === this.chat) {
@@ -495,6 +556,11 @@
                 if (el.scrollTop === 0 && this.isLoading === false && this.canScroll) {
                     this.appendMessages(this.chat);
                 }
+            },
+            changeTab(name) {
+                this.currentTabsItem = name;
+                this.$router.push({ name: this.$route.name, hash: `#${name}` });
+                this.fetchChats();
             },
         }
     };

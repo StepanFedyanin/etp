@@ -13,6 +13,16 @@
                 <div class="contragents__title h1">
                     Контрагенты
                 </div>
+                <blockContent
+                    classModifier="m--top"
+                    place="top"
+                    name="global"
+                />
+                <blockContent
+                    classModifier="m--top"
+                    place="top"
+                    :name="$route.name"
+                />
                 <div class="contragents__search">
                     <SearchContragents
                         @startSearch="getOrganizations"
@@ -50,6 +60,16 @@
                             />
                         </div>
                     </div>
+                    <blockContent
+                        classModifier="m--bottom"
+                        place="bottom"
+                        name="global"
+                    />
+                    <blockContent
+                        classModifier="m--bottom"
+                        place="bottom"
+                        :name="$route.name"
+                    />
                 </template>
                 <template
                     v-else
@@ -68,6 +88,7 @@
     import { user as api } from "@/services";
     import BlockContragents from '@/components/block-contragents.vue';
     import Pagination from '@/components/pagination.vue';
+    import blockContent from '@/components/block-content.vue';
     import SearchContragents from '@/components/app-search-contragents.vue';
 
     export default {
@@ -94,6 +115,7 @@
         components: {
             BlockContragents,
             Pagination,
+            blockContent,
             SearchContragents
         },
         props: {

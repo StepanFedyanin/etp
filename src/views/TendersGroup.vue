@@ -38,41 +38,46 @@
                 </template>
             </template>
             <div class="tenders m--block">
-                <template v-if="showLoaderSending['tenders'] && !tenders">
+                <template v-if="showLoaderSending.tenders && !tenders">
                     <div class="tenders__loader loader">
                         <div class="spinner" /> Загрузка тендеров
                     </div>
                 </template>
-                <template v-else-if="tenders && countTenders">
-                    <div class="tenders__title h2">
-                        Тендеры <span>({{ countTenders }})</span>
-                    </div>    
-                    <blockTender
-                        v-for="(tender, index) in tenders"
-                        :key="`tender-${index}`"
-                        :tender="tender"
-                    />
-                    <template
-                        v-if="showLoaderSending['tenders']"
-                    >
-                        <div class="tenders__loader loader">
-                            <div class="spinner" /> Загрузка тендеров
-                        </div>
-                    </template>
-                    <template
-                        v-else
-                    >
-                        <button 
-                            v-if="countTenders > tenders.length"
-                            class="button button-outline-green tenders__more"
-                            @click="getTenders()"
-                        >
-                            показать еще
-                        </button>
-                    </template>
-                </template>
                 <template v-else>
-                    В данной категории нет открытых тендеров.
+                    <template v-if="tenders && countTenders">
+                        <div class="tenders__title h2">
+                            Тендеры <span>({{ countTenders }})</span>
+                        </div>    
+                        <blockTender
+                            v-for="(tender, index) in tenders"
+                            :key="`tender-${index}`"
+                            :tender="tender"
+                        />
+                        <template
+                            v-if="showLoaderSending.tenders"
+                        >
+                            <div class="tenders__loader loader">
+                                <div class="spinner" /> Загрузка тендеров
+                            </div>
+                        </template>
+                        <template
+                            v-else
+                        >
+                            <button 
+                                v-if="countTenders > tenders.length"
+                                class="button button-outline-green tenders__more"
+                                @click="getTenders()"
+                            >
+                                показать еще
+                            </button>
+                        </template>
+                    </template>
+                    <template v-else>
+                        <blockHint
+                            slug="tenders_not_found"
+                            classModifier="tenders__hint"
+                        />
+                    </template>
                 </template>
             </div>
         </div>
@@ -83,6 +88,7 @@
     import { category as api } from "@/services"
     import blockGroups from '@/components/block-groups.vue';
     import blockTender from '@/components/block-tender.vue';
+    import blockHint from '@/components/block-hint.vue';
     //import Pagination from '@/components/pagination.vue'
 
     export default {
@@ -111,6 +117,7 @@
         components: {
             blockGroups,
             blockTender,
+            blockHint
             //Pagination,
         },
         props: {

@@ -14,7 +14,8 @@
             >
                 <img 
                     :src="banner.image" 
-                    :alt="banner.title" 
+                    :alt="banner.title"
+                    loading="lazy"
                 />
             </a>
         </div>

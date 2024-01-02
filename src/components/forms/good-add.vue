@@ -1,10 +1,10 @@
 <template>
-    <div class="profile__form">
-        <div class="profile__title h1">
-            {{ slug ? `Редактирование товара: ${formData.name || ''}` : 'Добавление товара' }}
+    <div class="market__form">
+        <div class="market__title h1">
+            {{ goodId ? `Редактирование товара: ${formData.name || ''}` : 'Добавление товара' }}
         </div>
         <template v-if="showLoaderSending">
-            <div class="profile__loader loader">
+            <div class="market__loader loader">
                 <div class="spinner" /> Загрузка данных
             </div>
         </template>
@@ -16,7 +16,7 @@
                 preserve
                 type="form"
                 data-loading="loading"
-                form-class="$reset form profile__form"
+                form-class="$reset form"
                 :actions="false"
                 :disabled="busyForm"
                 :loading="busyForm ? true : undefined"
@@ -24,7 +24,7 @@
             >
                 <div 
                     data-type="submit"
-                    class="form__submit profile__form-submit"
+                    class="form__submit market__form-submit"
                 >
                     <button
                         type="submit"
@@ -35,7 +35,7 @@
                         Сохранить товар
                     </button>
                     <button
-                        v-if="!slug"
+                        v-if="!goodId"
                         type="submit"
                         class="button button-outline-green button-width-auto"
                         :disabled="busyForm"
@@ -45,16 +45,16 @@
                     </button>
                 </div>
                 <div class="h2">Товар</div>
-                <div class="profile__form-main m--mb-2">
+                <div class="market__form-main m--mb-2">
                     <FormKitSchema :schema="mainGoodSchema" />
                 </div>
                 <template v-if="showExtended">
                     <div class="h2">Оплата</div>
-                    <div class="profile__form-main m--mb-2 form m--flex">
+                    <div class="market__form-main m--mb-2 form m--flex">
                         <FormKitSchema :schema="paymentGoodSchema" />
                     </div>
                     <div class="h2">Доставка</div>
-                    <div class="profile__form-main m--mb-2 form m--flex">
+                    <div class="market__form-main m--mb-2 form m--flex">
                         <FormKitSchema :schema="deliveryGoodSchema" />
                     </div>
                 </template>
@@ -62,8 +62,38 @@
                 <div class="field">
                     <div class="field__text">Загрузите до 8 фотографий. Рекомендуемый размер: 600x600px, формат: jpg, png, svg. Первое загруженное фото будет основным.</div>
                 </div>
-                <div class="profile__form-photolist">
-                    <div class="profile__form-logo">
+                <VueDraggableNext
+                    class="market__form-photolist" 
+                    :list="formData.photos || photoList" 
+                    draggable=".m--drag"
+                    @change="onChangeOrderingPhoto"
+                >
+                    <transition-group>
+                        <div
+                            v-for="(image, index) in (formData.photos || photoList)" 
+                            :key="`image-${image.id}`"
+                            class="market__form-photo m--drag"
+                        >
+                            <div class="market__form-photo-block">
+                                <div class="market__form-photo-inner">
+                                    <img 
+                                        :src="image.photo"
+                                    />
+                                    <div class="market__form-photo-ordering">{{ index + 1 }}</div>
+                                </div>
+                            </div>
+                            <div class="market__form-photo-links">
+                                <a
+                                    href="#"
+                                    class="market__form-photo-link m--color-red"
+                                    @click.prevent="onClickDeletePhoto(image.id)"
+                                >
+                                    Удалить
+                                </a>
+                            </div>
+                        </div>
+                    </transition-group>
+                    <div v-if="(goodId && formData.photos?.length < 8) || (!goodId && photoList.length < 8)" class="market__form-photo">
                         <div class="field__input m--hidden">
                             <input
                                 id="photo"
@@ -74,105 +104,28 @@
                                 name="photo"
                             >
                         </div>
-                        <div class="profile__form-logo-block">
-                            <div class="profile__form-logo-inner">
+                        <div class="market__form-photo-block">
+                            <div class="market__form-photo-inner">
                                 <button
-                                    v-if="!formData.small_photo"
                                     href="#"
                                     class="button button-outline-green button-width-auto m--small"
                                     @click.prevent="onClickUploadPhoto"
                                 >
                                     Загрузить фото
                                 </button>
-                                <img 
-                                    v-else
-                                    :src="formData.small_photo"
-                                />
                             </div>
                         </div>
-                        <div 
-                            v-if="formData.small_photo"
-                            class="profile__form-logo-links" 
-                        >
-                            <a
-                                href="#"
-                                class="profile__form-logo-link"
-                                @click.prevent="onClickUploadPhoto"
-                            >
-                                Изменить фото
-                            </a>
-                            <a
-                                href="#"
-                                class="profile__form-logo-link m--color-red"
-                                @click.prevent="onClickDeletePhoto"
-                            >
-                                Удалить
-                            </a>
-                        </div>
                     </div>
-
-                    <!--div class="field">
-                        <div class="field__inner">
-                            <label 
-                                class="field__label" 
-                                for="photo"
-                            >
-                                Фотография
-                            </label>
-                            <div class="field__input m--hidden">
-                                <input
-                                    id="photo"
-                                    ref="photoInput"
-                                    accept=".jpg,.png,.svg" 
-                                    class="input" 
-                                    type="file" 
-                                    name="photo" 
-                                >
-                            </div>
-                        </div>
-                        <div 
-                            class="form__submit edit__form-submit m--start" 
-                        >
-                            <button
-                                :disabled="loading || busyForm"
-                                class="button button-outline-green button-width-auto"
-                                @click.prevent="onClickUploadPhoto"
-                            >
-                                Загрузить новую
-                            </button>
-                            <button
-                                v-if="formData.small_photo"
-                                :disabled="loading || busyForm"
-                                class="button button-outline-red button-width-auto"
-                                @click.prevent="onClickDeletePhoto"
-                            >
-                                Удалить
-                            </button>
-                        </div>
-                        <div 
-                            v-if="formData.small_photo"
-                            class="field__text m--color-green"
-                        >
-                            Загружен файл: {{ formData.small_photo.split('/').at(-1) }}
-                        </div>
-                    </div>
-                    <div class="goods__form-photo-pic">
-                        <img
-                            v-if="formData.small_photo"
-                            :src="formData.small_photo" 
-                            alt="" 
-                        >
-                    </div-->
-                </div>
+                </VueDraggableNext>
                 <template v-if="showExtended">
                     <div class="h2">Отображение товара</div>
-                    <div class="profile__form-main m--mb-2">
+                    <div class="market__form-main m--mb-2">
                         <FormKitSchema :schema="showGoodSchema" />
                     </div>
                 </template>
                 <div 
                     data-type="submit"
-                    class="form__submit profile__form-submit"
+                    class="form__submit market__form-submit"
                 >
                     <button
                         type="submit"
@@ -183,7 +136,7 @@
                         Сохранить товар
                     </button>
                     <button
-                        v-if="!slug"
+                        v-if="!goodId"
                         type="submit"
                         class="button button-outline-green button-width-auto"
                         :disabled="busyForm"
@@ -199,10 +152,14 @@
 
 <script>
     import { urlPath } from '@/settings';
-    import { category as categoryApi, common as commonApi, product as productApi } from "@/services";
+    import { category as categoryApi, common as commonApi, cabinet as cabinetApi } from "@/services";
+    import { VueDraggableNext } from 'vue-draggable-next';
     export default {
+        components: {
+            VueDraggableNext,
+        },
         props: {
-            slug: {
+            goodId: {
                 type: String,
                 default() { return null; }
             },
@@ -212,6 +169,7 @@
                 showExtended: true,
                 urlPath,
                 formData: {},
+                photoList: [],
                 showLoaderSending: false,
                 productSended: false,
                 busyForm: false,
@@ -235,7 +193,7 @@
                         minChars: 1,
                         //validation: 'required',
                         options: async () => {
-                            return await categoryApi.getCategoryListProduct({ limit: 9999 }).then(groups => {
+                            return await categoryApi.getCategoryPlainListProduct({ limit: 9999 }).then(groups => {
                                 if (groups.results) {
                                     return this.prepareCategoryTree(groups.results);
                                 } else {
@@ -289,6 +247,7 @@
                         $formkit: 'multiselect',
                         mode: 'single',
                         name: 'currency',
+                        canClear: false,
                         closeOnSelect: true,
                         label: 'Валюта',
                         placeholder: '',
@@ -314,7 +273,7 @@
                         $formkit: 'multiselect',
                         mode: 'single',
                         name: 'nds',
-                        //groups: true,
+                        canClear: false,
                         closeOnSelect: true,
                         label: 'В том числе, НДС',
                         // validation: 'required',
@@ -334,7 +293,7 @@
                         // validation: 'required',
                         outerClass: 'm--width-50',
                     }, {
-                        $formkit: 'text',
+                        $formkit: 'textarea',
                         name: 'payment_terms',
                         label: 'Условия оплаты',
                         //validation: 'required',
@@ -369,7 +328,7 @@
                     {
                         $formkit: 'multiselect',
                         mode: 'single',
-                        name: 'participant_type',
+                        name: 'type_of_buyer',
                         //groups: true,
                         closeOnSelect: true,
                         label: 'Кто может заказать товар?',
@@ -401,15 +360,16 @@
         computed: {
         },
         watch: {
-            slug() {
+            goodId() {
                 this.productSended = false;
                 this.formData = {
                     nds: -1,
                     min_count: 1,
-                    participant_type: 'organization',
-                    ordering: 10
+                    type_of_buyer: 'organization',
+                    ordering: 10,
+                    publication: true
                 };
-                if (this.slug) {
+                if (this.goodId) {
                     this.getProduct();
                 }
             }
@@ -419,10 +379,11 @@
             this.formData = {
                 nds: -1,
                 min_count: 1,
-                participant_type: 'organization',
-                ordering: 10
+                type_of_buyer: 'organization',
+                ordering: 10,
+                publication: true
             };
-            if (this.slug) {
+            if (this.goodId) {
                 this.getProduct();
             }
         },
@@ -430,7 +391,7 @@
             getProduct() {
                 this.showLoaderSending = true;
                 this.busyForm = true;
-                productApi.getProduct(this.slug, {}).then(res => {
+                cabinetApi.getProduct(this.goodId).then(res => {
                     this.formData = res; 
                     /*
                     {
@@ -457,10 +418,9 @@
                     this.showLoaderSending = false;
                     this.busyForm = false;
                 }).catch(err => {
+                    if (err.response?.status === 404) this.$router.replace({ name: 'page404' });
                     this.showLoaderSending = false;
                     this.busyForm = false;
-                    this.$store.dispatch('showError', err);
-                    console.error(err);
                 });
             },
             onClickUploadPhoto() {
@@ -470,22 +430,40 @@
                 photoInput.onchange = this.uploaPhotoComplete;
                 photoInput.dispatchEvent(click);
             },
-            onClickDeletePhoto() {
+            onClickDeletePhoto(photoId) {
                 console.log('onClickDeletePhoto');
-                this.busyForm = true;
-                if (this.slug) {
-                    productApi.deleteProductPhoto(this.slug).then(res => {
-                        delete this.formData.photo;
-                        delete this.formData.small_photo;
-                        this.busyForm = false;
-                    }).catch(err => {
-                        this.busyForm = false;
-                        this.$store.dispatch('showError', err);
-                        console.error(err);
+                if (photoId) {
+                    if (this.goodId) {
+                        this.busyForm = true;
+                        cabinetApi.deleteProductPhoto(photoId).then(res => {
+                            let photos = this.formData.photos.filter(item => { return item.id !== photoId });
+                            this.formData.photos = [...photos];
+                            /*
+                            delete this.formData.photo;
+                            delete this.formData.small_photo;
+                            */
+                            this.busyForm = false;
+                        }).catch(err => {
+                            this.busyForm = false;
+                            this.$store.dispatch('showError', err);
+                            console.error(err);
+                        });
+                    } else {
+                        let photos = this.photoList.filter(item => { return item.id !== photoId });
+                        this.photoList = [...photos];
+                    }
+                }
+            },
+            onChangeOrderingPhoto(event) {
+                console.log(event);
+                if (this.goodId) {
+                    this.formData.photos.forEach((item, index) => {
+                        console.log(item);
+                        let params = { ordering: index };
+                        cabinetApi.updateProductPhotoPartial(item.id, params).catch(err => {
+                            this.$store.dispatch('showError', err);
+                        });
                     });
-                } else {
-                    delete this.formData.photo;
-                    delete this.formData.small_photo;
                 }
             },
             prepareCategoryTree(list, parent = null, level = 0) {
@@ -504,21 +482,69 @@
             uploaPhotoComplete(event) {
                 let file = event.target.files ? event.target.files[0] : null
                 if (file) {
-                    this.formData.photo = file;
-                    this.formData.small_photo = URL.createObjectURL(file);
+                    if (this.goodId) {
+                        const data = new FormData();
+                        data.append('photo', file);
+                        data.append('product', this.goodId);
+                        let ordering = this.formData.photos.length ? this.formData.photos.at(-1).ordering + 1 : 1;
+                        data.append('ordering', ordering);
+                        this.busyForm = true;
+                        cabinetApi.addProductPhoto(data).then(res => {
+                            this.formData.photos.push(res);
+                            /*
+                            cabinet.getMyProfile().then(res => {
+                                this.busyForm = false;
+                                this.$store.dispatch('setUser', res);
+                                this.formData.logo = res.organization.logo;
+                            }).catch(err => {
+                                this.busyForm = false;
+                                this.$store.dispatch('showError', err);
+                                console.error(err);
+                            });
+                            */
+                        }).catch(err => {
+                            this.busyForm = false;
+                            this.$store.dispatch('showError', err);
+                            console.error(err);
+                        });
+                    } else {
+                        let self = this;
+                        //[...files].forEach(file => {
+                            let reader  = new FileReader();
+                            reader.onload = function(e)  {
+                                //if (self.photoList.length < self.limitPhotos) {
+                                    //if (file.size < self.maxPhotoSize) {
+                                        self.photoList.push({
+                                            id: `image-${Math.floor(Math.random() * 100000)}`,
+                                            photo: e.target.result,
+                                            file: file
+                                        });
+                                    //} else {
+                                    //    self.maxPhotoSizeAlert = true;
+                                    //}
+                                //} else {
+                                //    self.limitPhotosAlert = true;
+                                //}
+                            }
+                            //if (self.limitPhotosAlert) return;
+                            reader.readAsDataURL(file);
+                        //});
+                    }
+                    //this.formData.photo = file;
+                    //this.formData.small_photo = URL.createObjectURL(file);
                 }
             },
             submitAddGoodForm(data, node) {
                 let params = new FormData();
                 Object.keys(this.formData).forEach(key => {
-                    if (this.formData[key] && key !== 'small_photo' && key !== 'photo') {
+                    if (this.formData[key] && key !== 'photo') {
                         params.append(key, this.formData[key]);
                     }
                 });
                 this.busyForm = true;
                 //let params = Object.assign({}, this.formData);
-                if (this.slug) {
-                    productApi.updateProduct(this.slug, params).then(res => {
+                if (this.goodId) {
+                    cabinetApi.updateProduct(this.goodId, params).then(res => {
                         this.busyForm = false;
                         this.productSended = true;
                         this.updateData = true;
@@ -533,7 +559,16 @@
                         console.error(err);
                     });
                 } else {
-                    productApi.addProduct(params).then(res => {
+                    this.photoList.forEach((item, index) => {
+                        /*
+                        images.push({
+                            photo: item.file,
+                            ordering: index
+                        });
+                        */
+                        params.append(`photos-${index}-photo`, item.file);
+                    });
+                    cabinetApi.addProduct(params).then(res => {
                         this.busyForm = false;
                         this.productSended = true;
                         this.updateData = true;

@@ -40,6 +40,7 @@
                                 v-if="contragent.logo"
                                 :src="contragent.logo" 
                                 :alt="contragent.name"
+                                loading="lazy"
                             >
                         </div>
                         <div class="contragents__item-info">

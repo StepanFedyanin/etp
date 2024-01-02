@@ -30,22 +30,49 @@
                         v-if="currentTabsItem === 'account'"
                         class="profile__tab"
                     >
+                        <blockContent
+                            classModifier="m--top"
+                            place="top"
+                            name="profile-account"
+                        />
                         <ProfileAccount />
+                        <blockContent
+                            classModifier="m--bottom"
+                            place="bottom"
+                            name="profile-account"
+                        />
                     </div>
                     <div 
                         v-if="currentTabsItem === 'public'"
                         class="profile__tab"
                     >
+                        <blockContent
+                            classModifier="m--top"
+                            place="top"
+                            name="profile-public"
+                        />
                         <ProfileEdit />
-                        <!--ProfileUser
-                            :user="profile"
-                        /-->
+                        <blockContent
+                            classModifier="m--bottom"
+                            place="bottom"
+                            name="profile-public"
+                        />
                     </div>
                     <div 
                         v-if="currentTabsItem === 'notifications'"
                         class="profile__tab"
                     >
+                        <blockContent
+                            classModifier="m--top"
+                            place="top"
+                            name="profile-notifications"
+                        />
                         <ProfileNotifications />
+                        <blockContent
+                            classModifier="m--bottom"
+                            place="bottom"
+                            name="profile-notifications"
+                        />
                     </div>
                 </div>
             </div>
@@ -58,12 +85,14 @@
     import ProfileAccount from '@/components/profile-account.vue';
     import ProfileEdit from '@/components/forms/profile-edit.vue';
     import ProfileNotifications from '@/components/forms/profile-notifications.vue';
+    import blockContent from '@/components/block-content.vue';
 
     export default {
         components: {
             ProfileAccount,
             ProfileEdit,
-            ProfileNotifications
+            ProfileNotifications,
+            blockContent
         },
         data() {
             return {

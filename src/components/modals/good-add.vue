@@ -151,7 +151,7 @@
                         minChars: 1,
                         validation: 'required',
                         options: async () => {
-                            return await categoryApi.getCategoryListProduct({ limit: 9999 }).then(groups => {
+                            return await categoryApi.getCategoryPlainListProduct({ limit: 9999 }).then(groups => {
                                 if (groups.results) {
                                     /*
                                     let options = []

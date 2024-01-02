@@ -1,57 +1,57 @@
 <template>
-    <div class="app__main">
-        <div class="auth">
-            <div 
-                :class="['container']"
-            >
-                <div class="auth__block">
-                    <div class="auth__tabs tabs-buttons m--50">
-                        <a 
-                            v-for="item in authTabs"
-                            :key="`tab-${item.name}`"
-                            href="#" 
-                            :class="['tabs-buttons__item', item.name === $route.name ? 'is-active' : '']"
-                            @click.prevent="next(item.name)"
-                        >
-                            {{ item.title }}
-                        </a>
-                    </div>
-                    <FormKit
-                        v-model="formData"
-                        type="form"
-                        data-loading="showLoaderSending"
-                        form-class="$reset auth__form form"
-                        submit-label="Войти"
-                        :disabled="showLoaderSending"
-                        :loading="showLoaderSending ? true : undefined"
-                        :submit-attrs="{
-                            inputClass: '$reset button button-green m--w-100',
-                            wrapperClass: '$reset auth__form-submit form__submit',
-                            outerClass: '$reset',
-                        }"
-                        @submit="submitHandler"
-                    >
-                        <FormKitSchema :schema="authForm" />
-                    </FormKit>
-                    <div class="auth__block-recovery field">
-                        <label class="field__inner">
+    <Suspense>
+        <div class="app__main">
+            <div class="auth">
+                <div :class="['container']">
+                    <div class="auth__block">
+                        <div class="auth__tabs tabs m--50">
                             <a 
-                                href="#"
-                                class="auth__block-link"
-                                @click.prevent="next('recovery')"
+                                v-for="item in authTabs"
+                                :key="`tab-${item.name}`"
+                                href="#" 
+                                :class="['tabs__item', item.name === $route.name ? 'is-active' : '']"
+                                @click.prevent="next(item.name)"
                             >
-                                Восстановить пароль
+                                {{ item.title }}
                             </a>
-                        </label>
+                        </div>
+                        <FormKit
+                            v-model="formData"
+                            type="form"
+                            data-loading="showLoaderSending"
+                            form-class="$reset auth__form form"
+                            submit-label="Войти"
+                            :disabled="showLoaderSending"
+                            :loading="showLoaderSending ? true : undefined"
+                            :submit-attrs="{
+                                inputClass: '$reset button button-green m--w-100',
+                                wrapperClass: '$reset auth__form-submit form__submit',
+                                outerClass: '$reset',
+                            }"
+                            @submit="submitHandler"
+                        >
+                            <FormKitSchema :schema="authForm" />
+                        </FormKit>
+                        <div class="auth__block-recovery field">
+                            <label class="field__inner">
+                                <a 
+                                    href="#"
+                                    class="auth__block-link"
+                                    @click.prevent="next('recovery')"
+                                >
+                                    Восстановить пароль
+                                </a>
+                            </label>
+                        </div>
                     </div>
                 </div>
             </div>
+            <ModalPasswordRecovery
+                :showModal="showRecoveryPasswordModal"
+                @hideModal="hideRecoveryPasswordModal"
+            />
         </div>
-        <ModalPasswordRecovery
-            :showModal="showRecoveryPasswordModal"
-            @hideModal="hideRecoveryPasswordModal"
-        />
-    </div>
+    </Suspense>
 </template>
 
 <script>
@@ -59,6 +59,7 @@
     import ModalPasswordRecovery from '@/components/modals/password-recovery.vue'
 
     export default {
+        name: 'Auth',
         components: {
             ModalPasswordRecovery
         },

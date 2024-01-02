@@ -5,12 +5,12 @@
     >
         <div class="pagination__left">
             <router-link
-                :to="{ path: url, query: Object.assign({}, query, { page: 1 }) }"
+                :to="{ path: url, query: Object.assign({}, query, { page: 1 }), hash: hash }"
                 :class="['pagination__item m--first', isFirstPage && 'm--disabled']"
                 :event="isFirstPage ? '' : 'click'"
             />
             <router-link
-                :to="{ path: url, query: Object.assign({}, query, { page: goPrev }) }"
+                :to="{ path: url, query: Object.assign({}, query, { page: goPrev }), hash: hash }"
                 :class="['pagination__item m--prev', isFirstPage && 'm--disabled']"
                 :event="isFirstPage ? '' : 'click'"
             />
@@ -22,7 +22,7 @@
                 >
                     <router-link
                         class="pagination__link"
-                        :to="{ path: url, query: Object.assign({}, query, { page: page.value }) }"
+                        :to="{ path: url, query: Object.assign({}, query, { page: page.value }), hash: hash }"
                         :event="page.value ? 'click' : ''"
                     >
                         {{ page.text }}
@@ -30,12 +30,12 @@
                 </li>
             </ul>
             <router-link
-                :to="{ path: url, query: Object.assign({}, query, { page: goForward }) }"
+                :to="{ path: url, query: Object.assign({}, query, { page: goForward }), hash: hash }"
                 :class="['pagination__item m--next', isLastPage && 'm--disabled']"
                 :event="isLastPage ? '' : 'click'"
             />
             <router-link
-                :to="{ path: url, query: Object.assign({}, query, { page: pages.length }) }"
+                :to="{ path: url, query: Object.assign({}, query, { page: pages.length }), hash: hash }"
                 :class="['pagination__item m--last', isLastPage && 'm--disabled']"
                 :event="isLastPage ? '' : 'click'"
             />
@@ -64,6 +64,10 @@
             query: {
                 type: Object,
                 default() { return {}; }
+            },
+            hash: {
+                type: String,
+                default() { return ''; }
             },
             url: {
                 type: String,

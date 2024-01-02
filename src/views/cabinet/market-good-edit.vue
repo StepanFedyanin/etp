@@ -7,13 +7,13 @@
                         :breadcrumbs="[
                             { name: 'Главная', route: { name: 'home' } },
                             { name: 'Кабинет', route: { name: 'cabinet' } },
-                            { name: 'Профиль организации', route: { name: 'organization' } },
-                            { name: 'Товары', route: { name: 'organization', hash: '#goods' } },
+                            { name: 'Маркет', route: { name: 'market' } },
+                            { name: 'Товары', route: { name: 'market', hash: '#goods' } },
                         ]"
                     />
                     <GoodAdd
                         :key="`interface-${$route.name}`"
-                        :slug="slug"
+                        :goodId="goodId"
                     />
                 </div>
             </div>
@@ -30,7 +30,7 @@
             GoodAdd,
         },
         props: {
-            slug: {
+            goodId: {
                 type: [String, Number],
                 default() { return null; }
             },

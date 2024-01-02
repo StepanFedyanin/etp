@@ -160,6 +160,7 @@ input {
 
     &.m--no-shadow {
         box-shadow: none;
+        border: none;
     }
 }
 
@@ -171,6 +172,7 @@ select {
 .textarea,
 textarea {
     @mixin textarea;
+    @mixin scrollbar $color-shadow, $color-green, 10px;
 }
 
 .checkbox {
@@ -201,10 +203,10 @@ input[type='number'] {
 
 .button {
     @mixin button;
-    @mixin button--color $color-white, $color-gray-33;
+    @mixin button--color $color-white, $color-gray-33, $color-gray-33;
 
     &:hover {
-        @mixin button--color $color-white-fc, $color-gray-33;
+        @mixin button--color $color-white-fc, $color-gray-33, $color-gray-33;
     }
 
     &.m--right.m--right {
@@ -224,20 +226,25 @@ input[type='number'] {
     }
 
     &-green {
-        @mixin button--color $color-green, $color-white;
+        @mixin button--color $color-gray-f8, $color-gray-dd, $color-gray-33;
 
         &:hover {
-            @mixin button--color $color-green-41, $color-white;
+            @mixin button--color $color-gray-f8, $color-green, $color-green;
+        }
+
+        &:disabled {
+            &:hover {
+                @mixin button--color $color-gray-f8, $color-gray-dd, $color-gray-33;
+            }
         }
     }
 
     &-outline-green {
-        @mixin button--outline-color $color-white, $color-green, $color-green;
+        @mixin button--outline-color $color-white, $color-gray-dd, $color-gray-33;
 
         &:hover {
-            @mixin button--outline-color $color-green, $color-green, $color-white;
+            @mixin button--outline-color $color-white, $color-green, $color-green;
         }
-
 
         &:disabled {
             &:hover {
@@ -247,18 +254,30 @@ input[type='number'] {
     }
 
     &-red {
-        @mixin button--color $color-red, $color-white;
+        @mixin button--color $color-red-ff, $color-red-f8, $color-gray-33;
 
         &:hover {
-            @mixin button--color $color-red-b8, $color-white;
+            @mixin button--color $color-red-ff, $color-red, $color-red;
+        }
+
+        &:disabled {
+            &:hover {
+                @mixin button--color $color-red-ff, $color-red-f8, $color-gray-33;
+            }
         }
     }
 
     &-outline-red {
-        @mixin button--outline-color $color-white, $color-red, $color-red;
+        @mixin button--outline-color $color-white, $color-red-f8, $color-gray-33;
 
         &:hover {
-            @mixin button--outline-color $color-red, $color-red, $color-white;
+            @mixin button--outline-color $color-white, $color-red, $color-red;
+        }
+
+        &:disabled {
+            &:hover {
+                @mixin button--outline-color $color-white, $color-red, $color-red;
+            }
         }
     }
 

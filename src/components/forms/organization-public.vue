@@ -305,7 +305,7 @@
                     cabinet.getMyProfile().then(res => {
                         this.busyForm = false;
                         this.$store.dispatch('setUser', res);
-                        this.formData.logo = res.logo;
+                        this.formData.logo = res.organization.logo;
                     }).catch(err => {
                         this.busyForm = false;
                         this.$store.dispatch('showError', err);

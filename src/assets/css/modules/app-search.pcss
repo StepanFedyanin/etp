@@ -13,10 +13,13 @@
             align-items: center;
             width: 100%;
             border-radius: 0.5rem;
+            border: 1px solid $color-gray-dd;
             box-shadow: 0px 4px 24px rgba(0, 0, 0, 0.06), 0px 2px 6px rgba(0, 0, 0, 0.04), 0px 0px 1px rgba(0, 0, 0, 0.04);
+            transition: all 0.5s ease;
 
             &:hover,
             &:focus-within {
+                border: 1px solid $color-green;
                 box-shadow: 0px 4px 24px rgba(84, 154, 60, 0.06), 0px 2px 6px rgba(84, 154, 60, 0.04), 0px 0px 1px rgba(84, 154, 60, 0.04);
             }
         }
@@ -24,12 +27,13 @@
         &-filter {
             & button {
                 width: 250px;
-                padding: 11px 16px;
+                padding: 9px 16px;
                 border-radius: 2px 8px 8px 2px;
                 font-weight: 300;
                 font-size: 16px;
                 filter: drop-shadow(0 0 0 $color-white);
                 text-transform: none;
+
                 @mixin responsive-le-l {
                     font-size: 0;
                     width: 44px;

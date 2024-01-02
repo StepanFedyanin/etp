@@ -96,70 +96,52 @@
                         <template v-if="organization.created">
                             <div class="registration__step-alert text">
                                 <p>Организация <b>{{ organization.name }}</b> зарегистрирована на платформе TUGAN!</p>
-                                <p>Вы назначены <b>администратором</b> организации. Теперь вы можете:</p>
-                                <ul class="m--dots">
-                                    <li>проводить тендеры и участвовать в них,</li>
-                                    <li>размещать на платформе товары и услуги,</li>
-                                    <li>управлять карточкой организации,</li>
-                                    <li>управлять правами сотрудников.</li>
-                                </ul>
-                                <p>Войдите в качестве сотрудника организации, чтобы пользоваться всеми возможностями платформы для юридических лиц.</p>
-                                <p>Можно сделать это в любой момент, а также свободно переключаться между режимами частного лица и сотрудника организации.</p>
+                                <div 
+                                    v-for="hint in hints"
+                                    :key="`hint-${hint.id}`"
+                                    class="app__content-hint hint"
+                                >
+                                    <div v-if="hint.subject" :class="['hint__title', `m--${hint.type}`]">{{ hint.subject }}</div>
+                                    <div 
+                                        class="hint__content text"
+                                        v-html="hint.content"
+                                    />
+                                </div>
                             </div>
                         </template>
                         <template v-else>
                             <div class="registration__step-alert text">
                                 <p>Вы присоединились к организации <b>{{ organization.name }}</b> на платформе TUGAN!</p>
-                                <p>Владелец организации — <b>{{ organization.head_name }}</b>. Вы назначены <b>сотрудником</b> организации. Обратитесь к владельцу, чтобы:</p>
+                                <div 
+                                    v-for="hint in hints"
+                                    :key="`hint-${hint.id}`"
+                                    class="app__content-hint hint"
+                                >
+                                    <div v-if="hint.subject" :class="['hint__title', `m--${hint.type}`]">{{ hint.subject }}</div>
+                                    <div 
+                                        class="hint__content text"
+                                        v-html="hint.content"
+                                    />
+                                </div>
+                                <!--p>Владелец организации — <b>{{ organization.head_name }}</b>. Вы назначены <b>сотрудником</b> организации. Обратитесь к владельцу, чтобы:</p>
                                 <ul class="m--dots">
                                     <li>проводить тендеры и участвовать в них,</li>
                                     <li>размещать на платформе товары и услуги,</li>
                                     <li>управлять карточкой организации.</li>
                                 </ul>
                                 <p>Войдите в качестве сотрудника организации, чтобы пользоваться всеми возможностями платформы для юридических лиц.</p>
-                                <p>Можно сделать это в любой момент, а также свободно переключаться между режимами частного лица и сотрудника организации.</p>
+                                <p>Можно сделать это в любой момент, а также свободно переключаться между режимами частного лица и сотрудника организации.</p-->
                             </div>                            
                         </template>
                     </div>
                 </template>
-                <!--template v-if="stepRegistration === 2 && organization">
-                    <div class="registration__step m--step-2">
-                        <div class="h2">
-                            Сведения об организации
-                        </div>
-                        <regOrganization
-                            :loading="showLoaderSending"
-                            :formData="organization"
-                            :disabled="regFormReadOnly"
-                            @prevStep="prevStep"
-                            @submitHandler="submitOrganizationHandler"
-                        />
-                    </div>
-                </template-->
-                <!--div
-                    v-if="stepRegistration === 3"
-                >
-                    <div class="registration__title h2">
-                        Сведения о пользователе
-                    </div>
-                    <div
-                        class="registration__form form"
-                    >
-                        <regPersonForm 
-                            :loading="showLoaderSending"
-                            :formData="regData.person"
-                            @prevStep="prevStep"
-                            @submitPersonHandler="submitPersonHandler"
-                        />
-                    </div>
-                </div-->
             </div>
         </div>
     </div>
 </template>
 
 <script>
-    import { user as api, cabinet } from "@/services";
+    import { user as api, cabinet, common } from "@/services";
     import regOrganizationSearch from '@/components/forms/reg-organization-search';
     //import regOrganization from '@/components/forms/reg-organization';
     //import regPersonForm from '@/components/forms/reg-person-form';
@@ -206,6 +188,7 @@
                 person: {},
                 organizations: [],
                 organization: null,
+                hints: []
             };
         },
         computed: {
@@ -287,6 +270,8 @@
                             console.log(this.regFormReadOnly);
                         }
                         */
+                        let slug = this.organization.created ? 'organization_registration_admin' : 'organization_registration_staff';
+                        this.getHint(slug);
                         this.showLoaderSending = false;
                     }
                     //if (this.$metrika) this.$metrika.reachGoal('reg_1');
@@ -316,6 +301,14 @@
                     this.$store.dispatch('showError', err);
                     console.error(err);
                 });
+            },
+            getHint(slug) {
+                let params = { slug: slug };
+                common.getHint(params).then(res => {
+                    this.hints = res.results;
+                }).catch(err => {
+                    console.error(err)
+                })
             },
             /*
             submitPersonHandler(data, node) {

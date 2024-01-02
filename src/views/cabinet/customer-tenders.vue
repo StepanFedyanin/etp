@@ -52,7 +52,6 @@
 
 <script>
     import { tender as api } from "@/services";
-    //import Search from '@/components/app-search.vue';
     import Pagination from '@/components/pagination.vue';
     import blockTender from '@/components/block-tender.vue';
 
