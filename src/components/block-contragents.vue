@@ -75,8 +75,7 @@
                     >
                         <div
                             v-if="user.organization?.id !== contragent.id"
-                            class="contragents__item-favorite"
-                            :class="{ 'm--favorite': contragent.is_favorite }"
+                            :class="['contragents__item-favorite', (contragent.is_favorite) && 'm--favorite']"
                             @click.stop="toggleFavorite(contragent)"
                         />
                     </div>
@@ -87,10 +86,12 @@
 </template>
 
 <script>
+    import { toRef } from "vue"
     import { cabinet } from "@/services"
     export default {
         components: {
         },
+        emits: ['updateData'],
         props: {
             contragents: {
                 type: Array,
@@ -103,7 +104,7 @@
         },
         data() {
             return {
-                contragentsData: this.contragents
+                contragentsData: toRef(() => this.contragents)
             }
         },
         computed: {
@@ -126,7 +127,7 @@
             toggleFavorite(contragent) {
                 contragent.is_favorite = !contragent.is_favorite;
                 cabinet.switchFavoriteOrganization(contragent.id).then(res => {
-                    console.log(res);
+                    this.$emit('updateData');
                 }).catch(err => {
                     this.$store.dispatch('showError', err);
                     console.error(err);

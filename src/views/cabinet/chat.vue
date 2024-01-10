@@ -56,7 +56,7 @@
                                 </div-->
                                 <div class="chat__user-info">
                                     <div class="chat__user-info-organization">
-                                        {{ room.tender?.organization?.name }}
+                                        {{ room.chat_partner?.full_name }}
                                     </div>
                                     <div class="chat__user-info-date">
                                         <template v-if="$helpers.formatDate(new Date(room.last_update), 'DD.MM.YY') === $helpers.formatDate(new Date(), 'DD.MM.YY')">
@@ -135,7 +135,7 @@
                                         <div
                                             v-else
                                             :key="`message-${message.id}`"
-                                            :class="['chat__messages-item', {'is-unread': !message.seen}, message.user !== $store._state.data.user.id ? 'is-recipient' : 'is-your']"
+                                            :class="['chat__messages-item', !message.seen && 'is-unread', message.user !== $store._state.data.user.id ? 'is-left' : 'is-right']"
                                         >
                                             <div class="chat__messages-item-inner">
                                                 <template v-if="message.deleted">
@@ -145,6 +145,12 @@
                                                 </template>
                                                 <template v-else>
                                                     <div class="chat__messages-item-top">
+                                                        <div 
+                                                            v-if="message.user_name"
+                                                            class="chat__messages-item-user"
+                                                        >
+                                                            {{ message.user_name }}
+                                                        </div>
                                                         <div class="chat__messages-item-member">
                                                             <span :class="`m--${message.user_status}`">
                                                                 {{ message.user_status_detail }}
@@ -164,12 +170,6 @@
                                                             class="chat__messages-item-delete"
                                                             @click.prevent="onDeleteMessage(message.id)"
                                                         /-->
-                                                    </div>
-                                                    <div 
-                                                        v-if="message.user_name"
-                                                        class="chat__messages-item-name"
-                                                    >
-                                                        {{ message.user_name }}
                                                     </div>
                                                     <div 
                                                         class="chat__messages-item-text"
@@ -263,14 +263,14 @@
             return {
                 tabsItems: [
                     {
-                        name: 'market',
-                        label: 'Маркет'
-                    }, {
                         name: 'tenders',
                         label: 'Тендеры'
+                    }, {
+                        name: 'market',
+                        label: 'Маркет'
                     }
                 ],
-                currentTabsItem: this.$route.hash?.replace('#', '') || 'market',
+                currentTabsItem: this.$route.hash?.replace('#', '') || 'tenders',
                 chat: null,
                 chat_messages: [],
                 form: {},

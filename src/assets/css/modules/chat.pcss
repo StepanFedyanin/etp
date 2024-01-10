@@ -54,7 +54,7 @@
             width: 100%;
             max-height: 100%;
             overflow-y: auto;
-            overflow-x: visible;
+            overflow-x: hidden;
             padding: 0 0.5rem 0 0;
 
             @mixin scrollbar $color-shadow, $color-green, 10px;
@@ -319,7 +319,7 @@
                 display: flex;
                 justify-content: space-between;
                 gap: 12px;
-                margin-bottom: 8px;
+                margin-bottom: 0.75rem;
             }
 
             &-delete {
@@ -341,6 +341,12 @@
                 margin-bottom: 16px;
             }
 
+            &-user {
+                font-weight: 500;
+                font-size: 0.875rem;
+                line-height: 1.125rem;
+            }
+
             &.is-your,
             &.is-right {
                 /*max-width: 80%;*/
@@ -353,8 +359,8 @@
                 /* margin-right: auto; */
                 align-items: flex-start;
             }
-            &.is-recipient.is-unread &-inner {
-                background: $color-green-opacity40;
+            &.is-unread &-inner {
+                background: $color-gray-f8;
                 /*
                 border-top-left-radius: 0;
                 border-radius: 20px;
@@ -370,9 +376,12 @@
             &.is-recipient &-inner,
             &.is-left &-inner {
                 border: 1px solid $color-gray-dd !important;
-                background: $color-green-opacity20;
                 border-top-left-radius: 0 !important;
                 margin-right: auto;
+            }
+
+            &.is-recipient &-inner {
+                background: $color-green-opacity20;
             }
 
             &.m--tender.m--tender &-inner {
@@ -423,18 +432,20 @@
             }
 
             &-time {
-                font-weight: 300;
-                font-size: 10px;
-                line-height: 12px;
+                margin-left: auto;
+                font-weight: 500;
+                font-size: 0.875rem;
+                line-height: 1.125rem;
                 color: $color-gray-66;
             }
-
+            /*
             &.m--tender &-time {
                 margin-left: auto;
                 font-weight: 500;
                 font-size: 14px;
                 line-height: 17px;
             }
+            */
         }
     }
 }

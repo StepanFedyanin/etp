@@ -35,7 +35,7 @@
                 </template>
                 <template v-else-if="contragents.count">
                     <div class="contragents__block">
-                        <div class="contragents__pagination">
+                        <div class="contragents__pagination m--top">
                             <Pagination
                                 :total="contragents.count"
                                 :limit="+limit"
@@ -50,7 +50,7 @@
                         :hideHeader="true"
                     />
                     <div class="contragents__block">
-                        <div class="contragents__pagination m--no-margin">
+                        <div class="contragents__pagination m--bottom">
                             <Pagination
                                 :total="contragents.count"
                                 :limit="+limit"

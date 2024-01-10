@@ -339,7 +339,7 @@
                 default() { return false; }
             },
         },
-        emits: ['getListInvitation'],
+        emits: ['getListInvitation', 'updateData'],
         data() {
             return {
                 urlPath,
@@ -383,7 +383,7 @@
             toggleFavorite() {
                 this.favorite = !this.favorite;
                 tenderApi.switchFavoriteTender(this.tender.id).then(res => {
-                    console.log(res);
+                    this.$emit('updateData');
                 }).catch(err => {
                     this.$store.dispatch('showError', err);
                     console.error(err);

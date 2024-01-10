@@ -1,10 +1,10 @@
 <template>
     <div class="tenders m--block">
-        <div class="tenders__search">
-            <div
-                v-if="tenders && tenders.length"
-                class="tenders__pagination"
-            >
+        <div 
+            v-if="tenders && tenders.length"
+            class="tenders__block"
+        >
+            <div class="tenders__pagination">
                 <Pagination
                     :total="tenders.length"
                     :limit="Number(limit)"
@@ -15,27 +15,36 @@
             </div>
         </div>
         <div class="tenders__block">
-            <template
-                v-if="showLoaderSending"
-            >
+            <template v-if="showLoaderSending">
                 <div class="tenders__loader loader">
                     <div class="spinner" /> Загрузка данных
                 </div>
             </template>
-            <template
-                v-else-if="tenders && tenders.length"
-            >
+            <template v-else-if="tenders && tenders.length">
                 <blockTender
-                    v-for="(tender, index) in tenders"
-                    :key="`tender-${index}`"
+                    v-for="tender in tenders"
+                    :key="`tender-${tender.id}`"
                     :tender="tender"
+                    @updateData="updateData"
                 />
             </template>
-            <template
-                v-else
-            >
+            <template v-else>
                 У вас нет избранных тендеров.
             </template>
+        </div>
+        <div 
+            v-if="tenders && tenders.length && !showLoaderSending"
+            class="tenders__block"
+        >
+            <div class="tenders__pagination">
+                <Pagination
+                    :total="tenders.length"
+                    :limit="Number(limit)"
+                    :currentPage="Number($route.query.page || 1)"
+                    :query="$route.query"
+                    :url="$route.path"
+                />
+            </div>
         </div>
     </div>
 </template>
@@ -87,14 +96,15 @@
         created() {
         },
         methods: {
-            getFavoritesTenders() {
+            getFavoritesTenders(lazy = false) {
                 let params = {
                     limit: Number(this.limit),
                     offset: this.offset
                 };
-                this.showLoaderSending = true;
+                if (!lazy) this.showLoaderSending = true;
                 tenderApi.getFavoritesTenders(params).then(tenders => {
                     this.tenders = tenders;
+                    if (this.page > 1 && !this.tenders.length) this.$router.replace({ query: { page: this.page - 1 } });
                     this.showLoaderSending = false;
                 }).catch(err => {
                     this.showLoaderSending = false;
@@ -102,6 +112,9 @@
                     console.error(err);
                 })
             },
+            updateData() {
+                this.getFavoritesTenders(true);
+            }
         }
     };
 </script>

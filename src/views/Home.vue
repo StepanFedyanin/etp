@@ -24,19 +24,16 @@
                                 src="../assets/img/banner-logo.png"
                                 class="banner__logo"
                                 alt="TUGAN"
-                                loading="lazy"
                             >
                             <img
                                 src="../assets/img/banner-logo-2.png"
                                 class="banner__logo"
                                 alt="TUGAN"
-                                loading="lazy"
                             >
                             <img
                                 src="../assets/img/banner-logo-3.png"
                                 class="banner__logo"
                                 alt="TUGAN"
-                                loading="lazy"
                             >
                         </div>
                     </div>
