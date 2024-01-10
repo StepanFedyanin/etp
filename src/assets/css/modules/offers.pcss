@@ -1,0 +1,256 @@
+.offers {
+    padding: 20px;
+    @mixin shadow-box;
+
+    &.m--no-padding {
+        padding: 0;
+    }
+
+    &.m--no-background {
+        background: transparent;
+    }
+
+    &.m--no-shadow {
+        box-shadow: none;
+        border-radius: 0;
+    }
+
+    &.m--modal {
+        max-width: 860px;
+    }
+
+    &__title {
+        font-weight: 700;
+        font-size: 20px;
+        line-height: 24px;
+        text-transform: uppercase;
+    }
+
+    &__list {
+        padding-top: 24px;
+    }
+
+    &__item {
+        padding-bottom: 16px;
+        border-bottom: 1px solid $color-gray-e0;
+        margin-bottom: 16px;
+
+        &.m--no-border {
+            border-bottom: none;
+            padding-bottom: 0;
+        }
+
+        &-number {
+            font-weight: 600;
+            font-size: 16px;
+            line-height: 24px;
+            color: $color-gray-bd;
+            margin-bottom: 12px;
+        }
+
+        &-name {
+            font-weight: 400;
+            font-size: 14px;
+            line-height: 20px;
+            margin-bottom: 16px;
+        }
+
+        &-title {
+            font-weight: 600;
+            font-size: 16px;
+            line-height: 20px;
+            text-transform: uppercase;
+            color: $color-gray-66;
+            margin-bottom: 16px;
+            margin-left: 0;
+        }
+
+        &-info {
+            display: flex;
+            flex-wrap: wrap;
+        }
+
+        &-param {
+            position: relative;
+            display: inline-block;
+            font-weight: 400;
+            margin-right: 36px;
+            margin-bottom: 16px;
+            text-transform: uppercase;
+            font-size: 14px;
+            line-height: 24px;
+
+            span {
+                font-weight: 600;
+                padding-left: 12px;
+            }
+
+            &.m--winner {
+                display: block;
+                margin-right: 0;
+                margin-bottom: 8px;
+                text-transform: none;
+
+                span {
+                    padding-left: 0;
+                    padding-right: 12px;
+                }
+            }
+
+            &.m--block {
+                display: block;
+                margin-right: 0;
+                text-transform: none;
+                margin-bottom: 8px;
+                font-size: 16px;
+                line-height: 20px;
+
+                span {
+                    padding-left: 0;
+                    padding-right: 12px;
+                }
+            }
+        }
+
+        &-price {
+            font-weight: 700;
+            font-size: 24px;
+            line-height: 30px;
+            align-self: center;
+            text-transform: uppercase;
+        }
+
+        &-winner {
+            display: flex;
+            padding-bottom: 8px;
+            margin-bottom: 24px;
+            border-bottom: 1px solid $color-gray-e0;
+
+            &-block {
+                width: 50%;
+
+                &.m--width-100 {
+                    width: 100%;
+                }
+            }
+        }
+
+        &-button {
+            position: relative;
+            display: flex;
+            justify-content: center;
+        }
+
+        &-form {
+            padding-top: 8px;
+
+            &-title {
+                font-weight: 600;
+                margin-bottom: 0;
+            }
+
+            &-info {
+                font-weight: 400;
+                font-size: 12px;
+                line-height: 24px;
+                width: 100%;
+                margin-bottom: 16px;
+
+                span {
+                    font-weight: 600;
+                }
+            }
+
+            .button {
+                margin: 0 12px;
+            }
+        }
+    }
+
+    &__more {
+        position: relative;
+        display: flex;
+        justify-content: center;
+    }
+
+    &__stats {
+        padding-top: 24px;
+
+        &-item {
+            margin-bottom: 16px;
+
+            &-block {
+                position: relative;
+                display: flex;
+            }
+        }
+
+        &-param {
+            margin-bottom: 10px;
+            padding-right: 24px;
+            font-weight: 400;
+
+            &.m--lot-name {
+                font-weight: 700;
+            }
+
+            &.m--price {
+                font-weight: 500;
+            }
+
+            &.m--price-best {
+                font-weight: 600;
+            }
+
+            &.m--price,
+            &.m--price-best {
+                padding-right: 0;
+                margin-left: auto;
+            }
+
+            &.m--progress {
+                position: relative;
+                height: 8px;
+                border-radius: 4px;
+                background: $color-gray-33;
+                width: 70%;
+                margin-top: 10px;
+                padding-right: 0;
+
+                span {
+                    position: absolute;
+                    display: block;
+                    left: 0;
+                    top: 0;
+                    height: 8px;
+                    overflow: hidden;
+
+                    &:after {
+                        content: '';
+                        position: absolute;
+                        top: 0;
+                        left: 0;
+                        right: 0;
+                        bottom: 0;
+                        background: linear-gradient(74.88deg, rgba($color-gray-33, 0.3) 10%, transparent 80%);
+                    }
+                }
+
+                &.m--green {
+                    span {
+                        border-radius: 4px;
+                        background: $color-green;
+                    }
+                }
+
+                &.m--red {
+                    span {
+                        border-radius: 4px;
+                        background: $color-red;
+                    }
+                }
+            }
+        }
+    }
+
+}

@@ -1,0 +1,164 @@
+.persons {
+    position: relative;
+    overflow-x: auto;
+    @mixin scrollbar $color-shadow, $color-green, 10px;
+
+    &__item {
+        font-weight: 400;
+        font-size: 0.875rem;
+        line-height: normal;
+        color: $color-gray-33;
+
+        @mixin responsive-le-s {
+            min-width: 980px;
+        }
+
+        &.m--header {
+            color: $color-gray-66;
+            font-weight: 400;
+            text-transform: uppercase;
+        }
+
+        &.m--not-active {
+            /* background: grey; */
+            color: $color-gray-bd;
+        }
+
+        &-inner {
+            padding: 0.5rem;
+            display: grid;
+            grid-template-columns: 24px minmax(200px, auto) 220px 140px 104px;
+            /*grid-template-areas: 'A B C D';*/
+            gap: 0.5rem;
+            word-break: break-word;
+            cursor: pointer;
+
+        }
+
+        &.m--short &-inner {
+            grid-template-columns: minmax(200px, auto) 220px 140px;
+        }
+
+        &:not(.m--header) &-inner:hover {
+            background: $color-gray-f8;
+        }
+
+        &-cell {
+            display: flex;
+            flex-wrap: wrap;
+            align-items: center;
+            column-gap: 0.5rem;
+
+            &.m--icons {
+                column-gap: 1rem;
+            }
+
+            &.m--strong {
+                font-weight: 500;
+            }
+
+            span:not(.icon) {
+                color: $color-gray-66;
+            }
+        }
+
+        .icon {
+            display: block;
+            width: 1.5rem;
+            min-width: 1.5rem;
+            height: 1.5rem;
+            background: $color-red;
+
+            &.m--arrow-down {
+                mask: url('./assets/img/icons/icon-arrow-down.svg') 50% 50% no-repeat;
+                mask-size: contain;
+                background: $color-green;
+            }
+
+            &.m--arrow-up {
+                mask: url('./assets/img/icons/icon-arrow-down.svg') 50% 50% no-repeat;
+                mask-size: contain;
+                transform: rotateX(180deg);
+                background: $color-green;
+            }
+
+            &.m--perms-org {
+                mask: url('./assets/img/icons/icon-building.svg') 50% 50% no-repeat;
+                mask-size: contain;
+            }
+
+            &.m--perms-goods {
+                mask: url('./assets/img/icons/icon-bag-check.svg') 50% 50% no-repeat;
+                mask-size: contain;
+            }
+
+            &.m--perms-tenders {
+                mask: url('./assets/img/icons/icon-customer.svg') 50% 50% no-repeat;
+                mask-size: contain;
+            }
+
+            &.m--on {
+                background: $color-green;
+            }
+        }
+
+        &-more {
+            display: none;
+            padding: 0.75rem;
+            border: 1px solid $color-gray-dd;
+            border-radius: 0.5rem;
+            background: $color-gray-f8;
+
+            &.is-opened {
+                display: block;
+            }
+
+            &-block {
+                display: flex;
+                gap: 2rem;
+                margin-bottom: 1.5rem;
+            }
+
+            &-params {
+                display: flex;
+                flex-direction: column;
+                gap: 1rem;
+
+                &.m--right {
+                    margin-left: auto;
+                    min-width: 240px;
+                }
+            }
+
+            &-param {
+                display: flex;
+                flex-direction: column;
+                gap: 0.5rem;
+                font-weight: 400;
+                padding: 0;
+                margin: 0;
+
+                span {
+                    font-weight: 500;
+                }
+            }
+
+            &-links {
+                display: flex;
+                gap: 1.5rem;
+                margin-bottom: 1rem;
+            }
+
+            &-link {
+                font-weight: 500;
+                padding: 0;
+                margin: 0;
+            }
+        }
+    }
+    .cell-icons{
+        display: flex;
+        gap: 5px;
+        align-items: center;
+    }
+}

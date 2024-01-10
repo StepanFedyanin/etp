@@ -1,0 +1,456 @@
+*,
+*::before,
+*::after {
+    box-sizing: border-box;
+    outline: none !important;
+}
+
+html {
+    min-width: 100%;
+    height: 100%;
+    height: -webkit-fill-available;
+    /*overflow-x: auto;*/
+    scrollbar-gutter: stable;
+    @mixin scrollbar $color-shadow, $color-green, 10px;
+    &::-webkit-scrollbar-thumb {
+        border-radius: 0;
+    }
+}
+
+body {
+    @mixin base;
+
+    position: relative;
+    min-width: 320px;
+    height: 100%;
+    min-height: 100vh;
+    min-height: -webkit-fill-available;
+    font-weight: 500;
+    padding: 0 !important;
+}
+
+.container {
+    width: calc(100% - 80px);
+    max-width: 1200px;
+    margin: 0 40px;
+
+    &.m--header {
+        max-width: none;
+        padding-left: 0;
+        margin-left: 0;
+        width: calc(100% - 40px);
+
+        @mixin responsive-le-xl {
+            width: auto;
+        }
+    }
+
+    &.m--1460 {
+        width: calc(100% - 60px);
+        max-width: 1500px;
+        margin: 0 30px;
+    }
+
+    &.m--1520 {
+        max-width: 1520px;
+    }
+
+    /*
+    @mixin responsive-le-xxl {
+        margin: auto 40px;
+        padding: 0;
+    }
+    */
+    @mixin responsive-le-xl {
+        width: calc(100% - 48px);
+        padding: 0;
+        margin: auto 24px !important;
+    }
+
+    @mixin responsive-le-l {
+        width: calc(100% - 32px);
+        margin: auto 16px !important;
+    }
+
+    /*
+        width: calc(100% - 280px)
+        position: absolute;
+        left: 240px;
+        right: 40px;
+
+    @mixin responsive-le-l {
+        left: 190px;
+    }
+    @mixin responsive-le-m {
+        left: 16px;
+        right: 16px;
+    }
+    */
+}
+
+.m--justify-flex-start.m--justify-flex-start {
+    justify-content: flex-start;
+}
+
+.m--align-flex-start.m--align-flex-start {
+    align-items: flex-start;
+}
+
+.m--direction-column {
+    flex-direction: column;
+}
+
+.h1 {
+    @mixin h1;
+}
+
+.h2, h2 {
+    @mixin h2;
+}
+
+.h3 {
+    @mixin h3;
+}
+
+.h4 {
+    @mixin h4;
+}
+
+.p {
+    @mixin p;
+}
+
+.ul {
+    @mixin ul;
+}
+
+.ol {
+    @mixin ol;
+}
+
+.hr {
+    @mixin hr;
+}
+
+.a,
+a {
+    @mixin a;
+    /*@mixin a--color $color-base;*/
+}
+
+.table {
+    @mixin table;
+}
+
+.base {
+    @mixin base;
+}
+
+.format {
+    @mixin format;
+}
+
+.text {
+    @mixin text;
+}
+
+.input,
+input {
+    @mixin input;
+
+    &.m--no-shadow {
+        box-shadow: none;
+        border: none;
+    }
+}
+
+.select,
+select {
+    @mixin select;
+}
+
+.textarea,
+textarea {
+    @mixin textarea;
+    @mixin scrollbar $color-shadow, $color-green, 10px;
+}
+
+.checkbox {
+    @mixin checkbox;
+}
+
+.radiobox {
+    @mixin radiobox;
+}
+
+input[type="date"]::-webkit-calendar-picker-indicator,
+input[type="datetime-local"]::-webkit-calendar-picker-indicator {
+    background-image: url('assets/img/icons/icon-calendar.svg');
+    background-repeat: no-repeat;
+}
+
+/* Chrome, Safari, Edge, Opera */
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+}
+
+/* Firefox */
+input[type='number'] {
+    -moz-appearance: textfield;
+}
+
+.button {
+    @mixin button;
+    @mixin button--color $color-white, $color-gray-33, $color-gray-33;
+
+    &:hover {
+        @mixin button--color $color-white-fc, $color-gray-33, $color-gray-33;
+    }
+
+    &.m--right.m--right {
+        margin-left: auto;
+    }
+
+    &.m--small,
+    &.m--small:active {
+        min-width: 185px;
+        font-size: 0.875rem;
+    }
+
+    &.m--medium,
+    &.m--medium:active {
+        min-width: 185px;
+        font-size: 0.875rem;
+    }
+
+    &-green {
+        @mixin button--color $color-gray-f8, $color-gray-dd, $color-gray-33;
+
+        &:hover {
+            @mixin button--color $color-gray-f8, $color-green, $color-green;
+        }
+
+        &:disabled {
+            &:hover {
+                @mixin button--color $color-gray-f8, $color-gray-dd, $color-gray-33;
+            }
+        }
+    }
+
+    &-outline-green {
+        @mixin button--outline-color $color-white, $color-gray-dd, $color-gray-33;
+
+        &:hover {
+            @mixin button--outline-color $color-white, $color-green, $color-green;
+        }
+
+        &:disabled {
+            &:hover {
+                @mixin button--outline-color $color-white, $color-green, $color-green;
+            }
+        }
+    }
+
+    &-red {
+        @mixin button--color $color-red-ff, $color-red-f8, $color-gray-33;
+
+        &:hover {
+            @mixin button--color $color-red-ff, $color-red, $color-red;
+        }
+
+        &:disabled {
+            &:hover {
+                @mixin button--color $color-red-ff, $color-red-f8, $color-gray-33;
+            }
+        }
+    }
+
+    &-outline-red {
+        @mixin button--outline-color $color-white, $color-red-f8, $color-gray-33;
+
+        &:hover {
+            @mixin button--outline-color $color-white, $color-red, $color-red;
+        }
+
+        &:disabled {
+            &:hover {
+                @mixin button--outline-color $color-white, $color-red, $color-red;
+            }
+        }
+    }
+
+    &-outline-white {
+        @mixin button--outline-color $color-white, $color-white, $color-green;
+
+        &:hover {
+            @mixin button--outline-color $color-green, $color-green, $color-white;
+        }
+    }
+    
+    &-filter {
+        &::before {
+            content: '';
+            width: 16px;
+            height: 14px;
+            background-size: 16px 14px;
+            margin-right: 14px;
+            background-image: svg-load('assets/img/icons/icon-filter.svg', fill=$color-green);
+            @mixin responsive-le-l {
+                margin-right: 0;
+            }
+        }
+        
+        &:hover {
+            &::before {
+                background-image: svg-load('assets/img/icons/icon-filter.svg', fill=$color-white);
+            }
+        }
+    }
+
+    &-width-auto {
+        width: auto;
+    }
+
+    &-width-100 {
+        width: 100%;
+    }
+
+    &-center {
+        margin-left: auto;
+        margin-right: auto;
+    }
+
+    &.m--nowrap {
+        white-space: nowrap;
+    }
+}
+
+.color-status {
+    width: 10px;
+    height: 10px;
+    border-radius: 100px;
+    &&.m--color-red {
+        background: $color-red;
+    }
+    &&.m--color-green {
+        background: $color-green;
+    }
+    &&.m--color-green-yellow {
+        background: $color-yellow;
+    }
+    &&.m--color-yellow {
+        background: $color-yellow;
+    }
+}
+
+.m--color {
+    &-green&-green {
+        color: $color-green;
+    }
+
+    &-red&-red {
+        color: $color-red;
+    }
+    &-yellow {
+        color: $color-yellow;
+    }
+}
+
+.m--mb-3 {
+    margin-bottom: 3rem;
+}
+
+.svg-icon {
+    height: 1.5rem; 
+    width: 1.5rem;
+    min-width: 1.5rem;
+    cursor: pointer;
+
+    &&__edit {
+        display: inline-block;
+        margin: 0 20px;
+        background: $color-green;
+        mask: url('./assets/img/icons/icon-edit.svg') 50% 50% no-repeat;
+        &:hover {
+            background: $color-green-41;
+        }
+    }
+    &&__activate {
+        display: inline-block;
+        background: url('./assets/img/icons/icon-activate.svg') 50% 50% no-repeat;
+        background-size: 20px;
+        &:hover {
+        }
+    }
+
+    &&__delete {
+        display: inline-block;
+        background: $color-red;
+        mask: url('./assets/img/icons/icon-delete.svg') 50% 50% no-repeat;
+        &:hover {
+            background: $color-red-b8;
+        }
+    }
+
+    &&__addPerson {
+        fill: none;
+        stroke: $color-green;
+        &:hover {
+            stroke: $color-green-41;
+        }
+    }
+    &&__hammer {
+        display: inline-block;
+        background: $color-gray-e0;
+        mask: url('./assets/img/icons/icon-hammer.svg') 50% 50% no-repeat;
+        &:hover {
+            background: $color-green;
+        }
+    }
+    &&__briefcase {
+        display: inline-block;
+        background: $color-gray-e0;
+        mask: url('./assets/img/icons/icon-briefcase.svg') 50% 50% no-repeat;
+        &:hover {
+            background: $color-green;
+        }
+    }
+    &&__crossCircle {
+        height: 20px; 
+        width: 20px;
+        display: inline-block;
+        background: $color-red;
+        mask: url('./assets/img/icons/icon-crossCircle.svg') 50% 50% no-repeat;
+        &:hover {
+            background: $color-red-b8;
+        }
+    }
+    &&__sent {
+        display: inline-block;
+        background: $color-green;
+        mask: url('./assets/img/icons/icon-check-square.svg') 50% 50% no-repeat;
+        mask-size: contain;
+        &:hover {
+            background: $color-green-41;
+        }
+    }
+    &&__changePassword {
+        display: inline-block;
+        background: $color-green;
+        mask: url('./assets/img/icons/icon-changePassword.svg') 50% 50% no-repeat;
+        &:hover {
+            background: $color-green-41;
+        }
+    }
+    &&__message {
+        fill: $color-gray-33;
+        height: 20px; 
+        width: 20px;
+        &:hover {
+            fill: $color-gray-4f;
+        }
+    }
+
+}

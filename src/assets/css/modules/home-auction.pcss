@@ -1,0 +1,210 @@
+.auction {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+    padding-bottom: 70px;
+
+    @mixin responsive-le-xl {
+        padding-bottom: 60px;
+    }
+
+    @mixin responsive-le-l {
+        padding-bottom: 50px;
+    }
+
+    @mixin responsive-le-m {
+        padding-bottom: 40px;
+    }
+
+    &__title {
+        margin-bottom: 24px;
+        color: $color-gray-66;
+        font-weight: 600;
+        text-transform: uppercase;
+        font-size: 20px;
+        line-height: 24px;
+    }
+    &__subtitle {
+        margin-bottom: 35px;
+    }
+    &__search {
+        width: 100%;
+        margin-bottom: 35px;
+        padding: 0;
+    }
+    &__loader {
+        padding: 0 0 20px;
+    }
+
+    &__list {
+        position: relative;
+        max-width: 100%;
+        /*margin-left: -20px;*/
+
+        &-loader {
+            padding: 0 0 20px;
+        }
+
+        &-inner {
+            /*@mixin simple-box-list;*/
+    
+            /*padding: 0;*/
+            padding: 0 0 20px;
+
+            &.is-scrollbar {
+                max-height: 700px;
+                overflow-y: auto;
+                overflow-x: visible;
+                padding: 0 50px 0 20px;
+                @mixin scrollbar $color-shadow, $color-green, 10px;
+
+                &::-webkit-scrollbar-track {
+                    margin: 20px 0;
+                }
+            }
+        }
+
+        &-up,
+        &-down {
+            position: absolute;
+            width: 42px;
+            height: 42px;
+            background-color: $color-green;
+            -webkit-mask-position: center;
+            mask-position: center;
+            -webkit-mask-repeat: no-repeat;
+            mask-repeat: no-repeat;
+            -webkit-mask-size: contain;
+            mask-size: contain;
+            cursor: pointer;
+        }
+
+        &-up {
+            top: -18px;
+            right: -17px;
+            -webkit-mask-image: url('./assets/img/icons/chevron-up.svg');
+            mask-image: url('./assets/img/icons/chevron-up.svg');
+        }
+
+        &-down {
+            bottom: -18px;
+            right: -17px;
+            -webkit-mask-image: url('./assets/img/icons/chevron-down.svg');
+            mask-image: url('./assets/img/icons/chevron-down.svg');
+        }
+    }
+    
+    &__item {
+        @mixin simple-box;
+
+        padding: 21px 31px 18px;
+
+        &:last-child {
+            margin-bottom: 34px;
+        }
+
+        &-left {
+            padding-right: 48px;
+            border-right: 1px solid $color-gray-e0;
+            width: 70%;
+            
+            @mixin responsive-le-l {
+                padding-right: 30px;
+            }
+            
+            @mixin responsive-le-m {
+                padding-right: 0;
+                padding-bottom: 24px;
+                margin-bottom: 16px;
+                border-bottom: 1px solid $color-gray-e0;
+                width: 100%;
+                border-right: none;
+            }
+        }
+        
+        &-right {
+            padding-left: 20px;
+            width: 30%;
+            padding-right: 40px;
+
+            @mixin responsive-le-m {
+                padding-left: 0;
+                padding-right: 0;
+                width: 100%;
+            }
+        }
+        
+        &-title {
+            font-weight: 700;
+            font-size: 24px;
+            text-transform: uppercase;
+            margin-bottom: 16px;
+            color: $color-gray-33;
+        }
+
+        &-price {
+            color: $color-green;
+            margin-bottom: 24px;
+            font-style: normal;
+            font-weight: 700;
+            font-size: 34px;
+            line-height: 40px;
+
+            &.m--mobile {
+                display: none;
+            }
+
+            @mixin responsive-le-xl {
+                font-size: 30px;
+            }
+
+            @mixin responsive-le-l {
+                font-size: 26px;
+            }
+
+            @mixin responsive-le-m {
+                display: none;
+
+                &.m--mobile {
+                    display: block;
+                }
+            }            
+        }
+        
+        &-description {
+            font-weight: 400;
+            font-size: 16px;
+            line-height: 20px;
+            margin-bottom: 24px;
+            color: $color-black;
+        }
+        
+        &-foot {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 20px;
+            @mixin responsive-le-xs {
+                flex-direction: column;
+                justify-content: flex-start;
+            }
+        }
+
+        &-status {
+            font-weight: 500;
+            font-size: 20px;
+            color: $color-red;
+        }
+
+        &-button {
+            & button {
+                width: 250px;
+            }
+        }
+        
+        &-prop {
+            margin-bottom: 16px;
+        }
+    }
+}

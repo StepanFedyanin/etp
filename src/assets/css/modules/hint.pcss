@@ -1,0 +1,44 @@
+.hint {
+    @mixin shadow-box;
+    padding: 1.5rem 1rem;
+    margin-bottom: 1.5rem;
+    max-width: 640px;
+    width: 100%;
+
+    &.loader {
+        font-weight: 500;
+        font-size: 1rem;
+    }
+
+    &__title {
+        font-size: 1rem;
+        font-weight: 500;
+        text-transform: uppercase;
+        color: $color-gray-66;
+        padding-bottom: 0.25rem;
+        margin-bottom: 1rem;
+        border-bottom: 2px solid transparent;
+
+        &.m--success {
+            border-color: $color-gray-dd;
+        }
+
+        &.m--warning {
+            border-color: $color-yellow-fc;
+        }
+
+        &.m--error {
+            border-color: $color-red-f8;
+        }
+    }
+
+    &__content {
+        font-size: 1rem;
+        font-weight: 500;
+        color: $color-gray-33;
+
+        p:last-child {
+            margin-bottom: 0;
+        }
+    }
+}

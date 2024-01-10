@@ -1,0 +1,298 @@
+@define-mixin __input {
+    padding: 11px 12px;
+    font-style: normal;
+    font-weight: normal;
+    font-size: 16px;
+    line-height: 24px;
+    display: flex;
+    align-items: center;
+    border: 1px solid $color-gray-dd;
+    border-radius: 8px;
+    width: 100%;
+    outline: none;
+    /*filter: drop-shadow(0px 4px 24px rgba(0, 0, 0, 0.06)) drop-shadow(0px 2px 6px rgba(0, 0, 0, 0.04)) drop-shadow(0px 0px 1px rgba(0, 0, 0, 0.04));*/
+    /*box-shadow: 0px 4px 24px rgba(0, 0, 0, 0.06), 0px 2px 6px rgba(0, 0, 0, 0.04), 0px 0px 1px rgba(0, 0, 0, 0.04);*/
+    box-shadow: 4px 8px 20px 0px rgba(0, 0, 0, 0.06);
+    transition: all 0.5s ease;
+}
+
+@define-mixin input {
+    @mixin __input;
+
+    &::placeholder {
+        color: $color-gray-bd;
+        opacity: 1;
+        font-size: 1rem;
+        font-weight: 300;
+    }
+
+    &.is-valid {
+        border-color: $color-green;
+        background-color: rgba($color-green, 0.03);
+    }
+
+    &.is-error {
+        border-color: $color-red;
+        background-color: rgba($color-red, 0.03);
+        color: $color-red;
+    }
+
+    &:hover,
+    &:focus {
+        /*filter: drop-shadow(0px 4px 24px rgba(84, 154, 60, 0.06)) drop-shadow(0px 2px 6px rgba(84, 154, 60, 0.04)) drop-shadow(0px 0px 1px rgba(84, 154, 60, 0.04));*/
+        /*box-shadow: 0px 4px 24px rgba(84, 154, 60, 0.06), 0px 2px 6px rgba(84, 154, 60, 0.04), 0px 0px 1px rgba(84, 154, 60, 0.04);*/
+        border-color: $color-green;
+        box-shadow: 2px 4px 20px 0px rgba(0, 0, 0, 0.06);
+    }
+
+    &:disabled {
+        border-color: $color-gray-bd;
+        background-color: rgba($color-gray-bd, 0.02);
+        color: $color-gray-33;
+        cursor: default;
+        pointer-events: none;
+    }
+
+    &[readonly] {
+        border-color: $color-gray-bd;
+        background-color: rgba($color-gray-bd, 0.05);
+        color: $color-gray-33;
+        cursor: default;
+        pointer-events: none;
+    }
+}
+
+@define-mixin select {
+    @mixin input;
+
+    appearance: none;
+
+    &::-ms-expand {
+        display: none;
+    }
+
+}
+
+@define-mixin select--with-arrow {
+    @mixin select;
+
+    background-repeat: no-repeat;
+    background-position: calc(100% - 16px) center;
+    background-size: 14px 7px;
+    background-color: $color-white;
+    background-image: svg-load('assets/img/icons/icon-arrow-select.svg', fill=$color-green);
+}
+
+@define-mixin textarea {
+    @mixin input;
+    resize: none;
+
+    min-height: 118px;
+}
+
+@define-mixin __input-box {
+    position: absolute;
+    right: 0;
+    top: 0;
+    width: 0;
+    height: 0;
+    opacity: 0;
+    visibility: hidden;
+
+    & + label {
+        position: relative;
+        display: block;
+        padding-left: 30px;
+        font-size: 18px;
+        line-height: 1.2;
+        font-weight: 500;
+        font-style: normal;
+        color: $color-gray-33;
+        cursor: pointer;
+
+        &::before {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 2px;
+            width: 18px;
+            height: 18px;
+            border: 1.5px solid $color-gray-e0;
+        }
+
+        &::after {
+            content: '';
+            display: none;
+        }
+
+        &:hover::before {
+            box-shadow: 0 0 4px -2px $color-gray;
+        }
+    }
+
+    &:checked + label {
+        &::before {
+            border-color: $color-green;
+            background-color: $color-green;
+        }
+
+        &::after {
+            display: block;
+        }
+
+        &:hover::before {
+            box-shadow: 0 0 4px -2px $color-green;
+        }
+    }
+
+    &:disabled + label {
+        color: $color-gray;
+        cursor: not-allowed;
+
+        &:before {
+            opacity: 0.5;
+        }
+
+        &:hover::before {
+            box-shadow: none;
+        }
+    }
+
+    &[readonly] + label {
+        color: $color-gray-66;
+        cursor: default;
+
+        &:hover::before {
+            box-shadow: none;
+        }
+    }
+}
+
+@define-mixin checkbox {
+    @mixin __input-box;
+
+    & + label {
+        &::before {
+            border-radius: 6px;
+        }
+
+        &::after {
+            position: absolute;
+            left: 7px;
+            top: 10px;
+            width: 10px;
+            height: 5px;
+            border-bottom: 2px solid $color-white;
+            border-left: 2px solid $color-white;
+            transform: rotate(-45deg);
+            transform-origin: 0 100% 0;
+        }
+    }
+}
+
+@define-mixin radiobox {
+    @mixin __input-box;
+
+    & + label {
+        &::before {
+            border-radius: 50%;
+        }
+
+        &::after {
+            position: absolute;
+            left: 5px;
+            top: 7px;
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background-color: $color-white;
+        }
+    }
+}
+
+@define-mixin button {
+    font-family: $font-family-base;
+
+    padding: 0.5rem 1.5rem 0.5rem;
+    min-width: 240px;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    box-sizing: border-box;
+    vertical-align: middle;
+    text-align: center;
+    text-decoration: none;
+    text-transform: uppercase;
+    font-weight: 600;
+    font-size: 1rem;
+    line-height: 1rem;
+    border-radius: 0.5rem;
+    cursor: pointer;
+    border: none;
+    min-height: 3rem;
+    width: 300px;
+    max-width: 100%;
+    transition: border 0.5s ease, background 0.5s ease, color 0.5s ease;
+
+    /* box-shadow: none; */
+
+    &:disabled {
+        cursor: not-allowed;
+        opacity: 0.4;
+    }
+
+    &:active:not(:disabled) {
+        /*padding: 11px 24px;*/
+    }
+
+    &.m--big {
+        min-height: 3.5rem;
+    }
+
+    &.m--big:active:not(:disabled) {
+        min-height: 3.5rem;
+    }
+
+    &.m--small {
+        min-height: 2.25rem;
+        padding: 0.25rem 1rem;
+    }
+
+    &.m--small:active:not(:disabled) {
+        min-height: 2.25rem;
+        padding: 0.25rem 1rem;
+    }
+
+    &.m--medium {
+        min-height: 2.55rem;
+        padding: 0.25rem 1rem;
+    }
+
+    &.m--medium:active:not(:disabled) {
+        min-height: 2.55rem;
+        padding: 0.25rem 1rem;
+    }
+}
+
+@define-mixin button--color $bg-color, $border-color, $label-color {
+    /* $shadow-color: color($bg-color shade(24%)); */
+    /* $border-color: color($bg-color shade(12%)); */
+    background-color: $bg-color;
+    border: 2px solid $border-color;
+    color: $label-color;
+
+    /* @mixin gradient-darken bottom, $bg-color, 5%; */
+
+    /*
+    &:hover:not(:disabled) {
+        @mixin gradient-darken top, $bg-color, 5%;
+    }
+    */
+}
+
+@define-mixin button--outline-color $bg-color, $border-color, $label-color {
+    background-color: $bg-color;
+    border: 2px solid $border-color;
+    color: $label-color;
+}

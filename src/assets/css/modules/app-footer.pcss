@@ -1,0 +1,204 @@
+.footer {
+    margin-top: auto;
+    padding: 1rem 0 1.5rem;
+    background: $color-white;
+    border-top: 1px solid $color-gray-dd;
+    z-index: 20;
+
+    &__container {
+        position: relative;
+        max-width: none;
+        padding: 0.5rem 0;
+    }
+
+    &__top {
+        position: absolute;
+        display: flex;
+        justify-content: space-between;
+        top: 0;
+        left: 0;
+        right: 0;
+
+        @mixin responsive-le-l {
+            position: relative;
+            row-gap: 2rem;
+            top: auto;
+            left: autp;
+            right: auto;
+            margin-bottom: 1.5rem;
+        }
+
+        @mixin responsive-xxs {
+            flex-direction: column;
+            align-items: center;
+            margin-bottom: 2.5rem;
+        }
+    }
+
+    &__logo {
+        position: relative;
+        z-index: 1;
+
+        &-link {
+            display: block;
+        }
+    }
+
+    &__contacts {
+        position: relative;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-around;
+        gap: 0.5rem;
+        z-index: 1;
+
+        &-link {
+            position: relative;
+            display: block;
+            width: 100%;
+            text-align: right;
+            font-size: 1rem;
+            line-height: 1.25rem;
+            font-weight: 500;
+            padding-left: 2rem;
+            text-decoration: none;
+            color: $color-gray-33;
+
+            &:hover {
+                text-decoration: underline;
+                color: $color-green;
+            }
+
+            &:before {
+                content: '';
+                position: absolute;
+                left: 0;
+                top: 50%;
+                transform: translateY(-50%);
+                width: 1.25rem;
+                height: 1.25rem;
+                background: $color-green;
+            }
+
+            &.m--phone:before {
+                mask: url('./assets/img/icons/icon-phone.svg') 50% 50% no-repeat;
+                mask-size: contain;
+            }
+
+            &.m--mail:before {
+                mask: url('./assets/img/icons/icon-mail.svg') 50% 50% no-repeat;
+                mask-size: contain;
+            }
+        }
+    }
+
+    &__main {
+        position: relative;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 0.75rem;
+        padding-bottom: 1.5rem;
+        margin-bottom: 0.5rem;
+        border-bottom: 1px solid rgba($color-green-41, 0.2);
+
+        &-title {
+            font-size: 1.125rem;
+            line-height: normal;
+            text-transform: uppercase;
+            color: $color-green;
+            text-align: center;
+        }
+
+        &-menu {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            column-gap: 1.5rem;
+            row-gap: 1rem;
+        }
+
+        &-link {
+            font-size: 1rem;
+            font-weight: 500;
+            text-decoration: none;
+            color: $color-gray-33;
+
+            &:hover,
+            &.is-active {
+                text-decoration: underline;
+                color: $color-gray-33;
+            }
+        }
+    }
+
+    &__bottom {
+        position: relative;
+        display: flex;
+        gap: 1rem;
+        justify-content: space-between;
+        font-size: 0.875rem;
+        line-height: normal;
+        font-weight: 500;
+        color: $color-gray-33;
+
+        @mixin responsive-le-s {
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+        }
+
+        &-menu {
+            display: flex;
+            flex-wrap: wrap;
+            column-gap: 1.5rem;
+
+            @mixin responsive-xxs {
+                flex-direction: column;
+                align-items: center;
+                row-gap: 1rem;
+            }
+        }
+
+        &-link {
+            font-weight: 500;
+            text-decoration: none;
+            color: $color-gray-33;
+
+            &.m--green,
+            &.m--developer {
+                color: $color-green;
+
+                .icon {
+                    background: $color-green;
+                }
+            }
+
+            &:hover,
+            &.is-active {
+                text-decoration: underline;
+                color: $color-gray-33;
+            }
+
+            .icon {
+                position: relative;
+                display: inline-block;
+                vertical-align: bottom;
+                width: 1rem;
+                height: 1rem;
+                margin-left: 0.25rem;
+                background: $color-gray-33;
+
+                &.m--edit {
+                    mask: url(./assets/img/icons/icon-pencil.svg) 50% 50% no-repeat;
+                    mask-size: contain;
+                }
+
+                &.m--private {
+                    mask: url(./assets/img/icons/icon-person-lock.svg) 50% 50% no-repeat;
+                    mask-size: contain;
+                }
+            }
+        }
+    }
+}

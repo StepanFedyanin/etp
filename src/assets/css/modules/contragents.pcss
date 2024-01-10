@@ -1,0 +1,295 @@
+.contragents {
+    display: flex;
+    justify-content: center;
+
+    &__header,
+    &__item {
+        display: grid;
+        grid-template-columns: auto 80px 80px;
+        grid-template-areas: 'A B C';
+        gap: 20px;
+
+        @mixin responsive-le-xs {
+            grid-template-columns: 80px auto;
+            grid-template-areas: 'A A'
+                                 'B C';
+        }
+
+        &.m--user {
+            grid-template-columns: auto 80px 80px 32px;
+            grid-template-areas: 'A B C D';
+
+            @mixin responsive-le-xs {
+                grid-template-columns: 80px auto 32px;
+                grid-template-areas: 'A A A'
+                                     'B C D';
+            }
+        }
+
+        &-cell {
+            &.m--name {
+                grid-area: A;
+            }
+            &.m--customer {
+                grid-area: B;
+            }
+            &.m--member {
+                grid-area: C;
+            }
+
+            &.m--favorite {
+                grid-area: D;
+            }
+        }
+    }
+
+    &__header {
+        padding: 0 15px;
+
+        &-cell {
+            font-weight: 700;
+            font-size: 20px;
+            line-height: 24px;
+            text-transform: uppercase;
+            color: $color-gray-66;
+            padding: 0 0 36px;
+        }
+    }
+    &__list {
+        padding: 0.75rem 1rem;
+        margin-bottom: 1.5rem;
+        overflow: hidden;
+        @mixin shadow-box;
+
+        &-inner {
+            overflow-x: auto;
+            @mixin scrollbar $color-shadow, $color-green, 10px;
+        }
+    }
+
+    &__item {
+        position: relative;
+        padding: 1.5rem 1rem;
+        margin-top: -1px;
+        cursor: pointer;
+        transition: background 0.5s ease;
+        /*min-width: 580px;*/
+
+        @mixin responsive-le-xs {
+            padding: 0.75rem 0.25rem;
+        }
+
+        &:after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 1rem;
+            right: 1rem;
+            border-bottom: 1px solid $color-gray-e0;
+
+            @mixin responsive-le-xs {
+                left: 0;
+                right: 0;
+            }
+        }
+
+        &:last-child:after {
+            display: none;
+        }
+
+        &:hover {
+            /* border-radius: 8px; */
+            background: $color-green-opacity20;
+
+            .svg-icon{
+                stroke: $color-green;
+            }
+        }
+
+        &-cell {
+            font-weight: 400;
+            font-size: 16px;
+            line-height: 20px;
+            display: flex;
+            align-items: center;
+            &.m--name {
+                flex-direction: row;
+                align-items: center;
+            }
+            &.m--customer,
+            &.m--member {
+                font-weight: 700;
+                font-size: 20px;
+                line-height: 24px;
+                display: flex;
+                align-items: center;
+            }
+            span {
+                margin-left: 10px;
+            }
+
+            .m--name-name {
+                font-weight: 500;
+                font-size: 16px;
+                line-height: 20px;
+                color: $color-gray-33;
+            }
+
+            .m--name-inn {
+                font-weight: 500;
+                font-size: 12px;
+                line-height: 16px;
+                color: $color-gray-66;
+
+                span {
+                    font-weight: 300;
+                    margin-left: 0;
+                }
+            }
+
+            .m--name-city {
+                font-weight: 300;
+                font-size: 12px;
+                line-height: 16px;
+                color: $color-gray-66;
+                margin-left: 0;
+            }
+
+            .m--name-activity {
+                padding-top: 4px;
+                font-weight: 400;
+                font-size: 14px;
+                line-height: 18px;
+                color: $color-gray-33;
+            }
+
+            &.m--favorite {
+                align-items: center;
+            }
+        }
+
+        &-logo {
+            position: relative;
+            width: 60px;
+            min-width: 60px;
+            height: 60px;
+            margin-right: 24px;
+
+            @mixin responsive-le-s {
+                display: none;
+            }
+
+            &.m--no-logo:before {
+                content: '';
+                position: absolute;
+                top: 0;
+                left: 0;
+                right: 0;
+                bottom: 0;
+                background: url('./assets/img/no-logo.png') 50% 50% no-repeat;
+                background-size: 50px auto;
+            }
+
+            img {
+                position: relative;
+                display: block;
+                width: 100%;
+                height: 100%;
+                max-width: 100%;
+                max-height: 100%;
+                object-fit: contain;
+            }
+
+        }
+        &-info {
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start;
+        }
+
+        &-favorite {
+            position: relative;
+            width: 32px;
+            height: 32px;
+            background-image: svg-load('./assets/img/icons/icon-star.svg', fill=$color-gray-bd);
+            background-size: contain;
+            cursor: pointer;
+
+            &.m--favorite {
+                background-image: svg-load('./assets/img/icons/icon-star.svg', fill=$color-green);
+            }
+
+            @mixin responsive-le-xl {
+                width: 24px;
+                height: 24px;
+            }
+        }
+    }
+
+    &__search {
+        margin-bottom: 24px;
+    }
+
+    &__pagination {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+
+        &.m--top {
+            margin-bottom: 1.5rem;
+        }
+
+        &.m--bottom {
+            margin-top: 0;
+        }
+
+        @mixin responsive-le-s {
+            /*flex-direction: column;*/
+
+            &-left {
+                /*margin-bottom: 16px;*/
+            }
+        }
+
+        &-right {
+            display: flex;
+            align-items: center;
+
+            @mixin responsive-le-s {
+                flex-direction: column;
+            }
+        }
+
+        &-count {
+            font-weight: 400;
+            font-size: 16px;
+            color: $color-black;
+
+            & span {
+                font-weight: 700;
+            }
+        }
+
+        &-perpage {
+            display: flex;
+            align-items: center;
+            margin-right: 20px;
+
+            @mixin responsive-le-s {
+                display: none;
+                margin-right: 0;
+                margin-bottom: 16px;
+            }
+
+            & span {
+                white-space: nowrap;
+                padding-right: 20px;
+            }
+        }
+
+        &-select {
+            @mixin select--with-arrow;
+            padding-right: 36px;
+        }
+    }
+}

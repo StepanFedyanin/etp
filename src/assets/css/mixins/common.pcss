@@ -1,0 +1,98 @@
+@define-mixin simple-box-list {
+    display: flex;
+    flex-direction: column;
+    padding: 35px 30px;
+    gap: 70px;
+
+    @mixin responsive-le-l {
+        gap: 50px;
+    }
+
+    @mixin responsive-le-m {
+        gap: 20px;
+    }
+}
+
+@define-mixin simple-box {
+    display: flex;
+    padding: 35px 30px;
+    @mixin shadow-box;
+
+    @mixin responsive-le-l {
+    }
+
+    @mixin responsive-le-m {
+        flex-direction: column;
+    }
+}
+
+@define-mixin shadow-box {
+    background-color: $color-white;
+    /*box-shadow: 0px 16px 24px $color-gray;*/
+    box-shadow: 4px 8px 20px 0px rgba(0, 0, 0, 0.06);
+    border-radius: 0.25rem;
+}
+
+@define-mixin scrollbar $background, $color, $width {
+    & {
+        scrollbar-width: thin;
+        scrollbar-color: $color $background;
+        /* border-radius: calc($width / 2); */
+    }
+
+    &::-webkit-scrollbar {
+        height: $width;
+        width: $width;
+    }
+
+    &::-webkit-scrollbar-track {
+        background: $background;
+        border-radius: $width;
+    }
+
+    &::-webkit-scrollbar-thumb {
+        background-color: $color;
+        border-radius: calc($width / 2);
+        border: 1px solid $background;
+    }
+}
+
+@define-mixin show-hide-mode-toggler {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 8px;
+    padding-top: 12px;
+    font-weight: 600;
+    font-size: 16px;
+    line-height: 20px;
+    text-transform: uppercase;
+    color: $color-green;
+    cursor: pointer;
+    /* text-align: center; */
+    
+    &--active {
+    
+        &::after {
+            transform: scale(1, -1);
+        }
+    }
+    
+    &::after {
+        content: '';
+        display: inline-block;
+        width: 24px;
+        height: 24px;
+        background-size: contain;
+        -webkit-mask-position: center;
+        mask-position: center;
+        -webkit-mask-repeat: no-repeat;
+        mask-repeat: no-repeat;
+        -webkit-mask-size: contain;
+        mask-size: contain;
+        background-color: $color-green;
+        -webkit-mask-image: url('./assets/img/icons/chevron-down.svg');
+        mask-image: url('./assets/img/icons/chevron-down.svg');
+        transition: all ease .2s;
+    }
+}

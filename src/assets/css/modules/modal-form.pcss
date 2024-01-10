@@ -1,0 +1,226 @@
+.modal-form {
+
+    &__block {
+        margin-bottom: 32px;
+    }
+
+    &__fields {
+        display: flex;
+        flex-wrap: wrap;
+        column-gap: 30px;
+        row-gap: 16px;
+        justify-content: space-between;
+
+        @mixin responsive-le-xl {
+            column-gap: 20px;
+        }
+
+        @mixin responsive-le-l {
+            justify-content: flex-start;
+            row-gap: 8px;
+        }
+
+        @mixin responsive-le-m {
+            row-gap: 0;
+        }
+    }
+
+    &__field {
+        position: relative;
+        margin-bottom: 16px;
+        width: calc(20% - 30px / 5 * 4);
+        min-width: 200px;
+
+        &.m--width-100 {
+            width: 100%;
+        }
+
+        @mixin responsive-le-xl {
+            width: calc(25% - 20px / 4 * 3);
+        }
+
+        @mixin responsive-le-l {
+            width: calc(33.33% - 20px / 3 * 2);
+        }
+
+        @mixin responsive-le-m {
+            width: calc(50% - 15px);
+        }
+
+        @mixin responsive-le-xs {
+            width: 100%;
+        }
+    
+        &.m--category {
+            width: calc(50% - 30px / 3 * 2);
+
+            @mixin responsive-le-xl {
+                width: calc(50% - 20px / 3 * 2);
+            }
+
+            @mixin responsive-le-m {
+                width: 100%;
+            }
+        }
+        &.m--type {
+            width: calc(25% - 30px / 3 * 2);
+
+            @mixin responsive-le-xl {
+                width: calc(25% - 20px / 3 * 2);
+            }
+
+            @mixin responsive-le-l {
+                width: calc(50% - 20px / 2);
+            }
+
+            @mixin responsive-le-m {
+                width: calc(50% - 20px / 2);
+            }
+
+            @mixin responsive-le-s {
+                width: 100%;
+            }
+        }
+
+        &.m--inn {
+            width: calc(50% - 30px / 2);
+
+            @mixin responsive-le-m {
+                width: 100%;
+            }
+
+            & .modal-form__input {
+                width: 100%;
+            }
+        }
+
+        &.m--region {
+            width: calc(50% - 30px / 2);
+
+            @mixin responsive-le-xl {
+                width: calc(25% - 20px / 3 * 2);
+            }
+
+            @mixin responsive-le-m {
+                width: 100%;
+            }
+
+            @mixin responsive-le-s {
+                width: 100%;
+            }
+        }
+        &.m--owner {
+            width: 100%;
+
+            & .modal-form__option {
+                margin-right: 30px;
+
+                @mixin responsive-le-xl {
+                    margin-right: 20px;
+                }
+
+                & .field__label {
+                    margin: 0 0 0 8px;
+                    color: $color-black;
+                }
+            }
+        }
+
+        &[data-invalid=true] &__option &__input,
+        &[data-errors=true] &__option &__input {
+            &:after {
+                display: none;
+            }
+        }
+
+        &__error {
+            position: absolute;
+            color: $color-red;
+            bottom: 0;
+            font-weight: 500;
+            font-size: 10px;
+            left: 12px;
+        }
+
+        &__error .field__input,
+        &[data-invalid=true] .field__input,
+        &[data-errors=true] .field__input {
+            &:after {
+                content: '';
+                position: relative;
+                display: block;
+                /*right: 12px;*/
+                /*top: calc(50% - 12px);*/
+                margin-top: -24px;
+                margin-left: -36px;
+                top: -12px;
+                left: 100%;
+                background-image: svg-load('assets/img/icons/field-error.svg', fill=$color-red);
+                background-repeat: no-repeat;
+                background-position: center;
+                background-size: contain;
+                width: 24px;
+                height: 24px;
+            }
+        }
+
+        &[data-invalid=true][data-type=datetime-local] .field__input,
+        &[data-errors=true][data-type=datetime-local] .field__input,
+        &[data-invalid=true][data-type=select] .field__input,
+        &[data-errors=true][data-type=select] .field__input,
+        &[data-invalid=true][data-type=multiselect] .field__input,
+        &[data-errors=true][data-type=multiselect] .field__input {
+            &:after {
+                margin-left: -60px;
+            }
+        }
+
+        &[data-invalid=true] .input,
+        &[data-errors=true] .input,
+        &[data-invalid=true] input,
+        &[data-errors=true] input,
+        &[data-invalid=true][data-type=select] .multiselect,
+        &[data-errors=true][data-type=select] .multiselect,
+        &[data-invalid=true][data-type=multiselect] .multiselect,
+        &[data-errors=true][data-type=multiselect] .multiselect {
+            border-color: $color-red;
+            background-color: rgba($color-red, 0.03);
+            color: $color-red;
+        }
+    }
+
+    & >.field__comment {
+        display: none;
+    }
+
+    &__radio {
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+    }
+
+    &__label {
+        display: block;
+        /*color: $color-red;*/
+        margin-bottom: 8px;
+        font-size: 16px;
+        line-height: 20px;
+        font-weight: 500;
+    }
+
+    &__select {
+        @mixin select--with-arrow;
+        min-width: 200px;
+    }
+    
+    &__input {
+        min-width: 200px;
+    }
+
+    &__actions {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 36px;
+    }
+}

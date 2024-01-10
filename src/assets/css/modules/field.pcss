@@ -1,0 +1,444 @@
+.field {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    padding-bottom: 28px;
+    margin-bottom: 8px;
+
+    &&.m--100 {
+        width: 100%;
+        margin-right: 0;
+    }
+
+    &&.m--offset {
+        margin-right: 0;
+        margin-bottom: 0;
+        display: grid;
+        grid-template-columns: repeat(8, 1fr);
+        grid-column-gap: 16px;
+    }
+    &&.m--no-margin {
+        margin-top: -24px;
+    }
+    &&.m--single-checkbox {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        grid-column-gap: 10px;
+        align-items: center;
+    }
+
+    &&.m--left {
+        margin-top: -24px;
+        display: block;
+    }
+
+    &&.m--inline {
+    }
+
+    &&.m--hidden {
+        display: none;
+    }
+
+    &--type_hidden {
+        display: none;
+    }
+
+    &__inner {
+        display: flex;
+        flex-direction: column;
+        width: 100%;
+        height: 100%;
+    }
+
+    &&.m--offset &__inner {
+        flex-direction: row;
+        align-items: center;
+        margin-top: 0;
+        grid-column: 4/8;
+        @mixin responsive-le-xs {
+            grid-column: 1/9;
+        }
+    }
+    &&.m--single-checkbox &__inner {
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        margin-top: 0;
+        grid-column: 2/2;
+        @mixin responsive-le-xs {
+            grid-column: 1/3;
+        }
+    }
+
+    &&.m--left &__inner {
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        margin-top: 0;
+    }
+
+    &&.m--inline &__inner {
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        margin-top: 0;
+        column-gap: 0.5rem;
+    }
+
+    &__label {
+        display: block;
+        margin: 0 0 0.25rem 0;
+        color: $color-gray-33;
+        font-size: 1rem;
+        font-weight: 500;
+    }
+
+    &&.m--offset &__input,
+    &&.m--left &__input,
+    &&.m--single-checkbox &__input {
+        margin-top: 0;
+    }
+
+    &&.m--offset &__label,
+    &&.m--left &__label,
+    &&.m--single-checkbox &__label {
+        margin-bottom: 0;
+    }
+    &&.m--single-checkbox &__label {
+        margin-left: 0;
+    }
+
+/*
+    &--inline&--type_boolean &__label {
+        display: none;
+    }
+*/
+    &__legend {
+        font-weight: 700;
+        font-size: 24px;
+        line-height: 30px;
+        text-transform: uppercase;
+        color: $color-gray-66;
+        margin-bottom: 24px;
+    }
+
+    &--required &__label,
+    &--required &__legend {
+        font-weight: 600;
+    }
+
+    &--required &__label::after,
+    &--required &__legend::after {
+        content: '*';
+        margin-left: 4px;
+        color: $color-red;
+        font-size: 16px;
+        vertical-align: top;
+        line-height: 16px;
+    }
+
+    &__input {
+        /*position: relative;*/
+        margin-top: auto;
+        /* max-width: 400px; */
+        &.m--hidden {
+            display: none;
+        }
+
+        .m--group {
+            display: flex;
+            @mixin input;
+            padding: 0;
+            border: 1px solid $color-gray-dd;
+
+            input,
+            .multiselect {
+                box-shadow: none;
+                min-height: 46px;
+                border: none;
+            }
+            & > input {
+                padding-left: 0;
+                border: none;
+            }
+        }
+    }
+
+    &&.m--inline &__input {
+        margin-top: 0;
+    }
+
+    &__options {
+        display: flex;
+        flex-wrap: wrap;
+        @mixin responsive-le-xs {
+            flex-direction: column;
+        }
+    }
+
+    &__option {
+        margin-top: 8px;
+        margin-bottom: 8px;
+    }
+
+    &__option &__input input,
+    &[data-type=checkbox] &__input input,
+    &[data-type=checkbox-switch] &__input input {
+        appearance: none;
+        position: absolute;
+        width: 0;
+        height: 0;
+        overflow: hidden;
+        opacity: 0;
+        left: -999em;
+    }
+
+    &__option &__input input ~ &__decorator,
+    &[data-type=checkbox] &__input input ~ &__decorator {
+        position: relative;
+        background: none;
+        display: block;
+        width: 24px;
+        height: 24px;
+        border: 1.5px solid $color-gray-e0;
+        border-radius: 6px;
+    }
+
+    &__option &__input input:checked ~ &__decorator,
+    &[data-type=checkbox] &__input input:checked ~ &__decorator {
+        background-color: $color-green;
+        border: 1.5px solid $color-green;
+        background-image: svg-load('assets/img/icons/icon-check.svg', fill=$color-white);
+        background-repeat: no-repeat;
+        background-position: center;
+        background-size: 18px;
+    }
+
+    &[data-type=checkbox-switch] &__input input ~ &__decorator {
+        position: relative;
+        background: none;
+        display: block;
+        width: 2.5rem;
+        height: 1.25rem;
+        background-color: $color-white;
+        border: 1px solid rgba(0, 0, 0, 0.15);
+        border-radius: 0.75rem;
+        transition: all 0.5s ease;
+
+        &:after {
+            content: '';
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            left: 2px;
+            width: 1rem;
+            height: 1rem;
+            mask: url('assets/img/icons/icon-switch-nob.svg') 50% 50% no-repeat;
+            background: rgba(0, 0, 0, 0.15);
+            transition: all 0.5s ease;
+        }
+    }
+
+    &[data-type=checkbox-switch] &__input input:checked ~ &__decorator {
+        background-color: $color-green;
+        border: 1px solid $color-green;
+
+        &:after {
+            left: calc(100% - 2px - 1rem);
+            background: $color-white;
+        }
+    }
+
+    &[data-type=checkbox-switch] &__input input:disabled ~ &__decorator {
+        opacity: 0.5
+    }
+
+    &.m--inline[data-type=checkbox-switch] &__input {
+        margin-left: auto;
+    }
+
+    &[data-invalid=true] &__option &__input,
+    &[data-errors=true] &__option &__input {
+        &:after {
+            display: none;
+        }
+    }
+
+    &__error {
+        position: absolute;
+        color: $color-red;
+        bottom: 0;
+        font-weight: 500;
+        font-size: 10px;
+        left: 12px;
+    }
+
+    &__error &__input,
+    &[data-invalid=true] &__input,
+    &[data-errors=true] &__input {
+        &:after {
+            content: '';
+            position: relative;
+            display: block;
+            /*right: 12px;*/
+            /*top: calc(50% - 12px);*/
+            margin-top: -24px;
+            margin-left: -36px;
+            top: -12px;
+            left: 100%;
+            background-image: svg-load('assets/img/icons/field-error.svg', fill=$color-red);
+            background-repeat: no-repeat;
+            background-position: center;
+            background-size: contain;
+            width: 24px;
+            height: 24px;
+        }
+    }
+
+    &[data-invalid=true][data-type=datetime-local] &__input,
+    &[data-errors=true][data-type=datetime-local] &__input,
+    &[data-invalid=true][data-type=select] &__input,
+    &[data-errors=true][data-type=select] &__input,
+    &[data-invalid=true][data-type=multiselect] &__input,
+    &[data-errors=true][data-type=multiselect] &__input {
+        &:after {
+            margin-left: -60px;
+        }
+    }
+
+    &[data-invalid=true] .input,
+    &[data-errors=true] .input,
+    &[data-invalid=true][data-type=select] .multiselect-single-label,
+    &[data-errors=true][data-type=select] .multiselect-single-label,
+    &[data-invalid=true][data-type=multiselect] .multiselect,
+    &[data-errors=true][data-type=multiselect] .multiselect {
+        border-color: $color-red;
+        background-color: rgba($color-red, 0.03);
+        color: $color-red;
+    }
+
+    &[data-invalid=true] .m--group,
+    &[data-errors=true] .m--group {
+        border-color: $color-red;
+    }
+
+    &[data-invalid=true] .m--group .multiselect,
+    &[data-errors=true] .m--group .multiselect,
+    &[data-invalid=true] .m--group,
+    &[data-errors=true] .m--group {
+        background-color: rgba($color-red, 0.03);
+    }
+
+    &[data-invalid=true] .m--group .input,
+    &[data-errors=true] .m--group .input,
+    &[data-invalid=true] .m--group .multiselect-single-label,
+    &[data-errors=true] .m--group .multiselect-single-label {
+        border: none;
+        color: $color-red;
+    }
+
+    &[data-disabled=true] .m--group {
+        border: 1px solid $color-gray-bd;
+
+        .input:disabled, input:disabled {
+            border: none;
+        }
+    }
+
+    &__help {
+        font-size: 0.75rem;
+        font-weight: 400;
+        color: $color-gray-33;
+        padding-top: 0.25rem;
+    }
+
+    &__comment {
+        position: absolute;
+        right: 0;
+        left: 0;
+        bottom: -20px;
+        font-size: 14px;
+        font-weight: 400;
+        padding-top: 8px;
+        color: $color-gray-66;
+        [data-message-type=validation],
+        [data-message-type=error] {
+            color: $color-red;
+        }
+    }
+    .field__comment {
+        /* position: absolute; */
+        right: 0;
+        left: auto;
+        top: 100%;
+        margin-top: -34px;
+        font-size: 13px;
+        /* font-size: 10px;
+        font-weight: 400;
+        padding-top: 8px;
+        color: $color-gray-66;
+        [data-message-type=validation] {
+            color: $color-red;
+        } */
+    }
+
+    &--inline &__inner {
+        /*@mixin main-grid;*/
+        display: grid;
+        grid-template-columns: repeat(8, 1fr);
+        grid-column-gap: 16px;
+        grid-template-rows: auto;
+        justify-content: center;
+    }
+
+    &[data-type=checkbox] &__inner {
+        align-content: start;
+        margin-top: 12px;
+    }
+
+    &--inline &__label {
+        grid-column: 1/4;
+        align-self: center;
+        margin: 0;
+        @mixin responsive-le-xs {
+            grid-column: 1/9;
+            margin-bottom: 4px;
+        }
+    }
+
+    &--inline &__input {
+        grid-column: 4/9;
+        @mixin responsive-le-xs {
+            grid-column: 1/9;
+        }
+    }
+
+    &--inline &__option &__input,
+    &[data-type=checkbox] &__input {
+        grid-column: 1;
+    }
+
+    &--inline &__option &__label,
+    &[data-type=checkbox] &__label {
+        grid-column: 2/9;
+        margin-left: 0.375rem;
+        margin-bottom: 0;
+    }
+
+    &--inline &__comment {
+        display: grid;
+        grid-template-columns: repeat(8, 1fr);
+        grid-column-gap: 16px;
+        grid-template-rows: auto;
+
+        &-item {
+            grid-column: 4/9;
+        }
+    }
+
+    &--inline[data-type=checkbox] &__comment {
+        &-item {
+            grid-column: 1/9;
+        }
+    }
+}

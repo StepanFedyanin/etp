@@ -1,0 +1,139 @@
+@define-mixin responsive-g-xxl {
+    @media (min-width: $document-width-g-xxl) {
+        @mixin-content;
+    }
+}
+
+@define-mixin responsive-xxl {
+    @media (min-width: resolve($document-width-xl + 1px)) {
+        @mixin-content;
+    }
+}
+
+@define-mixin responsive-le-xxl {
+    @media (max-width: $document-width-xxl) {
+        @mixin-content;
+    }
+}
+
+
+@define-mixin responsive-xl {
+    @media (min-width: resolve($document-width-l + 1px)) and (max-width: $document-width-xl) {
+        @mixin-content;
+    }
+}
+
+@define-mixin responsive-le-xl {
+    @media (max-width: $document-width-xl) {
+        @mixin-content;
+    }
+}
+
+@define-mixin responsive-ge-xl {
+    @media (min-width: resolve($document-width-l + 1px)) {
+        @mixin-content;
+    }
+}
+
+@define-mixin responsive-l {
+    @media (min-width: resolve($document-width-m + 1px)) and (max-width: $document-width-l) {
+        @mixin-content;
+    }
+}
+
+@define-mixin responsive-le-l {
+    @media (max-width: $document-width-l) {
+        @mixin-content;
+    }
+}
+
+@define-mixin responsive-ge-l {
+    @media (min-width: resolve($document-width-m + 1px)) {
+        @mixin-content;
+    }
+}
+
+@define-mixin responsive-m {
+    @media (min-width: resolve($document-width-s + 1px)) and (max-width: $document-width-m) {
+        @mixin-content;
+    }
+}
+
+@define-mixin responsive-le-m {
+    @media (max-width: $document-width-m) {
+        @mixin-content;
+    }
+}
+
+@define-mixin responsive-ge-m {
+    @media (min-width: resolve($document-width-s + 1px)) {
+        @mixin-content;
+    }
+}
+
+@define-mixin responsive-s {
+    @media (min-width: resolve($document-width-xs + 1px)) and (max-width: $document-width-s) {
+        @mixin-content;
+    }
+}
+
+@define-mixin responsive-le-s {
+    @media (max-width: $document-width-s) {
+        @mixin-content;
+    }
+}
+
+@define-mixin responsive-ge-s {
+    @media (min-width: resolve($document-width-xs + 1px)) {
+        @mixin-content;
+    }
+}
+
+@define-mixin responsive-xs {
+    @media (min-width: resolve($document-width-xxs + 1px)) and (max-width: $document-width-xs) {
+        @mixin-content;
+    }
+}
+
+@define-mixin responsive-le-xs {
+    @media (max-width: $document-width-xs) {
+        @mixin-content;
+    }
+}
+
+@define-mixin responsive-ge-xs {
+    @media (min-width: resolve($document-width-xxs + 1px)) {
+        @mixin-content;
+    }
+}
+
+@define-mixin responsive-xxs {
+    @media (max-width: $document-width-xxs) {
+        @mixin-content;
+    }
+}
+
+@define-mixin responsive-desktop {
+    body.m--desktop & {
+        @mixin-content;
+    }
+}
+
+@define-mixin responsive-tablet {
+    body.m--tablet & {
+        @mixin-content;
+    }
+}
+
+@define-mixin responsive-mobile {
+    body.m--mobile & {
+        @mixin-content;
+    }
+}
+
+@define-mixin responsive-device {
+    body.m--tablet &,
+    body.m--mobile & {
+        @mixin-content;
+    }
+}

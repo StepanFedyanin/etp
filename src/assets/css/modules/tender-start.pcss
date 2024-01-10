@@ -1,0 +1,88 @@
+.tender-start {
+    &__title {
+        padding-top: 1rem;
+    }
+    &__types {
+        display: grid;
+        /* grid-template-columns: repeat(3, 1fr); */
+        gap: 36px;
+        grid-template-columns: repeat(auto-fill, minmax(345px, 1fr));
+        padding-top: 16px;
+        padding-bottom: 48px;
+    }
+    &__type {
+        @mixin shadow-box;
+        padding: 25px 20px 35px 20px;
+        display: flex;
+        flex-direction: column;
+        /*max-width: 460px;*/
+
+        @mixin responsive-le-s {
+            /*max-width: none;*/
+            width: 100%;
+        }
+
+        &-info {
+            /* padding-bottom: 10px; */
+            margin-bottom: 32px;
+            ul{
+                padding-left: 30px;
+                font-weight: 400;
+            }
+            li:not(:last-child){
+                padding-bottom: 16px;
+            }
+            li{
+                list-style-image: svg-load('assets/img/icons/icon-list.svg', fill=$color-red);
+            }
+        }
+        &-button {
+        	display: flex;
+        	margin-top: auto;
+        	justify-content: center;
+        }
+        &-title {
+            font-weight: 600;
+            font-size: 20px;
+            line-height: 24px;
+            padding-bottom: 24px;
+            text-transform: uppercase;
+            text-align: center;
+        }
+    }
+    &__info {
+        @mixin shadow-box;
+        padding: 25px 20px 6px 20px;
+        display: flex;
+        flex-direction: column;
+        &-title {
+            font-weight: 600;
+            font-size: 20px;
+            line-height: 24px;
+            padding-bottom: 24px;
+            text-transform: uppercase;
+        }
+        &-block {
+            /* padding-bottom: 10px; */
+            border-top: 1px solid $color-gray-e0;
+            padding-top: 24px;
+            margin-bottom: 24px;
+        }
+        &-description {
+            ul{
+                padding-left: 30px;
+                font-weight: 400;
+            }
+            li:not(:last-child){
+                padding-bottom: 16px;
+            }
+            li{
+                list-style-image: svg-load('assets/img/icons/icon-list.svg', fill=$color-red);
+            }
+            strong {
+            	font-weight: 600;
+            }
+        }
+    }
+    
+}

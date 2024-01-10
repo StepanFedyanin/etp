@@ -1,0 +1,113 @@
+
+.pagination {
+    width: 100%;
+    display: flex;
+    align-items: center;
+
+    @mixin responsive-le-s {
+        flex-direction: column;
+        gap: 16px;
+    }
+
+    &__left {
+        display: flex;
+        align-items: center;
+    }
+
+    &__right {
+        margin-left: auto;
+
+        @mixin responsive-le-s {
+            margin-left: 0;
+        }
+    }
+
+    &__list {
+        display: flex;
+        align-items: center;
+        margin: 0;
+        padding: 0;
+        list-style: none;
+    }
+  
+    &__item {
+        min-width: 32px;
+        height: 24px;
+        line-height: 22px;
+        color: $color-black;
+        cursor: pointer;
+        text-align: center;
+        font-weight: 400;
+        font-size: 16px;
+        border-radius: 2px;
+        border: 1px solid transparent;
+        transition: all 0.5s ease;
+
+        &.m--current {
+            border-color: $color-green;
+            pointer-events: none;
+        }
+
+        &.m--first,
+        &.m--last,
+        &.m--prev,
+        &.m--next {
+            vertical-align: bottom;
+            background-position: center center;
+            /*background-size: 7px 10px;*/
+            background-repeat: no-repeat;
+
+            &.m--disabled {
+                pointer-events: none;
+                background-color: transparent;
+
+                &:hover {
+                    background-color: transparent;
+                    box-shadow: none;
+                }
+            }
+        }
+
+        &.m--first {
+            background-image: svg-load('assets/img/icons/icon-arrow-pagination-first.svg', fill=$color-black);
+
+            &.m--disabled {
+                opacity: 0.5;
+            }
+        }
+
+        &.m--last {
+            background-image: svg-load('assets/img/icons/icon-arrow-pagination-last.svg', fill=$color-black);
+
+            &.m--disabled {
+                opacity: 0.5;
+            }
+        }
+
+        &.m--prev {
+            background-image: svg-load('assets/img/icons/icon-arrow-pagination-prev.svg', fill=$color-black);
+
+            &.m--disabled {
+                opacity: 0.5;
+            }
+        }
+
+        &.m--next {
+            background-image: svg-load('assets/img/icons/icon-arrow-pagination-next.svg', fill=$color-black);
+
+            &.m--disabled {
+                opacity: 0.5;
+            }
+        }
+
+        &:hover {
+            background-color: $color-white;
+            box-shadow: 0px 4px 15px rgba(0, 0, 0, 0.15);
+        }
+    }
+
+    &__link {
+        display: block;
+        text-decoration: none;
+    }
+}

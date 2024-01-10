@@ -1,0 +1,194 @@
+.orders {
+    position: relative;
+    overflow-x: auto;
+    @mixin scrollbar $color-shadow, $color-green, 10px;
+
+    &__block {
+        border-top: 1px solid $color-gray-dd;
+        margin-bottom: 1.5rem;
+        padding-top: 0.5rem;
+    }
+
+    &__pagination {
+        margin-bottom: 1.5rem;
+    }
+
+    &__item {
+        font-weight: 400;
+        font-size: 0.875rem;
+        line-height: normal;
+        color: $color-gray-33;
+
+        @mixin responsive-le-s {
+            min-width: 980px;
+        }
+
+        &.m--header {
+            color: $color-gray-66;
+            font-weight: 400;
+            text-transform: uppercase;
+        }
+
+        &.m--not-active {
+            /* background: grey; */
+            color: $color-gray-bd;
+        }
+
+        &-inner {
+            padding: 0.5rem;
+            display: grid;
+            grid-template-columns: 24px 100px minmax(200px, auto) 220px;
+            /*grid-template-areas: 'A B C D';*/
+            gap: 0.5rem;
+            word-break: break-word;
+            cursor: pointer;
+
+        }
+
+        &.m--short &-inner {
+            grid-template-columns: 100px minmax(200px, auto) 220px;
+        }
+
+        &:not(.m--header) &-inner:hover {
+            background: $color-gray-f8;
+        }
+
+        &-cell {
+            display: flex;
+            flex-wrap: wrap;
+            align-items: center;
+            column-gap: 0.5rem;
+
+            &.m--icons {
+                column-gap: 1rem;
+            }
+
+            &.m--strong {
+                font-weight: 500;
+            }
+
+            &.m--col {
+                flex-direction: column;
+                row-gap: 0.25rem;
+                align-items: flex-start;
+            }
+
+            span:not(.icon) {
+                color: $color-gray-66;
+            }
+        }
+
+        .icon {
+            display: block;
+            width: 1.5rem;
+            min-width: 1.5rem;
+            height: 1.5rem;
+            background: $color-red;
+
+            &.m--arrow-down {
+                mask: url('./assets/img/icons/icon-arrow-down.svg') 50% 50% no-repeat;
+                mask-size: contain;
+                background: $color-green;
+            }
+
+            &.m--arrow-up {
+                mask: url('./assets/img/icons/icon-arrow-down.svg') 50% 50% no-repeat;
+                mask-size: contain;
+                transform: rotateX(180deg);
+                background: $color-green;
+            }
+
+            &.m--on {
+                background: $color-green;
+            }
+        }
+
+        &-buyer,
+        &-seller {
+            position: relative;
+            display: block;
+            padding-left: 1.5rem;
+
+            &:before {
+                content: '';
+                position: absolute;
+                top: 50%;
+                transform: translateY(-50%);
+                left: 0;
+                width: 1.25rem;
+                height: 1.25rem;
+                background: $color-green;
+            }
+
+            &.m--org:before {
+                mask: url('./assets/img/icons/icon-peoples.svg') 50% 50% no-repeat;
+                mask-size: contain;
+            }
+
+            &.m--person:before {
+                mask: url('./assets/img/icons/icon-person.svg') 50% 50% no-repeat;
+                mask-size: contain;
+            }
+        }
+
+        &-more {
+            display: none;
+            padding: 0.75rem;
+            border: 1px solid $color-gray-dd;
+            border-radius: 0.5rem;
+            background: $color-gray-f8;
+
+            &.is-opened {
+                display: block;
+            }
+
+            &-block {
+                display: flex;
+                flex-direction: column;
+                gap: 1rem;
+                margin-bottom: 1.5rem;
+            }
+
+            &-params {
+                display: flex;
+                flex-wrap: wrap;
+                gap: 1rem;
+
+                &.m--right {
+                    margin-left: auto;
+                    min-width: 240px;
+                }
+
+                &.m--col {
+                    flex-direction: column;
+                }
+            }
+
+            &-param {
+                display: flex;
+                flex-grow: 1;
+                flex-direction: column;
+                gap: 0.5rem;
+                font-weight: 400;
+                padding: 0;
+                margin: 0;
+
+                span {
+                    font-weight: 500;
+                }
+            }
+
+            &-links {
+                display: flex;
+                gap: 1.5rem;
+                margin-bottom: 1rem;
+            }
+
+            &-link {
+                font-weight: 500;
+                padding: 0;
+                margin: 0;
+            }
+        }
+    }
+}

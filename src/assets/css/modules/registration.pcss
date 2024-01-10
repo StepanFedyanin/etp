@@ -1,0 +1,203 @@
+.registration {
+    display: flex;
+    justify-content: center;
+
+    &.m--block {
+        display: block;
+    }
+
+    &__step {
+        &.m--step-1 {
+            display: flex;
+            flex-direction: row-reverse;
+            gap: 2rem;
+
+            @mixin responsive-le-l {
+                flex-direction: column;
+            }
+        }
+
+        &-alert {
+            margin-bottom: auto;
+            width: 100%;
+            max-width: 640px;
+        }
+    }
+
+    &__block {
+        max-width: 380px;
+        margin: 0 auto;
+
+        &-recovery {
+            padding-top: 1.5rem;
+            text-align: center;
+        }
+
+        &-link {
+            font-weight: 500;
+        }
+    }
+
+    &__title {
+        text-transform: uppercase;
+        color: $color-gray-66;
+    }
+
+    &__tabs {
+        width: 100%;
+        margin-bottom: 3rem;
+    }
+
+
+
+
+
+    &__subtitle {
+        text-transform: uppercase;
+    }
+
+    &__form {
+        .form__block {
+            max-width: 50%;
+            @mixin responsive-le-l {
+                max-width: 70%;
+            }
+            @mixin responsive-le-m {
+                max-width: 80%;
+            }
+            @mixin responsive-le-s {
+                max-width: none;
+            }
+        }
+
+        @mixin responsive-le-s {
+            flex-direction: column;
+        }
+
+        &-submit {
+            padding-top: 45px;
+
+            .button {
+                margin: 0 12px;
+            }
+        }
+    }
+
+    &__content {
+        margin-bottom: 24px;
+    }
+    &__item-wrapper.withAlert {
+        display: grid;
+        grid-template-columns: 50% auto;
+        grid-gap: 36px;
+        justify-content: flex-start;
+        @mixin responsive-le-s {
+            grid-template-columns: 100%;
+        }
+        .organization__box {
+            max-width: none;
+        }
+    }
+    &__organization {
+        position: relative;
+        font-size: 16px;
+        font-weight: 400;
+        padding-left: 30px;
+        margin-bottom: 24px;
+
+        &:before {
+            content: '';
+            position: absolute;
+            display: block;
+            left: 0;
+            top: 50%;
+            margin-top: -8px;
+            width: 16px;
+            height: 16px;
+            border-radius: 50%;
+            background: $color-green;
+        }
+
+        span {
+            font-size: 18px;
+            font-weight: 600;
+        }
+    }
+    &__step1 {
+        .form {
+            display: flex;
+            @mixin responsive-le-s {
+                flex-direction: column;
+            }
+            & > .field__comment {
+                display: none;
+            }
+        }
+        .form__block {
+            flex: 1;
+            .field {
+                margin-right: 0px;
+            }
+        }
+        .field__comment {
+            left: 0;
+        }
+        .formkit-actions {
+            margin-left: 36px;
+            .button {
+                margin-right: 0;
+            }
+            @mixin responsive-le-s {
+                margin-left: 0;
+                .button {
+                    margin-right: 0;
+                    margin-bottom: 36px;
+                }
+            }
+        }
+        .field__input {
+            max-width: inherit;
+        }
+    }
+
+    /* ???? */
+    &__alert{
+        background: $color-white;
+        padding: 22px 20px;
+        max-width: 642px;
+        justify-self: center;
+        border-radius: 28px;
+        .alert__title{
+            color: $color-red;
+            text-transform: uppercase;
+            font-weight: 700;
+            font-size: 20px;
+            padding-bottom: 16px;
+        }
+        .alert__text{
+            padding-bottom: 10px;
+            font-weight: 400;
+        }
+        @mixin responsive-le-s {
+            max-width: none;
+        }
+    }
+    &__type-organization {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        @mixin responsive-le-xs {
+            grid-template-columns: 1fr;
+            margin-bottom: 24px;
+            .field {
+                padding-bottom: 0;
+                margin-right: 0;
+            }
+        }
+        .field[data-type=checkbox] .field__inner {
+            flex-direction: row;
+            .field__label{
+                margin: 0 0 0 8px;
+            }
+        }
+    }
+}

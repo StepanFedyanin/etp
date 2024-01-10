@@ -1,0 +1,192 @@
+.banner {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    /*
+    background-image: url('./assets/img/banner-wall.jpg');
+    background-size: 100% 100%;
+    */
+    background: $color-green;
+    color: $color-white;
+    box-sizing: border-box;
+    margin-bottom: 3rem;
+    border-radius: 0.5rem;
+    box-shadow: 5px 6px 20px 0px rgba(0, 0, 0, 0.15); 
+
+    &__content {
+        display: flex;
+        width: 100%;
+        overflow: hidden;
+    }
+
+    &__left {
+        padding: 3rem 2.5rem;
+        flex-grow: 1;
+        align-self: center;
+
+        @mixin responsive-le-l {
+            padding: 1.25rem 2rem;
+        }
+
+        @mixin responsive-le-m {
+            width: 100%;
+        }
+    }
+
+    &__title {
+        font-weight: 600;
+        font-size: 2rem;
+        line-height: normal;
+        color: $color-white;
+        text-transform: uppercase;
+        margin-bottom: 1.5rem;
+
+        @mixin responsive-le-m {
+            font-size: 1.75rem;
+        }
+        @mixin responsive-le-s {
+            font-size: 1.675rem;
+        }
+        @mixin responsive-le-xs {
+            font-size: 1.5rem;
+        }
+    }
+
+    &__subtitle {
+        font-weight: 600;
+        font-size: 20px;
+        line-height: 24px;
+        text-transform: uppercase;
+        color: $color-white;
+        margin-bottom: 32px;
+        @mixin responsive-le-m {
+            font-size: 19px;
+            line-height: 23px;
+        }
+        @mixin responsive-le-s {
+            font-size: 18px;
+            line-height: 22px;
+        }
+        @mixin responsive-le-xs {
+            font-size: 17px;
+            line-height: 21px;
+        }
+    }
+
+    &__description {
+        font-weight: 500;
+        font-size: 1.125rem;
+        line-height: 1.375rem;
+        color: $color-white;
+        margin-bottom: 2rem;
+        max-width: 500px;
+
+        p {
+            margin-bottom: 1.25rem;
+        }
+    }
+
+    &__register {
+        display: inline-flex;
+        width: auto;
+        border-color: $color-white !important;
+    }
+
+    &__right {
+        width: 300px;
+        position: relative;
+        min-height: 330px;
+
+        @mixin responsive-le-m {
+            display: none;
+        }
+    }
+
+    &__logo {
+        position: absolute;
+        width: 440px;
+        margin-top: -58px;
+        margin-right: -85px;
+        right: 0;
+        top: 0;
+        
+        animation-duration: 12s;
+        animation-direction: normal;
+        animation-iteration-count: infinite;
+        animation-timing-function: ease-in-out;
+        /* animation-direction: alternate; */
+        
+        &:nth-child(1) {
+            position: absolute;
+            animation-name: change-logo;
+            opacity: 1;
+        }
+        
+        &:nth-child(2) {
+            position: absolute;
+            animation-name: change-logo-2;
+            opacity: 0;
+        }
+        
+        &:nth-child(3) {
+            position: absolute;
+            animation-name: change-logo-3;
+            opacity: 0;
+        }
+    }
+}
+
+@keyframes change-logo {
+    from {
+        opacity: 1;
+    }
+
+    to {
+        opacity: 1;
+    }
+
+    33% {
+        opacity: 0;
+    }
+
+    66% {
+        opacity: 0;
+    }
+}
+
+@keyframes change-logo-2 {
+    from {
+        opacity: 0;
+    }
+
+    to {
+        opacity: 0;
+    }
+
+    33% {
+        opacity: 1;
+    }
+
+    66% {
+        opacity: 0;
+    }
+}
+
+@keyframes change-logo-3 {
+    from {
+        opacity: 0;
+    }
+
+    to {
+        opacity: 0;
+    }
+
+    33% {
+        opacity: 0;
+    }
+
+    66% {
+        opacity: 1;
+    }
+}
