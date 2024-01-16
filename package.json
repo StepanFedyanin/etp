@@ -1,6 +1,6 @@
 {
   "name": "tugan",
-  "version": "0.9.7",
+  "version": "0.9.8",
   "description": "A Tugan project",
   "productName": "Tugan App",
   "author": "KOVex <kovex@portal2u.ru>",
@@ -16,8 +16,8 @@
     "build:ssr:dev": "npx cross-env NODE_ENV=development quasar build -m ssr"
   },
   "dependencies": {
-    "@formkit/i18n": "^1.0.0-beta.9",
-    "@formkit/vue": "^1.0.0-beta.9",
+    "@formkit/i18n": "^1.4.0",
+    "@formkit/vue": "^1.4.0",
     "@popperjs/core": "^2.11.8",
     "@quasar/extras": "^1.16.4",
     "@sentry/vue": "^7.80.1",

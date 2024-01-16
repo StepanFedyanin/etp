@@ -9,7 +9,7 @@
         >
             Товары и услуги&nbsp;<span class="m--color-green">({{ goodsTotal }})</span>
         </div>
-        <div class="goods">
+        <div class="goods m--block">
             <div class="goods__block m--no-margin">
                 <blockGoodsItem
                     v-for="item in goods"
@@ -65,7 +65,7 @@
                 slug: null,
                 goods: null,
                 goodsTotal: null,
-                goodsLimit: 18,
+                goodsLimit: 16,
                 goodsOffset: 0,
                 showLoaderSending: false,
             }
