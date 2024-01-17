@@ -940,10 +940,7 @@
                 this.tenderForm.kind = this.defaultTender.kind
                 this.tenderForm.fulfilment = this.defaultTender.fulfilment
                 this.tenderForm.name = this.defaultTender.name
-                this.tenderForm.min_step = {
-                    fromParent: true,
-                    value: this.defaultTender.min_step
-                }
+                this.tenderForm.min_step = this.defaultTender.min_step || 0;
                 this.tenderForm.category = this.defaultTender.category;
                 /*
                 this.tenderForm.category = {
@@ -1028,11 +1025,11 @@
                 */
             },
             prepareTender() {
-                let tender = {}
-                tender = this.tenderForm
-                tender.lots = this.lots
-                tender.documents = this.documents
-                return tender
+                let tender = Object.assign({}, this.tenderForm);
+                if (!tender.min_step) tender.min_step = 0;
+                tender.lots = this.lots;
+                tender.documents = this.documents;
+                return tender;
             }
         }
     }

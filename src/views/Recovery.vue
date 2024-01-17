@@ -5,7 +5,7 @@
                 :class="['container']"
             >
                 <div class="auth__block">
-                    <div class="auth__tabs tabs">
+                    <div class="auth__tabs tabs m--grow">
                         <a 
                             v-for="item in recoveryTabs"
                             :key="`tab-${item.name}`"
