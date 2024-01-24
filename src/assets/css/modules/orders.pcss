@@ -63,7 +63,8 @@
                 column-gap: 1rem;
             }
 
-            &.m--strong {
+            &.m--strong,
+            .m--strong {
                 font-weight: 500;
             }
 
@@ -128,6 +129,46 @@
             &.m--person:before {
                 mask: url('./assets/img/icons/icon-person.svg') 50% 50% no-repeat;
                 mask-size: contain;
+            }
+        }
+
+        &-params {
+            display: flex;
+            gap: 0.75rem;
+            font-weight: 500;
+            line-height: 1rem;
+            color: $color-gray-33;
+        }
+
+        &-param {
+            position: relative;
+
+            &.m--icon {
+                padding-left: 1.25rem;
+
+                &:before {
+                    content: '';
+                    position: absolute;
+                    top: 50%;
+                    left: 0;
+                    transform: translateY(-50%);
+                    width: 1rem;
+                    height: 1rem;
+                    background: $color-green;
+                    mask-size: contain;
+                }
+
+                &.m--count:before {
+                    mask: url('./assets/img/icons/icon-bag.svg') 50% 50% no-repeat;
+                }
+
+                &.m--nds:before {
+                    mask: url('./assets/img/icons/icon-percent.svg') 50% 50% no-repeat;
+                }
+
+                &.m--buyer:before {
+                    mask: url('./assets/img/icons/icon-card-list.svg') 50% 50% no-repeat;
+                }
             }
         }
 

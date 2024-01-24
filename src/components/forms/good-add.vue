@@ -45,7 +45,7 @@
                     </button>
                 </div>
                 <div class="h2">Товар</div>
-                <div class="market__form-main m--mb-2">
+                <div class="market__form-main m--mb-2 form m--flex">
                     <FormKitSchema :schema="mainGoodSchema" />
                 </div>
                 <template v-if="showExtended">
@@ -180,7 +180,7 @@
                         label: 'Название товара',
                         placeholder: 'Например: Мука пшеничная, высший сорт',
                         validation: 'required',
-                        outerClass: 'field--required',
+                        outerClass: 'field--required m--width-100',
                     }, {
                         $formkit: 'multiselect',
                         mode: 'single',
@@ -203,25 +203,48 @@
                                 console.error(err)
                             })
                         },
-                        //outerClass: 'field--required',
+                        outerClass: 'm--width-100',
                     }, {
                         $formkit: 'textarea',
                         name: 'description',
                         label: 'Описание товара',
                         placeholder: 'Расскажите о своем товаре: где применяется, характеристики, состав, выгодные особенности и прочее',
                         // validation: 'required',
+                        outerClass: 'm--width-100',
                     }, {
                         $formkit: 'text',
                         name: 'brand',
                         label: 'Бренд / Производитель',
                         placeholder: '',
                         // validation: 'required',
-                        // outerClass: 'field--required',
+                        outerClass: 'm--width-100',
                     }, {
                         $formkit: 'text',
                         name: 'article',
                         label: 'Артикул',
                         placeholder: '',
+                        // validation: 'required',
+                        outerClass: 'm--width-100',
+                    }, {
+                        $formkit: 'multiselect',
+                        mode: 'single',
+                        name: 'in_stock',
+                        canClear: false,
+                        closeOnSelect: true,
+                        label: 'Наличие',
+                        // validation: 'required',
+                        options: [
+                            { label: 'В наличии', value: 'in_stock' },
+                            { label: 'Под заказ', value: 'under_order' },
+                        ],
+                        outerClass: 'm--width-50',
+                    }, {
+                        $formkit: 'maska',
+                        name: 'production_time',
+                        maska: { mask: '0', tokens: '0:\\d:multiple' },
+                        label: 'Срок до отгрузки, дн.',
+                        placeholder: '',
+                        outerClass: 'm--width-50'
                         // validation: 'required',
                         // outerClass: 'field--required',
                     },
@@ -358,11 +381,16 @@
             };
         },
         computed: {
+            marketUser() {
+                return this.$store.state.user.marketplace_user || {};
+            },
         },
         watch: {
             goodId() {
                 this.productSended = false;
                 this.formData = {
+                    in_stock: 'in_stock',
+                    production_time: 0,
                     nds: -1,
                     min_count: 1,
                     type_of_buyer: 'organization',
@@ -377,17 +405,37 @@
         mounted() {
             this.productSended = false;
             this.formData = {
+                in_stock: 'in_stock',
+                production_time: 0,
                 nds: -1,
                 min_count: 1,
                 type_of_buyer: 'organization',
                 ordering: 10,
                 publication: true
             };
-            if (this.goodId) {
-                this.getProduct();
-            }
+            this.goodId ? this.getProduct() : this.getMarketProfile();
         },
         methods: {
+            getMarketProfile() {
+                this.showLoaderSending = true;
+                if (this.marketUser?.type === 'organization') {
+                    cabinetApi.getMarketOrganizationProfile().then(res => {
+                        this.formData = Object.assign({}, this.formData, res.settings);
+                        this.showLoaderSending = false;
+                    }).catch(err => {
+                        this.showLoaderSending = false;
+                        console.error(err);
+                    });
+                } else {
+                    cabinetApi.getMarketProfile().then(res => {
+                        this.formData = Object.assign({}, this.formData, res.settings);
+                        this.showLoaderSending = false;
+                    }).catch(err => {
+                        this.showLoaderSending = false;
+                        console.error(err);
+                    });
+                }
+            },
             getProduct() {
                 this.showLoaderSending = true;
                 this.busyForm = true;

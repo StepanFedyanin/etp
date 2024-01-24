@@ -6,10 +6,9 @@
         >
             <div class="tenders__pagination">
                 <Pagination
-                    :total="tenders.length"
-                    :limit="Number(limit)"
+                    :total="count"
+                    :limit="limit"
                     :currentPage="Number($route.query.page || 1)"
-                    :query="$route.query"
                     :url="$route.path"
                 />
             </div>
@@ -38,10 +37,9 @@
         >
             <div class="tenders__pagination">
                 <Pagination
-                    :total="tenders.length"
-                    :limit="Number(limit)"
+                    :total="count"
+                    :limit="limit"
                     :currentPage="Number($route.query.page || 1)"
-                    :query="$route.query"
                     :url="$route.path"
                 />
             </div>
@@ -61,8 +59,9 @@
         },
         data() {
             return {
-                limit: 10,
                 tenders: [],
+                limit: 10,
+                count: null,
                 showLoaderSending: false,
             }
         },
@@ -78,7 +77,7 @@
         watch: {
             limit () {
                 if (this.$route.query) {
-                    this.$router.replace({ query: Object.assign({}, this.$route.query, { page: 1 }) })
+                    this.$router.replace({ query: {} })
                 }
                 this.getFavoritesTenders();
             },
@@ -98,17 +97,17 @@
         methods: {
             getFavoritesTenders(lazy = false) {
                 let params = {
-                    limit: Number(this.limit),
+                    limit: +this.limit,
                     offset: this.offset
                 };
                 if (!lazy) this.showLoaderSending = true;
-                tenderApi.getFavoritesTenders(params).then(tenders => {
-                    this.tenders = tenders;
+                tenderApi.getFavoritesTenders(params).then(res => {
+                    this.tenders = res.results;
+                    this.count = res.count;
                     if (this.page > 1 && !this.tenders.length) this.$router.replace({ query: { page: this.page - 1 } });
                     this.showLoaderSending = false;
                 }).catch(err => {
                     this.showLoaderSending = false;
-                    this.$store.dispatch('showError', err);
                     console.error(err);
                 })
             },

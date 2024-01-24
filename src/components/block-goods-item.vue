@@ -60,7 +60,7 @@
                 <div v-if="good.type_of_buyer" class="goods__item-param m--buyer">{{ good.type_of_buyer === 'organization' ? 'B2B' : 'B2C' }}</div>
             </div>
             <div class="goods__item-price">
-                {{ $helpers.toPrice(good.price, { sign: good.currency_detail }) }}
+                {{ good.price ? $helpers.toPrice(good.price, { sign: good.currency_detail }) : 'Цена по запросу' }}
                 <div v-if="good.unit" class="goods__item-price-unit">/ {{ good.unit }}</div>
             </div>
         </div>

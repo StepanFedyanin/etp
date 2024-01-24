@@ -2,24 +2,38 @@
     <div :class="['orders__item', !showMore && 'm--short']">
         <div 
             class="orders__item-inner"
-            @click.prevent="toggleOpenItem(index)"
+            @click.prevent="toggleOpenItem"
         >
             <div 
                 v-if="showMore"
                 class="orders__item-cell"
             >
-                <span :class="['icon', openedItem[index] ? 'm--arrow-up' : 'm--arrow-down']" />
+                <span :class="['icon', openedItem ? 'm--arrow-up' : 'm--arrow-down']" />
             </div>
             <div class="orders__item-cell m--strong m--col">
                 {{ $helpers.formatDate(new Date(item.created), 'DD.MM.YY', 'Europe/Moscow') }}
                 <span>#{{ item.id }}</span>
             </div>
-            <div class="orders__item-cell">
-                Товар: {{ item.product }}
+            <div class="orders__item-cell m--col">
+                <div class="m--strong">{{ item.product_json?.name }}</div>
+                <div class="orders__item-params">
+                    <div class="orders__item-param">
+                        {{ item.product_json?.price ? $helpers.toPrice(item.product_json?.price, { sign: item.product_json?.currency_detail }) : 'Цена по запросу' }} / {{ item.product_json?.unit }}
+                    </div>
+                    <div class="goods__item-param m--count">{{ item.count }} {{ item.product_json?.unit }}</div>
+                    <div v-if="item.product_json?.price" class="orders__item-param">
+                        {{ $helpers.toPrice(item.product_json?.price * item.count, { sign: item.product_json?.currency_detail }) }}
+                    </div>
+                </div>
             </div>
             <div class="orders__item-cell m--col">
-                Покупатель: {{ item.buyer }}
-                <span class="orders__item-buyer m--org">Организация</span>
+                <span class="m--strong">{{ item[type === 'seller' ? 'buyer' : 'seller'].name }}</span>
+                <template v-if="item[type === 'seller' ? 'buyer' : 'seller'].type === 'organization'">
+                    <span class="orders__item-buyer m--org">Организация</span>
+                </template>
+                <template v-else>
+                    <span class="orders__item-buyer m--person">Физ. лицо</span>
+                </template>
             </div>
 
             <!--div
@@ -40,7 +54,7 @@
         </div>
         <div 
             v-if="showMore"
-            :class="['orders__item-more', openedItem[index] ? 'is-opened' : '']"
+            :class="['orders__item-more', openedItem ? 'is-opened' : '']"
         >
             <div class="orders__item-more-block">
                 <div class="orders__item-more-params">
@@ -111,11 +125,15 @@
                     return {} 
                 }
             },
+            type: {
+                type: String,
+                default() { return 'seller'; }
+            },
         },
         data() {
             return {
                 item: this.order,
-                openedItem: {},
+                openedItem: false,
                 showPersonMasterModal: false,
                 showPersonExcludeModal: false,
                 showPersonPasswordModal: false,
@@ -139,8 +157,8 @@
             // this.persons = this.item
         },
         methods: {
-            toggleOpenItem(index) {
-                this.openedItem[index] ? delete this.openedItem[index] : this.openedItem[index] = 1;
+            toggleOpenItem() {
+                this.openedItem = !this.openedItem;
             },
             onSwitchPersonParam(params) {
                 cabinet.updateMyOrganizationMemberPartial(params).then(res => {

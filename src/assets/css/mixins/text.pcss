@@ -85,14 +85,16 @@
 @define-mixin h3 {
     @mixin __p;
 
-    margin-top: 24px;
-    margin-bottom: 16px;
-    font-weight: 700;
-    font-size: 20px;
-    line-height: 1.2;
+    margin-bottom: 0.5rem;
+    font-size: 0.75rem;
+    line-height: normal;
+    font-weight: 600;
+    text-transform: uppercase;
+    color: $color-gray-66;
+    padding: 0.25rem 0;
+    border-bottom: 1px solid $color-gray-dd;
 
     @mixin responsive-le-xs {
-        font-size: 18px;
     }
 }
 

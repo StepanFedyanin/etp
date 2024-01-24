@@ -7,7 +7,7 @@
             <div class="contragents__pagination m--top">
                 <Pagination
                     :total="count"
-                    :limit="Number(limit)"
+                    :limit="limit"
                     :currentPage="Number($route.query.page || 1)"
                     :url="$route.path"
                 />
@@ -37,7 +37,7 @@
             <div class="contragents__pagination m--bottom">
                 <Pagination
                     :total="count"
-                    :limit="Number(limit)"
+                    :limit="limit"
                     :currentPage="Number($route.query.page || 1)"
                     :url="$route.path"
                 />
@@ -60,7 +60,7 @@
             return {
                 contragents: [],
                 limit: 10,
-                count: "",
+                count: null,
                 showLoaderSending: false,
             }
         },
@@ -96,9 +96,8 @@
         },
         methods: {
             getOrganizations(lazy = false) {
-                let limit = Number(this.limit)
                 let params = {
-                    limit,
+                    limit: +this.limit,
                     offset: this.offset
                 }
                 if (!lazy) this.showLoaderSending = true;

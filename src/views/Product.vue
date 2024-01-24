@@ -34,20 +34,41 @@
                                 <div v-if="good.nds" class="good__info-param m--nds">НДС: {{ good.nds }}</div>
                                 <div v-if="good.type_of_buyer" class="good__info-param m--buyer">{{ good.type_of_buyer === 'organization' ? 'B2B' : 'B2C' }}</div>
                             </div>
+                            <div class="h3">Цена</div>
                             <div class="good__price">
                                 <div class="good__price-value">
-                                    {{ $helpers.toPrice(good.price, { sign: good.currency_detail }) }}
+                                    {{ good.price ? $helpers.toPrice(good.price, { sign: good.currency_detail }) : 'Цена по запросу' }}
                                     <span>/ {{ good.unit }}</span>
                                 </div>
-                                <button 
-                                    v-if="!user || !user.id || user.marketplace_user?.id !== good.marketplace_user?.id"
-                                    class="button button-green good__price-button"
-                                    @click.prevent="requestGood()"
-                                >
-                                    Заказать
-                                </button>
+                                <template v-if="!user || !user.id || user.marketplace_user?.id !== good.marketplace_user?.id">
+                                    <div class="good__price-order">
+                                        <FormKit
+                                            v-model="good.count"
+                                            type="counter"
+                                            name="count"
+                                            :min="good.min_count || 1"
+                                            max="9999"
+                                            :value="good.min_count || 1"
+                                            outerClass="good__price-counter"
+                                        />
+                                        <button 
+                                            class="button button-green good__price-button"
+                                            @click.prevent="requestGood()"
+                                        >
+                                            Заказать
+                                        </button>
+                                    </div>
+                                </template>
+                                <template v-else-if="user && user.marketplace_user?.id === good.marketplace_user?.id">
+                                    <button 
+                                        class="button button-green good__price-button"
+                                        @click.prevent="$router.push({ name: 'market-good-edit', params: { goodId: good.id } })"
+                                    >
+                                        Изменить товар
+                                    </button>
+                                </template>
                             </div>
-                            <div class="h2">Характеристики</div>
+                            <div class="h3">Характеристики</div>
                             <div class="good__params">
                                 <div v-if="good.type_of_buyer" class="good__param">
                                     <div class="good__param-name">Заказ</div>
@@ -81,7 +102,22 @@
                                     <div class="good__param-name">Артикул</div>
                                     <div class="good__param-data">{{ good.article }}</div>
                                 </div>
-                            </div> 
+                                <div v-if="good.in_stock" class="good__param">
+                                    <div class="good__param-name">Наличие</div>
+                                    <div class="good__param-data">{{ goodInStock[good.in_stock] }}</div>
+                                </div>
+                                <div v-if="good.production_time" class="good__param">
+                                    <div class="good__param-name">Срок до отгрузки, дн.</div>
+                                    <div class="good__param-data">{{ good.production_time }}</div>
+                                </div>
+                            </div>
+                            <div class="h3">Читайте также</div>
+                            <div class="good__menu m--inline">
+                                <a v-if="good.description" @click.prevent="scrollTo('about')" href="#" class="good__menu-link">О товаре</a>
+                                <a v-if="good.delivery_terms || good.payment_terms" @click.prevent="scrollTo('delivery')" href="#" class="good__menu-link">Доставка и оплата</a>
+                                <a v-if="good.marketplace_user" @click.prevent="scrollTo('organization')" href="#" class="good__menu-link">О поставщике</a>
+                                <a v-if="hints.length" @click.prevent="scrollTo('help')" href="#" class="good__menu-link">Как сделать заказ?</a>
+                            </div>
                         </div>
                     </div>
                     <div class="good__block-right">
@@ -118,13 +154,6 @@
                             <div class="good__info-param m--views">{{ good.views }}</div>
                             <div class="good__info-param m--updated">{{ $helpers.formatDate(new Date(good.updated), 'DD.MM.YY', 'Europe/Moscow') }}</div>
                         </div>
-
-                        <div class="good__menu">
-                            <a v-if="good.description" @click.prevent="scrollTo('about')" href="#" class="good__menu-link">О товаре</a>
-                            <a v-if="good.delivery_terms || good.payment_terms" @click.prevent="scrollTo('delivery')" href="#" class="good__menu-link">Доставка и оплата</a>
-                            <a v-if="good.marketplace_user" @click.prevent="scrollTo('organization')" href="#" class="good__menu-link">О поставщике</a>
-                            <a v-if="hints.length" @click.prevent="scrollTo('help')" href="#" class="good__menu-link">Как сделать заказ?</a>
-                        </div>
                     </div>
                 </div>
 
@@ -143,12 +172,12 @@
                         <div 
                             v-if="good.delivery_terms"
                             class="good__block-content"
-                            v-html="good.delivery_terms?.replace(/\n/g, '<br/>')"
+                            v-html="`<strong>Условия доставки:</strong> ${good.delivery_terms?.replace(/\n/g, '<br/>')}`"
                         />
                         <div 
                             v-if="good.payment_terms"
                             class="good__block-content"
-                            v-html="good.payment_terms?.replace(/\n/g, '<br/>')"
+                            v-html="`<strong>Условия оплаты:</strong> ${good.payment_terms?.replace(/\n/g, '<br/>')}`"
                         />
                     </div>
                 </div>
@@ -365,6 +394,10 @@
                 urlPath,
                 currentPhoto: 0,
                 hints: [],
+                goodInStock: {
+                    in_stock: 'В наличии',
+                    under_order: 'Под заказ',
+                },
                 //good: {},
                 //goodsOrganization: null,
                 //goodsOrganizationTotal: null,

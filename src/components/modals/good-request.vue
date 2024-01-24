@@ -197,7 +197,20 @@
                 console.log(formData);
                 this.showLoaderSending = true;
                 //this.loading = true;
-                let params = Object.assign({}, this.formValues, { product: this.good.id });
+                let product_json = {
+                    name: this.good.name,
+                    article: this.good.article,
+                    price: this.good.price,
+                    unit: this.good.unit,
+                    currency_name: this.good.currency.iso_name,
+                    nds_name: this.good.nds,
+                    in_stock: this.good.in_stock,
+                    production_time: this.good.production_time,
+                    delivery_min_cost: this.good.delivery_min_cost,
+                    delivery_time: this.good.delivery_time,
+                    type_of_buyer: this.good.type_of_buyer
+                };
+                let params = Object.assign({}, this.formValues, { product: this.good.id, count: this.good.count, product_json: product_json });
                 cabinet.createProductOrder(params).then(res => {
                     this.showLoaderSending = false;
                     this.loading = false;

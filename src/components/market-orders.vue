@@ -1,5 +1,17 @@
 <template>
     <div class="organization__orders orders">
+        <div class="h3">Роль в заказе</div>
+        <div class="orders__tabs tabs">
+            <button 
+                v-for="item in tabsItems"
+                :key="`tab-${item.name}`"
+                :class="['tabs__item m--no-border', currentTabsItem === item.name && 'is-active']"
+                :disabled="item.disabled"
+                @click.prevent="changeTab(item.name)"
+            >
+                {{ item.label }}
+            </button>
+        </div>
         <template v-if="showLoaderSending">
             <div class="orders__loader loader">
                 <div class="spinner" /> Загрузка данных
@@ -27,7 +39,7 @@
                             Заказ
                         </div>
                         <div class="orders__item-cell">
-                            Покупатель
+                            {{ currentTabsItem === 'seller' ? 'Покупатель' : 'Продавец' }}
                         </div>
                     </div>
                 </div>
@@ -35,6 +47,7 @@
                     v-for="item in orders"
                     :key="`order-${item.id}`"
                     :order="item"
+                    :type="currentTabsItem"
                     @updateData="getProductOrders"
                 />
             </div>
@@ -80,6 +93,14 @@
         },
         data() {
             return {
+                tabsItems: [{
+                    label: 'Я — продавец',
+                    name: 'seller',
+                }, {
+                    label: 'Я — покупатель',
+                    name: 'buyer'
+                }],
+                currentTabsItem: 'seller',
                 limit: 10,
                 orders: null,
                 count: null,
@@ -126,9 +147,14 @@
                     limit: +this.limit,
                     offset: +this.offset
                 };
+                if (this.currentTabsItem === 'seller') params.is_seller = true;
+                if (this.currentTabsItem === 'buyer') params.is_buyer = true;
                 this.showLoaderSending = true;
                 cabinet.getProductOrders(params).then(res => {
-                    this.orders = res.results;
+                    this.orders = res.results.map((item) => {
+                        item.product_json = item.product_json ? JSON.parse(item.product_json) : {};
+                        return item;
+                    });
                     this.count = res.count;
                     this.showLoaderSending = false;
                 }).catch(err => {
@@ -139,7 +165,14 @@
             onClickAddStaff() {
                 this.$router.push({ name: 'organization-person-add'});
             },
-
+            changeTab(name) {
+                this.currentTabsItem = name;
+                if (+this.$route.query.page !== 1) {
+                    this.$router.replace({ query: Object.assign({}, this.$route.query, { page: 1 }), hash: this.$route.hash });
+                } else {
+                    this.getProductOrders();
+                }
+            },
         },
     };
 </script>

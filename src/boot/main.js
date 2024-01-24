@@ -12,6 +12,7 @@ import datePickerInput from '@/components/inputs/date-picker-input';
 import maskaInput from '@/components/inputs/maska-input';
 import multiselectInput from '@/components/inputs/multiselect-input';
 import phoneWithCodeInput from '@/components/inputs/phone-with-code-input';
+import counterInput from '@/components/inputs/counter-input';
 
 import { plugin, defaultConfig, createInput } from '@formkit/vue'
 import { ru } from '@formkit/i18n'
@@ -105,7 +106,10 @@ export default boot(async ({ app, router }) => {
                 props: ['maska', 'placeholder', 'disabled', 'readonly'],
             }),
             phoneWithCode: createInput(phoneWithCodeInput, {
-                props: ['options', 'placeholder', 'mode', 'searchable', 'maska', 'placeholder', 'disabled', 'readonly'],
+                props: ['options', 'placeholder', 'mode', 'searchable', 'maska', 'disabled', 'readonly'],
+            }),
+            counter: createInput(counterInput, {
+                props: ['maska', 'min', 'max', 'disabled', 'readonly'],
             }),
         },
     };

@@ -396,6 +396,11 @@
                             hash: '#orders',
                             role: 'all',
                             title: 'Заказы'
+                        }, {
+                            name: 'market',
+                            hash: '#settings',
+                            role: 'all',
+                            title: 'Настройки'
                         }],
                         [{
                             name: null,

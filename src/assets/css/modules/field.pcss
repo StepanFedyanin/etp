@@ -162,6 +162,56 @@
                 border: none;
             }
         }
+
+        &-counter {
+            gap: 0.5rem;
+            padding: 0.5rem 0.75rem !important;
+
+            &-btn {
+                position: relative;
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                padding: 0  !important;
+                width: 1.5rem !important;
+                height: 1.5rem !important;
+                min-width: 1.5rem !important;
+                min-height: 1.5rem !important;
+                border-width: 1px !important;
+                border-radius: 0.25rem;
+
+                &:before {
+                    content: '';
+                    position: absolute;
+                    display: block;
+                    inset: 0;
+                    mask-position: 50% 50%;
+                    mask-repeat: no-repeat;
+                    mask-size: 0.75rem;
+                }
+
+                &.m--minus {
+                    &:before {
+                        background-color: $color-red;
+                        mask-image: url('./assets/img/icons/icon-minus-long.svg');
+                    }
+                }
+
+                &.m--plus {
+                    &:before {
+                        background-color: $color-green;
+                        mask-image: url('./assets/img/icons/icon-plus-long.svg');
+                    }
+                }
+            }
+
+            input {
+                padding: 0;
+                text-align: center;
+                min-height: 1.875rem !important;
+                width: 3.5rem;
+            }
+        }
     }
 
     &&.m--inline &__input {

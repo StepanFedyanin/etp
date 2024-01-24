@@ -23,8 +23,7 @@
                         <button 
                             v-for="item in tabsItems"
                             :key="`tab-${item.name}`"
-                            class="tabs__item"
-                            :class="currentTabsItem === item.name && 'is-active'"
+                            :class="['tabs__item', currentTabsItem === item.name && 'is-active']"
                             :disabled="item.disabled"
                             @click.prevent="changeTab(item.name)"
                         >
@@ -93,12 +92,22 @@
                     />
                 </div>
                 <div 
-                    v-if="currentTabsItem === 'props'"
+                    v-if="currentTabsItem === 'settings'"
                     class="organization__tab"
                 >
-                    <OrganizationProps
-                        v-if="organization"
-                        :organization="organization"
+                    <blockContent
+                        classModifier="m--top"
+                        place="top"
+                        name="market-settings"
+                    />
+                    <MarketSettings
+                        v-if="marketUser"
+                        @updateData="updateData"
+                    />
+                    <blockContent
+                        classModifier="m--bottom"
+                        place="bottom"
+                        name="market-settings"
                     />
                 </div>
             </div>
@@ -117,7 +126,7 @@
     import MarketGoods from '@/components/market-goods.vue';
     import MarketPublic from '@/components/forms/market-public.vue';
     import MarketOrders from '@/components/market-orders.vue';
-    import OrganizationProps from '@/components/forms/organization-props.vue';
+    import MarketSettings from '@/components/forms/market-settings.vue';
 
     export default {
         components: {
@@ -125,7 +134,7 @@
             MarketGoods,
             MarketPublic,
             MarketOrders,
-            OrganizationProps,
+            MarketSettings,
             blockContent
         },
         data() {
@@ -156,8 +165,8 @@
                     //disabled: true,
                 }, {
                     label: 'Настройки',
-                    name: 'props',
-                    disabled: true,
+                    name: 'settings',
+                    //disabled: true,
                 }],
                 currentTabsItem: this.$route.hash?.replace('#', '') || 'public',
                 loading: false

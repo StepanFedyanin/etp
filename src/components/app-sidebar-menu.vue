@@ -254,6 +254,11 @@
                                 role: 'all',
                                 title: 'Заказы',
                             }, {
+                                name: 'market',
+                                hash: '#settings',
+                                role: 'all',
+                                title: 'Настройки',
+                            }, {
                                 name: 'market-good-add',
                                 role: 'all',
                                 title: 'Добавить товар',
@@ -340,6 +345,11 @@
                                 hash: '#orders',
                                 role: 'all',
                                 title: 'Заказы',
+                            }, {
+                                name: 'market',
+                                hash: '#settings',
+                                role: 'all',
+                                title: 'Настройки',
                             }, {
                                 name: 'market-good-add',
                                 role: 'all',
