@@ -41,8 +41,9 @@ const category = {
 
 const chat = {
     url: `${urlPath}/chat`,
-    wsUrl: `ws://${urlPath}/ws/chat`,
-    wsUrlPush: `${urlPath}/push`,
+    // wsUrl: `ws://${urlPath}/ws/chat/tender`,
+    wsUrl: `ws://${urlPath}/ws/chat/product`,
+    wsUrlPush: `${urlPath}/ws/push`,
     token: 'c7d63a2e58d186ae3760a5f7c690293e973c08c4'
 };
 
@@ -73,12 +74,12 @@ const websocket = {
 const tenderChat = {
     url: `${urlPath}/tender`,
     wsUrl: `ws://${urlPath}/ws/chat`,
-    wsUrlPush: `${urlPath}/push`,
+    wsUrlPush: `${urlPath}/ws/push`,
     token: 'c7d63a2e58d186ae3760a5f7c690293e973c08c4'
 };
 
 const push = {
-    url: `${urlPath}/push`,
+    url: `${urlPath}/ws/push`,
     token: 'c7d63a2e58d186ae3760a5f7c690293e973c08c4'
 };
 

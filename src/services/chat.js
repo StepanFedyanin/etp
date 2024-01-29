@@ -37,28 +37,28 @@ export default class extends REST {
     }
 
     static getChatList(params){
-        return this._get('chats', {}, params).then((data) => {
+        return this._get('chats/product', {}, params).then((data) => {
             return data;
         }).catch((error) => {
             throw new RESTError(error, 'Ошибка при получении списка чатов');
         });
     }
     static getChatByTenderAndOrganization(params) {
-        return this._post('chats/get_create', {}, params).then((data) => {
+        return this._post('chats/product/get_create', {}, params).then((data) => {
             return data;
         }).catch((error) => {
             throw new RESTError(error, 'Ошибка при создании и/или получении чата');
         });
     }
     static getChat(id){
-        return this._get(`chats/${id}`, {}).then((data) => {
+        return this._get(`chats/product/${id}`, {}).then((data) => {
             return data;
         }).catch((error) => {
             throw new RESTError(error, 'Ошибка при получении информации по чату');
         });
     }
     static deleteChat(id){
-        return this._delete(`chats/${id}`, {}).then((data) => {
+        return this._delete(`chats/product/${id}`, {}).then((data) => {
             return data;
         }).catch((error) => {
             throw new RESTError(error, 'Ошибка при удалении чата');
@@ -69,7 +69,7 @@ export default class extends REST {
             'offset': offset,
             'limit': limit
         }
-        return this._get(`chats/${room}/messages`, {}, data).then((data) => {
+        return this._get(`chats/product/${room}/messages`, {}, data).then((data) => {
             return data;
         }).catch((error) => {
             throw new RESTError(error, 'Ошибка при получении сообщений чата');
@@ -77,7 +77,7 @@ export default class extends REST {
     }
     static createMessages(room, params) {
         console.log(room, params)
-        return this._post(`chats/${room}/messages`, {}, params).then((data) => {
+        return this._post(`chats/product/${room}/messages`, {}, params).then((data) => {
             return data;
         }).catch((error) => {
             throw new RESTError(error, 'Ошибка при создании сообщения');
