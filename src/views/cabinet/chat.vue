@@ -2,7 +2,7 @@
     <div class="app__main">
         <div class="cabinet chat">
             <div class="container">
-                <app-breadcrumbs 
+                <app-breadcrumbs
                     :breadcrumbs="[
                         { name: 'Главная', route: { name: 'home' } },
                         { name: 'Кабинет', route: { name: 'cabinet' } },
@@ -12,7 +12,7 @@
                 <div class="chat__block">
                     <div class="chat__users">
                         <div class="chat__tabs tabs m--50">
-                            <button 
+                            <button
                                 v-for="item in tabsItems"
                                 :key="`tab-${item.name}`"
                                 class="tabs__item"
@@ -39,12 +39,12 @@
                                 <div class="spinner" /> Загрузка чатов
                             </div>
                         </template>
-                        <div 
+                        <div
                             v-else-if="chatId || rooms.length"
                             ref="users"
                             class="chat__users-inner"
                         >
-                            <div 
+                            <div
                                 v-for="room in sortedChats"
                                 :key="`chat-user-${room}`"
                                 class="chat__user"
@@ -107,7 +107,7 @@
                                             {{ chatInfo.tender.name }}
                                         </div> -->
                                         <div class="tender__info-param">
-                                            <span>Организация: </span> 
+                                            <span>Организация: </span>
                                             <router-link
                                                 :to="{ name: 'contragent', params: { id: chatInfo.tender.organization.id } }"
                                                 class="tenders__item-organization"
@@ -125,7 +125,7 @@
                                     <template
                                         v-for="(message) in messages"
                                     >
-                                        <div 
+                                        <div
                                             v-if="message.type === 'time'"
                                             :key="`message-${message.id}`"
                                             class="chat__messages-date"
@@ -145,7 +145,7 @@
                                                 </template>
                                                 <template v-else>
                                                     <div class="chat__messages-item-top">
-                                                        <div 
+                                                        <div
                                                             v-if="message.user_name"
                                                             class="chat__messages-item-user"
                                                         >
@@ -171,14 +171,14 @@
                                                             @click.prevent="onDeleteMessage(message.id)"
                                                         /-->
                                                     </div>
-                                                    <div 
+                                                    <div
                                                         class="chat__messages-item-text"
                                                         v-html="message.text"
-                                                    />                                        
+                                                    />
                                                 </template>
                                             </div>
                                             <!--div class="chat__messages-item-inner">
-                                                <div 
+                                                <div
                                                     class="chat__messages-item-text"
                                                     v-html="message.text"
                                                 />
@@ -189,7 +189,7 @@
                                         </div>
                                     </template>
                                 </div>
-                                <form 
+                                <form
                                     class="chat__board-form form"
                                     @submit.prevent="onSendMessage(chatInfo.id, form.message)"
                                 >
@@ -209,7 +209,7 @@
                             </template>
                             <template v-else-if="!showLoaderList">
                                 <template v-if="currentTabsItem === 'tenders'">
-                                    <blockHint 
+                                    <blockHint
                                         classModifier="chat__board-empty"
                                         :slug="`chats_${currentTabsItem}`"
                                     />
@@ -222,7 +222,7 @@
                                     </button>
                                 </template>
                                 <template v-if="currentTabsItem === 'market'">
-                                    <blockHint 
+                                    <blockHint
                                         classModifier="chat__board-empty"
                                         :slug="`chats_${currentTabsItem}`"
                                     />
@@ -332,7 +332,7 @@
                     this.$nextTick(() => {
                         const el = this.$refs.board;
                         this.addSwipeListener(el);
-                        
+
                     });
                 }
             }
@@ -392,8 +392,8 @@
                     const scrollHeight = el.scrollHeight;
                     this.$nextTick(() => {
                         el.scrollTop = el.scrollHeight - scrollHeight;
-                        // el.scrollTo({ 
-                        //     top: scrollHeight, 
+                        // el.scrollTo({
+                        //     top: scrollHeight,
                         //     behavior: 'smooth'
                         // });
                         this.offset += this.limit;
@@ -442,7 +442,7 @@
                 if (chatId && this.chat !== Number(chatId)) {
                     this.chat = Number(chatId);
                     this.clearChat();
-                    this.appendMessages(chatId);   
+                    this.appendMessages(chatId);
                 }
             },
             onSendMessage(room, text) {
@@ -478,13 +478,14 @@
                         this.connection.sendMessage({
                             room: this.chat,
                             id: msg.id,
+                            type: msg.type
                         })
                     }
                     const el = this.$refs.board;
                     this.$nextTick(() => {
                         // el.scrollTop = el.scrollHeight;
-                        el.scrollTo({ 
-                            top: el.scrollHeight, 
+                        el.scrollTo({
+                            top: el.scrollHeight,
                             behavior: 'smooth'
                         });
                     });
