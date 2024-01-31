@@ -208,7 +208,7 @@
                                 </form>
                             </template>
                             <template v-else-if="!showLoaderList">
-                                <template v-if="currentTabsItem === 'tenders'">
+                                <template v-if="currentTabsItem === 'tender'">
                                     <blockHint 
                                         classModifier="chat__board-empty"
                                         :slug="`chats_${currentTabsItem}`"
@@ -221,7 +221,7 @@
                                         Перейти к тендерам
                                     </button>
                                 </template>
-                                <template v-if="currentTabsItem === 'market'">
+                                <template v-if="currentTabsItem === 'product'">
                                     <blockHint 
                                         classModifier="chat__board-empty"
                                         :slug="`chats_${currentTabsItem}`"
@@ -263,14 +263,14 @@
             return {
                 tabsItems: [
                     {
-                        name: 'tenders',
+                        name: 'tender',
                         label: 'Тендеры'
                     }, {
-                        name: 'market',
+                        name: 'product',
                         label: 'Маркет'
                     }
                 ],
-                currentTabsItem: this.$route.hash?.replace('#', '') || 'tenders',
+                currentTabsItem: this.$route.hash?.replace('#', '') || 'tender',
                 chat: null,
                 chat_messages: [],
                 form: {},
@@ -366,26 +366,21 @@
                 return Math.round( (newAsDate - oldAsDate) / msPerDay );
             },
             fetchChats(chatId, lazy = false) {
-                if (this.currentTabsItem === 'market') {
-                    this.rooms = [];
-                }
-                if (this.currentTabsItem === 'tenders') {
-                    if (!lazy) this.showLoaderList = true;
-                    Chat.getChatList().then(res => {
-                        this.rooms = res;
-                        if (chatId) {
-                            this.onSelectRecipient(chatId, this.findChat(chatId));
-                        }
-                        this.showLoaderList = false;
-                    }).catch(err => {
-                        console.error(err);
-                        this.showLoaderList = false;
-                    });
-                }
+                if (!lazy) this.showLoaderList = true;
+                Chat.getChatList(this.currentTabsItem).then(res => {
+                    this.rooms = res;
+                    if (chatId) {
+                        this.onSelectRecipient(chatId, this.findChat(chatId));
+                    }
+                    this.showLoaderList = false;
+                }).catch(err => {
+                    console.error(err);
+                    this.showLoaderList = false;
+                });
             },
-            appendMessages(chatId) {
+            appendMessages(type, chatId) {
                 this.isLoading = true;
-                Chat.getMessages(chatId, this.offset, this.limit).then(res => {
+                Chat.getMessages(type, chatId, this.offset, this.limit).then(res => {
                     this.chat_messages = res.results.reverse().concat(this.chat_messages);
                     this.canScroll = res.count > this.offset;
                     const el = this.$refs.board;
@@ -415,7 +410,7 @@
                 let delta = Math.max(-1, Math.min(1, (el.wheelDelta || -el.detail)));
                 const board = this.$refs.board;
                 if (board.scrollTop === 0 && delta === 1 && this.isLoading === false && this.canScroll) {
-                    this.appendMessages(this.chat);
+                    this.appendMessages(this.currentTabsItem, this.chat);
                 }
             },
             // scrollUp(target) {
@@ -439,15 +434,16 @@
             //     }
             // },
             onSelectRecipient(chatId) {
+                console.log(this.chat, chatId);
                 if (chatId && this.chat !== Number(chatId)) {
                     this.chat = Number(chatId);
                     this.clearChat();
-                    this.appendMessages(chatId);   
+                    this.appendMessages(this.currentTabsItem, chatId);   
                 }
             },
             onSendMessage(room, text) {
                 if (text) {
-                    Chat.createMessages(room, {'text': text}).then(() => {
+                    Chat.createMessages(this.currentTabsItem, room, {'text': text}).then(() => {
                         this.fetchChats(null, true);
                         this.form = {};
                     }).catch(err => {
@@ -554,7 +550,7 @@
             bottomSwipe() {
                 const el = this.$refs.board;
                 if (el.scrollTop === 0 && this.isLoading === false && this.canScroll) {
-                    this.appendMessages(this.chat);
+                    this.appendMessages(this.currentTabsItem, this.chat);
                 }
             },
             changeTab(name) {

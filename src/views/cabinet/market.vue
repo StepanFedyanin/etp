@@ -1,6 +1,26 @@
 <template>
     <div 
-        v-if="$route.name === 'market'"
+        v-if="!accessMarket"
+        class="app__main"
+    >
+        <div class="cabinet organization">
+            <div class="container">
+                <app-breadcrumbs 
+                    :breadcrumbs="[
+                        { name: 'Главная', route: { name: 'home' } },
+                        { name: 'Кабинет', route: { name: 'cabinet' } },
+                        { name: 'Маркет', route: { name: 'market' } },
+                    ]"
+                />
+                <blockHint
+                    :slug="`403_market`"
+                    classModifier="organization__hint m--mt"
+                />
+            </div>
+        </div>        
+    </div>
+    <div 
+        v-else-if="$route.name === 'market'"
         class="app__main"
     >
         <div 
@@ -123,6 +143,7 @@
     import { user as api, cabinet } from "@/services";
     //import blockOrganization from '@/components/block-organization.vue';
     import blockContent from '@/components/block-content.vue';
+    import blockHint from '@/components/block-hint.vue';
     import MarketGoods from '@/components/market-goods.vue';
     import MarketPublic from '@/components/forms/market-public.vue';
     import MarketOrders from '@/components/market-orders.vue';
@@ -131,11 +152,12 @@
     export default {
         components: {
             //blockOrganization,
+            blockContent,
+            blockHint,
             MarketGoods,
             MarketPublic,
             MarketOrders,
             MarketSettings,
-            blockContent
         },
         data() {
             return {
@@ -143,8 +165,6 @@
                 contragents: [],
                 contragent:{},
                 marketUser: {},
-                //participationTenders: {},
-                //createdTenders: {},
                 limitParticipation: 5,
                 offsetParticipation: 0,
                 limitCreated: 5,
@@ -155,7 +175,7 @@
                 tabsItems: [{
                     label: 'Публичный профиль',
                     name: 'public',
-                    disabled: !this.$store.state.user.is_access_product
+                    disabled: (!this.$store.state.user.is_access_product && this.$store.state.user.im_auth_type === 'organization')
                 }, {
                     label: 'Товары',
                     name: 'goods'
@@ -170,6 +190,16 @@
                 }],
                 currentTabsItem: this.$route.hash?.replace('#', '') || 'public',
                 loading: false
+            }
+        },
+        computed: {
+            user() {
+                return this.$store.state.user ? this.$store.state.user : "";
+            },
+            accessMarket() {
+                if (this.user.im_auth_type !== 'organization' || this.user.is_master) return true;
+                if (this.user.is_master || this.user.is_access_product) return true;
+                return false;
             }
         },
         watch: {
@@ -189,8 +219,7 @@
                 cabinet.getMyProfile().then(res => {
                     this.profile = res;
                     this.marketUser = res.marketplace_user || {};
-                    //this.getCreatedTenders();
-                    //this.getParticipationTenders();
+                    this.$store.dispatch('setMeta', {});
                     this.loading = false;
                 }).catch(err => {
                     this.loading = false;
@@ -203,30 +232,6 @@
             updateData(data) {
                 this.marketUser = data.marketplace_user || {};
             },
-            /*
-            getParticipationTenders(){
-                api.getParticipationTenders(this.organization.id, {limit: this.limit, offset: this.offsetParticipation}).then(res =>{
-                    if(this.offsetParticipation===0){
-                        this.participationTenders = res || {};
-                    }else if(this.participationTenders.results){
-                        this.participationTenders = {...this.participationTenders, ...res, results: [...this.participationTenders.results, ...res.results]}
-                    }
-                    this.offsetParticipation += 5;
-                    this.countParticipationTenders = this.participationTenders.results.length;
-                });
-            },
-            getCreatedTenders(){
-                api.getCreatedTenders(this.organization.id, {limit: this.limit, offset: this.offsetCreated}).then(res =>{
-                    if(this.offsetCreated===0){
-                        this.createdTenders = res || {};
-                    }else if(this.createdTenders.results){
-                        this.createdTenders = {...this.createdTenders, ...res, results: [...this.createdTenders.results, ...res.results]}
-                    }
-                    this.offsetCreated += 5;
-                    this.countCreatedTenders = this.createdTenders.results.length;
-                });
-            },
-            */
             changeTab(name) {
                 this.currentTabsItem = name;
                 this.$router.push({ name: this.$route.name, hash: `#${name}` });

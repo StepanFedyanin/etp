@@ -103,7 +103,7 @@
                     }, {
                         name: 'products',
                         role: 'all',
-                        title: 'Товары'
+                        title: 'Маркет'
                     }, {
                         name: 'about',
                         role: 'all',

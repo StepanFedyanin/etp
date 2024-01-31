@@ -203,6 +203,7 @@
                                 console.error(err)
                             })
                         },
+                        classes: { multiselect: 'm--long' },
                         outerClass: 'm--width-100',
                     }, {
                         $formkit: 'textarea',
@@ -349,6 +350,7 @@
                 ],
                 showGoodSchema: [
                     {
+                    /*
                         $formkit: 'multiselect',
                         mode: 'single',
                         name: 'type_of_buyer',
@@ -364,6 +366,7 @@
                         ],
                         outerClass: 'field--required',
                     }, {
+                    */
                         $formkit: 'maska',
                         name: 'ordering',
                         maska: { mask: '0', tokens: '0:\\d:multiple' },

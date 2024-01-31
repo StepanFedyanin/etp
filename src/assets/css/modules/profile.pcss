@@ -107,15 +107,16 @@
     }
 
     &__account {
-        @mixin shadow-box;
+        border: 1px solid $color-gray-dd;
+        border-radius: 0.5rem;
         padding: 1rem;
         margin-bottom: 3rem;
 
         &-title {
             font-size: 1rem;
-            font-weight: 500;
-            text-transform: uppercase;
-            color: $color-gray-66;
+            font-weight: 400;
+            /*text-transform: uppercase;*/
+            color: $color-gray-33;
             margin-bottom: 0.5rem;
         }
 
@@ -133,6 +134,53 @@
 
         &-link {
             font-weight: 500;
+        }
+
+        &-buttons {
+            padding-top: 0.5rem;
+            display: flex;
+            gap: 1.5rem;
+        }
+
+        &-button {
+            padding: 0.75rem 0.5rem;
+            display: block;
+            @mixin shadow-box;
+            border: 1px solid transparent;
+            border-radius: 0.5rem;
+            text-align: left;
+            text-transform: none;
+            font-weight: 400;
+            flex-grow: 1;
+            cursor: pointer;
+            transition: all 0.7s ease;
+
+            &.is-active,
+            &:hover {
+                background: $color-gray-f8;
+                border-color: $color-green;
+            }
+        }
+
+        &-type {
+            font-size: 0.75rem;
+            font-weight: 600;
+            color: $color-gray-66;
+            text-transform: uppercase;
+            margin-bottom: 0.5rem;
+        }
+
+        &-name {
+            font-size: 0.875rem;
+            font-weight: 500;
+            color: $color-gray-33;
+            margin-bottom: 0.25rem;
+        }
+
+        &-subname {
+            font-size: 0.75rem;
+            font-weight: 400;
+            color: $color-gray-66;
         }
     }
 

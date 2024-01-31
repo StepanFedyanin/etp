@@ -11,8 +11,16 @@
                             { name: 'Товары', route: { name: 'market', hash: '#goods' } },
                         ]"
                     />
+                    <blockHint
+                        :slug="`${$route.name}_top`"
+                        classModifier="profile__hint m--mt"
+                    />
                     <GoodAdd
                         :key="`interface-${$route.name}`"
+                    />
+                    <blockHint
+                        :slug="`${$route.name}_bottom`"
+                        classModifier="profile__hint"
                     />
                 </div>
             </div>
@@ -23,10 +31,12 @@
 <script>
     import { cabinet } from "@/services";
     import GoodAdd from '@/components/forms/good-add';
+    import blockHint from '@/components/block-hint.vue';
 
     export default {
         components: {
             GoodAdd,
+            blockHint
         },
         props: {
         },

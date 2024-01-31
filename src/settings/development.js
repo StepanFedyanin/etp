@@ -41,8 +41,8 @@ const category = {
 
 const chat = {
     url: `${urlPath}/chat`,
-    // wsUrl: `ws://${urlPath}/ws/chat/tender`,
-    wsUrl: `ws://${urlPath}/ws/chat/product`,
+    wsUrl: `ws://${urlPath}/ws/chat/tender`,
+    // wsUrl: `ws://${urlPath}/ws/chat/product`,
     wsUrlPush: `${urlPath}/ws/push`,
     token: 'c7d63a2e58d186ae3760a5f7c690293e973c08c4'
 };
