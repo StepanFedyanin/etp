@@ -193,7 +193,8 @@
                         <a 
                             v-if="user?.id && user.marketplace_user?.id !== good.marketplace_user?.id"
                             href="#"
-                            class="good__contragent-title-more m--disabled"
+                            class="good__contragent-title-more"
+                            @click.prevent="startChat(good.marketplace_user?.id)"
                         >
                             <span>Написать в чат</span>
                         </a>
@@ -355,7 +356,7 @@
 <script>
     //import { category as api } from "@/services"
     import { urlPath } from '@/settings';
-    import { user as api, product as productApi, cabinet, common } from "@/services";
+    import { user as api, product as productApi, cabinet, common, chat as chatApi } from '@/services';
     //import blockContragent from '@/components/block-contragent.vue';
     import blockGoodsItem from '@/components/block-goods-item.vue';
     import blockContent from '@/components/block-content.vue';
@@ -546,6 +547,19 @@
                 }).catch(err => {
                     this.showLoaderSending.category = false;
                     this.$store.dispatch('showError', err);
+                    console.error(err);
+                });
+            },
+            startChat(userId) {
+                let params = {
+                    // good: this.good.id,
+                    marketplace_user: userId
+                }
+                chatApi.getChatByTypeAndOrganization('product', params).then(res => {
+                    // this.chatPartner = res.chat_partner.id;
+                    console.log(res);
+                    this.$router.push({ name: 'chat', query: { chatId: res.id }, hash: '#product' });
+                }).catch(err => {
                     console.error(err);
                 });
             },

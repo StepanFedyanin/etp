@@ -54,23 +54,44 @@
                                 <!--div class="chat__user-name">
                                     {{ room.chat_partner.last_name }} {{ room.chat_partner.first_name }}
                                 </div-->
-                                <div class="chat__user-info">
-                                    <div class="chat__user-info-organization">
-                                        {{ room.chat_partner?.full_name }}
+                                <template v-if="room.type === 'tender'">
+                                    <div class="chat__user-info">
+                                        <div class="chat__user-info-organization">
+                                            {{ room.chat_partner?.full_name }}
+                                        </div>
+                                        <div class="chat__user-info-date">
+                                            <template v-if="$helpers.formatDate(new Date(room.last_update), 'DD.MM.YY') === $helpers.formatDate(new Date(), 'DD.MM.YY')">
+                                                {{ $helpers.formatDate(new Date(room.last_update), 'HH:mm') }}
+                                            </template>
+                                            <template v-else>
+                                                {{ $helpers.formatDate(new Date(room.last_update), 'DD.MM') }}
+                                            </template>
+                                        </div>
                                     </div>
-                                    <div class="chat__user-info-date">
-                                        <template v-if="$helpers.formatDate(new Date(room.last_update), 'DD.MM.YY') === $helpers.formatDate(new Date(), 'DD.MM.YY')">
-                                            {{ $helpers.formatDate(new Date(room.last_update), 'HH:mm') }}
-                                        </template>
-                                        <template v-else>
-                                            {{ $helpers.formatDate(new Date(room.last_update), 'DD.MM') }}
-                                        </template>
+                                    <div class="chat__user-tender">
+                                        <div :class="['chat__user-status', room.unread_message_count && 'is-unread']" />
+                                        <span>№{{ room.tender?.id }} {{ room.tender?.name }}</span>
                                     </div>
-                                </div>
-                                <div class="chat__user-tender">
-                                    <div :class="['chat__user-status', room.unread_message_count && 'is-unread']" />
-                                    <span>№{{ room.tender.id }} {{ room.tender.name }}</span>
-                                </div>
+                                </template>
+                                <template v-else-if="room.type === 'product'">
+                                    <div class="chat__user-info">
+                                        <div class="chat__user-info-organization">
+                                            {{ room.participants[0].name }}
+                                        </div>
+                                        <div class="chat__user-info-date">
+                                            <template v-if="$helpers.formatDate(new Date(room.last_update), 'DD.MM.YY') === $helpers.formatDate(new Date(), 'DD.MM.YY')">
+                                                {{ $helpers.formatDate(new Date(room.last_update), 'HH:mm') }}
+                                            </template>
+                                            <template v-else>
+                                                {{ $helpers.formatDate(new Date(room.last_update), 'DD.MM') }}
+                                            </template>
+                                        </div>
+                                    </div>
+                                    <div class="chat__user-tender">
+                                        <div :class="['chat__user-status', room.unread_message_count && 'is-unread']" />
+                                        <span>{{ room.participants[1].name }}</span>
+                                    </div>
+                                </template>
                             </div>
                         </div>
                     </div>
@@ -92,34 +113,43 @@
                             @wheel="scroll"
                         >
                             <template v-if="chatInfo">
-                                <div class="chat__board-tender tender">
-                                    <div class="tender__info m--column m--100">
-                                        <!-- <div class="tender__info-number">
-                                            Аукцион №{{ chatInfo.tender && chatInfo.tender.id }}
-                                        </div> -->
-                                        <router-link
-                                            :to="{ name: 'tender', params: { id: chatInfo.tender.id } }"
-                                            class="tender__info-title"
-                                        >
-                                            {{ chatInfo.tender.name }}
-                                        </router-link>
-                                        <!-- <div class="tender__info-title">
-                                            {{ chatInfo.tender.name }}
-                                        </div> -->
-                                        <div class="tender__info-param">
-                                            <span>Организация: </span> 
+                                <template v-if="chatInfo.type === 'tender'">
+                                    <div class="chat__board-tender tender">
+                                        <div class="tender__info m--column m--100">
+                                            <!-- <div class="tender__info-number">
+                                                Аукцион №{{ chatInfo.tender && chatInfo.tender.id }}
+                                            </div> -->
                                             <router-link
-                                                :to="{ name: 'contragent', params: { id: chatInfo.tender.organization.id } }"
-                                                class="tenders__item-organization"
+                                                :to="{ name: 'tender', params: { id: chatInfo.tender?.id } }"
+                                                class="tender__info-title"
                                             >
-                                                {{ chatInfo.tender.organization.name }}
+                                                {{ chatInfo.tender?.name }}
                                             </router-link>
-                                        </div>
-                                        <div class="tender__info-param">
-                                            <span>Директор:</span> {{ chatInfo.tender.organization.head_name }}
+                                            <!-- <div class="tender__info-title">
+                                                {{ chatInfo.tender.name }}
+                                            </div> -->
+                                            <div class="tender__info-param">
+                                                <span>Организация: </span> 
+                                                <router-link
+                                                    :to="{ name: 'contragent', params: { id: chatInfo.tender?.organization.id } }"
+                                                    class="tenders__item-organization"
+                                                >
+                                                    {{ chatInfo.tender?.organization.name }}
+                                                </router-link>
+                                            </div>
+                                            <div class="tender__info-param">
+                                                <span>Директор:</span> {{ chatInfo.tender?.organization.head_name }}
+                                            </div>
                                         </div>
                                     </div>
-                                </div>
+                                </template>
+                                <template v-else-if="chatInfo.type === 'product'">
+                                    <div class="chat__board-tender product">
+                                        <div class="tender__info m--column m--100">
+                                            {{ chatInfo }}
+                                        </div>
+                                    </div>
+                                </template>
                                 <!-- ref="area" -->
                                 <div class="chat__messages">
                                     <template
@@ -253,24 +283,27 @@
         components: {
             blockHint
         },
+        /*
         props: {
             chatId: {
                 type: Number,
                 default() { return 0; }
             },
         },
+        */
         data() {
             return {
                 tabsItems: [
                     {
-                        name: 'tender',
-                        label: 'Тендеры'
-                    }, {
                         name: 'product',
                         label: 'Маркет'
+                    }, {
+                        name: 'tender',
+                        label: 'Тендеры'
                     }
                 ],
-                currentTabsItem: this.$route.hash?.replace('#', '') || 'tender',
+                currentTabsItem: this.$route.hash?.replace('#', '') || 'product',
+                chatId: +this.$route.query?.chatId,
                 chat: null,
                 chat_messages: [],
                 form: {},

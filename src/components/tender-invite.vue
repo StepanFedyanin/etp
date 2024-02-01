@@ -101,11 +101,16 @@
                         name: 'organization',
                         searchable: true,
                         inn: true,
-                        minChars: 3,
-                        options: async () => {
-                            return await userApi.getOrganizations({limit: 1000}).then(orgs => {
+                        minChars: 1,
+                        delay: 0,
+                        resolveOnLoad: false,
+                        filterResults: false,
+                        //infinite: true,
+                        //limit: 10,
+                        options: async function(query) {
+                            return await userApi.getOrganizations({query: query, limit: 50}).then(orgs => {
                                 let items = orgs.results.filter((org) => {
-                                    if (this.user.organization.id === org.id) {
+                                    if (this.user?.organization.id === org.id) {
                                         return false;
                                     }
                                     return true;
@@ -126,7 +131,7 @@
                                 console.error(err);
                             })
                         },
-                        noOptionsText: '',
+                        noOptionsText: 'Ничего не найдено',
                         placeholder: "Введите ИНН",
                         //innerClass: 'modal-form__input',
                         //labelClass: '$reset modal-form__label',

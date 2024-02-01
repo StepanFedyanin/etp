@@ -43,8 +43,9 @@ export default class extends REST {
             throw new RESTError(error, 'Ошибка при получении списка чатов');
         });
     }
-    static getChatByTenderAndOrganization(type, params) {
-        return this._post(`chats/${type}/get_create`, {}, params).then((data) => {
+    static getChatByTypeAndOrganization(type, params) {
+        console.log(params);
+        return this._post(`chats/${type}`, {}, params).then((data) => {
             return data;
         }).catch((error) => {
             throw new RESTError(error, 'Ошибка при создании и/или получении чата');
