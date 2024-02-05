@@ -15,7 +15,7 @@
                 v-else
             >
                 <router-link
-                    v-if="(!item.access && !item.forbiden) || ((item.access && user[item.access]) || (item.forbiden && !user[item.forbiden]))"
+                    v-if="(!item.access && !item.forbiden && !item.condition) || ((item.access && user[item.access]) || (item.forbiden && !user[item.forbiden]) || (item.condition && showMenuItem(item.condition)))"
                     :key="key"
                     v-slot="{ href, isActive, isExactActive }"
                     :to="{ name: item.name }"
@@ -237,6 +237,7 @@
                         title: 'Я - продавец',
                         icon: 'seller',
                         access: 'is_access_product',
+                        condition: 'im_auth_type__person',
                         items: [
                             {
                                 name: 'market',
@@ -329,6 +330,7 @@
                         title: 'Я - продавец',
                         icon: 'seller',
                         access: 'is_access_product',
+                        condition: 'im_auth_type__person',
                         items: [
                             {
                                 name: 'market',
@@ -382,6 +384,21 @@
         destroyed() {
         },
         methods: {
+            showMenuItem(condition) {
+                console.log('CONDITION: ', condition);
+                if (!condition) return true;
+                const cond = condition.split('__');
+                if (!cond[1]) {
+                    if (this.user[cond[0]]) return true;
+                } else {
+                    if (cond[1] === 'null') {
+                        if (!this.user[cond[0]]) return true;
+                    } else {
+                        if (this.user[cond[0]] === cond[1]) return true;
+                    }
+                }
+                return false;
+            },
             menuOpened(name, active) {
                 if (active && !this.menuOpenedItems[name]) this.menuOpenedItems[name] = 1;
                 return this.menuOpenedItems[name];

@@ -6,7 +6,6 @@
             </div>
         </template>
         <template v-else>
-            {{ formData }}
             <FormKit
                 id="marketSettingsForm"
                 v-model="formData"

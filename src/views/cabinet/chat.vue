@@ -2,7 +2,7 @@
     <div class="app__main">
         <div class="cabinet chat">
             <div class="container">
-                <app-breadcrumbs
+                <app-breadcrumbs 
                     :breadcrumbs="[
                         { name: 'Главная', route: { name: 'home' } },
                         { name: 'Кабинет', route: { name: 'cabinet' } },
@@ -12,7 +12,7 @@
                 <div class="chat__block">
                     <div class="chat__users">
                         <div class="chat__tabs tabs m--50">
-                            <button
+                            <button 
                                 v-for="item in tabsItems"
                                 :key="`tab-${item.name}`"
                                 class="tabs__item"
@@ -39,12 +39,12 @@
                                 <div class="spinner" /> Загрузка чатов
                             </div>
                         </template>
-                        <div
+                        <div 
                             v-else-if="chatId || rooms.length"
                             ref="users"
                             class="chat__users-inner"
                         >
-                            <div
+                            <div 
                                 v-for="room in sortedChats"
                                 :key="`chat-user-${room}`"
                                 class="chat__user"
@@ -54,23 +54,44 @@
                                 <!--div class="chat__user-name">
                                     {{ room.chat_partner.last_name }} {{ room.chat_partner.first_name }}
                                 </div-->
-                                <div class="chat__user-info">
-                                    <div class="chat__user-info-organization">
-                                        {{ room.chat_partner?.full_name }}
+                                <template v-if="room.type === 'tender'">
+                                    <div class="chat__user-info">
+                                        <div class="chat__user-info-organization">
+                                            {{ room.chat_partner?.full_name }}
+                                        </div>
+                                        <div class="chat__user-info-date">
+                                            <template v-if="$helpers.formatDate(new Date(room.last_update), 'DD.MM.YY') === $helpers.formatDate(new Date(), 'DD.MM.YY')">
+                                                {{ $helpers.formatDate(new Date(room.last_update), 'HH:mm') }}
+                                            </template>
+                                            <template v-else>
+                                                {{ $helpers.formatDate(new Date(room.last_update), 'DD.MM') }}
+                                            </template>
+                                        </div>
                                     </div>
-                                    <div class="chat__user-info-date">
-                                        <template v-if="$helpers.formatDate(new Date(room.last_update), 'DD.MM.YY') === $helpers.formatDate(new Date(), 'DD.MM.YY')">
-                                            {{ $helpers.formatDate(new Date(room.last_update), 'HH:mm') }}
-                                        </template>
-                                        <template v-else>
-                                            {{ $helpers.formatDate(new Date(room.last_update), 'DD.MM') }}
-                                        </template>
+                                    <div class="chat__user-tender">
+                                        <div :class="['chat__user-status', room.unread_message_count && 'is-unread']" />
+                                        <span>№{{ room.tender?.id }} {{ room.tender?.name }}</span>
                                     </div>
-                                </div>
-                                <div class="chat__user-tender">
-                                    <div :class="['chat__user-status', room.unread_message_count && 'is-unread']" />
-                                    <span>№{{ room.tender.id }} {{ room.tender.name }}</span>
-                                </div>
+                                </template>
+                                <template v-else-if="room.type === 'product'">
+                                    <div class="chat__user-info">
+                                        <div class="chat__user-info-organization">
+                                            {{ room.participants.name }}
+                                        </div>
+                                        <div class="chat__user-info-date">
+                                            <template v-if="$helpers.formatDate(new Date(room.last_update), 'DD.MM.YY') === $helpers.formatDate(new Date(), 'DD.MM.YY')">
+                                                {{ $helpers.formatDate(new Date(room.last_update), 'HH:mm') }}
+                                            </template>
+                                            <template v-else>
+                                                {{ $helpers.formatDate(new Date(room.last_update), 'DD.MM') }}
+                                            </template>
+                                        </div>
+                                    </div>
+                                    <div class="chat__user-tender">
+                                        <div :class="['chat__user-status', room.unread_message_count && 'is-unread']" />
+                                        <span>{{ room.last_message?.text || 'Нет сообщений' }}</span>
+                                    </div>
+                                </template>
                             </div>
                         </div>
                     </div>
@@ -92,40 +113,64 @@
                             @wheel="scroll"
                         >
                             <template v-if="chatInfo">
-                                <div class="chat__board-tender tender">
-                                    <div class="tender__info m--column m--100">
-                                        <!-- <div class="tender__info-number">
-                                            Аукцион №{{ chatInfo.tender && chatInfo.tender.id }}
-                                        </div> -->
-                                        <router-link
-                                            :to="{ name: 'tender', params: { id: chatInfo.tender.id } }"
-                                            class="tender__info-title"
-                                        >
-                                            {{ chatInfo.tender.name }}
-                                        </router-link>
-                                        <!-- <div class="tender__info-title">
-                                            {{ chatInfo.tender.name }}
-                                        </div> -->
-                                        <div class="tender__info-param">
-                                            <span>Организация: </span>
+                                <template v-if="chatInfo.type === 'tender'">
+                                    <div class="chat__board-tender tender">
+                                        <div class="tender__info m--column m--100">
+                                            <!-- <div class="tender__info-number">
+                                                Аукцион №{{ chatInfo.tender && chatInfo.tender.id }}
+                                            </div> -->
                                             <router-link
-                                                :to="{ name: 'contragent', params: { id: chatInfo.tender.organization.id } }"
-                                                class="tenders__item-organization"
+                                                :to="{ name: 'tender', params: { id: chatInfo.tender?.id } }"
+                                                class="tender__info-title"
                                             >
-                                                {{ chatInfo.tender.organization.name }}
+                                                {{ chatInfo.tender?.name }}
                                             </router-link>
-                                        </div>
-                                        <div class="tender__info-param">
-                                            <span>Директор:</span> {{ chatInfo.tender.organization.head_name }}
+                                            <!-- <div class="tender__info-title">
+                                                {{ chatInfo.tender.name }}
+                                            </div> -->
+                                            <div class="tender__info-param">
+                                                <span>Организация: </span> 
+                                                <router-link
+                                                    :to="{ name: 'contragent', params: { id: chatInfo.tender?.organization.id } }"
+                                                    class="tenders__item-organization"
+                                                >
+                                                    {{ chatInfo.tender?.organization.name }}
+                                                </router-link>
+                                            </div>
+                                            <div class="tender__info-param">
+                                                <span>Директор:</span> {{ chatInfo.tender?.organization.head_name }}
+                                            </div>
                                         </div>
                                     </div>
-                                </div>
+                                </template>
+                                <template v-else-if="chatInfo.type === 'product'">
+                                    <div class="chat__board-tender good">
+                                        <div class="tender__info m--column m--100">
+                                            <div class="good__params m--inline m--mb-1">
+                                                <div class="good__param">
+                                                    <div class="good__param-data">{{ chatInfo.participants.name }}</div>
+                                                </div>
+                                                <div class="good__param">
+                                                    <div :class="['good__param-data m--normal m--icon', `m--${chatInfo.participants.type}`]">{{ chatInfo.participants.type === 'organization' ? 'Организация' : 'Физ. лицо' }}</div>
+                                                </div>
+                                            </div>
+                                            <div class="good__params m--inline m--mb-0">
+                                                <div class="good__param">
+                                                    <div class="good__param-data m--normal">{{ chatInfo.participants.phone }}</div>
+                                                </div>
+                                                <div class="good__param">
+                                                    <div class="good__param-data m--normal">{{ chatInfo.participants.email }}</div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </template>
                                 <!-- ref="area" -->
                                 <div class="chat__messages">
                                     <template
                                         v-for="(message) in messages"
                                     >
-                                        <div
+                                        <div 
                                             v-if="message.type === 'time'"
                                             :key="`message-${message.id}`"
                                             class="chat__messages-date"
@@ -135,8 +180,9 @@
                                         <div
                                             v-else
                                             :key="`message-${message.id}`"
-                                            :class="['chat__messages-item', !message.seen && 'is-unread', message.user !== $store._state.data.user.id ? 'is-left' : 'is-right']"
+                                            :class="['chat__messages-item', !message.seen && 'is-unread', (message.user === user.id && message.type === 'tender') || (message.user === user.marketplace_user?.id && message.type === 'product') ? 'is-right' : 'is-left']"
                                         >
+                                            {{ message }}
                                             <div class="chat__messages-item-inner">
                                                 <template v-if="message.deleted">
                                                     <div class="chat__messages-item-text m--deleted">
@@ -145,7 +191,7 @@
                                                 </template>
                                                 <template v-else>
                                                     <div class="chat__messages-item-top">
-                                                        <div
+                                                        <div 
                                                             v-if="message.user_name"
                                                             class="chat__messages-item-user"
                                                         >
@@ -171,14 +217,14 @@
                                                             @click.prevent="onDeleteMessage(message.id)"
                                                         /-->
                                                     </div>
-                                                    <div
+                                                    <div 
                                                         class="chat__messages-item-text"
                                                         v-html="message.text"
-                                                    />
+                                                    />                                        
                                                 </template>
                                             </div>
                                             <!--div class="chat__messages-item-inner">
-                                                <div
+                                                <div 
                                                     class="chat__messages-item-text"
                                                     v-html="message.text"
                                                 />
@@ -189,7 +235,7 @@
                                         </div>
                                     </template>
                                 </div>
-                                <form
+                                <form 
                                     class="chat__board-form form"
                                     @submit.prevent="onSendMessage(chatInfo.id, form.message)"
                                 >
@@ -208,8 +254,8 @@
                                 </form>
                             </template>
                             <template v-else-if="!showLoaderList">
-                                <template v-if="currentTabsItem === 'tenders'">
-                                    <blockHint
+                                <template v-if="currentTabsItem === 'tender'">
+                                    <blockHint 
                                         classModifier="chat__board-empty"
                                         :slug="`chats_${currentTabsItem}`"
                                     />
@@ -221,8 +267,8 @@
                                         Перейти к тендерам
                                     </button>
                                 </template>
-                                <template v-if="currentTabsItem === 'market'">
-                                    <blockHint
+                                <template v-if="currentTabsItem === 'product'">
+                                    <blockHint 
                                         classModifier="chat__board-empty"
                                         :slug="`chats_${currentTabsItem}`"
                                     />
@@ -253,24 +299,27 @@
         components: {
             blockHint
         },
+        /*
         props: {
             chatId: {
                 type: Number,
                 default() { return 0; }
             },
         },
+        */
         data() {
             return {
                 tabsItems: [
                     {
-                        name: 'tenders',
-                        label: 'Тендеры'
-                    }, {
-                        name: 'market',
+                        name: 'product',
                         label: 'Маркет'
+                    }, {
+                        name: 'tender',
+                        label: 'Тендеры'
                     }
                 ],
-                currentTabsItem: this.$route.hash?.replace('#', '') || 'tenders',
+                currentTabsItem: this.$route.hash?.replace('#', '') || 'product',
+                chatId: +this.$route.query?.chatId,
                 chat: null,
                 chat_messages: [],
                 form: {},
@@ -324,7 +373,10 @@
                     return _find(this.rooms, { id: this.chat });
                 }
                 return undefined
-            }
+            },
+            user() {
+                return this.$store.state.user;
+            },
         },
         watch: {
             'chat': function (newVal, oldVal) {
@@ -332,7 +384,7 @@
                     this.$nextTick(() => {
                         const el = this.$refs.board;
                         this.addSwipeListener(el);
-
+                        
                     });
                 }
             }
@@ -366,34 +418,29 @@
                 return Math.round( (newAsDate - oldAsDate) / msPerDay );
             },
             fetchChats(chatId, lazy = false) {
-                if (this.currentTabsItem === 'market') {
-                    this.rooms = [];
-                }
-                if (this.currentTabsItem === 'tenders') {
-                    if (!lazy) this.showLoaderList = true;
-                    Chat.getChatList().then(res => {
-                        this.rooms = res;
-                        if (chatId) {
-                            this.onSelectRecipient(chatId, this.findChat(chatId));
-                        }
-                        this.showLoaderList = false;
-                    }).catch(err => {
-                        console.error(err);
-                        this.showLoaderList = false;
-                    });
-                }
+                if (!lazy) this.showLoaderList = true;
+                Chat.getChatList(this.currentTabsItem).then(res => {
+                    this.rooms = res;
+                    if (chatId) {
+                        this.onSelectRecipient(chatId, this.findChat(chatId));
+                    }
+                    this.showLoaderList = false;
+                }).catch(err => {
+                    console.error(err);
+                    this.showLoaderList = false;
+                });
             },
-            appendMessages(chatId) {
+            appendMessages(type, chatId) {
                 this.isLoading = true;
-                Chat.getMessages(chatId, this.offset, this.limit).then(res => {
+                Chat.getMessages(type, chatId, this.offset, this.limit).then(res => {
                     this.chat_messages = res.results.reverse().concat(this.chat_messages);
                     this.canScroll = res.count > this.offset;
                     const el = this.$refs.board;
                     const scrollHeight = el.scrollHeight;
                     this.$nextTick(() => {
                         el.scrollTop = el.scrollHeight - scrollHeight;
-                        // el.scrollTo({
-                        //     top: scrollHeight,
+                        // el.scrollTo({ 
+                        //     top: scrollHeight, 
                         //     behavior: 'smooth'
                         // });
                         this.offset += this.limit;
@@ -415,7 +462,7 @@
                 let delta = Math.max(-1, Math.min(1, (el.wheelDelta || -el.detail)));
                 const board = this.$refs.board;
                 if (board.scrollTop === 0 && delta === 1 && this.isLoading === false && this.canScroll) {
-                    this.appendMessages(this.chat);
+                    this.appendMessages(this.currentTabsItem, this.chat);
                 }
             },
             // scrollUp(target) {
@@ -439,15 +486,16 @@
             //     }
             // },
             onSelectRecipient(chatId) {
+                console.log(this.chat, chatId);
                 if (chatId && this.chat !== Number(chatId)) {
                     this.chat = Number(chatId);
                     this.clearChat();
-                    this.appendMessages(chatId);
+                    this.appendMessages(this.currentTabsItem, chatId);   
                 }
             },
             onSendMessage(room, text) {
                 if (text) {
-                    Chat.createMessages(room, {'text': text}).then(() => {
+                    Chat.createMessages(this.currentTabsItem, room, {'text': text}).then(() => {
                         this.fetchChats(null, true);
                         this.form = {};
                     }).catch(err => {
@@ -474,18 +522,17 @@
                     msg.seen = true;
                     this.chat_messages.push(msg);
                     this.offset++;
-                    if (msg.user !== this.$store.state.user.id) {
+                    if ((msg.user !== this.user.id && msg.type === 'tender') && (msg.user !== this.user.marketplace_user?.id && msg.type === 'product')) {
                         this.connection.sendMessage({
                             room: this.chat,
                             id: msg.id,
-                            type: msg.type
                         })
                     }
                     const el = this.$refs.board;
                     this.$nextTick(() => {
                         // el.scrollTop = el.scrollHeight;
-                        el.scrollTo({
-                            top: el.scrollHeight,
+                        el.scrollTo({ 
+                            top: el.scrollHeight, 
                             behavior: 'smooth'
                         });
                     });
@@ -555,10 +602,13 @@
             bottomSwipe() {
                 const el = this.$refs.board;
                 if (el.scrollTop === 0 && this.isLoading === false && this.canScroll) {
-                    this.appendMessages(this.chat);
+                    this.appendMessages(this.currentTabsItem, this.chat);
                 }
             },
             changeTab(name) {
+                this.chatId = null;
+                this.chat = null;
+                this.clearChat();
                 this.currentTabsItem = name;
                 this.$router.push({ name: this.$route.name, hash: `#${name}` });
                 this.fetchChats();

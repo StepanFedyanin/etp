@@ -508,7 +508,7 @@
                                     <div
                                         v-if="user.is_access_tender"
                                         class="tender__contact-chat"
-                                        @click="startChat(tender.organization.id)"
+                                        @click.prevent="startChat(tender.organization.id)"
                                     >
                                         <span>Написать в чат</span>
                                     </div>
@@ -643,7 +643,7 @@
 
 <script>
     import { urlPath } from '@/settings'
-    import { tender as tenderApi, chat as Chat } from "@/services"
+    import { tender as tenderApi, chat as chatApi } from '@/services';
     import blockContent from '@/components/block-content.vue';
     import TenderOrganizationStatus from '@/components/tender-organization-status';
     import TenderParticipants from '@/components/tender-participants';
@@ -891,11 +891,10 @@
                     tender: this.tender.id,
                     organization: organizationId
                 }
-                console.log(organizationId);
-                Chat.getChatByTenderAndOrganization(params).then(res => {
+                chatApi.getChatByTypeAndOrganization('tender', params).then(res => {
                     // this.chatPartner = res.chat_partner.id;
                     console.log(res);
-                    this.$router.push({ name: 'chat', params: { chatId: res.id } });
+                    this.$router.push({ name: 'chat', query: { chatId: res.id }, hash: '#tender' });
                 }).catch(err => {
                     console.error(err);
                 });

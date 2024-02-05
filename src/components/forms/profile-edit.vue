@@ -1,15 +1,11 @@
 <template>
     <div class="profile__user">
-        <template
-            v-if="showLoaderSending"
-        >
+        <template v-if="showLoaderSending">
             <div class="profile__loader loader">
                 <div class="spinner" /> Загрузка данных
             </div>
         </template>
-        <template
-            v-else
-        >
+        <template v-else>
             <FormKit 
                 id="profileEdit"
                 v-model="formData"

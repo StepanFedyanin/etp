@@ -146,6 +146,7 @@
         },
         watch: {
             '$route.name': {
+                immediate: true,
                 handler(to) {
                     if (to === 'contragents') this.getOrganizations();
                 }
@@ -159,7 +160,7 @@
         created() {
         },
         mounted() {
-            this.getOrganizations();
+            //this.getOrganizations();
         },
         methods: {
             getOrganizations() {

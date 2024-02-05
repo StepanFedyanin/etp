@@ -32,7 +32,7 @@
                             <div class="good__info">
                                 <div v-if="good.min_count" class="good__info-param m--count">Заказ от {{ good.min_count }} ед.</div>
                                 <div v-if="good.nds" class="good__info-param m--nds">НДС: {{ good.nds }}</div>
-                                <div v-if="good.type_of_buyer" class="good__info-param m--buyer">{{ good.type_of_buyer === 'organization' ? 'B2B' : 'B2C' }}</div>
+                                <div v-if="showTypeBuyer && good.type_of_buyer" class="good__info-param m--buyer">{{ good.type_of_buyer === 'organization' ? 'B2B' : 'B2C' }}</div>
                             </div>
                             <div class="h3">Цена</div>
                             <div class="good__price">
@@ -49,10 +49,12 @@
                                             :min="good.min_count || 1"
                                             max="9999"
                                             :value="good.min_count || 1"
+                                            :disabled="!user?.id"
                                             outerClass="good__price-counter"
                                         />
                                         <button 
                                             class="button button-green good__price-button"
+                                            :disabled="!user?.id"
                                             @click.prevent="requestGood()"
                                         >
                                             Заказать
@@ -70,9 +72,13 @@
                             </div>
                             <div class="h3">Характеристики</div>
                             <div class="good__params">
-                                <div v-if="good.type_of_buyer" class="good__param">
+                                <!--div v-if="good.type_of_buyer" class="good__param">
                                     <div class="good__param-name">Заказ</div>
                                     <div class="good__param-data">{{ good.type_of_buyer === 'organization' ? 'Для юридических лиц' : 'Для физических лиц' }}</div>
+                                </div-->
+                                <div class="good__param">
+                                    <div class="good__param-name">Продавец</div>
+                                    <div :class="['good__param-data m--icon', `m--${good.marketplace_user?.type}`]">{{ good.marketplace_user?.name }}</div>
                                 </div>
                                 <div v-if="good.min_count" class="good__param">
                                     <div class="good__param-name">Минимальный заказ</div>
@@ -86,13 +92,13 @@
                                     <div class="good__param-name">НДС</div>
                                     <div class="good__param-data">{{ good.nds }}</div>
                                 </div>
-                                <div v-if="good.delivery_min_cost || good.delivery_time" class="good__param">
-                                    <div class="good__param-name">Доставка</div>
-                                    <div class="good__param-data">{{ good.delivery_min_cost ? `от ${$helpers.toPrice(good.delivery_min_cost, { sign: good.currency_detail })}` : `` }} {{ good.delivery_time ? `(${good.delivery_time})` : `` }}</div>
+                                <div v-if="good.delivery_min_cost" class="good__param">
+                                    <div class="good__param-name">Стоимость доставки</div>
+                                    <div class="good__param-data">от {{ $helpers.toPrice(good.delivery_min_cost, { sign: good.currency_detail }) }}</div>
                                 </div>
-                                <div v-if="good.marketplace_user?.name" class="good__param">
-                                    <div class="good__param-name">Поставщик</div>
-                                    <div class="good__param-data">{{ good.marketplace_user?.name }}</div>
+                                <div v-if="good.delivery_time" class="good__param">
+                                    <div class="good__param-name">Срок доставки по РФ, дн.</div>
+                                    <div class="good__param-data">{{ good.delivery_time }}</div>
                                 </div>
                                 <div v-if="good.brand" class="good__param">
                                     <div class="good__param-name">Бренд</div>
@@ -113,9 +119,9 @@
                             </div>
                             <div class="h3">Читайте также</div>
                             <div class="good__menu m--inline">
-                                <a v-if="good.description" @click.prevent="scrollTo('about')" href="#" class="good__menu-link">О товаре</a>
+                                <a v-if="good.about" @click.prevent="scrollTo('about')" href="#" class="good__menu-link">О товаре</a>
                                 <a v-if="good.delivery_terms || good.payment_terms" @click.prevent="scrollTo('delivery')" href="#" class="good__menu-link">Доставка и оплата</a>
-                                <a v-if="good.marketplace_user" @click.prevent="scrollTo('organization')" href="#" class="good__menu-link">О поставщике</a>
+                                <a v-if="good.marketplace_user" @click.prevent="scrollTo('organization')" href="#" class="good__menu-link">О продавце</a>
                                 <a v-if="hints.length" @click.prevent="scrollTo('help')" href="#" class="good__menu-link">Как сделать заказ?</a>
                             </div>
                         </div>
@@ -157,12 +163,12 @@
                     </div>
                 </div>
 
-                <div v-if="good.description" class="good__block" ref="about">
+                <div v-if="good.about" class="good__block" ref="about">
                     <div class="good__block-info">
                         <div class="good__block-title h2">О товаре</div>
                         <div 
                             class="good__block-content"
-                            v-html="good.description?.replace(/\n/g, '<br/>')"
+                            v-html="good.about?.replace(/\n/g, '<br/>')"
                         />
                     </div>
                 </div>
@@ -183,17 +189,30 @@
                 </div>
                 <div v-if="good.marketplace_user" class="good__contragent" ref="organization">
                     <div class="good__contragent-title h2">
-                        <div>Продавец - {{ good.marketplace_user?.name }}</div>
+                        <div>Продавец</div>
                         <a 
+                            v-if="user?.id && user.marketplace_user?.id !== good.marketplace_user?.id"
                             href="#"
-                            class="good__contragent-title-more m--disabled"
+                            class="good__contragent-title-more"
+                            @click.prevent="startChat(good.marketplace_user?.id)"
                         >
-                            <span>На страницу продавца</span>
+                            <span>Написать в чат</span>
                         </a>
                     </div>
                     <div class="good__block m--reverse">
                         <div class="good__block-left">
                             <div class="good__params good__contragent-params">
+                                <div class="good__params m--inline">
+                                    <div class="good__param">
+                                        <div class="good__param-data">{{ good.marketplace_user?.name }}</div>
+                                    </div>
+                                    <div class="good__param m--sm">
+                                        <div :class="['good__param-data m--normal m--icon', `m--${good.marketplace_user.type}`]">{{ good.marketplace_user.type === 'organization' ? 'Организация' : 'Физ. лицо' }}</div>
+                                    </div>
+                                    <div class="good__param m--sm">
+                                        <div class="good__param-data m--normal m--icon m--count">{{ $helpers.stringForNumber(goodsOrganization.count, ['товар', 'товара', 'товаров']) }} на TUGAN</div>
+                                    </div>
+                                </div>
                                 <div v-if="good.marketplace_user?.city" class="good__param">
                                     <div class="good__param-name">Город</div>
                                     <div class="good__param-data">{{ good.marketplace_user?.city }}</div>
@@ -250,7 +269,7 @@
                 <template v-if="goodsOrganization.count">
                     <div class="good__list goods m--block">
                         <div class="goods__title h2">
-                            Все товары поставщика <span>({{ goodsOrganization.count }})</span>
+                            Все товары продавца <span>({{ goodsOrganization.count }})</span>
                         </div>
                         <div class="goods__block">
                             <blockGoodsItem
@@ -263,7 +282,7 @@
                         </div>
                         <template v-if="showLoaderSending.organization">
                             <div class="good__loader loader">
-                                <div class="spinner" /> Загрузка данных о товарах поставщика
+                                <div class="spinner" /> Загрузка данных о товарах продавца
                             </div>
                         </template>
                         <template v-else>
@@ -337,7 +356,7 @@
 <script>
     //import { category as api } from "@/services"
     import { urlPath } from '@/settings';
-    import { user as api, product as productApi, cabinet, common } from "@/services";
+    import { user as api, product as productApi, cabinet, common, chat as chatApi } from '@/services';
     //import blockContragent from '@/components/block-contragent.vue';
     import blockGoodsItem from '@/components/block-goods-item.vue';
     import blockContent from '@/components/block-content.vue';
@@ -392,6 +411,7 @@
         data() {
             return {
                 urlPath,
+                showTypeBuyer: false,
                 currentPhoto: 0,
                 hints: [],
                 goodInStock: {
@@ -527,6 +547,19 @@
                 }).catch(err => {
                     this.showLoaderSending.category = false;
                     this.$store.dispatch('showError', err);
+                    console.error(err);
+                });
+            },
+            startChat(userId) {
+                let params = {
+                    // good: this.good.id,
+                    marketplace_user: userId
+                }
+                chatApi.getChatByTypeAndOrganization('product', params).then(res => {
+                    // this.chatPartner = res.chat_partner.id;
+                    console.log(res);
+                    this.$router.push({ name: 'chat', query: { chatId: res.id }, hash: '#product' });
+                }).catch(err => {
                     console.error(err);
                 });
             },

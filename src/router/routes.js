@@ -218,7 +218,7 @@ const routes = [
                 name: 'chat',
                 component: CabinetChat,
                 meta: { 
-                    title: 'Чат', 
+                    title: 'Чаты', 
                     breadcrumbs: ['cabinet'],
                     requiresAuth: true,
                     appClass: 'm--h-100 m--no-footer'

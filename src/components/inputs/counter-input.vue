@@ -2,6 +2,7 @@
     <div class="m--group field__input-counter">
         <button 
             class="field__input-counter-btn button button-red m--minus"
+            :disabled="disabled"
             @click.prevent="changeCounter(-1)"
         />
         <input
@@ -17,6 +18,7 @@
         >
         <button 
             class="field__input-counter-btn button button-green m--plus"
+            :disabled="disabled"
             @click.prevent="changeCounter(1)"
         />
     </div>

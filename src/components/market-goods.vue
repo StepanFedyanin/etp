@@ -31,7 +31,7 @@
                     :key="`good-${item.id}`"
                     :good="item"
                     :showCategory="true"
-                    :showControl="user.is_access_product"
+                    :showControl="user.is_access_product || user.im_auth_type === 'person'"
                     @deleteGood="deleteGood"
                 />
             </div>

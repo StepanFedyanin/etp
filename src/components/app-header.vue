@@ -234,7 +234,7 @@
                     }, {
                         name: 'products',
                         role: 'all',
-                        title: 'Товары'
+                        title: 'Маркет'
                     }, {
                         name: 'registration',
                         role: 'all',
@@ -259,7 +259,7 @@
                     }, {
                         name: 'products',
                         role: 'all',
-                        title: 'Товары'
+                        title: 'Маркет'
                     }, {
                         name: 'cabinet',
                         role: 'all',
@@ -328,6 +328,32 @@
                             role: 'all',
                             title: 'Сотрудники',
                             condition: 'organization'
+                        }],
+                        [{
+                            name: null,
+                            role: 'all',
+                            title: 'Маркет',
+                        }, {
+                            name: 'market',
+                            hash: '#public',
+                            role: 'all',
+                            title: 'Публичный профиль',
+                            condition: 'is_access_product'
+                        }, {
+                            name: 'market',
+                            hash: '#goods',
+                            role: 'all',
+                            title: 'Товары'
+                        }, {
+                            name: 'market',
+                            hash: '#orders',
+                            role: 'all',
+                            title: 'Заказы'
+                        }, {
+                            name: 'market',
+                            hash: '#settings',
+                            role: 'all',
+                            title: 'Настройки'
                         }],
                         [{
                             name: null,

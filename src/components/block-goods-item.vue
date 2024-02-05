@@ -57,7 +57,7 @@
             <div class="goods__item-params">
                 <div v-if="good.min_count" class="goods__item-param m--count">от {{ good.min_count }} ед.</div>
                 <div v-if="good.nds" class="goods__item-param m--nds">{{ good.nds }}</div>
-                <div v-if="good.type_of_buyer" class="goods__item-param m--buyer">{{ good.type_of_buyer === 'organization' ? 'B2B' : 'B2C' }}</div>
+                <div v-if="showTypeBuyer && good.type_of_buyer" class="goods__item-param m--buyer">{{ good.type_of_buyer === 'organization' ? 'B2B' : 'B2C' }}</div>
             </div>
             <div class="goods__item-price">
                 {{ good.price ? $helpers.toPrice(good.price, { sign: good.currency_detail }) : 'Цена по запросу' }}
@@ -123,6 +123,7 @@
         data() {
             return {
                 urlPath,
+                showTypeBuyer: false,
                 showOrganizationLink: false
             };
         },

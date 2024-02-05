@@ -17,6 +17,10 @@
         :hideSelected="false"
         :close-on-select="closeOnSelect"
         :resolve-on-load="resolveOnLoad"
+        :filter-results="filterResults"
+        :infinite="infinite"
+        :limit="limit"
+        :delay="delay"
         :noOptionsText="noOptionsText"
         :readonly="props.context.attrs.readonly"
         noResultsText="Результатов не найдено"
@@ -150,6 +154,10 @@
     const closeOnSelect = props.context.attrs.closeOnSelect !== undefined ? props.context.attrs.closeOnSelect : true;
     const resolveOnLoad = props.context.attrs.resolveOnLoad !== undefined ? props.context.attrs.resolveOnLoad : true;
     const object = props.context.attrs.resolveOnLoad !== undefined ? true : false;
+    const filterResults = props.context.attrs.filterResults || false;
+    const infinite = props.context.attrs.infinite || false;
+    const limit = props.context.attrs.limit || null;
+    const delay = props.context.attrs.delay || null;
     const inn = props.context.attrs.inn !== undefined ? true : false;
     const bet = props.context.attrs.bet !== undefined ? true : false;
     const tender = props.context.attrs.tender !== undefined ? true : false;
@@ -168,6 +176,11 @@
             multiselect.value.clear();
             multiselect.value.refreshOptions();
         }
+        /*
+        if (select$.noOptions) {
+            select$.resolveOptions();
+        }
+        */
         /*
         if (props.context.attrs.lot) {
             multiselect._value.clear();

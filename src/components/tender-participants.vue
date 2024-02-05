@@ -264,10 +264,10 @@
                     tender: this.tender.id,
                     organization: organizationId
                 }
-                api.getChatByTenderAndOrganization(params).then(res => {
+                api.getChatByTypeAndOrganization('tender', params).then(res => {
                     // this.chatPartner = res.chat_partner.id;
                     console.log(res);
-                    this.$router.push({ name: 'chat', params: { chatId: res.id } });
+                    this.$router.push({ name: 'chat', query: { chatId: res.id }, hash: '#tender' });
                 }).catch(err => {
                     console.error(err);
                 });

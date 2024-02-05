@@ -203,10 +203,11 @@
                                 console.error(err)
                             })
                         },
+                        classes: { multiselect: 'm--long' },
                         outerClass: 'm--width-100',
                     }, {
                         $formkit: 'textarea',
-                        name: 'description',
+                        name: 'about',
                         label: 'Описание товара',
                         placeholder: 'Расскажите о своем товаре: где применяется, характеристики, состав, выгодные особенности и прочее',
                         // validation: 'required',
@@ -349,6 +350,7 @@
                 ],
                 showGoodSchema: [
                     {
+                    /*
                         $formkit: 'multiselect',
                         mode: 'single',
                         name: 'type_of_buyer',
@@ -364,6 +366,7 @@
                         ],
                         outerClass: 'field--required',
                     }, {
+                    */
                         $formkit: 'maska',
                         name: 'ordering',
                         maska: { mask: '0', tokens: '0:\\d:multiple' },
@@ -441,18 +444,6 @@
                 this.busyForm = true;
                 cabinetApi.getProduct(this.goodId).then(res => {
                     this.formData = res; 
-                    /*
-                    {
-                        category: res.category,
-                        name: res.name,
-                        price: res.price,
-                        currency: res.currency,
-                        unit: res.unit,
-                        description: res.description,
-                        //photo: res.photo,
-                        small_photo: res.small_photo ? `${urlPath}${res.small_photo}` : null,
-                    };
-                    */
                     /*
                     this.formData.category = {
                         fromParent: true,

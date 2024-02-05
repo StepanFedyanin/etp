@@ -36,48 +36,49 @@ export default class extends REST {
         this.ws.send(data);
     }
 
-    static getChatList(params){
-        return this._get('chats/product', {}, params).then((data) => {
+    static getChatList(type, params){
+        return this._get(`chats/${type}`, {}, params).then((data) => {
             return data;
         }).catch((error) => {
             throw new RESTError(error, 'Ошибка при получении списка чатов');
         });
     }
-    static getChatByTenderAndOrganization(params) {
-        return this._post('chats/product/get_create', {}, params).then((data) => {
+    static getChatByTypeAndOrganization(type, params) {
+        console.log(params);
+        return this._post(`chats/${type}`, {}, params).then((data) => {
             return data;
         }).catch((error) => {
             throw new RESTError(error, 'Ошибка при создании и/или получении чата');
         });
     }
-    static getChat(id){
-        return this._get(`chats/product/${id}`, {}).then((data) => {
+    static getChat(type, id){
+        return this._get(`chats/${type}/${id}`, {}).then((data) => {
             return data;
         }).catch((error) => {
             throw new RESTError(error, 'Ошибка при получении информации по чату');
         });
     }
-    static deleteChat(id){
-        return this._delete(`chats/product/${id}`, {}).then((data) => {
+    static deleteChat(type, id){
+        return this._delete(`chats/${type}/${id}`, {}).then((data) => {
             return data;
         }).catch((error) => {
             throw new RESTError(error, 'Ошибка при удалении чата');
         });
     }
-    static getMessages(room, offset, limit){
+    static getMessages(type, room, offset, limit){
         let data = {
             'offset': offset,
             'limit': limit
         }
-        return this._get(`chats/product/${room}/messages`, {}, data).then((data) => {
+        return this._get(`chats/${type}/${room}/messages`, {}, data).then((data) => {
             return data;
         }).catch((error) => {
             throw new RESTError(error, 'Ошибка при получении сообщений чата');
         });
     }
-    static createMessages(room, params) {
+    static createMessages(type, room, params) {
         console.log(room, params)
-        return this._post(`chats/product/${room}/messages`, {}, params).then((data) => {
+        return this._post(`chats/${type}/${room}/messages`, {}, params).then((data) => {
             return data;
         }).catch((error) => {
             throw new RESTError(error, 'Ошибка при создании сообщения');

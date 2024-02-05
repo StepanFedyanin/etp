@@ -15,7 +15,7 @@
                 data-loading="loading"
                 form-class="$reset profile__form"
                 :actions="false"
-                :disabled="busyForm || !user.is_access_organization"
+                :disabled="busyForm || disableForm"
                 :loading="busyForm ? true : undefined"
                 @submit="submitHandler"
             >
@@ -39,7 +39,7 @@
                         <div class="profile__form-logo-block">
                             <div class="profile__form-logo-inner">
                                 <button
-                                    v-if="!formData.logo && user.is_access_organization"
+                                    v-if="!formData.logo && !disableForm"
                                     href="#"
                                     class="button button-outline-green button-width-auto m--small"
                                     @click.prevent="onClickUploadLogo"
@@ -53,7 +53,7 @@
                             </div>
                         </div>
                         <div 
-                            v-if="formData.logo && user.is_access_organization"
+                            v-if="formData.logo && !disableForm"
                             class="profile__form-logo-links" 
                         >
                             <a
@@ -96,7 +96,7 @@
                 >
                     <button
                         type="submit"
-                        :disabled="busyForm || !this.user.is_access_organization"
+                        :disabled="busyForm || disableForm"
                         class="button button-green"
                     >
                         Сохранить изменения
@@ -149,7 +149,7 @@
                         validationRules: { phoneLen },
                         validation: 'phoneLen',
                         options: async () => { return await this.getCountryList() },
-                        disabledCountry: this.$store.state.user.organization.country ? true : false,
+                        disabledCountry: this.$store.state.user.organization?.country || this.$store.state.user.country ? true : false,
                         classes: { multiselect: 'multiselect m--phone-code' },
                     }, {
                         $formkit: 'text',
@@ -186,6 +186,11 @@
             user() {
                 return this.$store.state.user || {};
             },
+            disableForm() {
+                if (this.user.im_auth_type === 'person') return false;
+                if (!this.user.is_access_product) return true;
+                return false;
+            }
         },
         created() {
             this.getMarketProfile();
@@ -214,28 +219,53 @@
             },
             getMarketProfile() {
                 this.showLoaderSending = true;
-                cabinet.getMarketOrganizationProfile().then(res => {
-                    this.formData = res || {};
-                    let marketUser = Object.assign({}, res);
-                    if (!this.formData.phone?.number) {
-                        this.formData.phone = {
-                            country: {
-                                label: marketUser.phone?.substring(0, marketUser.phone?.length - 10) || '+7',
-                                value: {
-                                    id: marketUser.country || 1,
-                                    code_phone: marketUser.phone?.substring(0, marketUser.phone?.length - 10) || '+7',
-                                    name: marketUser.country_name || 'Россия'
-                                }
-                            },
-                            number: marketUser.phone?.substring(marketUser.phone?.length - 10)
-                        };
-                        if (marketUser.country) this.disabledCountry = true;
-                    }
-                    this.showLoaderSending = false;
-                }).catch(err => {
-                    this.showLoaderSending = false;
-                    console.error(err);
-                });
+                if (this.user.im_auth_type === 'person') {
+                    cabinet.getMarketProfile().then(res => {
+                        this.formData = res || {};
+                        let marketUser = Object.assign({}, res);
+                        if (!this.formData.phone?.number) {
+                            this.formData.phone = {
+                                country: {
+                                    label: marketUser.phone?.substring(0, marketUser.phone?.length - 10) || '+7',
+                                    value: {
+                                        id: marketUser.country || 1,
+                                        code_phone: marketUser.phone?.substring(0, marketUser.phone?.length - 10) || '+7',
+                                        name: marketUser.country_name || 'Россия'
+                                    }
+                                },
+                                number: marketUser.phone?.substring(marketUser.phone?.length - 10)
+                            };
+                            if (marketUser.country) this.disabledCountry = true;
+                        }
+                        this.showLoaderSending = false;
+                    }).catch(err => {
+                        this.showLoaderSending = false;
+                        console.error(err);
+                    });
+                } else {
+                    cabinet.getMarketOrganizationProfile().then(res => {
+                        this.formData = res || {};
+                        let marketUser = Object.assign({}, res);
+                        if (!this.formData.phone?.number) {
+                            this.formData.phone = {
+                                country: {
+                                    label: marketUser.phone?.substring(0, marketUser.phone?.length - 10) || '+7',
+                                    value: {
+                                        id: marketUser.country || 1,
+                                        code_phone: marketUser.phone?.substring(0, marketUser.phone?.length - 10) || '+7',
+                                        name: marketUser.country_name || 'Россия'
+                                    }
+                                },
+                                number: marketUser.phone?.substring(marketUser.phone?.length - 10)
+                            };
+                            if (marketUser.country) this.disabledCountry = true;
+                        }
+                        this.showLoaderSending = false;
+                    }).catch(err => {
+                        this.showLoaderSending = false;
+                        console.error(err);
+                    });
+                }
             },
             onClickUploadLogo() {
                 let logoInput = this.$refs.logoInput;
@@ -248,28 +278,23 @@
                 const data = new FormData();
                 data.append('logo', '');
                 this.busyForm = true;
-                cabinet.updateMarketOrganizationProfilePhoto(this.formData.id, data).then(res => {
-                    cabinet.getMyProfile().then(res => {
-                        this.busyForm = false;
-                        this.$store.dispatch('setUser', res);
-                        this.formData.logo = res.marketplace_user.logo;
+                if (this.user.im_auth_type === 'person') {
+                    cabinet.updateMarketProfilePhoto(this.formData.id, data).then(res => {
+                        cabinet.getMyProfile().then(res => {
+                            this.busyForm = false;
+                            this.$store.dispatch('setUser', res);
+                            this.formData.logo = res.marketplace_user.logo;
+                        }).catch(err => {
+                            this.busyForm = false;
+                            this.$store.dispatch('showError', err);
+                            console.error(err);
+                        });
                     }).catch(err => {
                         this.busyForm = false;
                         this.$store.dispatch('showError', err);
                         console.error(err);
                     });
-                }).catch(err => {
-                    this.busyForm = false;
-                    this.$store.dispatch('showError', err);
-                    console.error(err);
-                });
-            },
-            uploaLogoComplete(event) {
-                let file = event.target.files ? event.target.files[0] : null
-                if (file) {
-                    const data = new FormData();
-                    data.append('logo', file);
-                    this.busyForm = true;
+                } else {
                     cabinet.updateMarketOrganizationProfilePhoto(this.formData.id, data).then(res => {
                         cabinet.getMyProfile().then(res => {
                             this.busyForm = false;
@@ -285,6 +310,47 @@
                         this.$store.dispatch('showError', err);
                         console.error(err);
                     });
+                }
+            },
+            uploaLogoComplete(event) {
+                let file = event.target.files ? event.target.files[0] : null
+                if (file) {
+                    const data = new FormData();
+                    data.append('logo', file);
+                    this.busyForm = true;
+                    if (this.user.im_auth_type === 'person') {
+                        cabinet.updateMarketProfilePhoto(this.formData.id, data).then(res => {
+                            cabinet.getMyProfile().then(res => {
+                                this.busyForm = false;
+                                this.$store.dispatch('setUser', res);
+                                this.formData.logo = res.marketplace_user.logo;
+                            }).catch(err => {
+                                this.busyForm = false;
+                                this.$store.dispatch('showError', err);
+                                console.error(err);
+                            });
+                        }).catch(err => {
+                            this.busyForm = false;
+                            this.$store.dispatch('showError', err);
+                            console.error(err);
+                        });
+                    } else {
+                        cabinet.updateMarketOrganizationProfilePhoto(this.formData.id, data).then(res => {
+                            cabinet.getMyProfile().then(res => {
+                                this.busyForm = false;
+                                this.$store.dispatch('setUser', res);
+                                this.formData.logo = res.marketplace_user.logo;
+                            }).catch(err => {
+                                this.busyForm = false;
+                                this.$store.dispatch('showError', err);
+                                console.error(err);
+                            });
+                        }).catch(err => {
+                            this.busyForm = false;
+                            this.$store.dispatch('showError', err);
+                            console.error(err);
+                        });
+                    }
                 }
             },
             submitHandler(formData, node) {
@@ -304,23 +370,37 @@
                         }
                     }
                 });
-                console.log(data);
-                cabinet.updateMarketOrganizationProfilePartial(formData.id, data).then(res => {
-                    cabinet.getMyProfile().then(res => {
-                        this.busyForm = false;
-                        this.$store.dispatch('setUser', res);
-                        this.$emit('updateData', res);
+                if (this.user.im_auth_type === 'person') {
+                    cabinet.updateMarketProfilePartial(formData.id, data).then(res => {
+                        cabinet.getMyProfile().then(res => {
+                            this.busyForm = false;
+                            this.$store.dispatch('setUser', res);
+                            this.$emit('updateData', res);
+                        }).catch(err => {
+                            this.busyForm = false;
+                            this.$store.dispatch('showError', err);
+                            console.error(err);
+                        });
                     }).catch(err => {
+                        node.setErrors(err.response.data);
                         this.busyForm = false;
-                        this.$store.dispatch('showError', err);
-                        console.error(err);
                     });
-                }).catch(err => {
-                    node.setErrors(
-                        err.response.data,
-                    );
-                    this.busyForm = false;
-                });
+                } else {
+                    cabinet.updateMarketOrganizationProfilePartial(formData.id, data).then(res => {
+                        cabinet.getMyProfile().then(res => {
+                            this.busyForm = false;
+                            this.$store.dispatch('setUser', res);
+                            this.$emit('updateData', res);
+                        }).catch(err => {
+                            this.busyForm = false;
+                            this.$store.dispatch('showError', err);
+                            console.error(err);
+                        });
+                    }).catch(err => {
+                        node.setErrors(err.response.data);
+                        this.busyForm = false;
+                    });
+                }
             },
         }
     };

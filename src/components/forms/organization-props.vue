@@ -69,14 +69,14 @@
                 addressMatches: false,
                 schema: [
                     {
-                        $formkit: 'text',
+                        $formkit: 'maska',
                         name: 'inn',
                         label: 'ИНН',
                         placeholder: '0002013922',
                         disabled: true,
-                        validation: 'required',
+                        validation: [['required'], ['matches', /^(\d{10}|\d{12})$/]],
                         // outerClass: 'field--required'
-                        // maska: { mask: ['##########', '############'] },
+                        // maska: { mask: '##########00', tokens: '0:[0-9]:optional' },
                     }, {
                         $formkit: this.organization.owner_type === 'ip' ? 'hidden' : 'text',
                         name: 'kpp',
