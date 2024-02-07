@@ -1,11 +1,11 @@
 <template>
-    <template v-if="showLoaderSending">
-        <div class="profile__loader loader">
-            <div class="spinner" /> Загрузка данных
-        </div>
-    </template>
-    <template v-else>
-        <div class="profile__form">
+    <div class="profile__form">
+        <template v-if="showLoaderSending">
+            <div class="profile__loader loader">
+                <div class="spinner" /> Загрузка данных
+            </div>
+        </template>
+        <template v-else>
             <div class="profile__form-main">
                 <div class="profile__account">
                     <div class="profile__account-title">Почта для входа и email-уведомлений</div>
@@ -76,8 +76,8 @@
                 :showModal="showProfilePhoneModal"
                 @hideModal="hideProfilePhoneModal"
             />
-        </div>
-    </template>
+        </template>
+    </div>
 </template>
 <script>
     import { cabinet as api } from "@/services";

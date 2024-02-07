@@ -14,19 +14,19 @@
                         >
                             <a 
                                 :href="href"
-                                :class="[(isActive || isExactActive) && 'is-active', `m--icon-${item.icon}`, (item.name === 'chat' && roomUnreadCount) || (item.name === 'notifications' && notificationsCount) ? 'is-alert' : '']"
+                                :class="[(isActive || isExactActive) && 'is-active', `m--icon-${item.icon}`, (item.name === 'chat' && counters.unread_room_coun) || (item.name === 'notifications' && counters.notifications_count) ? 'is-alert' : '']"
                                 class="sidebar__bottom-menu-link"
                                 @click.prevent="onClickMenuItem(item)"
                             >
                                 <template
-                                    v-if="item.name === 'chat' && roomUnreadCount"
+                                    v-if="item.name === 'chat' && counters.unread_room_count"
                                 >
-                                    <div class="sidebar__bottom-menu-count">{{ roomUnreadCount }}</div>
+                                    <div class="sidebar__bottom-menu-count">{{ counters.unread_room_count }}</div>
                                 </template>
                                 <template
-                                    v-if="item.name === 'notifications' && notificationsCount"
+                                    v-if="item.name === 'notifications' && counters.notifications_count"
                                 >
-                                    <div class="sidebar__bottom-menu-count">{{ notificationsCount }}</div>
+                                    <div class="sidebar__bottom-menu-count">{{ notifications_count }}</div>
                                 </template>
                             </a>
                         </router-link>
@@ -79,6 +79,9 @@
             user() {
                 return this.$store.state.user;
             },
+            counters() {
+                return this.$store.state.counters || {};
+            }
         },
         /*
         watch: {
@@ -126,29 +129,19 @@
                 });
                 this.push.onEvent('message', (data) => {
                     console.log('Chat has received a message', data);
-                    this.handlePush(data);
+                    this.$store.dispatch('setCounters', data);
+                    //this.handlePush(data);
                 });
 
                 this.push.openPush();
             },
+            /*
             handlePush(event) {
                 this.invitesCount = event.invites_count || 0;
                 this.notificationsCount = event.notifications_count || 0;
                 this.roomUnreadCount = event.unread_room_count || 0;
-                /*
-                switch(event.push_reason) {
-                case 'chat_update':
-                    this.roomUnreadCount = event.unread_room_count;
-                    break;
-                case 'initial_info':
-                    this.roomUnreadCount = event.unread_room_count;
-                    break;
-                case 'chat_read':
-                    this.roomUnreadCount = event.unread_room_count;
-                    break;
-                }
-                */
             },
+            */
         }
     };
 </script>

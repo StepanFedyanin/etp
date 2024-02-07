@@ -53,6 +53,9 @@ export default createStore({
         meta(state, meta) {
             state.meta = meta;
         },
+        counters(state, data) {
+            state.counters = data;
+        },
         updateError(state, error) {
             if (error !== '404') state.error = error;
             state.showErrorPage = error;
@@ -81,6 +84,9 @@ export default createStore({
         },
         setMeta(context, meta) {
             context.commit('meta', meta);
+        },
+        setCounters(context, data) {
+            context.commit('counters', data);
         },
         fetchData(context, data) {
             context.commit('data', data);

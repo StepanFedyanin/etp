@@ -1,13 +1,17 @@
 const ajax = {
-    timeout: 75000,
-    responseType: 'json',
-    responseEncoding: 'utf8'
+    timeout: process.env.AJAX_TIMEOUT,
+    responseType: process.env.AJAX_RESPONSE_TYPE,
+    responseEncoding: process.env.AJAX_ENCODING
 };
 
 const cache = {
-    //storage: 'sessionStorage'
-    storage: 'tempStorage'
+    storage: process.env.CACHE_STORAGE
 };
+
+const serviceUrl = {
+    selfUrl: process.env.SERVICE_SELF_URL,
+    url: process.env.SERVICE_URL,
+}
 
 const serviceUrl = {
     selfUrl: '//etptugan.ru',
@@ -44,7 +48,8 @@ const websocket = {
 
 const chat = {
     url: `${urlPath}/chat`,
-    wsUrl: `wss://${urlPath}/ws/chat`
+    wsUrl: `ws://${urlPath}/ws/chat`,
+    wsUrlPush: `${urlPath}/ws/push`,
 };
 
 const tenderChat = {
@@ -79,6 +84,18 @@ const logger = {
     level: 'debug'
 };
 
+const robotsTxt = {
+    filePath: '/robots.txt',
+    host: selfPath,
+    policy: [
+        {
+            userAgent: process.env.ROBOTS_USER_AGENT,
+            allow: JSON.parse(process.env.ROBOTS_ALLOW || null),
+            disallow: JSON.parse(process.env.ROBOTS_DISALLOW || null),
+        }
+    ]    
+};
+
 export {
     ajax,
     cache,
@@ -98,4 +115,5 @@ export {
     tenderChat,
     push,
     websocket,
+    robotsTxt,
 };

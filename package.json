@@ -1,6 +1,6 @@
 {
   "name": "tugan",
-  "version": "0.9.10",
+  "version": "0.9.11",
   "description": "A Tugan project",
   "productName": "Tugan App",
   "author": "KOVex <kovex@portal2u.ru>",
@@ -55,6 +55,7 @@
     "eslint-plugin-promise": "^6.0.0",
     "eslint-plugin-vue": "^9.0.0",
     "eslint-webpack-plugin": "^3.1.1",
+    "esm": "^3.2.25",
     "postcss": "^8.4.31",
     "postcss-cli": "^10.1.0",
     "postcss-color-function": "^4.1.0",
@@ -68,6 +69,7 @@
     "postcss-nested": "^6.0.1",
     "postcss-preset-env": "^9.2.0",
     "postcss-simple-vars": "^7.0.1",
+    "robotstxt-webpack-plugin": "^8.0.0",
     "sass-loader": "^13.3.2",
     "vue-loader": "^17.3.0"
   },

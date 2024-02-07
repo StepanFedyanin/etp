@@ -1,7 +1,7 @@
 const path = require('path');
 const webpack = require('webpack');
 const nodeExternals = require("webpack-node-externals");
-const env = require('dotenv').config({ path: `.env.${process.env.NODE_ENV.toLowerCase()}` }).parsed
+const env = require('dotenv').config({ path: `.env.${process.env.NODE_ENV.toLowerCase()}` }).parsed;
 /* eslint-env node */
 
 /*
@@ -13,8 +13,11 @@ const env = require('dotenv').config({ path: `.env.${process.env.NODE_ENV.toLowe
 // https://v2.quasar.dev/quasar-cli-webpack/quasar-config-js
 
 const ESLintPlugin = require('eslint-webpack-plugin')
-
+const RobotstxtPlugin = require("robotstxt-webpack-plugin");
 const { configure } = require('quasar/wrappers')
+
+//require = require('esm')(module);
+//const settings = require(`./src/settings/${process.env.NODE_ENV}`);
 
 module.exports = configure(function (ctx) {
   return {
@@ -83,11 +86,16 @@ module.exports = configure(function (ctx) {
       chainWebpack (chain) {
         chain.plugin('eslint-webpack-plugin')
           .use(ESLintPlugin, [{ extensions: ['js', 'vue'] }])
-		    chain.plugin('normal-module-replacement').use(
-          new webpack.NormalModuleReplacementPlugin(/settings$/, function(resource) {
-              resource.request = resource.request.replace(/settings$/, `settings/${process.env.NODE_ENV}`);
-          })
-		    )
+		    
+        // chain.plugin('normal-module-replacement').use(
+        //  new webpack.NormalModuleReplacementPlugin(/settings$/, function(resource) {
+        //       resource.request = resource.request.replace(/settings$/, `settings/${process.env.NODE_ENV}`);
+        //   })
+		    // )
+        require = require('esm')(module);
+        const settings = require(`./src/settings`);
+        chain.plugin('robotstxt-webpack-plugin')
+            .use(new RobotstxtPlugin(settings.robotsTxt))
         chain.module.rule('images')
           .test(/\.(png|jpe?g|gif|svg|webp|avif|ico)(\?.*)?$/)
           .type('javascript/auto')

@@ -21,6 +21,9 @@
                                 @click.prevent="changeTab(item.name)"
                             >
                                 {{ item.label }}
+                                <div v-if="counters[`unread_room_${item.name}_count`]" class="tabs__item-count">
+                                    {{ counters[`unread_room_${item.name}_count`] }}
+                                </div>
                             </button>
                         </div>
 
@@ -180,9 +183,8 @@
                                         <div
                                             v-else
                                             :key="`message-${message.id}`"
-                                            :class="['chat__messages-item', !message.seen && 'is-unread', (message.user === user.id && message.type === 'tender') || (message.user === user.marketplace_user?.id && message.type === 'product') ? 'is-right' : 'is-left']"
+                                            :class="['chat__messages-item', (!message.seen && !myMessage(message)) && 'is-unread', myMessage(message) ? 'is-right' : 'is-left']"
                                         >
-                                            {{ message }}
                                             <div class="chat__messages-item-inner">
                                                 <template v-if="message.deleted">
                                                     <div class="chat__messages-item-text m--deleted">
@@ -377,6 +379,9 @@
             user() {
                 return this.$store.state.user;
             },
+            counters() {
+                return this.$store.state.counters || {};
+            }
         },
         watch: {
             'chat': function (newVal, oldVal) {
@@ -458,7 +463,7 @@
                     }
                 });
             },
-            scroll: function (el) {
+            scroll(el) {
                 let delta = Math.max(-1, Math.min(1, (el.wheelDelta || -el.detail)));
                 const board = this.$refs.board;
                 if (board.scrollTop === 0 && delta === 1 && this.isLoading === false && this.canScroll) {
@@ -519,8 +524,12 @@
             },
             handleMessage(msg) {
                 if (msg.room === this.chat) {
-                    msg.seen = true;
+                    //msg.seen = true;
                     this.chat_messages.push(msg);
+                    this.chat_messages = this.chat_messages.map(item => {
+                        item.seen = true;
+                        return item;
+                    });
                     this.offset++;
                     if ((msg.user !== this.user.id && msg.type === 'tender') && (msg.user !== this.user.marketplace_user?.id && msg.type === 'product')) {
                         this.connection.sendMessage({
@@ -604,6 +613,9 @@
                 if (el.scrollTop === 0 && this.isLoading === false && this.canScroll) {
                     this.appendMessages(this.currentTabsItem, this.chat);
                 }
+            },
+            myMessage(message) {
+                return (message.user === this.user.id && message.type === 'tender') || (message.user === this.user.marketplace_user?.id && message.type === 'product');
             },
             changeTab(name) {
                 this.chatId = null;

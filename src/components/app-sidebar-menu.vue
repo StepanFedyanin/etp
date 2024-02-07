@@ -112,9 +112,9 @@
                                                     >
                                                         {{ sitem.title }}
                                                         <template
-                                                            v-if="sitem.name === 'participant-invites' && invitesCount"
+                                                            v-if="sitem.name === 'participant-invites' && counters.invites_count"
                                                         >
-                                                            <div class="sidebar__menu-count">{{ invitesCount }}</div>
+                                                            <div class="sidebar__menu-count">{{ counters.invites_count }}</div>
                                                         </template>
                                                     </a>
                                                 </div>
@@ -370,6 +370,9 @@
             user() {
                 return this.$store.state.user;
             },
+            counters() {
+                return this.$store.state.counters || {};
+            }
         },
         watch: {
             '$route.name': {

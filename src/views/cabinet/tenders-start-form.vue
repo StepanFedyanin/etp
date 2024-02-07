@@ -166,7 +166,7 @@
                                 Добавить лот <span class="m--plus" />
                             </button>
                         </div>
-                        <div class="tender-form__block">
+                        <div :class="['tender-form__block', (defaultTender && !lots.length) && 'm--error']">
                             <div
                                 v-if="defaultTender && lots && lots.length"
                                 class="tender-form__lots lots m--tender-start"

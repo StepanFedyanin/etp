@@ -299,7 +299,7 @@
                 <template v-if="goodsCategory.count">
                     <div class="good__list goods m--block">
                         <div class="goods__title h2">
-                            Товары из категории «{{ good.category_detail.name }}» <span>({{ goodsCategory.count }})</span>
+                            Товары из категории «{{ good.category_detail?.name }}» <span>({{ goodsCategory.count }})</span>
                         </div>
                         <div class="goods__block">
                             <blockGoodsItem
@@ -526,29 +526,33 @@
             },
             getCategoryGoods() {
                 this.showLoaderSending.category = true;
-                let params = {
-                    limit: this.goodsCategoryLimit,
-                    offset: this.goodsCategoryOffset,
-                    category: this.good.category,
-                    exclude_slug: this.slug
-                };
-                productApi.getProducts(params).then(res => {
-                    if (!this.goodsCategory.results) {
-                        this.$store.dispatch('fetchDataByKey', { data: res, key: 'goodsCategory' });
-                    } else {
-                        let goodsCategory = this.goodsCategory;
-                        goodsCategory.results = [...this.goodsCategory.results, ...res.results];
-                        goodsCategory.count = res.count;
-                        this.$store.dispatch('fetchDataByKey', { data: goodsCategory, key: 'goodsCategory' });
-                    }
-                    this.goodsCategoryOffset = this.goodsCategoryOffset + this.goodsCategoryLimit;
-                    this.goodsCategoryTotal = res.count;
-                    this.showLoaderSending.category = false;
-                }).catch(err => {
-                    this.showLoaderSending.category = false;
-                    this.$store.dispatch('showError', err);
-                    console.error(err);
-                });
+                if (this.good.category_detail) {
+                    let params = {
+                        limit: this.goodsCategoryLimit,
+                        offset: this.goodsCategoryOffset,
+                        category: this.good.category,
+                        exclude_slug: this.slug
+                    };
+                    productApi.getProducts(params).then(res => {
+                        if (!this.goodsCategory.results) {
+                            this.$store.dispatch('fetchDataByKey', { data: res, key: 'goodsCategory' });
+                        } else {
+                            let goodsCategory = this.goodsCategory;
+                            goodsCategory.results = [...this.goodsCategory.results, ...res.results];
+                            goodsCategory.count = res.count;
+                            this.$store.dispatch('fetchDataByKey', { data: goodsCategory, key: 'goodsCategory' });
+                        }
+                        this.goodsCategoryOffset = this.goodsCategoryOffset + this.goodsCategoryLimit;
+                        this.goodsCategoryTotal = res.count;
+                        this.showLoaderSending.category = false;
+                    }).catch(err => {
+                        this.showLoaderSending.category = false;
+                        this.$store.dispatch('showError', err);
+                        console.error(err);
+                    });
+                } else {
+                    this.$store.dispatch('fetchDataByKey', { data: {}, key: 'goodsCategory' });
+                }
             },
             startChat(userId) {
                 let params = {

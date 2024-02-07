@@ -530,17 +530,7 @@
                         this.busyForm = true;
                         cabinetApi.addProductPhoto(data).then(res => {
                             this.formData.photos.push(res);
-                            /*
-                            cabinet.getMyProfile().then(res => {
-                                this.busyForm = false;
-                                this.$store.dispatch('setUser', res);
-                                this.formData.logo = res.organization.logo;
-                            }).catch(err => {
-                                this.busyForm = false;
-                                this.$store.dispatch('showError', err);
-                                console.error(err);
-                            });
-                            */
+                            this.busyForm = false;
                         }).catch(err => {
                             this.busyForm = false;
                             this.$store.dispatch('showError', err);

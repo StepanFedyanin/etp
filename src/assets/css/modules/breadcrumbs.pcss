@@ -1,8 +1,16 @@
 
 .breadcrumbs {
     font-size: 1rem;
-    line-height: 1.25rem;
+    line-height: 1.2;
     margin-bottom: 0.5rem;
+
+    @mixin responsive-le-s {
+        font-size: 0.875rem;
+    }
+
+    @mixin responsive-le-xs {
+        font-size: 0.75rem;
+    }
 
     &__item {
         position: relative;
