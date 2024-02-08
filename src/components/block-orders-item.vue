@@ -20,7 +20,7 @@
                     <div class="orders__item-param">
                         {{ item.product_json?.price ? $helpers.toPrice(item.product_json?.price, { sign: item.product_json?.currency_detail }) : 'Цена по запросу' }} / {{ item.product_json?.unit }}
                     </div>
-                    <div class="goods__item-param m--count">{{ item.count }} {{ item.product_json?.unit }}</div>
+                    <div class="order__item-param m--icon m--count">{{ item.count }} {{ item.product_json?.unit }}</div>
                     <div v-if="item.product_json?.price" class="orders__item-param">
                         {{ $helpers.toPrice(item.product_json?.price * item.count, { sign: item.product_json?.currency_detail }) }}
                     </div>

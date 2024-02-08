@@ -26,7 +26,7 @@
                                 <template
                                     v-if="item.name === 'notifications' && counters.notifications_count"
                                 >
-                                    <div class="sidebar__bottom-menu-count">{{ notifications_count }}</div>
+                                    <div class="sidebar__bottom-menu-count">{{ counters.notifications_count }}</div>
                                 </template>
                             </a>
                         </router-link>

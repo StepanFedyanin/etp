@@ -91,8 +91,14 @@
                                         </div>
                                     </div>
                                     <div class="chat__user-tender">
+                                        {{  }}
                                         <div :class="['chat__user-status', room.unread_message_count && 'is-unread']" />
-                                        <span>{{ room.last_message?.text || 'Нет сообщений' }}</span>
+                                        <template v-if="room.last_message?.is_json && room.last_message?.json?.order_id">
+                                            <span>Новый заказ: {{ room.last_message?.json?.name }}</span>
+                                        </template>
+                                        <template v-else>
+                                            <span>{{ room.last_message?.text || 'Нет сообщений' }}</span>
+                                        </template>
                                     </div>
                                 </template>
                             </div>
@@ -170,9 +176,7 @@
                                 </template>
                                 <!-- ref="area" -->
                                 <div class="chat__messages">
-                                    <template
-                                        v-for="(message) in messages"
-                                    >
+                                    <template v-for="(message) in messages">
                                         <div 
                                             v-if="message.type === 'time'"
                                             :key="`message-${message.id}`"
@@ -219,7 +223,42 @@
                                                             @click.prevent="onDeleteMessage(message.id)"
                                                         /-->
                                                     </div>
-                                                    <div 
+                                                    <div
+                                                        v-if="message.is_json && message.json?.order_id" 
+                                                        :class="['chat__messages-item-order']"
+                                                    >
+                                                        <div class="chat__messages-item-order-row">
+                                                            <span class="m--strong">Новый заказ:</span> <span>#{{ message.json?.order_id }}</span>
+                                                            <router-link
+                                                                :to="{ name: 'product', params: { slug: message.json?.slug || '404' } }"
+                                                            >
+                                                                {{ message.json?.name }}
+                                                            </router-link>
+                                                        </div>
+                                                        <div class="chat__messages-item-order-row chat__messages-item-order-params">
+                                                            <div class="chat__messages-item-order-param">
+                                                                {{ message.json?.price ? $helpers.toPrice(message.json?.price, { sign: message.json?.currency_detail }) : 'Цена по запросу' }} / {{ message.json?.unit }}
+                                                            </div>
+                                                            <div class="chat__messages-item-order-param m--icon m--count">{{ message.json.count }} {{ message.json?.unit }}</div>
+                                                            <div v-if="message.json?.price" class="chat__messages-item-order-param">
+                                                                {{ $helpers.toPrice(message.json?.price * message.json.count, { sign: message.json?.currency_detail }) }}
+                                                            </div>
+                                                        </div>
+                                                        <div class="chat__messages-item-order-row">
+                                                            <span class="m--strong">Продавец: {{ message.json?.seller.name }}</span>
+                                                            <span :class="['chat__messages-item-order-seller', message.json?.seller.type === 'organization' ? 'm--org' : 'm--person']">
+                                                                {{ message.json?.seller.type === 'organization' ? 'Организация' : 'Физ. лицо' }}
+                                                            </span>
+                                                        </div>
+                                                        <div class="chat__messages-item-order-row">
+                                                            <span class="m--strong">Покупатель: {{ message.json?.buyer.name }}</span>
+                                                            <span :class="['chat__messages-item-order-buyer', message.json?.buyer.type === 'organization' ? 'm--org' : 'm--person']">
+                                                                {{ message.json?.buyer.type === 'organization' ? 'Организация' : 'Физ. лицо' }}
+                                                            </span>
+                                                        </div>
+                                                    </div>
+                                                    <div
+                                                        v-else 
                                                         class="chat__messages-item-text"
                                                         v-html="message.text"
                                                     />                                        
@@ -367,6 +406,10 @@
                         length++;
                         date = message.date_publication;
                     }
+
+                    if (message.is_json) {
+                        message.json = JSON.parse(message.text || null);
+                    }
                 }
                 return items;
             },
@@ -425,7 +468,12 @@
             fetchChats(chatId, lazy = false) {
                 if (!lazy) this.showLoaderList = true;
                 Chat.getChatList(this.currentTabsItem).then(res => {
-                    this.rooms = res;
+                    this.rooms = res.map(item => {
+                        if (item.last_message.is_json) {
+                            item.last_message.json = JSON.parse(item.last_message.text || null);
+                        }
+                        return item;
+                    });
                     if (chatId) {
                         this.onSelectRecipient(chatId, this.findChat(chatId));
                     }

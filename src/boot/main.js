@@ -29,6 +29,7 @@ export default boot(async ({ app, router }) => {
     // });
     console.log(process.env.BUILD_MODE);
     if (process.env.BUILD_MODE === 'production') {
+        /*
         Sentry.init({
             app,
             dsn: "https://58dcbe2ab75d35ba65339fb488599f69@jora.flexites.org/11",
@@ -46,6 +47,7 @@ export default boot(async ({ app, router }) => {
             replaysSessionSampleRate: 0.1, // This sets the sample rate at 10%. You may want to change it to 100% while in development and then sample at a lower rate in production.
             replaysOnErrorSampleRate: 1.0, // If you're not already sampling the entire session, change the sample rate to 100% when sampling sessions where errors occur.
         });
+        */
     }
 
     app.use(helpers);
