@@ -469,7 +469,7 @@
                 if (!lazy) this.showLoaderList = true;
                 Chat.getChatList(this.currentTabsItem).then(res => {
                     this.rooms = res.map(item => {
-                        if (item.last_message.is_json) {
+                        if (item.last_message?.is_json) {
                             item.last_message.json = JSON.parse(item.last_message.text || null);
                         }
                         return item;
