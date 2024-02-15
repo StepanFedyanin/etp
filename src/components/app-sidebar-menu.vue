@@ -154,7 +154,7 @@
                         role: 'all',
                         title: 'Я - заказчик',
                         icon: 'customer',
-                        access: 'organization',
+                        condition: 'im_auth_type__organization',
                         items: [
                             {
                                 name: 'customer-current',
@@ -186,7 +186,7 @@
                         role: 'all',
                         title: 'Я - поставщик',
                         icon: 'provider',
-                        access: 'organization',
+                        condition: 'im_auth_type__organization',
                         items: [
                             {
                                 name: 'participant-invites',

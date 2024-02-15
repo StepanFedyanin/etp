@@ -260,8 +260,9 @@
                                                     <div
                                                         v-else 
                                                         class="chat__messages-item-text"
-                                                        v-html="message.text"
-                                                    />                                        
+                                                    >
+                                                        {{ message.text }}
+                                                    </div>
                                                 </template>
                                             </div>
                                             <!--div class="chat__messages-item-inner">

@@ -86,7 +86,7 @@
                                     @click.stop="onClickPopup"
                                 >
                                     <img 
-                                        v-if="user.organization?.logo"
+                                        v-if="user.im_auth_type === 'organization' && user.organization?.logo"
                                         :src="`${user.organization?.logo}`" 
                                         :alt="user.organization?.name" 
                                     />
@@ -302,7 +302,8 @@
                         [{
                             name: null,
                             role: 'all',
-                            title: 'Настройки организации',
+                            title: 'Организация',
+                            //condition: 'organization__null'
                         }, {
                             name: 'organization-registration',
                             //hash: '#registration',
@@ -310,6 +311,14 @@
                             role: 'all',
                             title: 'Зарегистрировать организацию',
                             condition: 'organization__null'
+                        }, {
+                            name: 'profile',
+                            hash: '#account',
+                            icon: 'tugan',
+                            role: 'all',
+                            title: 'Войти как сотрудник',
+                            condition: 'organization'
+                        /*
                         }, {
                             name: 'organization',
                             hash: '#public',
@@ -328,6 +337,7 @@
                             role: 'all',
                             title: 'Сотрудники',
                             condition: 'organization'
+                        */
                         }],
                         [{
                             name: null,

@@ -107,6 +107,7 @@
                         filterResults: false,
                         //infinite: true,
                         //limit: 10,
+                        validation: 'required',
                         options: async function(query) {
                             return await userApi.getOrganizations({query: query, limit: 50}).then(orgs => {
                                 let items = orgs.results.filter((org) => {
@@ -169,14 +170,15 @@
                     this.formValues = {};
                     this.$formkit.reset('form-search');
                 }).catch(err => {
-                    this.formValues = {};
-                    this.$formkit.reset('form-search');
+                    //this.formValues = {};
                     node.setErrors(
-                        [err.detail],
+                        [],
+                        {
+                            org: err.response.data.error,
+                        }
                     );
+                    //this.$formkit.reset('form-search');
                     this.showLoaderSending = false;
-                    this.$store.dispatch('showError', err);
-                    console.error(err);
                 });
             },
             getInvitation() {

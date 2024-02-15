@@ -88,6 +88,7 @@
         },
         mounted() {
             this.$store.dispatch('deathUser');
+            this.$store.dispatch('setMeta', {});
         },
         methods: {
             submitHandler(data, node) {
