@@ -40,7 +40,7 @@
                         </a>
                     </div>
                 </div>
-                <div class="profile__account">
+                <div v-if="user.organization" class="profile__account">
                     <div class="profile__account-title">Входить на платформу как:</div>
                     <div class="profile__account-buttons">
                         <button 
